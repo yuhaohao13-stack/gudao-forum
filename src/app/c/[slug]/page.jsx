@@ -32,11 +32,21 @@ export default function CategoryPage() {
 
         const { data } = await supabase
           .from('threads')
-          .select('*, profiles(username, display_name)')
+          .select('*, profiles!inner(username, display_name, role)')
           .eq('category_id', cat.id)
           .order('is_pinned', { ascending: false })
           .order(sortBy === 'hot' ? 'reply_count' : 'created_at', { ascending: false })
-        setThreads(data || [])
+        // 管理员帖子排前面
+        const sorted = (data || []).sort((a, b) => {
+          const aAdmin = a.profiles?.role === 'admin' || a.profiles?.role === 'moderator'
+          const bAdmin = b.profiles?.role === 'admin' || b.profiles?.role === 'moderator'
+          if (a.is_pinned && !b.is_pinned) return -1
+          if (!a.is_pinned && b.is_pinned) return 1
+          if (aAdmin && !bAdmin) return -1
+          if (!aAdmin && bAdmin) return 1
+          return 0
+        })
+        setThreads(sorted)
       }
     }
     fetchCategory()
@@ -103,8 +113,11 @@ export default function CategoryPage() {
           >
             <div className="flex items-start justify-between gap-4">
               <div className="min-w-0 flex-1">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 flex-wrap">
                   {thread.is_pinned && <span className="text-xs bg-yellow-600/30 text-yellow-400 px-1.5 py-0.5 rounded">📌 置顶</span>}
+                  {(thread.profiles?.role === 'admin' || thread.profiles?.role === 'moderator') && !thread.is_pinned && (
+                    <span className="text-xs bg-amber-600/30 text-amber-400 px-1.5 py-0.5 rounded">👑 管理员</span>
+                  )}
                   {thread.is_locked && <span className="text-xs bg-red-600/30 text-red-400 px-1.5 py-0.5 rounded">🔒 已锁</span>}
                   <h3 className="font-semibold truncate">{thread.title}</h3>
                 </div>
