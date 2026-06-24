@@ -145,19 +145,19 @@ export default function Home() {
               <Link key={thread.id} href={`/t/${thread.id}`}
                 className={`thread-card fade-in-up group ${i > 0 ? `stagger-${Math.min(i, 5)}` : ''}`}
               >
-                <div className="flex items-start justify-between gap-3">
-                  <div className="min-w-0 flex-1">
-                    <h3 className="font-semibold text-[#2c2c2c] group-hover:text-[#c23531] transition-colors truncate">{thread.title}</h3>
-                    <div className="flex items-center flex-wrap gap-x-3 gap-y-1 mt-1 text-xs text-[#8c8c8c]">
+                <div>
+                  <h3 className="font-semibold text-[#2c2c2c] group-hover:text-[#c23531] transition-colors truncate">{thread.title}</h3>
+                  <div className="flex items-center justify-between mt-1">
+                    <div className="text-xs text-[#8c8c8c] truncate min-w-0">
                       <span>{thread.profiles?.display_name || thread.profiles?.username}</span>
-                      {thread.categories && <><span className="text-[#d8d0c0]">/</span><span>{thread.categories?.name}</span></>}
-                      <span className="text-[#d8d0c0]">/</span>
+                      {thread.categories && <><span className="text-[#d8d0c0] mx-1">/</span><span>{thread.categories?.name}</span></>}
+                      <span className="text-[#d8d0c0] mx-1">/</span>
                       <span>{new Date(thread.created_at).toLocaleDateString('zh-CN')}</span>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-2.5 text-xs text-[#8c8c8c] shrink-0">
-                    <span>💬 {thread.reply_count || 0}</span>
-                    <span>👁️ {thread.view_count || 0}</span>
+                    <div className="flex items-center gap-2 text-xs text-[#8c8c8c] shrink-0 ml-2">
+                      <span>💬 {thread.reply_count || 0}</span>
+                      <span>👁️ {thread.view_count || 0}</span>
+                    </div>
                   </div>
                 </div>
               </Link>

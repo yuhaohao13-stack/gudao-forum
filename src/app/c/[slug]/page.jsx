@@ -82,24 +82,24 @@ export default function CategoryPage() {
             <Link key={thread.id} href={`/t/${thread.id}`}
               className={`thread-card fade-in-up group ${i > 0 ? `stagger-${Math.min(i, 5)}` : ''}`}
             >
-              <div className="flex items-start justify-between gap-3">
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    {thread.is_pinned && <span className="text-[10px] bg-[#b8860b]/10 text-[#8b6914] border border-[#8b6914]/20 px-1.5 py-0.5 rounded font-medium">📌 置顶</span>}
-                    {(thread.profiles?.role === 'admin' || thread.profiles?.role === 'moderator') && !thread.is_pinned &&
-                      <span className="text-[10px] bg-[#c23531]/10 text-[#c23531] border border-[#c23531]/20 px-1.5 py-0.5 rounded font-medium">👑 管理员</span>}
-                    {thread.is_locked && <span className="text-[10px] bg-[#888]/10 text-[#666] border border-[#888]/20 px-1.5 py-0.5 rounded font-medium">🔒 已锁</span>}
-                    <h3 className="font-semibold text-[#2c2c2c] group-hover:text-[#c23531] transition-colors truncate">{thread.title}</h3>
-                  </div>
-                  <div className="flex items-center gap-2 mt-1 text-xs text-[#8c8c8c]">
+              <div>
+                <div className="flex items-center gap-2 flex-wrap">
+                  {thread.is_pinned && <span className="text-[10px] bg-[#b8860b]/10 text-[#8b6914] border border-[#8b6914]/20 px-1.5 py-0.5 rounded font-medium">📌 置顶</span>}
+                  {(thread.profiles?.role === 'admin' || thread.profiles?.role === 'moderator') && !thread.is_pinned &&
+                    <span className="text-[10px] bg-[#c23531]/10 text-[#c23531] border border-[#c23531]/20 px-1.5 py-0.5 rounded font-medium">👑 管理员</span>}
+                  {thread.is_locked && <span className="text-[10px] bg-[#888]/10 text-[#666] border border-[#888]/20 px-1.5 py-0.5 rounded font-medium">🔒 已锁</span>}
+                  <h3 className="font-semibold text-[#2c2c2c] group-hover:text-[#c23531] transition-colors truncate">{thread.title}</h3>
+                </div>
+                <div className="flex items-center justify-between mt-1">
+                  <div className="text-xs text-[#8c8c8c] truncate min-w-0">
                     <span>{thread.profiles?.display_name || thread.profiles?.username}</span>
-                    <span className="text-[#d8d0c0]">·</span>
+                    <span className="text-[#d8d0c0] mx-1">·</span>
                     <span>{new Date(thread.created_at).toLocaleDateString('zh-CN')}</span>
                   </div>
-                </div>
-                <div className="flex items-center gap-2.5 text-xs text-[#8c8c8c] shrink-0">
-                  <span>💬 {thread.reply_count || 0}</span>
-                  <span>👁️ {thread.view_count || 0}</span>
+                  <div className="flex items-center gap-2 text-xs text-[#8c8c8c] shrink-0 ml-2">
+                    <span>💬 {thread.reply_count || 0}</span>
+                    <span>👁️ {thread.view_count || 0}</span>
+                  </div>
                 </div>
               </div>
             </Link>
