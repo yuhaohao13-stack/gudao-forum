@@ -55,7 +55,7 @@ export default function ProfilePage() {
                     <h3 className="font-semibold text-[#2c2c2c] group-hover:text-[#c23531] transition-colors truncate">{t.title}</h3>
                     <div className="text-xs text-[#8c8c8c] mt-0.5">{t.categories?.name} <span className="text-[#d8d0c0]">·</span> {new Date(t.created_at).toLocaleDateString('zh-CN')}</div>
                   </div>
-                  <div className="text-xs text-[#8c8c8c] shrink-0">{t.reply_count || 0}</div>
+                  <div className="text-xs text-[#8c8c8c] shrink-0">💬 {t.reply_count || 0}</div>
                 </div>
               </Link>
             ))}
