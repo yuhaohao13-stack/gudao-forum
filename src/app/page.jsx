@@ -58,9 +58,7 @@ export default function Home() {
     <div className="space-y-4">
       {/* Hero */}
       <div className="text-center pt-6 pb-4 anim-fade-in">
-        <h1 className="text-3xl sm:text-4xl font-bold font-serif tracking-wider text-[#1a1a1a]">古道论坛</h1>
-        <div className="w-16 h-1 bg-[#c23531] mx-auto mt-3 rounded-full opacity-60" />
-        <p className="text-[#999] text-sm mt-3 tracking-wide">以文会友 · 以友辅仁</p>
+        <p className="text-[#999] text-sm mt-1 tracking-wide">以文会友 · 以友辅仁</p>
         
         <div className="flex items-center justify-center gap-3 mt-4 text-xs sm:text-sm text-[#999]">
           <span>帖子 <span className="font-semibold text-[#c23531] font-serif text-sm sm:text-base">{totalPosts}</span></span>
