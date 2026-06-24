@@ -1,5 +1,4 @@
 'use client'
-
 import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
@@ -7,8 +6,7 @@ import Link from 'next/link'
 
 export default function ProfilePage() {
   const { id } = useParams()
-  const [profile, setProfile] = useState(null)
-  const [threads, setThreads] = useState([])
+  const [profile, setProfile] = useState(null); const [threads, setThreads] = useState([])
   const supabase = createClient()
 
   useEffect(() => {
@@ -18,44 +16,42 @@ export default function ProfilePage() {
     })
   }, [id])
 
-  if (!profile) return <div className="flex items-center justify-center py-20"><div className="w-5 h-5 border-2 border-[#c23531]/30 border-t-[#c23531] rounded-full animate-spin" /></div>
+  if (!profile) return <div className="flex justify-center py-20"><div className="w-5 h-5 border-2 border-[#c23531]/30 border-t-[#c23531] rounded-full animate-spin" /></div>
 
   return (
-    <div className="fade-in">
-      <div className="paper-card p-6 sm:p-8 text-center">
-        <div className="w-16 h-16 mx-auto rounded-full bg-[#c23531] flex items-center justify-center text-2xl font-bold text-white shadow-sm">
+    <div className="anim-fade-in">
+      <div className="card p-8 text-center">
+        <div className="w-20 h-20 mx-auto rounded-full bg-[#c23531] flex items-center justify-center text-3xl font-bold text-white shadow-sm">
           {(profile.display_name || profile.username || '?')[0]}
         </div>
-        <h1 className="text-xl font-bold text-[#111] mt-3">{profile.display_name || profile.username}</h1>
-        <p className="text-[#8c8c8c] text-sm">@{profile.username}</p>
-        {profile.bio && <p className="text-[#111] text-sm mt-2">{profile.bio}</p>}
+        <h1 className="text-xl font-bold font-serif text-[#1a1a1a] mt-4">{profile.display_name || profile.username}</h1>
+        <p className="text-[#999] text-sm">@{profile.username}</p>
+        {profile.bio && <p className="text-[#666] text-sm mt-2">{profile.bio}</p>}
         <div className="flex items-center justify-center gap-3 mt-3 text-xs">
-          <span className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${profile.role === 'admin' ? 'bg-[#c23531]/10 text-[#c23531] border border-[#c23531]/20' : profile.role === 'moderator' ? 'bg-[#8b6914]/10 text-[#8b6914] border border-[#8b6914]/20' : 'text-[#8c8c8c]'}`}>
+          <span className={`text-[10px] px-2 py-0.5 rounded font-medium ${profile.role === 'admin' ? 'bg-[#c23531]/10 text-[#c23531] border border-[#c23531]/20' : profile.role === 'moderator' ? 'bg-[#8b6914]/10 text-[#8b6914] border border-[#8b6914]/20' : 'text-[#999]'}`}>
             {profile.role === 'admin' ? '👑 管理员' : profile.role === 'moderator' ? '🛡️ 版主' : '👤 用户'}
           </span>
-          <span className="text-[#d8d0c0]">·</span>
-          <span className="text-[#8c8c8c]">加入于 {new Date(profile.created_at).toLocaleDateString('zh-CN')}</span>
+          <span className="text-[#ddd6c8]">·</span>
+          <span className="text-[#999]">加入于 {new Date(profile.created_at).toLocaleDateString('zh-CN')}</span>
         </div>
       </div>
 
       <div className="mt-6">
-        <h2 className="font-bold text-[#666] mb-3 flex items-center gap-2">
-          <span>📝 发过的帖子</span>
-          <span className="text-xs text-[#b0a898] font-normal">({threads.length})</span>
-        </h2>
+        <h2 className="font-semibold text-sm text-[#666] mb-3">📝 发过的帖子<span className="font-normal text-[#bbb] ml-1">({threads.length})</span></h2>
         {threads.length === 0 ? (
-          <div className="text-center py-8 paper-card"><div className="text-2xl mb-2">📭</div><p className="text-[#8c8c8c] text-sm">还没有发过帖子</p></div>
+          <div className="card p-8 text-center"><div className="text-2xl mb-2">📭</div><p className="text-[#999] text-sm">还没有发过帖子</p></div>
         ) : (
-          <div className="space-y-2">
+          <div className="space-y-2.5">
             {threads.map((t, i) => (
-              <Link key={t.id} href={`/t/${t.id}`}
-                className={`thread-card fade-in-up group ${i > 0 ? `stagger-${Math.min(i, 5)}` : ''}`}>
-                <div className="flex items-start justify-between gap-3">
-                  <div className="min-w-0 flex-1">
-                    <h3 className="font-semibold text-[#111] group-hover:text-[#c23531] transition-colors truncate">{t.title}</h3>
-                    <div className="text-xs text-[#8c8c8c] mt-0.5">{t.categories?.name} <span className="text-[#d8d0c0]">·</span> {new Date(t.created_at).toLocaleDateString('zh-CN')}</div>
+              <Link key={t.id} href={`/t/${t.id}`} className={`post-card ${i > 0 ? `anim-delay-${Math.min(i, 5)}` : ''}`}>
+                <div className="text-[#1a1a1a]">
+                  <div className="font-semibold truncate">{t.title}</div>
+                  <div className="flex items-center justify-between mt-2">
+                    <div className="text-xs text-[#999] truncate min-w-0">
+                      {t.categories?.name} <span className="text-[#ddd6c8] mx-1.5">·</span> {new Date(t.created_at).toLocaleDateString('zh-CN')}
+                    </div>
+                    <div className="text-xs text-[#bbb] shrink-0 ml-3">💬 {t.reply_count || 0}</div>
                   </div>
-                  <div className="text-xs text-[#8c8c8c] shrink-0">💬 {t.reply_count || 0}</div>
                 </div>
               </Link>
             ))}
