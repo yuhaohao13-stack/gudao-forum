@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 
 const CAT_ICONS = {
-  announcements: '📢', random: '💬', tech: '💻', life: '🌸', resources: '📦',
+  announcements: '📢', random: '💬', tech: '💻', life: '🌸', resources: '📦', fiction: '📖',
 }
 
 export default function Home() {
