@@ -127,6 +127,12 @@
     border-color: #c23531;
   }
 
+  .thread-card *,
+  .thread-card-announcement * {
+    position: relative;
+    z-index: 1;
+  }
+
   /* 分隔线 */
   .ink-divider {
     height: 1px;

@@ -51,15 +51,13 @@ function SearchResults() {
             ) : results.map((t, i) => (
               <Link key={t.id} href={`/t/${t.id}`}
                 className={`thread-card fade-in-up group ${i > 0 ? `stagger-${Math.min(i, 5)}` : ''}`}>
-                <div class="text-[#2c2c2c]">
-                  
-                    <h3 className="font-semibold text-[#2c2c2c] group-hover:text-[#c23531] transition-colors truncate">{t.title}</h3>
-                    <div className="text-xs text-[#8c8c8c] mt-0.5">{t.profiles?.display_name || t.profiles?.username}{t.categories && <> <span className="text-[#d8d0c0]">/</span> {t.categories?.name}</>}</div>
-                    <div className="text-xs text-[#b0a898] mt-1 line-clamp-2">{t.content?.substring(0, 120)}{t.content?.length > 120 ? '...' : ''}</div>
-                  </div>
-                  <div className="flex items-center gap-2 text-xs text-[#8c8c8c] shrink-0">
-                    <span>💬 {t.reply_count || 0}</span>
-                    <span>👁️ {t.view_count || 0}</span>
+                <div className="text-[#2c2c2c]">
+                  <div className="font-semibold group-hover:text-[#c23531] transition-colors truncate">{t.title}</div>
+                  <div className="text-xs text-[#555] mt-1">
+                    {t.profiles?.display_name || t.profiles?.username}
+                    {t.categories && <><span className="text-[#d8d0c0] mx-1">/</span>{t.categories?.name}</>}
+                    <span className="ml-2">💬 {t.reply_count || 0}</span>
+                    <span className="ml-1">👁️ {t.view_count || 0}</span>
                   </div>
                 </div>
               </Link>
