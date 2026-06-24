@@ -55,7 +55,7 @@ export default function Home() {
   }, [])
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-5">
       {/* Hero */}
       <div className="text-center pt-6 pb-4 anim-fade-in">
         <h1 className="text-3xl sm:text-4xl font-bold font-serif tracking-wider text-[#1a1a1a]">古道论坛</h1>

@@ -25,7 +25,7 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-[#eee8dc]">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+      <div className="max-w-4xl mx-auto px-4 h-12 flex items-center justify-between gap-3">
         <Link href="/" className="flex items-center gap-3 shrink-0 group">
           <span className="text-xl group-hover:scale-110 transition-transform duration-300">🏛️</span>
           <h1 className="text-xl sm:text-2xl font-bold font-serif tracking-wide text-[#1a1a1a]">古道论坛</h1>

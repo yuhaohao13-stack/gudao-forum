@@ -148,9 +148,9 @@
   .post-card {
     background: #fff;
     border: 1px solid #eee8dc;
-    border-radius: 1rem;
-    padding: 1.125rem 1.25rem;
-    transition: all 0.25s ease;
+    border-radius: 0.75rem;
+    padding: 0.75rem 1rem;
+    transition: all 0.2s ease;
     cursor: pointer;
   }
 
