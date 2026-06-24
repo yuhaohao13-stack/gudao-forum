@@ -73,8 +73,8 @@ export default function Home() {
                     </div>
                   </div>
                   <div className="flex items-center gap-2.5 text-xs text-[#8c8c8c] shrink-0">
-                    <span>💬 {thread.reply_count || 0}</span>
-                    <span>👁️ {thread.view_count || 0}</span>
+                    <span>{thread.reply_count || 0}</span>
+                    <span>{thread.view_count || 0}</span>
                   </div>
                 </div>
               </Link>
@@ -143,8 +143,8 @@ export default function Home() {
                     </div>
                   </div>
                   <div className="flex items-center gap-2.5 text-xs text-[#8c8c8c] shrink-0">
-                    <span>💬 {thread.reply_count || 0}</span>
-                    <span>👁️ {thread.view_count || 0}</span>
+                    <span>{thread.reply_count || 0}</span>
+                    <span>{thread.view_count || 0}</span>
                   </div>
                 </div>
               </Link>

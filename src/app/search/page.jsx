@@ -58,8 +58,8 @@ function SearchResults() {
                     <div className="text-xs text-[#b0a898] mt-1 line-clamp-2">{t.content?.substring(0, 120)}{t.content?.length > 120 ? '...' : ''}</div>
                   </div>
                   <div className="flex items-center gap-2 text-xs text-[#8c8c8c] shrink-0">
-                    <span>💬 {t.reply_count || 0}</span>
-                    <span>👁️ {t.view_count || 0}</span>
+                    <span>{t.reply_count || 0}</span>
+                    <span>{t.view_count || 0}</span>
                   </div>
                 </div>
               </Link>

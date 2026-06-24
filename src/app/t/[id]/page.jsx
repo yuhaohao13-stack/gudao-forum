@@ -104,14 +104,14 @@ export default function ThreadPage() {
           <button onClick={toggleLike}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all ${liked ? 'text-[#c23531] bg-[#c23531]/10' : 'text-[#8c8c8c] hover:text-[#c23531] hover:bg-[#c23531]/5'}`}
           >{liked ? '❤️' : '🤍'} {liked ? '已赞' : '点赞'}</button>
-          <span className="text-[#8c8c8c] flex items-center gap-1">💬 {replies.length} 回复</span>
-          <span className="text-[#8c8c8c] flex items-center gap-1">👁️ {thread.view_count || 0} 浏览</span>
+          <span className="text-[#8c8c8c] flex items-center gap-1">{replies.length} 回复</span>
+          <span className="text-[#8c8c8c] flex items-center gap-1">{thread.view_count || 0} 浏览</span>
         </div>
       </article>
 
       <div className="mt-6 fade-in-up">
         <h2 className="font-bold text-[#666] mb-3 flex items-center gap-2">
-          <span>💬 全部回复</span>
+          <span>全部回复</span>
           <span className="text-xs text-[#b0a898] font-normal">({replies.length})</span>
         </h2>
         <div className="space-y-3">
