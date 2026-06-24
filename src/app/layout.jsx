@@ -32,15 +32,14 @@ export default function RootLayout({ children }) {
         }} />
       </head>
       <body className="min-h-screen text-[#2c2c2c] flex flex-col bg-[#f5f0e8]">
-        {/* 水墨背景纹理 */}
-        <div className="fixed inset-0 pointer-events-none overflow-hidden -z-10 opacity-[0.15]"
+        {/* 水墨山水画背景 */}
+        <div
+          className="fixed inset-0 pointer-events-none -z-10 opacity-70"
           style={{
-            backgroundImage: `
-              radial-gradient(circle at 20% 30%, #c23531 0.5px, transparent 0.5px),
-              radial-gradient(circle at 80% 60%, #c23531 0.3px, transparent 0.3px),
-              radial-gradient(circle at 40% 80%, #8b6914 0.3px, transparent 0.3px)
-            `,
-            backgroundSize: '60px 60px, 80px 80px, 100px 100px',
+            backgroundImage: 'url(/bg-ink.svg)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center bottom',
+            backgroundRepeat: 'no-repeat',
           }}
         />
         <AuthProvider>

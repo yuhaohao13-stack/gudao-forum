@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" width="1440" height="900">
+  <defs>
+    <!-- 淡墨渐变 -->
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ede8dc" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#f5f0e8" stop-opacity="0.3"/>
+    </linearGradient>
+    <!-- 远山渐变 -->
+    <linearGradient id="farMountain" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#d8d0c0" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#e0d8c8" stop-opacity="0"/>
+    </linearGradient>
+    <!-- 中景山 -->
+    <linearGradient id="midMountain" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#c8c0b0" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#ddd6c8" stop-opacity="0"/>
+    </linearGradient>
+    <!-- 近山 -->
+    <linearGradient id="nearMountain" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#b8b0a0" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#d8d0c0" stop-opacity="0"/>
+    </linearGradient>
+    <!-- 云雾 -->
+    <filter id="blur">
+      <feGaussianBlur stdDeviation="6"/>
+    </filter>
+    <filter id="blurLight">
+      <feGaussianBlur stdDeviation="3"/>
+    </filter>
+  </defs>
+
+  <!-- 天空 -->
+  <rect width="1440" height="900" fill="url(#sky)"/>
+
+  <!-- 远山 -->
+  <path d="M0 500 Q100 420 200 450 Q280 400 350 430 Q420 380 500 410 Q560 370 620 400 Q700 360 780 390 Q850 350 920 380 Q1000 340 1080 370 Q1150 330 1220 360 Q1300 340 1380 370 L1440 380 L1440 500 L0 500Z"
+        fill="url(#farMountain)" opacity="0.4"/>
+
+  <!-- 中景山（左侧） -->
+  <path d="M0 550 Q60 490 120 510 Q180 470 240 490 Q300 460 350 480 L350 550 L0 550Z"
+        fill="url(#midMountain)" opacity="0.35"/>
+
+  <!-- 中景山（右侧） -->
+  <path d="M1000 540 Q1060 480 1120 500 Q1180 460 1240 480 Q1300 450 1350 470 L1440 480 L1440 550 L1000 550Z"
+        fill="url(#midMountain)" opacity="0.3"/>
+
+  <!-- 近山（左侧） -->
+  <path d="M0 600 Q40 560 80 575 Q120 540 160 555 Q200 530 240 545 L240 600 L0 600Z"
+        fill="url(#nearMountain)" opacity="0.2"/>
+
+  <!-- 近山（右侧小丘） -->
+  <path d="M1100 590 Q1140 560 1180 570 Q1220 550 1260 565 L1260 600 L1100 600Z"
+        fill="url(#nearMountain)" opacity="0.15"/>
+
+  <!-- 水面/雾气 -->
+  <rect x="0" y="520" width="1440" height="380" fill="#f5f0e8" opacity="0.4"/>
+
+  <!-- 水纹线条 -->
+  <line x1="200" y1="580" x2="350" y2="580" stroke="#d8d0c0" stroke-width="0.5" opacity="0.2"/>
+  <line x1="150" y1="610" x2="400" y2="610" stroke="#d8d0c0" stroke-width="0.5" opacity="0.15"/>
+  <line x1="900" y1="590" x2="1100" y2="590" stroke="#d8d0c0" stroke-width="0.5" opacity="0.2"/>
+  <line x1="950" y1="620" x2="1150" y2="620" stroke="#d8d0c0" stroke-width="0.5" opacity="0.15"/>
+
+  <!-- 云雾 -->
+  <ellipse cx="300" cy="480" rx="120" ry="20" fill="#e8e0d0" opacity="0.2" filter="url(#blur)"/>
+  <ellipse cx="700" cy="450" rx="150" ry="25" fill="#e8e0d0" opacity="0.15" filter="url(#blur)"/>
+  <ellipse cx="1100" cy="460" rx="100" ry="18" fill="#e8e0d0" opacity="0.2" filter="url(#blur)"/>
+
+  <!-- 一叶扁舟 -->
+  <path d="M650 560 Q660 555 670 560 Q680 565 670 568 Q660 570 650 568 Q645 565 650 560Z"
+        fill="#a09888" opacity="0.2"/>
+  <!-- 桅杆 -->
+  <line x1="660" y1="555" x2="660" y2="540" stroke="#a09888" stroke-width="0.5" opacity="0.15"/>
+  <!-- 帆 -->
+  <path d="M660 540 L665 548 L660 555Z" fill="#c8c0b0" opacity="0.12"/>
+
+  <!-- 远处飞鸟（两点） -->
+  <path d="M800 380 Q803 377 806 380" stroke="#b8b0a0" stroke-width="0.5" fill="none" opacity="0.15"/>
+  <path d="M820 385 Q822 383 824 385" stroke="#b8b0a0" stroke-width="0.5" fill="none" opacity="0.12"/>
+
+  <!-- 底部淡入 -->
+  <rect x="0" y="700" width="1440" height="200" fill="#f5f0e8" opacity="0.6"/>
+</svg>
