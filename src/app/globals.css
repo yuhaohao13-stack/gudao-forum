@@ -33,16 +33,33 @@
     transition: all 0.25s ease;
   }
 
+  .card {
+    position: relative;
+    z-index: 0;
+  }
+
+  .card * {
+    position: relative;
+    z-index: 2;
+  }
+
   .card:hover {
     box-shadow: 0 4px 16px rgba(0,0,0,0.06), 0 2px 8px rgba(0,0,0,0.04);
     border-color: #ddd6c8;
   }
 
   .card-announce {
+    position: relative;
+    z-index: 0;
     background: linear-gradient(135deg, #fff, #fefaf5);
     border: 1px solid #f0e0c0;
     border-radius: 1rem;
     transition: all 0.25s ease;
+  }
+
+  .card-announce * {
+    position: relative;
+    z-index: 2;
   }
 
   .card-announce:hover {
@@ -119,6 +136,11 @@
     padding: 1.125rem 1.25rem;
     transition: all 0.25s ease;
     cursor: pointer;
+  }
+
+  .post-card * {
+    position: relative;
+    z-index: 1;
   }
 
   .post-card:hover {
