@@ -120,7 +120,7 @@ export default function ThreadPage() {
           {thread.content}
         </div>
 
-        {/* 帖子图片 — 小缩略图，点击看高清 */}
+        {/* 帖子图片 — 固定小框，点击看高清 */}
         {thread.images && thread.images.length > 0 && (
           <div className="mt-4 flex flex-wrap gap-3">
             {thread.images.map((url, i) => (
@@ -129,14 +129,19 @@ export default function ThreadPage() {
                 href={url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group"
+                className="block"
               >
-                <img
-                  src={url}
-                  alt={`图片 ${i + 1}`}
-                  className="w-14 h-14 sm:w-16 sm:h-16 rounded-lg border border-slate-700 object-cover hover:border-amber-500 hover:opacity-85 transition-all cursor-pointer"
-                  loading="lazy"
-                />
+                <div
+                  className="rounded-lg border border-slate-700 overflow-hidden hover:border-amber-500 transition-colors"
+                  style={{ width: '100px', height: '100px' }}
+                >
+                  <img
+                    src={url}
+                    alt={`图片 ${i + 1}`}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    loading="lazy"
+                  />
+                </div>
               </a>
             ))}
           </div>
