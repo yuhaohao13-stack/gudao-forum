@@ -5,7 +5,7 @@ import { createClient } from '@/lib/supabase/client'
 import { useAuth } from '@/components/AuthProvider'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { checkContent, validateImage, IMAGE_CONFIG } from '@/lib/moderation'
+import { validateImage, IMAGE_CONFIG } from '@/lib/moderation'
 
 export default function NewThreadPage() {
   const { user, profile } = useAuth()
@@ -90,19 +90,6 @@ export default function NewThreadPage() {
 
     if (!title.trim() || !content.trim() || !category) {
       setError('请填写完整信息')
-      return
-    }
-
-    // 内容审查
-    const titleCheck = checkContent(title, true)
-    if (!titleCheck.pass) {
-      setError(`标题包含不良内容：「${titleCheck.word}」`)
-      return
-    }
-
-    const contentCheck = checkContent(content)
-    if (!contentCheck.pass) {
-      setError(`内容包含不良内容：「${contentCheck.word}」`)
       return
     }
 
@@ -214,6 +201,7 @@ export default function NewThreadPage() {
               📷 选择图片
             </button>
             <span className="text-xs text-slate-400">{images.length}/{IMAGE_CONFIG.maxCount}</span>
+          <span className="text-xs text-slate-500 ml-auto">请遵守社区规则，友善发言</span>
           </div>
           {imagePreviews.length > 0 && (
             <div className="flex flex-wrap gap-4 mt-2">
@@ -243,9 +231,7 @@ export default function NewThreadPage() {
           </div>
         )}
 
-        <div className="text-xs text-slate-500">
-          🚫 禁止发布色情、暴力、种族歧视、侮辱性言论
-        </div>
+
 
         <button
           type="submit"

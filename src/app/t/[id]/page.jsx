@@ -5,8 +5,6 @@ import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { useAuth } from '@/components/AuthProvider'
-import { checkContent } from '@/lib/moderation'
-import { IMAGE_CONFIG } from '@/lib/moderation'
 
 export default function ThreadPage() {
   const { id } = useParams()
@@ -55,13 +53,6 @@ export default function ThreadPage() {
     e.preventDefault()
     setError('')
     if (!replyContent.trim()) return
-
-    // 内容审查
-    const check = checkContent(replyContent)
-    if (!check.pass) {
-      setError(`回复包含不良内容：「${check.word}」`)
-      return
-    }
 
     setSending(true)
 
