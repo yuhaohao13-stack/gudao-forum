@@ -30,7 +30,7 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 bg-slate-900/80 backdrop-blur-md border-b border-slate-700">
       <div className="max-w-4xl mx-auto px-4 h-14 flex items-center justify-between gap-3">
-        <Link href="/" className="flex items-center gap-2 text-lg font-bold text-amber-400 shrink-0">
+        <Link href="/" className="flex items-center gap-2 text-2xl font-bold text-amber-400 shrink-0">
           <span className="text-xl">🏛️</span>
           古道论坛
         </Link>
