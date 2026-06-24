@@ -1,24 +1,14 @@
 {
   "name": "古道论坛",
   "short_name": "古道论坛",
-  "description": "古道论坛 — 自由讨论、分享观点",
+  "description": "古道论坛 — 自由讨论、友善交流",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0f172a",
-  "theme_color": "#d97706",
+  "background_color": "#f5f0e8",
+  "theme_color": "#c23531",
   "orientation": "portrait-primary",
   "icons": [
-    {
-      "src": "/icons/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/icons/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
   ]
 }
