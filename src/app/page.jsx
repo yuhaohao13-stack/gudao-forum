@@ -1,0 +1,85 @@
+'use client'
+
+import { useEffect, useState } from 'react'
+import Link from 'next/link'
+import { createClient } from '@/lib/supabase/client'
+
+export default function Home() {
+  const [categories, setCategories] = useState([])
+  const [recentThreads, setRecentThreads] = useState([])
+  const supabase = createClient()
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data: cats } = await supabase
+        .from('categories')
+        .select('*')
+        .order('sort_order')
+      setCategories(cats || [])
+
+      const { data: threads } = await supabase
+        .from('threads')
+        .select('*, profiles(username, display_name), categories(name, slug)')
+        .order('created_at', { ascending: false })
+        .limit(20)
+      setRecentThreads(threads || [])
+    }
+    fetchData()
+  }, [])
+
+  return (
+    <div className="space-y-8">
+      {/* 版块列表 */}
+      <section>
+        <h2 className="text-lg font-bold mb-3 text-slate-300">📂 版块</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          {categories.map((cat) => (
+            <Link
+              key={cat.id}
+              href={`/c/${cat.slug}`}
+              className="bg-slate-900 border border-slate-700 rounded-xl p-4 hover:border-blue-500 transition-colors"
+            >
+              <div className="text-2xl mb-1">{cat.icon}</div>
+              <div className="font-semibold">{cat.name}</div>
+              <div className="text-xs text-slate-400 mt-0.5">{cat.description}</div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* 最新帖子 */}
+      <section>
+        <h2 className="text-lg font-bold mb-3 text-slate-300">🔥 最新帖子</h2>
+        <div className="space-y-2">
+          {recentThreads.length === 0 && (
+            <p className="text-slate-500 text-center py-8">还没有帖子，快来发第一条吧！</p>
+          )}
+          {recentThreads.map((thread) => (
+            <Link
+              key={thread.id}
+              href={`/t/${thread.id}`}
+              className="block bg-slate-900 border border-slate-800 rounded-xl p-4 hover:border-slate-600 transition-colors"
+            >
+              <div className="flex items-start justify-between gap-4">
+                <div className="min-w-0 flex-1">
+                  <h3 className="font-semibold truncate">{thread.title}</h3>
+                  <div className="flex items-center gap-3 mt-1.5 text-xs text-slate-400">
+                    <span>{thread.profiles?.display_name || thread.profiles?.username || '匿名'}</span>
+                    <span className="text-slate-600">·</span>
+                    <span className="text-slate-500">{thread.categories?.name}</span>
+                    <span className="text-slate-600">·</span>
+                    <span>{new Date(thread.created_at).toLocaleDateString('zh-CN')}</span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 text-xs text-slate-500 shrink-0">
+                  <span>💬 {thread.reply_count || 0}</span>
+                  <span>👁️ {thread.view_count || 0}</span>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+    </div>
+  )
+}
