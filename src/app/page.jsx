@@ -78,7 +78,7 @@ export default function Home() {
                     <span className="text-[#c23531]">📌</span>
                     <h3 className="font-semibold group-hover:text-[#c23531] transition-colors truncate">{thread.title}</h3>
                   </div>
-                  <div className="text-xs text-[#8c8c8c] mt-1">
+                  <div className="text-xs text-[#555] mt-1">
                     {thread.profiles?.display_name || thread.profiles?.username}
                     <span className="mx-1">·</span>
                     {new Date(thread.created_at).toLocaleDateString('zh-CN')}
@@ -143,7 +143,7 @@ export default function Home() {
               >
                 <div className="text-[#2c2c2c]">
                   <div className="font-semibold group-hover:text-[#c23531] transition-colors truncate">{thread.title}</div>
-                  <div className="text-xs text-[#8c8c8c] mt-1">
+                  <div className="text-xs text-[#555] mt-1">
                     <span>{thread.profiles?.display_name || thread.profiles?.username}</span>
                     <span className="text-[#d8d0c0] mx-1">/</span>
                     {thread.categories?.name}
