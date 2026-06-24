@@ -55,14 +55,14 @@ export default function Home() {
   }, [])
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-4">
       {/* Hero */}
       <div className="text-center pt-6 pb-4 anim-fade-in">
         <h1 className="text-3xl sm:text-4xl font-bold font-serif tracking-wider text-[#1a1a1a]">古道论坛</h1>
         <div className="w-16 h-1 bg-[#c23531] mx-auto mt-3 rounded-full opacity-60" />
         <p className="text-[#999] text-sm mt-3 tracking-wide">以文会友 · 以友辅仁</p>
         
-        <div className="flex items-center justify-center gap-4 sm:gap-6 mt-4 text-xs sm:text-sm text-[#999]">
+        <div className="flex items-center justify-center gap-3 mt-4 text-xs sm:text-sm text-[#999]">
           <span>帖子 <span className="font-semibold text-[#c23531] font-serif text-sm sm:text-base">{totalPosts}</span></span>
           <span className="text-[#e0d8c8]">|</span>
           <span>访客 <span className="font-semibold text-[#c23531] font-serif text-sm sm:text-base">{totalViews.toLocaleString()}</span></span>
@@ -78,7 +78,7 @@ export default function Home() {
             <span className="text-sm font-semibold text-[#111] font-serif">📢 站务公告</span>
             <span className="meta-tag bg-[#c23531]/10 text-[#c23531] border border-[#c23531]/20">置顶</span>
           </div>
-          <div className="space-y-2.5">
+          <div className="space-y-1.5">
             {announcements.map((t, i) => (
               <Link key={t.id} href={`/t/${t.id}`}
                 className={`card-announce p-4 ${i > 0 ? `anim-delay-${i}` : ''}`}>
@@ -88,7 +88,7 @@ export default function Home() {
                       <span className="text-[#b8860b] shrink-0">📌</span>
                       <h3 className="font-semibold font-serif text-[#1a1a1a] truncate">{t.title}</h3>
                     </div>
-                    <div className="text-xs text-[#999] mt-1 ml-0.5">
+                    <div className="text-xs text-[#999] mt-0.5">
                       {t.profiles?.display_name || t.profiles?.username}
                       <span className="mx-1.5">·</span>
                       {new Date(t.created_at).toLocaleDateString('zh-CN')}
@@ -111,9 +111,9 @@ export default function Home() {
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
           {categories.map((c, i) => (
             <Link key={c.id} href={`/c/${c.slug}`}
-              className={`card p-4 sm:p-5 anim-scale ${i > 0 ? `anim-delay-${i}` : ''} 
+              className={`card p-3 sm:p-5 anim-scale ${i > 0 ? `anim-delay-${i}` : ''} 
                 ${c.slug === 'announcements' ? 'border-[#f0e0c0] bg-gradient-to-br from-white to-[#fffcf5]' : ''}`}>
-              <div className="text-2xl mb-2">{CAT_ICONS[c.slug] || c.icon || '📋'}</div>
+              <div className="text-xl mb-2">{CAT_ICONS[c.slug] || c.icon || '📋'}</div>
               <div className="font-semibold font-serif text-sm text-[#1a1a1a]">
                 {c.name}
                 {c.slug === 'announcements' && (
@@ -142,9 +142,9 @@ export default function Home() {
           <Link href="/search" className="ml-auto btn-ghost text-xs">🔍 搜索</Link>
         </div>
 
-        <div className="space-y-2.5">
+        <div className="space-y-1.5">
           {(activeTab === 'recent' ? recentThreads : hotThreads).length === 0 ? (
-            <div className="card p-10 text-center">
+            <div className="card p-6 text-center">
               <div className="text-3xl mb-3">📝</div>
               <p className="text-[#999] text-sm">还没有帖子</p>
               <Link href="/new-thread" className="btn-primary mt-4">发第一条帖子</Link>

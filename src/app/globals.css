@@ -15,8 +15,8 @@
     -webkit-tap-highlight-color: transparent;
     overscroll-behavior: none;
     background-color: #f5f0e8;
-    line-height: 1.7;
-    letter-spacing: 0.01em;
+    line-height: 1.5;
+    letter-spacing: 0.005em;
   }
 
   h1, h2, h3, h4, h5, h6 {
