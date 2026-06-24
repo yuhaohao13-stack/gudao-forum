@@ -27,7 +27,7 @@ export default function LoginPage() {
     <div className="max-w-sm mx-auto mt-12 fade-in">
       <div className="paper-card p-6 sm:p-8">
         <div className="text-center mb-6">
-          <h1 className="text-2xl font-bold text-[#2c2c2c]">登录</h1>
+          <h1 className="text-2xl font-bold text-[#111]">登录</h1>
           <div className="w-8 h-0.5 bg-[#c23531] mx-auto mt-2 opacity-60" />
         </div>
         <form onSubmit={handleLogin} className="space-y-4">

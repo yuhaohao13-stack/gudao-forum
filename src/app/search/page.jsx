@@ -34,7 +34,7 @@ function SearchResults() {
 
   return (
     <div className="fade-in">
-      <h1 className="text-2xl font-bold text-[#2c2c2c] mb-4">🔍 搜索</h1>
+      <h1 className="text-2xl font-bold text-[#111] mb-4">🔍 搜索</h1>
       <form onSubmit={e => { e.preventDefault(); if (input.trim()) router.push(`/search?q=${encodeURIComponent(input.trim())}`) }} className="mb-6 flex gap-2">
         <input type="text" value={input} onChange={e => setInput(e.target.value)} placeholder="搜索帖子..." className="ink-input flex-1" autoFocus />
         <button type="submit" disabled={loading} className="btn-red">{loading ? '搜索中...' : '搜索'}</button>
@@ -51,9 +51,9 @@ function SearchResults() {
             ) : results.map((t, i) => (
               <Link key={t.id} href={`/t/${t.id}`}
                 className={`thread-card fade-in-up group ${i > 0 ? `stagger-${Math.min(i, 5)}` : ''}`}>
-                <div className="text-[#2c2c2c]">
+                <div className="text-[#111]">
                   <div className="font-semibold group-hover:text-[#c23531] transition-colors truncate">{t.title}</div>
-                  <div className="text-xs text-[#555] mt-1">
+                  <div className="text-xs text-[#111] mt-1">
                     {t.profiles?.display_name || t.profiles?.username}
                     {t.categories && <><span className="text-[#d8d0c0] mx-1">/</span>{t.categories?.name}</>}
                     <span className="ml-2">💬 {t.reply_count || 0}</span>

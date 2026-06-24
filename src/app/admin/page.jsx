@@ -28,7 +28,7 @@ export default function AdminPage() {
 
   return (
     <div className="fade-in">
-      <h1 className="text-2xl font-bold text-[#2c2c2c] mb-1">⚙️ 管理后台</h1>
+      <h1 className="text-2xl font-bold text-[#111] mb-1">⚙️ 管理后台</h1>
       <p className="text-xs text-[#8c8c8c] mb-6">古道论坛管理中心</p>
 
       <div className="flex gap-2 mb-6">
@@ -43,7 +43,7 @@ export default function AdminPage() {
           {threads.map(t => (
             <div key={t.id} className="paper-card p-4 fade-in-scale flex items-start justify-between gap-3">
               <div className="min-w-0 flex-1">
-                <h3 className="font-semibold text-sm text-[#2c2c2c] truncate">{t.title}</h3>
+                <h3 className="font-semibold text-sm text-[#111] truncate">{t.title}</h3>
                 <div className="text-xs text-[#8c8c8c] mt-0.5">{t.profiles?.display_name || t.profiles?.username} · {t.categories?.name}</div>
               </div>
               <div className="flex items-center gap-1 shrink-0">
@@ -63,10 +63,10 @@ export default function AdminPage() {
             <tbody>
               {users.map(u => (
                 <tr key={u.id} className="border-b border-[#e0d8c8]/50 hover:bg-[#c23531]/5 transition-colors">
-                  <td className="py-2.5 px-3"><div className="font-medium text-[#333]">{u.display_name || u.username}</div><div className="text-[10px] text-[#8c8c8c]">@{u.username}</div></td>
+                  <td className="py-2.5 px-3"><div className="font-medium text-[#111]">{u.display_name || u.username}</div><div className="text-[10px] text-[#8c8c8c]">@{u.username}</div></td>
                   <td className="py-2.5 px-3"><span className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${u.role === 'admin' ? 'bg-[#c23531]/10 text-[#c23531] border border-[#c23531]/20' : u.role === 'moderator' ? 'bg-[#8b6914]/10 text-[#8b6914] border border-[#8b6914]/20' : 'text-[#8c8c8c]'}`}>{u.role === 'admin' ? '管理员' : u.role === 'moderator' ? '版主' : '用户'}</span></td>
                   <td className="py-2.5 px-3">
-                    <select value={u.role} onChange={e => roleChg(u.id, e.target.value)} className="bg-white border border-[#ddd6c8] rounded px-2 py-1 text-xs text-[#333]">
+                    <select value={u.role} onChange={e => roleChg(u.id, e.target.value)} className="bg-white border border-[#ddd6c8] rounded px-2 py-1 text-xs text-[#111]">
                       <option value="user">用户</option>
                       <option value="moderator">版主</option>
                       <option value="admin">管理员</option>

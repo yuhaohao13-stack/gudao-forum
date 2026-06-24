@@ -31,17 +31,7 @@ export default function RootLayout({ children }) {
           __html: `if('serviceWorker'in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('/sw.js')})}`
         }} />
       </head>
-      <body className="min-h-screen text-[#2c2c2c] flex flex-col bg-[#f5f0e8]">
-        {/* 水墨山水画背景 */}
-        <div
-          className="fixed inset-0 pointer-events-none -z-10 opacity-70"
-          style={{
-            backgroundImage: 'url(/bg-ink.svg)',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center bottom',
-            backgroundRepeat: 'no-repeat',
-          }}
-        />
+      <body className="min-h-screen text-[#111] flex flex-col bg-[#f5f0e8]">
         <AuthProvider>
           <Header />
           <main className="flex-1 max-w-4xl mx-auto w-full px-4 py-6">

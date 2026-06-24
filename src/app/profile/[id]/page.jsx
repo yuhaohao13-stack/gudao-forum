@@ -26,9 +26,9 @@ export default function ProfilePage() {
         <div className="w-16 h-16 mx-auto rounded-full bg-[#c23531] flex items-center justify-center text-2xl font-bold text-white shadow-sm">
           {(profile.display_name || profile.username || '?')[0]}
         </div>
-        <h1 className="text-xl font-bold text-[#2c2c2c] mt-3">{profile.display_name || profile.username}</h1>
+        <h1 className="text-xl font-bold text-[#111] mt-3">{profile.display_name || profile.username}</h1>
         <p className="text-[#8c8c8c] text-sm">@{profile.username}</p>
-        {profile.bio && <p className="text-[#555] text-sm mt-2">{profile.bio}</p>}
+        {profile.bio && <p className="text-[#111] text-sm mt-2">{profile.bio}</p>}
         <div className="flex items-center justify-center gap-3 mt-3 text-xs">
           <span className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${profile.role === 'admin' ? 'bg-[#c23531]/10 text-[#c23531] border border-[#c23531]/20' : profile.role === 'moderator' ? 'bg-[#8b6914]/10 text-[#8b6914] border border-[#8b6914]/20' : 'text-[#8c8c8c]'}`}>
             {profile.role === 'admin' ? '👑 管理员' : profile.role === 'moderator' ? '🛡️ 版主' : '👤 用户'}
@@ -52,7 +52,7 @@ export default function ProfilePage() {
                 className={`thread-card fade-in-up group ${i > 0 ? `stagger-${Math.min(i, 5)}` : ''}`}>
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0 flex-1">
-                    <h3 className="font-semibold text-[#2c2c2c] group-hover:text-[#c23531] transition-colors truncate">{t.title}</h3>
+                    <h3 className="font-semibold text-[#111] group-hover:text-[#c23531] transition-colors truncate">{t.title}</h3>
                     <div className="text-xs text-[#8c8c8c] mt-0.5">{t.categories?.name} <span className="text-[#d8d0c0]">·</span> {new Date(t.created_at).toLocaleDateString('zh-CN')}</div>
                   </div>
                   <div className="text-xs text-[#8c8c8c] shrink-0">💬 {t.reply_count || 0}</div>

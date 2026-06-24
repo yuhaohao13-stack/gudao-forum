@@ -72,7 +72,7 @@ export default function ThreadPage() {
         {(thread.profiles?.role === 'admin' || thread.profiles?.role === 'moderator') && (
           <span className="text-[10px] bg-[#c23531]/10 text-[#c23531] border border-[#c23531]/20 px-1.5 py-0.5 rounded font-medium">👑 管理员</span>
         )}
-        <h1 className="text-xl sm:text-2xl font-bold text-[#2c2c2c] mt-1">{thread.title}</h1>
+        <h1 className="text-xl sm:text-2xl font-bold text-[#111] mt-1">{thread.title}</h1>
         <div className="flex items-center gap-2 mt-2 text-xs text-[#8c8c8c]">
           <span className="w-4 h-4 rounded-full bg-[#c23531] flex items-center justify-center text-[8px] text-white font-bold">
             {(thread.profiles?.display_name || thread.profiles?.username || '?')[0]}
@@ -84,7 +84,7 @@ export default function ThreadPage() {
 
         <div className="ink-divider my-4" />
 
-        <div className="text-[#333] leading-7 whitespace-pre-wrap text-sm sm:text-base">
+        <div className="text-[#111] leading-7 whitespace-pre-wrap text-sm sm:text-base">
           {thread.content}
         </div>
 
@@ -131,11 +131,11 @@ export default function ThreadPage() {
                     <span className="w-4 h-4 rounded-full bg-[#8c8c8c] flex items-center justify-center text-[7px] text-white font-bold">
                       {(reply.profiles?.display_name || reply.profiles?.username || '?')[0]}
                     </span>
-                    <span className="font-medium text-[#555]">{reply.profiles?.display_name || reply.profiles?.username}</span>
+                    <span className="font-medium text-[#111]">{reply.profiles?.display_name || reply.profiles?.username}</span>
                     <span className="text-[#d8d0c0]">·</span>
                     <span>{new Date(reply.created_at).toLocaleString('zh-CN')}</span>
                   </div>
-                  <div className="text-[#333] leading-7 whitespace-pre-wrap text-sm">{reply.content}</div>
+                  <div className="text-[#111] leading-7 whitespace-pre-wrap text-sm">{reply.content}</div>
                 </>
               )}
             </div>

@@ -73,7 +73,7 @@ export default function NewThreadPage() {
 
   return (
     <div className="max-w-2xl mx-auto fade-in">
-      <h1 className="text-2xl font-bold text-[#2c2c2c] mb-6">✏️ 发新帖</h1>
+      <h1 className="text-2xl font-bold text-[#111] mb-6">✏️ 发新帖</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="paper-card p-4 space-y-4">
           <div>

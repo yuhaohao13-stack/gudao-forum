@@ -43,7 +43,7 @@ export default function CategoryPage() {
     <div className="fade-in">
       <div className="mb-6">
         <Link href="/" className="text-sm text-[#c23531]/70 hover:text-[#c23531] transition-colors">&larr; 返回首页</Link>
-        <h1 className="text-2xl font-bold text-[#2c2c2c] mt-1">{category.icon} {category.name}</h1>
+        <h1 className="text-2xl font-bold text-[#111] mt-1">{category.icon} {category.name}</h1>
         <p className="text-[#8c8c8c] text-sm mt-0.5">{category.description}</p>
       </div>
 
@@ -82,7 +82,7 @@ export default function CategoryPage() {
             <Link key={thread.id} href={`/t/${thread.id}`}
               className={`thread-card fade-in-up group ${i > 0 ? `stagger-${Math.min(i, 5)}` : ''}`}
             >
-              <div className="text-[#2c2c2c]">
+              <div className="text-[#111]">
                 <div className="flex items-center gap-1 flex-wrap text-xs mb-1">
                   {thread.is_pinned && <span className="text-[10px] bg-[#b8860b]/10 text-[#8b6914] border border-[#8b6914]/20 px-1.5 py-0.5 rounded font-medium">📌 置顶</span>}
                   {(thread.profiles?.role === 'admin' || thread.profiles?.role === 'moderator') && !thread.is_pinned &&
@@ -90,7 +90,7 @@ export default function CategoryPage() {
                   {thread.is_locked && <span className="text-[10px] bg-[#888]/10 text-[#666] border border-[#888]/20 px-1.5 py-0.5 rounded font-medium">🔒 已锁</span>}
                 </div>
                 <div className="font-semibold group-hover:text-[#c23531] transition-colors truncate">{thread.title}</div>
-                <div className="text-xs text-[#555] mt-1">
+                <div className="text-xs text-[#111] mt-1">
                   <span>{thread.profiles?.display_name || thread.profiles?.username}</span>
                   <span className="text-[#d8d0c0] mx-1">·</span>
                   {new Date(thread.created_at).toLocaleDateString('zh-CN')}

@@ -37,7 +37,7 @@ export default function Header() {
       <div className="max-w-4xl mx-auto px-4 h-14 flex items-center justify-between gap-3">
         <Link href="/" className="flex items-center gap-2 shrink-0 group">
           <span className="text-xl sm:text-2xl group-hover:scale-110 transition-transform duration-300">🏛️</span>
-          <h1 className="text-xl sm:text-2xl font-bold tracking-wider text-[#2c2c2c]">
+          <h1 className="text-xl sm:text-2xl font-bold tracking-wider text-[#111]">
             古道论坛
           </h1>
         </Link>

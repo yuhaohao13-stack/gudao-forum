@@ -51,7 +51,7 @@ export default function Home() {
     <div className="space-y-8">
       {/* 站训 */}
       <div className="text-center py-3 fade-in">
-        <h1 className="text-2xl sm:text-3xl font-bold tracking-wider text-[#2c2c2c]">古道论坛</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-wider text-[#111]">古道论坛</h1>
         <div className="w-12 h-0.5 bg-[#c23531] mx-auto mt-2 opacity-60" />
         <p className="text-[#8c8c8c] text-sm mt-2 tracking-wider">以文会友 · 以友辅仁</p>
         <div className="flex items-center justify-center gap-4 mt-3 text-xs text-[#b0a898]">
@@ -73,12 +73,12 @@ export default function Home() {
               <Link key={thread.id} href={`/t/${thread.id}`}
                 className={`thread-card-announcement fade-in-up group ${i > 0 ? `stagger-${i}` : ''}`}
               >
-                <div className="text-[#2c2c2c]">
+                <div className="text-[#111]">
                   <div className="flex items-center gap-1.5">
                     <span className="text-[#c23531]">📌</span>
                     <h3 className="font-semibold group-hover:text-[#c23531] transition-colors truncate">{thread.title}</h3>
                   </div>
-                  <div className="text-xs text-[#555] mt-1">
+                  <div className="text-xs text-[#111] mt-1">
                     {thread.profiles?.display_name || thread.profiles?.username}
                     <span className="mx-1">·</span>
                     {new Date(thread.created_at).toLocaleDateString('zh-CN')}
@@ -141,9 +141,9 @@ export default function Home() {
               <Link key={thread.id} href={`/t/${thread.id}`}
                 className={`thread-card fade-in-up group ${i > 0 ? `stagger-${Math.min(i, 5)}` : ''}`}
               >
-                <div className="text-[#2c2c2c]">
+                <div className="text-[#111]">
                   <div className="font-semibold group-hover:text-[#c23531] transition-colors truncate">{thread.title}</div>
-                  <div className="text-xs text-[#555] mt-1">
+                  <div className="text-xs text-[#111] mt-1">
                     <span>{thread.profiles?.display_name || thread.profiles?.username}</span>
                     <span className="text-[#d8d0c0] mx-1">/</span>
                     {thread.categories?.name}
