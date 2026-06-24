@@ -8,7 +8,7 @@ import Link from 'next/link'
 import { checkContent, validateImage, IMAGE_CONFIG } from '@/lib/moderation'
 
 export default function NewThreadPage() {
-  const { user } = useAuth()
+  const { user, profile } = useAuth()
   const [categories, setCategories] = useState([])
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
@@ -22,9 +22,20 @@ export default function NewThreadPage() {
   const router = useRouter()
 
   useEffect(() => {
-    supabase.from('categories').select('*').order('sort_order')
-      .then(({ data }) => setCategories(data || []))
-  }, [])
+    const fetchCategories = async () => {
+      const { data: cats } = await supabase.from('categories').select('*').order('sort_order')
+      let filtered = cats || []
+
+      // 非管理员看不到"站务管理"
+      const isAdmin = profile?.role === 'admin' || profile?.role === 'moderator'
+      if (!isAdmin) {
+        filtered = filtered.filter(c => c.slug !== 'announcements')
+      }
+
+      setCategories(filtered)
+    }
+    fetchCategories()
+  }, [profile])
 
   if (!user) {
     return (
@@ -150,7 +161,9 @@ export default function NewThreadPage() {
           >
             <option value="">选择版块</option>
             {categories.map((cat) => (
-              <option key={cat.id} value={cat.id}>{cat.icon} {cat.name}</option>
+              <option key={cat.id} value={cat.id}>
+                {cat.icon} {cat.name}{cat.slug === 'announcements' ? ' (仅管理员)' : ''}
+              </option>
             ))}
           </select>
         </div>

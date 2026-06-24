@@ -4,12 +4,16 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
+import { useAuth } from '@/components/AuthProvider'
 
 export default function CategoryPage() {
+  const { profile } = useAuth()
   const { slug } = useParams()
   const [category, setCategory] = useState(null)
   const [threads, setThreads] = useState([])
   const [sortBy, setSortBy] = useState('latest')
+  const isAdmin = profile?.role === 'admin' || profile?.role === 'moderator'
+  const isAnnouncements = slug === 'announcements'
   const supabase = createClient()
 
   useEffect(() => {
@@ -67,13 +71,25 @@ export default function CategoryPage() {
             🔥 最热
           </button>
         </div>
-        <Link
-          href="/new-thread"
-          className="bg-amber-600 hover:bg-amber-500 px-4 py-1.5 rounded-lg text-sm font-semibold transition-colors"
-        >
-          ✏️ 发新帖
-        </Link>
+        <div className="flex items-center gap-2">
+          {isAnnouncements && !isAdmin && (
+            <span className="text-xs text-slate-500 hidden sm:block">仅管理员可发帖</span>
+          )}
+          {(!isAnnouncements || isAdmin) && (
+            <Link
+              href="/new-thread"
+              className="bg-amber-600 hover:bg-amber-500 px-4 py-1.5 rounded-lg text-sm font-semibold transition-colors"
+            >
+              ✏️ 发新帖
+            </Link>
+          )}
+        </div>
       </div>
+      {isAnnouncements && !isAdmin && (
+        <div className="mb-4 text-center py-3 bg-slate-900 border border-slate-800 rounded-xl">
+          <p className="text-slate-400 text-sm">🔒 站务管理仅管理员可发帖</p>
+        </div>
+      )}
 
       <div className="space-y-2">
         {threads.length === 0 && (
