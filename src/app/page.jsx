@@ -10,6 +10,8 @@ export default function Home() {
   const [recentThreads, setRecentThreads] = useState([])
   const [hotThreads, setHotThreads] = useState([])
   const [activeTab, setActiveTab] = useState('recent')
+  const [totalViews, setTotalViews] = useState(0)
+  const [totalPosts, setTotalPosts] = useState(0)
   const supabase = createClient()
 
   useEffect(() => {
@@ -30,6 +32,12 @@ export default function Home() {
       let rq = supabase.from('threads').select('*, profiles(username, display_name), categories(name, slug)')
       if (annCatId) rq = rq.neq('category_id', annCatId)
       const { data: recent } = await rq.order('created_at', { ascending: false }).limit(20)
+      // 统计数据
+      const { count: postCount } = await supabase.from('threads').select('*', { count: 'exact', head: true })
+      setTotalPosts(postCount || 0)
+      const { data: views } = await supabase.from('threads').select('view_count')
+      setTotalViews((views || []).reduce((s, t) => s + (t.view_count || 0), 0))
+
       setRecentThreads(recent || [])
       let hq = supabase.from('threads').select('*, profiles(username, display_name), categories(name, slug)')
       if (annCatId) hq = hq.neq('category_id', annCatId)
@@ -46,6 +54,11 @@ export default function Home() {
         <h1 className="text-2xl sm:text-3xl font-bold tracking-wider text-[#2c2c2c]">古道论坛</h1>
         <div className="w-12 h-0.5 bg-[#c23531] mx-auto mt-2 opacity-60" />
         <p className="text-[#8c8c8c] text-sm mt-2 tracking-wider">以文会友 · 以友辅仁</p>
+        <div className="flex items-center justify-center gap-4 mt-3 text-xs text-[#b0a898]">
+          <span>📝 <span className="text-[#8c8c8c]">{totalPosts}</span> 个帖子</span>
+          <span className="text-[#ddd6c8]">|</span>
+          <span>👁️ <span className="text-[#8c8c8c]">{totalViews.toLocaleString()}</span> 次浏览</span>
+        </div>
       </div>
 
       {/* 公告 */}
@@ -73,8 +86,8 @@ export default function Home() {
                     </div>
                   </div>
                   <div className="flex items-center gap-2.5 text-xs text-[#8c8c8c] shrink-0">
-                    <span>{thread.reply_count || 0}</span>
-                    <span>{thread.view_count || 0}</span>
+                    <span>💬 {thread.reply_count || 0}</span>
+                    <span>👁️ {thread.view_count || 0}</span>
                   </div>
                 </div>
               </Link>
@@ -143,8 +156,8 @@ export default function Home() {
                     </div>
                   </div>
                   <div className="flex items-center gap-2.5 text-xs text-[#8c8c8c] shrink-0">
-                    <span>{thread.reply_count || 0}</span>
-                    <span>{thread.view_count || 0}</span>
+                    <span>💬 {thread.reply_count || 0}</span>
+                    <span>👁️ {thread.view_count || 0}</span>
                   </div>
                 </div>
               </Link>
