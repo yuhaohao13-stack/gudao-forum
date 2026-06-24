@@ -1,10 +1,11 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useAuth } from '@/components/AuthProvider'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { checkContent, validateImage, IMAGE_CONFIG } from '@/lib/moderation'
 
 export default function NewThreadPage() {
   const { user } = useAuth()
@@ -12,8 +13,11 @@ export default function NewThreadPage() {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [category, setCategory] = useState('')
+  const [images, setImages] = useState([]) // File[]
+  const [imagePreviews, setImagePreviews] = useState([])
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const fileInputRef = useRef(null)
   const supabase = createClient()
   const router = useRouter()
 
@@ -26,32 +30,109 @@ export default function NewThreadPage() {
     return (
       <div className="text-center py-12">
         <p className="text-slate-400 mb-4">请先登录再发帖</p>
-        <Link href="/login" className="text-blue-400 hover:underline">去登录</Link>
+        <Link href="/login" className="text-amber-400 hover:underline">去登录</Link>
       </div>
     )
   }
 
+  const handleImageSelect = (e) => {
+    const files = Array.from(e.target.files || [])
+    const validFiles = []
+    const errors = []
+
+    for (const file of files) {
+      const result = validateImage(file)
+      if (result.valid) {
+        validFiles.push(file)
+      } else {
+        errors.push(`${file.name}: ${result.error}`)
+      }
+    }
+
+    if (errors.length > 0) {
+      setError(errors.join('\n'))
+      return
+    }
+
+    const total = images.length + validFiles.length
+    if (total > IMAGE_CONFIG.maxCount) {
+      setError(`最多上传 ${IMAGE_CONFIG.maxCount} 张图片`)
+      return
+    }
+
+    setImages([...images, ...validFiles])
+
+    // 生成预览
+    const newPreviews = validFiles.map((file) => URL.createObjectURL(file))
+    setImagePreviews([...imagePreviews, ...newPreviews])
+  }
+
+  const removeImage = (index) => {
+    URL.revokeObjectURL(imagePreviews[index])
+    setImages(images.filter((_, i) => i !== index))
+    setImagePreviews(imagePreviews.filter((_, i) => i !== index))
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setError('')
+
     if (!title.trim() || !content.trim() || !category) {
       setError('请填写完整信息')
       return
     }
-    setLoading(true)
-    setError('')
 
-    const { data, error: err } = await supabase.from('threads').insert({
-      title: title.trim(),
-      content: content.trim(),
-      category_id: category,
-      author_id: user.id,
-    }).select('id').single()
-
-    if (err) {
-      setError(err.message)
-    } else {
-      router.push(`/t/${data.id}`)
+    // 内容审查
+    const titleCheck = checkContent(title, true)
+    if (!titleCheck.pass) {
+      setError(`标题包含不良内容：「${titleCheck.word}」`)
+      return
     }
+
+    const contentCheck = checkContent(content)
+    if (!contentCheck.pass) {
+      setError(`内容包含不良内容：「${contentCheck.word}」`)
+      return
+    }
+
+    setLoading(true)
+
+    try {
+      // 上传图片
+      const imageUrls = []
+      for (const file of images) {
+        const ext = file.name.split('.').pop()
+        const filePath = `${user.id}/${Date.now()}_${Math.random().toString(36).substring(2, 8)}.${ext}`
+
+        const { error: uploadError } = await supabase.storage
+          .from(IMAGE_CONFIG.bucket)
+          .upload(filePath, file)
+
+        if (uploadError) throw new Error(`图片上传失败: ${uploadError.message}`)
+
+        const { data: { publicUrl } } = supabase.storage
+          .from(IMAGE_CONFIG.bucket)
+          .getPublicUrl(filePath)
+
+        imageUrls.push(publicUrl)
+      }
+
+      // 发布帖子
+      const { data, error: err } = await supabase.from('threads').insert({
+        title: title.trim(),
+        content: content.trim(),
+        category_id: category,
+        author_id: user.id,
+        images: imageUrls.length > 0 ? imageUrls : null,
+      }).select('id').single()
+
+      if (err) throw new Error(err.message)
+      router.push(`/t/${data.id}`)
+
+    } catch (err) {
+      setError(err.message)
+    }
+
     setLoading(false)
   }
 
@@ -65,7 +146,7 @@ export default function NewThreadPage() {
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500"
+            className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-500"
           >
             <option value="">选择版块</option>
             {categories.map((cat) => (
@@ -80,8 +161,9 @@ export default function NewThreadPage() {
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500 transition-colors"
+            className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-500 transition-colors"
             placeholder="写个吸引人的标题"
+            maxLength={200}
           />
         </div>
 
@@ -91,17 +173,71 @@ export default function NewThreadPage() {
             value={content}
             onChange={(e) => setContent(e.target.value)}
             rows={8}
-            className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-sm focus:outline-none focus:border-blue-500 transition-colors resize-none"
+            className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-sm focus:outline-none focus:border-amber-500 transition-colors resize-none"
             placeholder="写下你想说的..."
+            maxLength={10000}
           />
         </div>
 
-        {error && <p className="text-red-400 text-sm">{error}</p>}
+        {/* 图片上传 */}
+        <div>
+          <label className="block text-sm text-slate-300 mb-1">
+            图片（可选，最多 3 张，每张不超过 5MB）
+          </label>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/jpeg,image/png,image/gif,image/webp"
+            multiple
+            onChange={handleImageSelect}
+            className="hidden"
+          />
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              className="bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg px-3 py-2 text-sm transition-colors"
+            >
+              📷 选择图片
+            </button>
+            <span className="text-xs text-slate-400">{images.length}/{IMAGE_CONFIG.maxCount}</span>
+          </div>
+          {imagePreviews.length > 0 && (
+            <div className="flex flex-wrap gap-2 mt-2">
+              {imagePreviews.map((preview, i) => (
+                <div key={i} className="relative group">
+                  <img
+                    src={preview}
+                    alt={`图片 ${i + 1}`}
+                    className="w-20 h-20 object-cover rounded-lg border border-slate-700"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeImage(i)}
+                    className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-red-600 rounded-full text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                  >
+                    ✕
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {error && (
+          <div className="text-red-400 text-sm bg-red-900/30 border border-red-800 rounded-lg p-3 whitespace-pre-wrap">
+            {error}
+          </div>
+        )}
+
+        <div className="text-xs text-slate-500">
+          🚫 禁止发布色情、暴力、种族歧视、侮辱性言论
+        </div>
 
         <button
           type="submit"
           disabled={loading}
-          className="bg-blue-600 hover:bg-blue-500 disabled:opacity-50 px-6 py-2 rounded-lg font-semibold transition-colors"
+          className="bg-amber-600 hover:bg-amber-500 disabled:opacity-50 px-6 py-2 rounded-lg font-semibold transition-colors"
         >
           {loading ? '发布中...' : '发布帖子'}
         </button>

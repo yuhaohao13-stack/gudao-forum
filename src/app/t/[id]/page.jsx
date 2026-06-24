@@ -5,16 +5,19 @@ import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { useAuth } from '@/components/AuthProvider'
+import { checkContent } from '@/lib/moderation'
+import { IMAGE_CONFIG } from '@/lib/moderation'
 
 export default function ThreadPage() {
   const { id } = useParams()
-  const { user, profile } = useAuth()
+  const { user } = useAuth()
   const [thread, setThread] = useState(null)
   const [replies, setReplies] = useState([])
   const [replyContent, setReplyContent] = useState('')
   const [loading, setLoading] = useState(true)
   const [sending, setSending] = useState(false)
   const [liked, setLiked] = useState(false)
+  const [error, setError] = useState('')
   const supabase = createClient()
 
   useEffect(() => {
@@ -26,8 +29,7 @@ export default function ThreadPage() {
         .single()
 
       if (t) {
-        // 增加浏览量
-        await supabase.rpc('increment_view_count', { thread_id: id }).catch(() => {})
+        // 浏览量 +1
         await supabase.from('threads').update({ view_count: (t.view_count || 0) + 1 }).eq('id', id)
 
         const { data: r } = await supabase
@@ -36,7 +38,7 @@ export default function ThreadPage() {
           .eq('thread_id', id)
           .order('created_at')
         setReplies(r || [])
-        setThread(t)
+        setThread({ ...t, view_count: (t.view_count || 0) + 1 })
       }
       setLoading(false)
     }
@@ -51,16 +53,27 @@ export default function ThreadPage() {
 
   const handleReply = async (e) => {
     e.preventDefault()
+    setError('')
     if (!replyContent.trim()) return
+
+    // 内容审查
+    const check = checkContent(replyContent)
+    if (!check.pass) {
+      setError(`回复包含不良内容：「${check.word}」`)
+      return
+    }
+
     setSending(true)
 
-    const { error } = await supabase.from('replies').insert({
+    const { error: err } = await supabase.from('replies').insert({
       thread_id: id,
       content: replyContent.trim(),
       author_id: user.id,
     })
 
-    if (!error) {
+    if (err) {
+      setError(err.message)
+    } else {
       await supabase.from('threads').update({ reply_count: replies.length + 1 }).eq('id', id)
       const { data: newReply } = await supabase
         .from('replies')
@@ -89,7 +102,7 @@ export default function ThreadPage() {
 
   return (
     <div>
-      <Link href={`/c/${thread.categories?.slug}`} className="text-sm text-blue-400 hover:underline">
+      <Link href={`/c/${thread.categories?.slug}`} className="text-sm text-amber-400 hover:underline">
         &larr; {thread.categories?.name}
       </Link>
 
@@ -101,9 +114,28 @@ export default function ThreadPage() {
           <span className="text-slate-600">·</span>
           <span>{new Date(thread.created_at).toLocaleString('zh-CN')}</span>
         </div>
+
+        {/* 帖子内容 */}
         <div className="mt-4 text-slate-200 leading-relaxed whitespace-pre-wrap">
           {thread.content}
         </div>
+
+        {/* 帖子图片 */}
+        {thread.images && thread.images.length > 0 && (
+          <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-2">
+            {thread.images.map((url, i) => (
+              <a key={i} href={url} target="_blank" rel="noopener noreferrer">
+                <img
+                  src={url}
+                  alt={`图片 ${i + 1}`}
+                  className="rounded-lg border border-slate-700 w-full h-40 object-cover hover:opacity-90 transition-opacity"
+                  loading="lazy"
+                />
+              </a>
+            ))}
+          </div>
+        )}
+
         <div className="mt-4 flex items-center gap-4 text-sm text-slate-400">
           <button onClick={toggleLike} className={`flex items-center gap-1 ${liked ? 'text-red-400' : 'hover:text-red-400'} transition-colors`}>
             {liked ? '❤️' : '🤍'} 点赞
@@ -145,21 +177,25 @@ export default function ThreadPage() {
           <textarea
             value={replyContent}
             onChange={(e) => setReplyContent(e.target.value)}
-            className="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm min-h-[100px] focus:outline-none focus:border-blue-500 transition-colors resize-none"
+            className="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm min-h-[100px] focus:outline-none focus:border-amber-500 transition-colors resize-none"
             placeholder="写下你的回复..."
           />
-          <button
-            type="submit"
-            disabled={sending || !replyContent.trim()}
-            className="mt-2 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 px-4 py-2 rounded-lg text-sm font-semibold transition-colors"
-          >
-            {sending ? '发送中...' : '发表回复'}
-          </button>
+          {error && <p className="text-red-400 text-xs mt-1">{error}</p>}
+          <div className="flex items-center justify-between mt-2">
+            <span className="text-xs text-slate-500">🚫 请遵守社区规则</span>
+            <button
+              type="submit"
+              disabled={sending || !replyContent.trim()}
+              className="bg-amber-600 hover:bg-amber-500 disabled:opacity-50 px-4 py-2 rounded-lg text-sm font-semibold transition-colors"
+            >
+              {sending ? '发送中...' : '发表回复'}
+            </button>
+          </div>
         </form>
       ) : (
         <div className="mt-6 text-center py-4 bg-slate-900 border border-slate-800 rounded-xl">
           <p className="text-slate-400 text-sm">
-            <Link href="/login" className="text-blue-400 hover:underline">登录</Link> 后可以回复
+            <Link href="/login" className="text-amber-400 hover:underline">登录</Link> 后可以回复
           </p>
         </div>
       )}

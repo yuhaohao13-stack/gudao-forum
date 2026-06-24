@@ -1,11 +1,11 @@
 {
-  "name": "逼哥论坛",
-  "short_name": "逼哥论坛",
-  "description": "逼哥的社区论坛 — 自由讨论、分享观点",
+  "name": "古道论坛",
+  "short_name": "古道论坛",
+  "description": "古道论坛 — 自由讨论、分享观点",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0f172a",
-  "theme_color": "#3b82f6",
+  "theme_color": "#d97706",
   "orientation": "portrait-primary",
   "icons": [
     {

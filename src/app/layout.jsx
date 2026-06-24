@@ -4,13 +4,13 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 
 export const metadata = {
-  title: '逼哥论坛',
-  description: '逼哥的社区论坛 — 自由讨论、分享观点',
+  title: '古道论坛',
+  description: '古道论坛 — 自由讨论、分享观点',
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
-    title: '逼哥论坛',
+    title: '古道论坛',
   },
 }
 
