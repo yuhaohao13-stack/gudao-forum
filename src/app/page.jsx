@@ -62,21 +62,12 @@ export default function Home() {
         <div className="w-16 h-1 bg-[#c23531] mx-auto mt-3 rounded-full opacity-60" />
         <p className="text-[#999] text-sm mt-3 tracking-wide">以文会友 · 以友辅仁</p>
         
-        <div className="flex items-center justify-center gap-6 sm:gap-10 mt-5">
-          <div className="text-center">
-            <div className="text-xl sm:text-2xl font-bold font-serif text-[#c23531]">{totalPosts}</div>
-            <div className="text-[10px] text-[#bbb] tracking-wider mt-0.5">帖 子</div>
-          </div>
-          <div className="w-px h-8 bg-[#e0d8c8]" />
-          <div className="text-center">
-            <div className="text-xl sm:text-2xl font-bold font-serif text-[#c23531]">{totalViews.toLocaleString()}</div>
-            <div className="text-[10px] text-[#bbb] tracking-wider mt-0.5">浏 览</div>
-          </div>
-          <div className="w-px h-8 bg-[#e0d8c8]" />
-          <div className="text-center">
-            <div className="text-xl sm:text-2xl font-bold font-serif text-[#c23531]">{totalUsers}</div>
-            <div className="text-[10px] text-[#bbb] tracking-wider mt-0.5">会 员</div>
-          </div>
+        <div className="flex items-center justify-center gap-4 sm:gap-6 mt-4 text-xs sm:text-sm text-[#999]">
+          <span>帖子 <span className="font-semibold text-[#c23531] font-serif text-sm sm:text-base">{totalPosts}</span></span>
+          <span className="text-[#e0d8c8]">|</span>
+          <span>访客 <span className="font-semibold text-[#c23531] font-serif text-sm sm:text-base">{totalViews.toLocaleString()}</span></span>
+          <span className="text-[#e0d8c8]">|</span>
+          <span>会员 <span className="font-semibold text-[#c23531] font-serif text-sm sm:text-base">{totalUsers}</span></span>
         </div>
       </div>
 
