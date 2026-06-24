@@ -80,22 +80,9 @@ export default function Home() {
             {announcements.map((t, i) => (
               <Link key={t.id} href={`/t/${t.id}`}
                 className={`card-announce p-4 ${i > 0 ? `anim-delay-${i}` : ''}`}>
-                <div className="flex items-start justify-between gap-3">
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-2">
-                      <span className="text-[#b8860b] shrink-0">📌</span>
-                      <h3 className="font-semibold font-serif text-[#1a1a1a] truncate">{t.title}</h3>
-                    </div>
-                    <div className="text-xs text-[#999] mt-0.5">
-                      {t.profiles?.display_name || t.profiles?.username}
-                      <span className="mx-1.5">·</span>
-                      {new Date(t.created_at).toLocaleDateString('zh-CN')}
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3 text-xs shrink-0">
-                    <span className="stat">💬 <span className="stat-num">{t.reply_count || 0}</span></span>
-                    <span className="stat">👁️ <span className="stat-num">{t.view_count || 0}</span></span>
-                  </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-[#b8860b] shrink-0">📌</span>
+                  <h3 className="font-semibold font-serif text-[#1a1a1a] truncate">{t.title}</h3>
                 </div>
               </Link>
             ))}
