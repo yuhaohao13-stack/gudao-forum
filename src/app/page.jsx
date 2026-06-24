@@ -18,7 +18,6 @@ export default function Home() {
         .from('categories')
         .select('*')
         .order('sort_order')
-      // 把站务管理放到最前面
       const sorted = cats || []
       const annIdx = sorted.findIndex(c => c.slug === 'announcements')
       if (annIdx > 0) {
@@ -27,7 +26,6 @@ export default function Home() {
       }
       setCategories(sorted)
 
-      // 公告帖
       const annCat = sorted.find(c => c.slug === 'announcements')
       if (annCat) {
         const { data: annThreads } = await supabase
@@ -39,26 +37,20 @@ export default function Home() {
         setAnnouncements(annThreads || [])
       }
 
-      // 最新帖子（排除公告版块）
       const annCatId = annCat?.id
       let recentQuery = supabase
         .from('threads')
         .select('*, profiles(username, display_name), categories(name, slug)')
-      if (annCatId) {
-        recentQuery = recentQuery.neq('category_id', annCatId)
-      }
+      if (annCatId) recentQuery = recentQuery.neq('category_id', annCatId)
       const { data: recent } = await recentQuery
         .order('created_at', { ascending: false })
         .limit(20)
       setRecentThreads(recent || [])
 
-      // 热门帖子
       let hotQuery = supabase
         .from('threads')
         .select('*, profiles(username, display_name), categories(name, slug)')
-      if (annCatId) {
-        hotQuery = hotQuery.neq('category_id', annCatId)
-      }
+      if (annCatId) hotQuery = hotQuery.neq('category_id', annCatId)
       const { data: hot } = await hotQuery
         .order('reply_count', { ascending: false })
         .limit(20)
@@ -67,69 +59,84 @@ export default function Home() {
     fetchData()
   }, [])
 
-  const ThreadList = ({ threads, emptyText }) => (
-    threads.length === 0 ? (
-      <p className="text-slate-500 text-center py-8">{emptyText || '还没有帖子，快来发第一条吧！'}</p>
-    ) : (
-      <div className="space-y-2">
-        {threads.map((thread) => (
-          <Link
-            key={thread.id}
-            href={`/t/${thread.id}`}
-            className="block bg-slate-900 border border-slate-800 rounded-xl p-4 hover:border-slate-600 transition-colors"
-          >
-            <div className="flex items-start justify-between gap-4">
-              <div className="min-w-0 flex-1">
-                <h3 className="font-semibold truncate">{thread.title}</h3>
-                <div className="flex items-center gap-3 mt-1.5 text-xs text-slate-400">
-                  <span>{thread.profiles?.display_name || thread.profiles?.username || '匿名'}</span>
-                  <span className="text-slate-600">·</span>
-                  {thread.categories && (
-                    <><span className="text-slate-500">{thread.categories?.name}</span><span className="text-slate-600">·</span></>
-                  )}
-                  <span>{new Date(thread.created_at).toLocaleDateString('zh-CN')}</span>
-                </div>
-              </div>
-              <div className="flex items-center gap-3 text-xs text-slate-500 shrink-0">
-                <span>💬 {thread.reply_count || 0}</span>
-                <span>👁️ {thread.view_count || 0}</span>
-              </div>
-            </div>
-          </Link>
-        ))}
+  const ThreadCard = ({ thread }) => (
+    <Link
+      href={`/t/${thread.id}`}
+      className="post-card fade-in-up group"
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0 flex-1">
+          <h3 className="font-semibold text-slate-100 group-hover:text-amber-300 transition-colors duration-200 truncate">
+            {thread.title}
+          </h3>
+          <div className="flex items-center flex-wrap gap-x-3 gap-y-1 mt-1.5 text-xs text-slate-500">
+            <span className="flex items-center gap-1">
+              <span className="w-3.5 h-3.5 rounded-full bg-gradient-to-br from-slate-600 to-slate-700 flex items-center justify-center text-[7px] text-slate-300 font-bold">
+                {(thread.profiles?.display_name || thread.profiles?.username || '?')[0]}
+              </span>
+              {thread.profiles?.display_name || thread.profiles?.username}
+            </span>
+            {thread.categories && (
+              <>
+                <span className="text-slate-700">·</span>
+                <span className="text-slate-500">{thread.categories?.name}</span>
+              </>
+            )}
+            <span className="text-slate-700">·</span>
+            <span>{new Date(thread.created_at).toLocaleDateString('zh-CN')}</span>
+          </div>
+        </div>
+        <div className="flex items-center gap-2.5 text-xs text-slate-500 shrink-0">
+          <span className="flex items-center gap-1" title="回复">
+            💬 <span className="font-medium">{thread.reply_count || 0}</span>
+          </span>
+          <span className="flex items-center gap-1" title="浏览">
+            👁️ <span className="font-medium">{thread.view_count || 0}</span>
+          </span>
+        </div>
       </div>
-    )
+    </Link>
   )
 
   return (
-    <div className="space-y-6">
-      {/* 公告区 — 永远置顶 */}
+    <div className="space-y-8">
+      {/* 欢迎语 */}
+      <div className="text-center py-2 fade-in">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gradient">欢迎来到古道论坛</h1>
+        <p className="text-slate-500 text-sm mt-1">自由讨论，友善交流</p>
+      </div>
+
+      {/* 公告 */}
       {announcements.length > 0 && (
-        <section>
-          <div className="flex items-center gap-2 mb-2">
+        <section className="fade-in-up">
+          <div className="flex items-center gap-2 mb-3">
             <span className="text-amber-400 text-sm font-bold">📢 站务公告</span>
-            <span className="text-[10px] bg-amber-600 text-white px-1.5 py-0.5 rounded">置顶</span>
+            <span className="text-[10px] bg-gradient-to-r from-amber-600 to-amber-500 text-white px-1.5 py-0.5 rounded-full font-medium">置顶</span>
           </div>
-          <div className="space-y-2 mb-6">
-            {announcements.map((thread) => (
+          <div className="space-y-2">
+            {announcements.map((thread, i) => (
               <Link
                 key={thread.id}
                 href={`/t/${thread.id}`}
-                className="block bg-amber-950/20 border border-amber-800/40 rounded-xl p-4 hover:border-amber-500 transition-colors"
+                className={`post-card-announcement fade-in-up group ${i > 0 ? `stagger-${i}` : ''}`}
               >
-                <div className="flex items-start justify-between gap-4">
+                <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
-                      <span className="text-amber-400 text-lg">📌</span>
-                      <h3 className="font-semibold truncate text-amber-100">{thread.title}</h3>
+                      <span className="text-amber-400">📌</span>
+                      <h3 className="font-semibold truncate text-amber-100 group-hover:text-amber-300 transition-colors">
+                        {thread.title}
+                      </h3>
                     </div>
-                    <div className="flex items-center gap-3 mt-1 text-xs text-slate-500">
-                      <span className="text-amber-400/70">{thread.profiles?.display_name || thread.profiles?.username || '管理员'}</span>
-                      <span className="text-slate-600">·</span>
+                    <div className="flex items-center gap-2 mt-1 text-xs text-slate-500">
+                      <span className="text-amber-400/60">
+                        {thread.profiles?.display_name || thread.profiles?.username}
+                      </span>
+                      <span className="text-slate-700">·</span>
                       <span>{new Date(thread.created_at).toLocaleDateString('zh-CN')}</span>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3 text-xs text-slate-500 shrink-0">
+                  <div className="flex items-center gap-2 text-xs text-slate-500 shrink-0">
                     <span>💬 {thread.reply_count || 0}</span>
                     <span>👁️ {thread.view_count || 0}</span>
                   </div>
@@ -140,62 +147,94 @@ export default function Home() {
         </section>
       )}
 
-      {/* 版块列表 */}
-      <section>
-        <h2 className="text-lg font-bold mb-3 text-slate-300">📂 版块</h2>
+      {/* 版块网格 */}
+      <section className="fade-in-up">
+        <h2 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-3">探索版块</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-          {categories.map((cat) => (
+          {categories.map((cat, i) => (
             <Link
               key={cat.id}
               href={`/c/${cat.slug}`}
-              className={`bg-slate-900 border rounded-xl p-4 hover:border-amber-500 transition-colors ${
-                cat.slug === 'announcements' ? 'border-amber-700 bg-amber-950/20' : 'border-slate-700'
-              }`}
+              className={`glass-card-hover fade-in-scale ${i > 0 ? `stagger-${i}` : ''}`}
+              style={i > 0 ? {} : {}}
             >
-              <div className="text-2xl mb-1">{cat.icon}</div>
-              <div className="font-semibold">
+              <div className="text-2xl mb-1.5">{cat.icon}</div>
+              <div className="font-semibold text-sm flex items-center gap-1.5">
                 {cat.name}
                 {cat.slug === 'announcements' && (
-                  <span className="ml-1.5 text-[10px] bg-amber-600 text-white px-1 py-0.5 rounded">公告</span>
+                  <span className="text-[9px] bg-amber-600/20 text-amber-400 border border-amber-700/30 px-1 py-0.5 rounded">
+                    公告
+                  </span>
                 )}
               </div>
-              <div className="text-xs text-slate-400 mt-0.5">{cat.description}</div>
+              <div className="text-xs text-slate-500 mt-0.5 line-clamp-1">{cat.description}</div>
             </Link>
           ))}
         </div>
       </section>
 
-      {/* 帖子列表 Tab */}
-      <section>
+      {/* 帖子 Tab */}
+      <section className="fade-in-up">
         <div className="flex items-center gap-2 mb-3">
           <button
             onClick={() => setActiveTab('recent')}
-            className={`px-3 py-1.5 rounded-lg text-sm transition-colors ${
-              activeTab === 'recent' ? 'bg-amber-600' : 'bg-slate-800 hover:bg-slate-700'
+            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
+              activeTab === 'recent'
+                ? 'bg-gradient-to-r from-amber-600 to-amber-500 text-white shadow-lg shadow-amber-900/30'
+                : 'bg-slate-800/50 text-slate-400 hover:text-slate-200 hover:bg-slate-800'
             }`}
           >
             ⏱️ 最新
           </button>
           <button
             onClick={() => setActiveTab('hot')}
-            className={`px-3 py-1.5 rounded-lg text-sm transition-colors ${
-              activeTab === 'hot' ? 'bg-amber-600' : 'bg-slate-800 hover:bg-slate-700'
+            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
+              activeTab === 'hot'
+                ? 'bg-gradient-to-r from-amber-600 to-amber-500 text-white shadow-lg shadow-amber-900/30'
+                : 'bg-slate-800/50 text-slate-400 hover:text-slate-200 hover:bg-slate-800'
             }`}
           >
             🔥 热门
           </button>
           <Link
             href="/search"
-            className="ml-auto px-3 py-1.5 rounded-lg text-sm bg-slate-800 hover:bg-slate-700 transition-colors"
+            className="ml-auto btn-ghost flex items-center gap-1 text-xs"
           >
             🔍 搜索
           </Link>
         </div>
 
         {activeTab === 'recent' ? (
-          <ThreadList threads={recentThreads} emptyText="还没有帖子，快来发第一条吧！" />
+          recentThreads.length === 0 ? (
+            <div className="text-center py-12 text-slate-500">
+              <div className="text-3xl mb-2">📝</div>
+              <p className="text-sm">还没有帖子</p>
+              <Link href="/new-thread" className="btn-amber inline-block mt-3">发第一条帖子</Link>
+            </div>
+          ) : (
+            <div className="space-y-2">
+              {recentThreads.map((thread, i) => (
+                <div key={thread.id} className={i > 0 ? `stagger-${Math.min(i, 5)}` : ''}>
+                  <ThreadCard thread={thread} />
+                </div>
+              ))}
+            </div>
+          )
         ) : (
-          <ThreadList threads={hotThreads} emptyText="还没有热门帖子" />
+          hotThreads.length === 0 ? (
+            <div className="text-center py-12 text-slate-500">
+              <div className="text-3xl mb-2">🔥</div>
+              <p className="text-sm">还没有热门帖子</p>
+            </div>
+          ) : (
+            <div className="space-y-2">
+              {hotThreads.map((thread, i) => (
+                <div key={thread.id} className={i > 0 ? `stagger-${Math.min(i, 5)}` : ''}>
+                  <ThreadCard thread={thread} />
+                </div>
+              ))}
+            </div>
+          )
         )}
       </section>
     </div>

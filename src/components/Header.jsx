@@ -27,55 +27,71 @@ export default function Header() {
     }
   }
 
+  const isAdmin = profile?.role === 'admin' || profile?.role === 'moderator'
+
   return (
-    <header className="sticky top-0 z-50 bg-slate-900/80 backdrop-blur-md border-b border-slate-700">
+    <header className="sticky top-0 z-50 border-b border-slate-800/50 bg-slate-950/70 backdrop-blur-xl">
       <div className="max-w-4xl mx-auto px-4 h-14 flex items-center justify-between gap-3">
-        <Link href="/" className="flex items-center gap-2 text-xl sm:text-3xl font-bold text-amber-400 shrink-0">
-          <span className="text-xl">🏛️</span>
-          古道论坛
+        <Link href="/" className="flex items-center gap-2.5 shrink-0 group">
+          <span className="text-xl sm:text-2xl group-hover:scale-110 transition-transform duration-300">🏛️</span>
+          <span className="text-xl sm:text-3xl font-bold text-gradient tracking-tight">
+            古道论坛
+          </span>
         </Link>
 
-        {/* 搜索栏（桌面端常显） */}
+        {/* 搜索（桌面） */}
         <form onSubmit={handleSearch} className="hidden sm:flex flex-1 max-w-xs">
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="搜索帖子..."
-            className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-amber-500 transition-colors"
+            className="w-full bg-slate-900/60 border border-slate-700/40 rounded-lg px-3 py-1.5 text-sm
+                       text-slate-100 placeholder-slate-500
+                       focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20
+                       transition-all duration-200"
           />
         </form>
 
-        <nav className="flex items-center gap-2 text-sm shrink-0">
-          {/* 搜索按钮（手机端） */}
+        <nav className="flex items-center gap-1.5 text-sm shrink-0">
+          {/* 搜索按钮（手机） */}
           <button
             onClick={() => setShowSearch(!showSearch)}
-            className="sm:hidden text-slate-300 hover:text-white px-2"
+            className="sm:hidden btn-ghost px-2"
+            aria-label="搜索"
           >
             🔍
           </button>
 
           {loading ? (
-            <span className="text-slate-400 animate-pulse text-xs">...</span>
+            <div className="w-5 h-5 border-2 border-amber-500/30 border-t-amber-500 rounded-full animate-spin" />
           ) : user ? (
             <>
-              <Link href="/new-thread" className="bg-amber-600 hover:bg-amber-500 px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap">
+              <Link href="/new-thread" className="btn-amber whitespace-nowrap !px-3 !py-1.5 text-xs sm:!px-4 sm:!py-2 sm:text-sm">
                 ✏️ 发帖
               </Link>
-              <Link href={`/profile/${user.id}`} className="text-slate-300 hover:text-white transition-colors text-xs sm:text-sm">
-                {profile?.display_name || profile?.username || '我'}
+              <Link
+                href={`/profile/${user.id}`}
+                className="btn-ghost flex items-center gap-1.5"
+              >
+                <span className="w-5 h-5 rounded-full bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center text-[10px] text-white font-bold">
+                  {(profile?.display_name || profile?.username || '?')[0]}
+                </span>
+                <span className="hidden sm:inline">{profile?.display_name || profile?.username}</span>
               </Link>
-              {profile?.role === 'admin' && (
-                <Link href="/admin" className="text-yellow-400 hover:text-yellow-300 text-xs">管理</Link>
+              {isAdmin && (
+                <Link href="/admin" className="btn-ghost text-amber-400 hover:text-amber-300">
+                  管理
+                </Link>
               )}
-              <button onClick={handleLogout} className="text-slate-400 hover:text-red-400 transition-colors text-xs">
+              <button onClick={handleLogout} className="btn-ghost text-slate-400 hover:text-red-400">
                 退出
               </button>
             </>
           ) : (
             <>
-              <Link href="/login" className="text-slate-300 hover:text-white transition-colors text-xs sm:text-sm">登录</Link>
-              <Link href="/register" className="bg-amber-600 hover:bg-amber-500 px-2.5 py-1.5 rounded-lg transition-colors text-xs sm:text-sm whitespace-nowrap">
+              <Link href="/login" className="btn-ghost">登录</Link>
+              <Link href="/register" className="btn-amber whitespace-nowrap !px-3 !py-1.5 text-xs sm:!px-4 sm:!py-2 sm:text-sm">
                 注册
               </Link>
             </>
@@ -83,9 +99,9 @@ export default function Header() {
         </nav>
       </div>
 
-      {/* 搜索栏（手机端展开） */}
+      {/* 搜索（手机展开） */}
       {showSearch && (
-        <div className="sm:hidden px-4 pb-3">
+        <div className="sm:hidden px-4 pb-3 fade-in">
           <form onSubmit={handleSearch}>
             <input
               type="text"
@@ -93,7 +109,7 @@ export default function Header() {
               onChange={(e) => setSearch(e.target.value)}
               placeholder="搜索帖子..."
               autoFocus
-              className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-500 transition-colors"
+              className="input-field"
             />
           </form>
         </div>

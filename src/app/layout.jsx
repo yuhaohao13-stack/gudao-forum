@@ -42,6 +42,21 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
+        {/* 背景装饰 */}
+        <div className="fixed inset-0 pointer-events-none overflow-hidden -z-10">
+          <div className="absolute top-[-20%] left-[-10%] w-[40%] h-[40%] rounded-full bg-amber-500/3 blur-[120px]" />
+          <div className="absolute bottom-[-10%] right-[-10%] w-[30%] h-[30%] rounded-full bg-blue-500/3 blur-[100px]" />
+          <div className="absolute top-[40%] right-[20%] w-[20%] h-[20%] rounded-full bg-amber-600/2 blur-[80px]" />
+          {/* 网格纹理 */}
+          <div
+            className="absolute inset-0 opacity-[0.03]"
+            style={{
+              backgroundImage: 'radial-gradient(circle at 1px 1px, #d97706 1px, transparent 0)',
+              backgroundSize: '40px 40px',
+            }}
+          />
+        </div>
+
         <AuthProvider>
           <Header />
           <main className="flex-1 max-w-4xl mx-auto w-full px-4 py-6">

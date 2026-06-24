@@ -26,16 +26,13 @@ export default function CategoryPage() {
       setCategory(cat)
 
       if (cat) {
-        const order = sortBy === 'latest'
-          ? { ascending: false }
-          : { ascending: false }
-
         const { data } = await supabase
           .from('threads')
           .select('*, profiles!inner(username, display_name, role)')
           .eq('category_id', cat.id)
           .order('is_pinned', { ascending: false })
           .order(sortBy === 'hot' ? 'reply_count' : 'created_at', { ascending: false })
+
         // 管理员帖子排前面
         const sorted = (data || []).sort((a, b) => {
           const aAdmin = a.profiles?.role === 'admin' || a.profiles?.role === 'moderator'
@@ -52,30 +49,42 @@ export default function CategoryPage() {
     fetchCategory()
   }, [slug, sortBy])
 
-  if (!category) return <div className="text-center text-slate-500 py-12">加载中...</div>
+  if (!category) return (
+    <div className="flex items-center justify-center py-20">
+      <div className="w-6 h-6 border-2 border-amber-500/30 border-t-amber-500 rounded-full animate-spin" />
+    </div>
+  )
 
   return (
-    <div>
+    <div className="fade-in">
+      {/* 顶部导航 */}
       <div className="mb-6">
-        <Link href="/" className="text-sm text-amber-400 hover:underline">&larr; 返回首页</Link>
-        <h1 className="text-2xl font-bold mt-1">{category.icon} {category.name}</h1>
-        <p className="text-slate-400 text-sm mt-0.5">{category.description}</p>
+        <Link href="/" className="text-sm text-amber-400/70 hover:text-amber-400 transition-colors">
+          &larr; 返回首页
+        </Link>
+        <h1 className="text-2xl font-bold text-gradient mt-1">{category.icon} {category.name}</h1>
+        <p className="text-slate-500 text-sm mt-0.5">{category.description}</p>
       </div>
 
+      {/* 工具栏 */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex gap-2">
           <button
             onClick={() => setSortBy('latest')}
-            className={`px-3 py-1.5 rounded-lg text-sm transition-colors ${
-              sortBy === 'latest' ? 'bg-amber-600' : 'bg-slate-800 hover:bg-slate-700'
+            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
+              sortBy === 'latest'
+                ? 'bg-gradient-to-r from-amber-600 to-amber-500 text-white shadow-lg shadow-amber-900/30'
+                : 'bg-slate-800/50 text-slate-400 hover:text-slate-200'
             }`}
           >
             ⏱️ 最新
           </button>
           <button
             onClick={() => setSortBy('hot')}
-            className={`px-3 py-1.5 rounded-lg text-sm transition-colors ${
-              sortBy === 'hot' ? 'bg-amber-600' : 'bg-slate-800 hover:bg-slate-700'
+            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
+              sortBy === 'hot'
+                ? 'bg-gradient-to-r from-amber-600 to-amber-500 text-white shadow-lg shadow-amber-900/30'
+                : 'bg-slate-800/50 text-slate-400 hover:text-slate-200'
             }`}
           >
             🔥 最热
@@ -86,54 +95,77 @@ export default function CategoryPage() {
             <span className="text-xs text-slate-500 hidden sm:block">仅管理员可发帖</span>
           )}
           {(!isAnnouncements || isAdmin) && (
-            <Link
-              href="/new-thread"
-              className="bg-amber-600 hover:bg-amber-500 px-4 py-1.5 rounded-lg text-sm font-semibold transition-colors"
-            >
+            <Link href="/new-thread" className="btn-amber !px-3 !py-1.5 text-xs sm:!px-4 sm:!py-2 sm:text-sm">
               ✏️ 发新帖
             </Link>
           )}
         </div>
       </div>
+
       {isAnnouncements && !isAdmin && (
-        <div className="mb-4 text-center py-3 bg-slate-900 border border-slate-800 rounded-xl">
+        <div className="mb-4 text-center py-4 glass-card">
           <p className="text-slate-400 text-sm">🔒 站务管理仅管理员可发帖</p>
         </div>
       )}
 
+      {/* 帖子列表 */}
       <div className="space-y-2">
-        {threads.length === 0 && (
-          <p className="text-slate-500 text-center py-8">这里还没有帖子，来发第一条吧！</p>
+        {threads.length === 0 ? (
+          <div className="text-center py-12">
+            <div className="text-3xl mb-2">📭</div>
+            <p className="text-slate-500 text-sm">这里还没有帖子</p>
+            {(!isAnnouncements || isAdmin) && (
+              <Link href="/new-thread" className="btn-amber inline-block mt-3">发第一条帖子</Link>
+            )}
+          </div>
+        ) : (
+          threads.map((thread, i) => (
+            <Link
+              key={thread.id}
+              href={`/t/${thread.id}`}
+              className={`post-card fade-in-up group ${i > 0 ? `stagger-${Math.min(i, 5)}` : ''}`}
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    {thread.is_pinned && (
+                      <span className="text-[10px] bg-yellow-600/20 text-yellow-400 border border-yellow-700/30 px-1.5 py-0.5 rounded font-medium">
+                        📌 置顶
+                      </span>
+                    )}
+                    {(thread.profiles?.role === 'admin' || thread.profiles?.role === 'moderator') && !thread.is_pinned && (
+                      <span className="text-[10px] bg-amber-600/15 text-amber-400 border border-amber-700/20 px-1.5 py-0.5 rounded font-medium">
+                        👑 管理员
+                      </span>
+                    )}
+                    {thread.is_locked && (
+                      <span className="text-[10px] bg-red-600/20 text-red-400 border border-red-700/30 px-1.5 py-0.5 rounded font-medium">
+                        🔒 已锁
+                      </span>
+                    )}
+                    <h3 className="font-semibold text-slate-100 group-hover:text-amber-300 transition-colors truncate">
+                      {thread.title}
+                    </h3>
+                  </div>
+                  <div className="flex items-center gap-2 mt-1 text-xs text-slate-500">
+                    <span className="flex items-center gap-1">
+                      <span className="w-3.5 h-3.5 rounded-full bg-gradient-to-br from-slate-600 to-slate-700 flex items-center justify-center text-[7px] text-slate-300 font-bold">
+                        {(thread.profiles?.display_name || thread.profiles?.username || '?')[0]}
+                      </span>
+                      {thread.profiles?.display_name || thread.profiles?.username}
+                    </span>
+                    <span className="text-slate-700">·</span>
+                    <span>{new Date(thread.created_at).toLocaleDateString('zh-CN')}</span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2.5 text-xs text-slate-500 shrink-0">
+                  <span className="flex items-center gap-1">💬 <span className="font-medium">{thread.reply_count || 0}</span></span>
+                  <span className="flex items-center gap-1">👁️ <span className="font-medium">{thread.view_count || 0}</span></span>
+                </div>
+              </div>
+            </Link>
+          ))
         )}
-        {threads.map((thread) => (
-          <Link
-            key={thread.id}
-            href={`/t/${thread.id}`}
-            className="block bg-slate-900 border border-slate-800 rounded-xl p-4 hover:border-slate-600 transition-colors"
-          >
-            <div className="flex items-start justify-between gap-4">
-              <div className="min-w-0 flex-1">
-                <div className="flex items-center gap-2 flex-wrap">
-                  {thread.is_pinned && <span className="text-xs bg-yellow-600/30 text-yellow-400 px-1.5 py-0.5 rounded">📌 置顶</span>}
-                  {(thread.profiles?.role === 'admin' || thread.profiles?.role === 'moderator') && !thread.is_pinned && (
-                    <span className="text-xs bg-amber-600/30 text-amber-400 px-1.5 py-0.5 rounded">👑 管理员</span>
-                  )}
-                  {thread.is_locked && <span className="text-xs bg-red-600/30 text-red-400 px-1.5 py-0.5 rounded">🔒 已锁</span>}
-                  <h3 className="font-semibold truncate">{thread.title}</h3>
-                </div>
-                <div className="flex items-center gap-3 mt-1 text-xs text-slate-400">
-                  <span>{thread.profiles?.display_name || thread.profiles?.username}</span>
-                  <span className="text-slate-600">·</span>
-                  <span>{new Date(thread.created_at).toLocaleDateString('zh-CN')}</span>
-                </div>
-              </div>
-              <div className="flex items-center gap-3 text-xs text-slate-500 shrink-0">
-                <span>💬 {thread.reply_count || 0}</span>
-                <span>👁️ {thread.view_count || 0}</span>
-              </div>
-            </div>
-          </Link>
-        ))}
       </div>
     </div>
   )
