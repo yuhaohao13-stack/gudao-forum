@@ -36,12 +36,12 @@ export default function Home() {
       const aid = annCat?.id
       let rq = supabase.from('threads').select('*, profiles(username, display_name), categories(name, slug)')
       if (aid) rq = rq.neq('category_id', aid)
-      const { data: recent } = await rq.order('created_at', { ascending: false }).limit(20)
+      const { data: recent } = await rq.order('is_pinned', { ascending: false }).order('created_at', { ascending: false }).limit(20)
       setRecentThreads(recent || [])
 
       let hq = supabase.from('threads').select('*, profiles(username, display_name), categories(name, slug)')
       if (aid) hq = hq.neq('category_id', aid)
-      const { data: hot } = await hq.order('reply_count', { ascending: false }).limit(20)
+      const { data: hot } = await hq.order('is_pinned', { ascending: false }).order('reply_count', { ascending: false }).limit(20)
       setHotThreads(hot || [])
 
       const { count: pc } = await supabase.from('threads').select('*', { count: 'exact', head: true })
