@@ -134,12 +134,9 @@ export default function ThreadPage() {
                 <img
                   src={url}
                   alt={`图片 ${i + 1}`}
-                  className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg border border-slate-700 object-cover hover:border-amber-500 hover:opacity-85 transition-all cursor-pointer"
+                  className="w-14 h-14 sm:w-16 sm:h-16 rounded-lg border border-slate-700 object-cover hover:border-amber-500 hover:opacity-85 transition-all cursor-pointer"
                   loading="lazy"
                 />
-                <span className="block text-center text-[10px] text-slate-500 mt-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
-                  查看原图
-                </span>
               </a>
             ))}
           </div>
