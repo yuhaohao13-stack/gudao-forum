@@ -203,18 +203,18 @@ export default function NewThreadPage() {
             <span className="text-xs text-slate-400">{images.length}/{IMAGE_CONFIG.maxCount}</span>
           </div>
           {imagePreviews.length > 0 && (
-            <div className="flex flex-wrap gap-2 mt-2">
+            <div className="flex flex-wrap gap-4 mt-2">
               {imagePreviews.map((preview, i) => (
-                <div key={i} className="relative group">
+                <div key={i} className="relative group w-[45%] sm:w-[30%]">
                   <img
                     src={preview}
                     alt={`图片 ${i + 1}`}
-                    className="w-20 h-20 object-cover rounded-lg border border-slate-700"
+                    className="w-full h-auto max-h-60 object-cover rounded-lg border border-slate-700"
                   />
                   <button
                     type="button"
                     onClick={() => removeImage(i)}
-                    className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-red-600 rounded-full text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="absolute -top-2 -right-2 w-6 h-6 bg-red-600 rounded-full text-xs flex items-center justify-center opacity-80 hover:opacity-100 transition-opacity shadow-lg"
                   >
                     ✕
                   </button>
