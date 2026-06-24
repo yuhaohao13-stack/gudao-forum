@@ -103,22 +103,37 @@ export default function Home() {
 
   return (
     <div className="space-y-6">
-      {/* 公告区 */}
+      {/* 公告区 — 永远置顶 */}
       {announcements.length > 0 && (
-        <section className="bg-amber-950/30 border border-amber-800/50 rounded-xl p-4">
-          <h2 className="text-sm font-bold text-amber-400 mb-2">📢 站务公告</h2>
-          <div className="space-y-1">
+        <section>
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-amber-400 text-sm font-bold">📢 站务公告</span>
+            <span className="text-[10px] bg-amber-600 text-white px-1.5 py-0.5 rounded">置顶</span>
+          </div>
+          <div className="space-y-2 mb-6">
             {announcements.map((thread) => (
               <Link
                 key={thread.id}
                 href={`/t/${thread.id}`}
-                className="block text-sm text-slate-200 hover:text-amber-400 transition-colors py-1"
+                className="block bg-amber-950/20 border border-amber-800/40 rounded-xl p-4 hover:border-amber-500 transition-colors"
               >
-                <span className="text-amber-500 mr-1">▶</span>
-                {thread.title}
-                <span className="text-xs text-slate-500 ml-2">
-                  {new Date(thread.created_at).toLocaleDateString('zh-CN')}
-                </span>
+                <div className="flex items-start justify-between gap-4">
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2">
+                      <span className="text-amber-400 text-lg">📌</span>
+                      <h3 className="font-semibold truncate text-amber-100">{thread.title}</h3>
+                    </div>
+                    <div className="flex items-center gap-3 mt-1 text-xs text-slate-500">
+                      <span className="text-amber-400/70">{thread.profiles?.display_name || thread.profiles?.username || '管理员'}</span>
+                      <span className="text-slate-600">·</span>
+                      <span>{new Date(thread.created_at).toLocaleDateString('zh-CN')}</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 text-xs text-slate-500 shrink-0">
+                    <span>💬 {thread.reply_count || 0}</span>
+                    <span>👁️ {thread.view_count || 0}</span>
+                  </div>
+                </div>
               </Link>
             ))}
           </div>
