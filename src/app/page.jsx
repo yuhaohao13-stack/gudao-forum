@@ -16,6 +16,7 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState('recent')
   const [totalPosts, setTotalPosts] = useState(0)
   const [totalViews, setTotalViews] = useState(0)
+  const [totalUsers, setTotalUsers] = useState(0)
   const supabase = createClient()
 
   useEffect(() => {
@@ -47,6 +48,8 @@ export default function Home() {
       setTotalPosts(pc || 0)
       const { data: v } = await supabase.from('threads').select('view_count')
       setTotalViews((v || []).reduce((s, t) => s + (t.view_count || 0), 0))
+      const { count: uc } = await supabase.from('profiles').select('*', { count: 'exact', head: true })
+      setTotalUsers(uc || 0)
     }
     fetchData()
   }, [])
@@ -54,20 +57,26 @@ export default function Home() {
   return (
     <div className="space-y-8">
       {/* Hero */}
-      <div className="text-center py-6 anim-fade-in">
+      <div className="text-center pt-6 pb-4 anim-fade-in">
         <h1 className="text-3xl sm:text-4xl font-bold font-serif tracking-wider text-[#1a1a1a]">古道论坛</h1>
         <div className="w-16 h-1 bg-[#c23531] mx-auto mt-3 rounded-full opacity-60" />
         <p className="text-[#999] text-sm mt-3 tracking-wide">以文会友 · 以友辅仁</p>
-        <div className="flex items-center justify-center gap-5 mt-4 text-xs text-[#bbb]">
-          <span className="flex items-center gap-1.5">
-            <span className="text-[#c23531]">●</span>
-            <span className="text-[#888] font-semibold">{totalPosts}</span> 个帖子
-          </span>
-          <span className="w-px h-3 bg-[#ddd6c8]" />
-          <span className="flex items-center gap-1.5">
-            <span className="text-[#c23531]">●</span>
-            <span className="text-[#888] font-semibold">{totalViews.toLocaleString()}</span> 次浏览
-          </span>
+        
+        <div className="flex items-center justify-center gap-6 sm:gap-10 mt-5">
+          <div className="text-center">
+            <div className="text-xl sm:text-2xl font-bold font-serif text-[#c23531]">{totalPosts}</div>
+            <div className="text-[10px] text-[#bbb] tracking-wider mt-0.5">帖 子</div>
+          </div>
+          <div className="w-px h-8 bg-[#e0d8c8]" />
+          <div className="text-center">
+            <div className="text-xl sm:text-2xl font-bold font-serif text-[#c23531]">{totalViews.toLocaleString()}</div>
+            <div className="text-[10px] text-[#bbb] tracking-wider mt-0.5">浏 览</div>
+          </div>
+          <div className="w-px h-8 bg-[#e0d8c8]" />
+          <div className="text-center">
+            <div className="text-xl sm:text-2xl font-bold font-serif text-[#c23531]">{totalUsers}</div>
+            <div className="text-[10px] text-[#bbb] tracking-wider mt-0.5">会 员</div>
+          </div>
         </div>
       </div>
 
