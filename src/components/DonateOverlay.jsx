@@ -101,9 +101,7 @@ export default function DonateOverlay() {
           <div style={{ ...innerStyle, textAlign: 'center' }} onClick={e => e.stopPropagation()}>
             <div style={{ fontSize: '1.125rem', fontWeight: 700, fontFamily: "'Noto Serif SC', serif", color: '#1a1a1a', marginBottom: '0.25rem' }}>💚 微信</div>
             <p style={{ fontSize: '0.75rem', color: '#999', marginBottom: '1rem' }}>打开微信扫描二维码支付</p>
-            <div style={{ width: '100%', maxWidth: '15rem', margin: '0 auto', padding: '1rem', border: '1px solid #eee8dc', borderRadius: '0.75rem', color: '#ccc', fontSize: '0.75rem' }}>
-              请发送微信收款码图片
-            </div>
+            <img src="/images/wechat-qr.jpg" alt="WeChat Pay QR" style={{ width: '100%', maxWidth: '15rem', margin: '0 auto', borderRadius: '0.75rem', border: '1px solid #eee8dc', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }} />
             <p style={{ fontSize: '0.625rem', color: '#ccc', marginTop: '1rem' }}>截图保存到相册，在微信中扫码</p>
           </div>
         </div>
