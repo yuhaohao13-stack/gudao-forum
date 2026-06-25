@@ -159,6 +159,13 @@ export default function Header() {
           </div>
         </div>
 
+        {/* 手机端用户名第二排 */}
+        {user && (
+          <div className="flex items-center justify-center gap-2 px-4 py-1.5 border-t border-[#eee8dc]/50 bg-[#faf8f4]/50">
+            <span className="text-xs text-[#444] font-medium">{profile?.display_name || profile?.username || ''}</span>
+          </div>
+        )}
+
         {/* 移动端搜索条 */}
         {showSearch && (
           <div className="px-4 pb-3 anim-fade-in border-t border-[#eee8dc]/50 pt-2">
