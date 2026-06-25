@@ -85,9 +85,15 @@ export default function ThreadPage() {
 
         <div className="my-6 h-px bg-[#ece8e0]" />
 
-        <div className="text-[#333] leading-7 sm:leading-8 whitespace-pre-wrap text-sm sm:text-base">
-          {thread.content}
+        <div className={`text-[#333] leading-7 sm:leading-8 whitespace-pre-wrap text-sm sm:text-base ${!user ? 'line-clamp-3' : ''}`}>
+          {!user ? thread.content.split('\n').slice(0, 3).join('\n') : thread.content}
         </div>
+        {!user && thread.content.split('\n').length > 3 && (
+          <div className="mt-3 p-4 rounded-xl bg-[#f5f0e8] border border-[#eee8dc] text-center">
+            <p className="text-[#999] text-xs">🔒 登录后可查看完整内容</p>
+            <Link href="/login" className="btn-primary mt-2 !text-xs !px-4 !py-1.5">登录</Link>
+          </div>
+        )}
 
         {thread.images?.length > 0 && (
           <div className="mt-6 flex flex-wrap gap-3">

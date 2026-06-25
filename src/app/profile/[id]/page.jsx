@@ -103,6 +103,14 @@ export default function ProfilePage() {
     setTimeout(() => setMessage(''), 3000)
   }
 
+  if (!user) return (
+    <div className="card p-12 text-center anim-fade-in max-w-md mx-auto mt-16">
+      <div className="text-3xl mb-3">🔐</div>
+      <p className="text-[#999] mb-3">请登录后查看用户资料</p>
+      <Link href="/login" className="btn-primary">去登录</Link>
+    </div>
+  )
+
   if (!profile) return <div className="flex justify-center py-20"><div className="w-5 h-5 border-2 border-[#c23531]/30 border-t-[#c23531] rounded-full animate-spin" /></div>
 
   const genderLabels = { male: '👨 男', female: '👩 女', other: '🔮 其他' }
@@ -260,10 +268,12 @@ export default function ProfilePage() {
           className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
             activeTab === 'posts' ? 'bg-[#c23531] text-white shadow-sm' : 'bg-white text-[#666] border border-[#ece8e0]'
           }`}>📝 帖子 ({threads.length})</button>
-        <button onClick={() => setActiveTab('friends')}
-          className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
-            activeTab === 'friends' ? 'bg-[#c23531] text-white shadow-sm' : 'bg-white text-[#666] border border-[#ece8e0]'
-          }`}>👥 好友 ({friends.length})</button>
+        {isOwn && (
+          <button onClick={() => setActiveTab('friends')}
+            className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
+              activeTab === 'friends' ? 'bg-[#c23531] text-white shadow-sm' : 'bg-white text-[#666] border border-[#ece8e0]'
+            }`}>👥 好友 ({friends.length})</button>
+        )}
       </div>
 
       {/* Pending requests (own profile) */}
