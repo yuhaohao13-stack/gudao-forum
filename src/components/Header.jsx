@@ -28,15 +28,15 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-[#eee8dc]">
-      <div className="max-w-4xl mx-auto px-4 h-12 flex items-center justify-between gap-2">
+      {/* ========== 桌面版 Header（原样保留） ========== */}
+      <div className="hidden sm:flex max-w-4xl mx-auto px-4 h-12 items-center justify-between gap-2">
         <div className="flex items-center gap-1">
           <Link href="/" className="flex items-center gap-2 shrink-0 group">
             <span className="text-xl group-hover:scale-110 transition-transform duration-300">🏛️</span>
             <h1 className="text-xl sm:text-2xl font-bold font-serif tracking-wide text-[#1a1a1a]">古道论坛</h1>
           </Link>
 
-          {/* 导航链接（桌面） */}
-          <nav className="hidden sm:flex items-center ml-4 gap-1 text-sm">
+          <nav className="flex items-center ml-4 gap-1 text-sm">
             <Link href="/"
               className={`px-3 py-1.5 rounded-full transition-all ${
                 !isChatPage ? 'bg-[#c23531]/10 text-[#c23531] font-medium' : 'text-[#888] hover:text-[#c23531] hover:bg-[#c23531]/5'
@@ -52,7 +52,7 @@ export default function Header() {
         </div>
 
         {/* 桌面搜索 */}
-        <div className="hidden sm:flex flex-1 max-w-xs">
+        <div className="flex-1 max-w-xs">
           <div className="relative w-full">
             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#ccc] text-sm">🔍</span>
             <input type="text" value={search} onChange={e => setSearch(e.target.value)}
@@ -64,23 +64,18 @@ export default function Header() {
         </div>
 
         <nav className="flex items-center gap-1 sm:gap-2 text-sm shrink-0">
-          {/* 移动端导航 */}
-          <Link href="/chat" className="sm:hidden btn-ghost px-1.5">💬</Link>
-          <span className="sm:hidden"><DonateButton className="btn-ghost px-1.5" /></span>
-          <button onClick={() => setShowSearch(!showSearch)} className="sm:hidden btn-ghost px-1.5">🔍</button>
-
           {loading ? (
             <div className="w-4 h-4 border-2 border-[#c23531]/30 border-t-[#c23531] rounded-full animate-spin" />
           ) : user ? (
             <>
-              <Link href="/new-thread" className="btn-primary !px-3 !py-1.5 !text-xs !rounded-lg sm:!px-4 sm:!py-2 sm:!text-sm">
+              <Link href="/new-thread" className="btn-primary !px-4 !py-2 !text-sm">
                 ✏️ 发帖
               </Link>
               <Link href={`/profile/${user.id}`} className="btn-ghost flex items-center gap-1.5">
                 <span className="w-7 h-7 rounded-full bg-[#c23531] flex items-center justify-center text-xs text-white font-bold shadow-sm">
                   {(profile?.display_name || profile?.username || '?')[0]}
                 </span>
-                <span className="hidden sm:inline font-medium text-[#444]">{profile?.display_name || profile?.username}</span>
+                <span className="font-medium text-[#444]">{profile?.display_name || profile?.username}</span>
               </Link>
               {isAdmin && <Link href="/admin" className="btn-ghost text-[#c23531]">管理</Link>}
               <button onClick={handleLogout} className="btn-ghost text-[#999] hover:text-[#c23531]">退出</button>
@@ -88,25 +83,82 @@ export default function Header() {
           ) : (
             <>
               <Link href="/login" className="btn-ghost">登录</Link>
-              <Link href="/register" className="btn-primary !px-3 !py-1.5 !text-xs sm:!px-4 sm:!py-2 sm:!text-sm">注册</Link>
+              <Link href="/register" className="btn-primary !px-4 !py-2 !text-sm">注册</Link>
             </>
           )}
         </nav>
       </div>
 
-      {/* 移动端搜索 */}
-      {showSearch && (
-        <div className="sm:hidden px-4 pb-4 anim-fade-in">
-          <div className="relative">
-            <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#ccc]">🔍</span>
-            <input type="text" value={search} onChange={e => setSearch(e.target.value)}
-              onKeyDown={e => e.key === 'Enter' && handleSearch(e)}
-              placeholder="搜索帖子..." autoFocus
-              className="w-full bg-white border border-[#eee8dc] rounded-full pl-10 pr-4 py-2.5 text-sm outline-none focus:border-[#c23531]"
-            />
+      {/* ========== 手机版 Header（两排） ========== */}
+      <div className="sm:hidden">
+        {/* 第一排：古道论坛 */}
+        <div className="flex items-center justify-center h-11 px-4 border-b border-[#eee8dc]/50">
+          <Link href="/" className="flex items-center gap-2 group">
+            <span className="text-xl group-hover:scale-110 transition-transform duration-300">🏛️</span>
+            <h1 className="text-xl font-bold font-serif tracking-wide text-[#1a1a1a]">古道论坛</h1>
+          </Link>
+        </div>
+
+        {/* 第二排：导航操作栏 */}
+        <div className="flex items-center justify-between px-3 py-1.5 gap-1 overflow-x-auto scrollbar-none">
+          {/* 左侧导航 */}
+          <div className="flex items-center gap-0.5 text-sm shrink-0">
+            <Link href="/"
+              className={`px-2.5 py-1.5 rounded-lg whitespace-nowrap text-xs font-medium transition-all ${
+                !isChatPage ? 'bg-[#c23531]/10 text-[#c23531]' : 'text-[#888]'
+              }`}
+            >🏠 首页</Link>
+            <Link href="/chat"
+              className={`px-2.5 py-1.5 rounded-lg whitespace-nowrap text-xs font-medium transition-all ${
+                isChatPage ? 'bg-[#c23531]/10 text-[#c23531]' : 'text-[#888]'
+              }`}
+            >💬 聊天</Link>
+            <DonateButton className="px-2.5 py-1.5 rounded-lg whitespace-nowrap text-xs font-medium transition-all text-[#888] hover:text-[#c23531] hover:bg-[#c23531]/5" />
+            <button onClick={() => setShowSearch(!showSearch)}
+              className="px-2.5 py-1.5 rounded-lg whitespace-nowrap text-xs font-medium text-[#888] hover:text-[#c23531] transition-all"
+            >🔍</button>
+          </div>
+
+          {/* 右侧用户操作 */}
+          <div className="flex items-center gap-0.5 text-sm shrink-0">
+            {loading ? (
+              <div className="w-4 h-4 border-2 border-[#c23531]/30 border-t-[#c23531] rounded-full animate-spin" />
+            ) : user ? (
+              <>
+                <Link href="/new-thread" className="btn-primary !px-2.5 !py-1.5 !text-xs !rounded-lg">
+                  ✏️ 发帖
+                </Link>
+                <Link href={`/profile/${user.id}`} className="flex items-center gap-1 px-1.5 py-1">
+                  <span className="w-6 h-6 rounded-full bg-[#c23531] flex items-center justify-center text-[10px] text-white font-bold shadow-sm shrink-0">
+                    {(profile?.display_name || profile?.username || '?')[0]}
+                  </span>
+                </Link>
+                {isAdmin && <Link href="/admin" className="px-1.5 py-1 text-[#c23531] text-xs">管理</Link>}
+                <button onClick={handleLogout} className="px-1.5 py-1 text-[#999] text-xs">退出</button>
+              </>
+            ) : (
+              <>
+                <Link href="/login" className="px-2 py-1 text-[#888] text-xs font-medium">登录</Link>
+                <Link href="/register" className="btn-primary !px-2.5 !py-1.5 !text-xs !rounded-lg">注册</Link>
+              </>
+            )}
           </div>
         </div>
-      )}
+
+        {/* 移动端搜索条 */}
+        {showSearch && (
+          <div className="px-4 pb-3 anim-fade-in border-t border-[#eee8dc]/50 pt-2">
+            <div className="relative">
+              <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#ccc]">🔍</span>
+              <input type="text" value={search} onChange={e => setSearch(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && handleSearch(e)}
+                placeholder="搜索帖子..." autoFocus
+                className="w-full bg-white border border-[#eee8dc] rounded-full pl-10 pr-4 py-2.5 text-sm outline-none focus:border-[#c23531]"
+              />
+            </div>
+          </div>
+        )}
+      </div>
     </header>
   )
 }
