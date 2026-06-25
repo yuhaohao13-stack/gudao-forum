@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 
-export default function DonateButton() {
+export default function DonateButton({ className = '' }) {
   const [showModal, setShowModal] = useState(false)
   const [showPayNowQR, setShowPayNowQR] = useState(false)
   const [toast, setToast] = useState('')
@@ -13,7 +13,6 @@ export default function DonateButton() {
   }
 
   const handleAlipay = () => {
-    // 支付宝深度链接 — 手机上点直接跳转转账页，电脑上打开网页
     const alipayUrl = 'alipays://platformapi/startapp?saId=20000067&userId=13573735550'
     window.open(alipayUrl, '_blank')
     showToast('正在打开支付宝...')
@@ -25,13 +24,12 @@ export default function DonateButton() {
 
   return (
     <>
-      {/* 浮动打赏按钮 */}
+      {/* 触发按钮 */}
       <button
         onClick={() => setShowModal(true)}
-        className="fixed bottom-6 right-6 z-40 w-12 h-12 rounded-full bg-[#c23531] text-white shadow-lg hover:shadow-xl hover:scale-110 hover:bg-[#d4403c] transition-all duration-300 flex items-center justify-center text-lg"
-        title="支持一下"
+        className={className || "btn-ghost flex items-center gap-1"}
       >
-        💖
+        💖 打赏
       </button>
 
       {/* 主弹窗 */}
@@ -51,7 +49,6 @@ export default function DonateButton() {
             </div>
 
             <div className="space-y-3">
-              {/* 支付宝 */}
               <button
                 onClick={handleAlipay}
                 className="w-full flex items-center gap-4 p-4 rounded-xl border border-[#eee8dc] hover:border-[#1677ff]/40 hover:bg-[#1677ff]/5 transition-all group"
@@ -66,7 +63,6 @@ export default function DonateButton() {
                 <span className="text-[#1677ff] text-sm">→</span>
               </button>
 
-              {/* PayNow */}
               <button
                 onClick={handlePayNow}
                 className="w-full flex items-center gap-4 p-4 rounded-xl border border-[#eee8dc] hover:border-green-400/40 hover:bg-green-50/50 transition-all group"
@@ -124,7 +120,7 @@ export default function DonateButton() {
         </div>
       )}
 
-      {/* Toast 提示 */}
+      {/* Toast */}
       {toast && (
         <div className="fixed top-4 left-1/2 -translate-x-1/2 z-[70] bg-[#1a1a1a] text-white text-xs px-4 py-2 rounded-full shadow-lg anim-fade-in">
           {toast}

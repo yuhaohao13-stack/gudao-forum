@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import { useAuth } from './AuthProvider'
 import { createClient } from '@/lib/supabase/client'
+import DonateButton from './DonateButton'
 
 export default function Header() {
   const { user, profile, loading } = useAuth()
@@ -46,6 +47,7 @@ export default function Header() {
                 isChatPage ? 'bg-[#c23531]/10 text-[#c23531] font-medium' : 'text-[#888] hover:text-[#c23531] hover:bg-[#c23531]/5'
               }`}
             >💬 聊天</Link>
+            <DonateButton className="px-3 py-1.5 rounded-full text-sm transition-all text-[#888] hover:text-[#c23531] hover:bg-[#c23531]/5" />
           </nav>
         </div>
 
@@ -64,6 +66,7 @@ export default function Header() {
         <nav className="flex items-center gap-1 sm:gap-2 text-sm shrink-0">
           {/* 移动端导航 */}
           <Link href="/chat" className="sm:hidden btn-ghost px-1.5">💬</Link>
+          <span className="sm:hidden"><DonateButton className="btn-ghost px-1.5" /></span>
           <button onClick={() => setShowSearch(!showSearch)} className="sm:hidden btn-ghost px-1.5">🔍</button>
 
           {loading ? (
