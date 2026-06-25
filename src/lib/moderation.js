@@ -91,7 +91,19 @@ export function validateInput(text, maxLength = 10000) {
 }
 
 // ==========================================
-// 5. 密码强度校验
+// 5. 手机号校验（中国大陆号段）
+// ==========================================
+export function validatePhone(phone) {
+  if (!phone) return { valid: false, error: '手机号不能为空' }
+  const cleaned = phone.replace(/[\s-]/g, '')
+  if (!/^1[3-9]\d{9}$/.test(cleaned)) {
+    return { valid: false, error: '请输入正确的11位手机号（如 13812345678）' }
+  }
+  return { valid: true, phone: cleaned, error: null }
+}
+
+// ==========================================
+// 6. 密码强度校验
 // ==========================================
 export function validatePassword(password) {
   if (!password) return { valid: false, error: '密码不能为空' }
