@@ -86,6 +86,7 @@ export default function ProfilePage() {
       setForm({
         display_name: data?.display_name || '',
         phone: data?.phone || '',
+        date_of_birth: data?.date_of_birth || '',
         gender: data?.gender || 'male',
         hobbies: data?.hobbies || '',
         bio: data?.bio || '',
@@ -107,6 +108,7 @@ export default function ProfilePage() {
     const { error } = await supabase.from('profiles').update({
       display_name: form.display_name.trim(),
       phone: form.phone,
+      date_of_birth: form.date_of_birth,
       gender: form.gender,
       hobbies: form.hobbies.trim(),
       bio: form.bio.trim(),
@@ -151,6 +153,7 @@ export default function ProfilePage() {
 
             <div className="flex items-center justify-center gap-4 mt-4 text-xs text-[#666] flex-wrap">
               {profile.phone && <span>📱 {profile.phone.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2')}</span>}
+              {profile.date_of_birth && <span>🎂 {new Date(profile.date_of_birth).toLocaleDateString('zh-CN')}（{new Date().getFullYear() - new Date(profile.date_of_birth).getFullYear()}岁）</span>}
               {profile.gender && <span>{genderLabels[profile.gender]}</span>}
               {profile.hobbies && <span>🎯 {profile.hobbies}</span>}
             </div>
@@ -216,6 +219,13 @@ export default function ProfilePage() {
               <input type="tel" value={form.phone}
                 onChange={e => update('phone', e.target.value)}
                 className="input" maxLength={11} placeholder="13812345678" />
+            </div>
+
+            <div>
+              <label className="block text-xs text-[#888] mb-1.5 font-medium">出生日期</label>
+              <input type="date" value={form.date_of_birth}
+                onChange={e => update('date_of_birth', e.target.value)}
+                className="input" max={new Date().toISOString().split('T')[0]} />
             </div>
 
             <div>

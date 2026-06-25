@@ -17,7 +17,7 @@ export default function RegisterPage() {
     _honeypot: '',
     _captcha: '',
     username: '', email: '', password: '', phone: '', gender: 'male',
-    hobbies: '', bio: '', resume: '',
+    date_of_birth: '', hobbies: '', bio: '', resume: '',
   })
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
@@ -41,7 +41,7 @@ export default function RegisterPage() {
     setError('')
     if (cooldown > 0) return
 
-    const { username, email, password, phone, gender, hobbies, bio, resume, _honeypot, _captcha } = form
+    const { username, email, password, phone, gender, date_of_birth, hobbies, bio, resume, _honeypot, _captcha } = form
 
     // 蜜罐检测：隐藏字段被填了说明是机器人
     if (_honeypot) { setError('提交过快，请稍后再试'); return }
@@ -56,6 +56,13 @@ export default function RegisterPage() {
     if (username.trim().length < 2) { setError('昵称至少 2 个字符'); return }
     if (username.trim().length > 10) { setError('昵称不能超过 10 个字符'); return }
     if (!/^[\u4e00-\u9fa5a-zA-Z0-9_]+$/.test(username.trim())) { setError('昵称只能包含中文、字母、数字和下划线'); return }
+
+    // 出生日期校验
+    if (!date_of_birth) { setError('请选择出生日期'); return }
+    const dobDate = new Date(date_of_birth)
+    const today = new Date()
+    const age = today.getFullYear() - dobDate.getFullYear()
+    if (age < 10 || age > 120) { setError('出生日期不合法，请检查'); return }
 
     // 手机号校验
     const phoneCheck = validatePhone(phone)
@@ -83,6 +90,7 @@ export default function RegisterPage() {
           display_name: username.trim(),
           phone: phoneCheck.phone,
           gender,
+          date_of_birth,
           hobbies: hobbies.trim(),
           bio: bio.trim(),
           resume: resume.trim(),
@@ -142,6 +150,13 @@ export default function RegisterPage() {
                 onChange={e => update('phone', e.target.value)}
                 className={inputClass} placeholder="13812345678" maxLength={11} autoComplete="tel" />
               <p className="text-[10px] text-[#ccc] mt-1">请输入真实的 11 位手机号</p>
+            </div>
+
+            <div>
+              <label className="block text-xs text-[#888] mb-1.5 font-medium">出生日期 <span className="text-[#c23531]">*</span></label>
+              <input type="date" required value={form.date_of_birth}
+                onChange={e => update('date_of_birth', e.target.value)}
+                className={inputClass} max={new Date().toISOString().split('T')[0]} />
             </div>
 
             <div>
