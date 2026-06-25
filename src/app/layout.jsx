@@ -4,6 +4,7 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 
 export const metadata = {
+  metadataBase: new URL('https://www.gudaoforum.com'),
   title: {
     default: '古道论坛',
     template: '%s — 古道论坛',
@@ -11,11 +12,20 @@ export const metadata = {
   description: '古道论坛 — 以文会友，以友辅仁 | 一个温暖的现代中文社区',
   manifest: '/manifest.json',
   appleWebApp: { capable: true, statusBarStyle: 'default', title: '古道论坛' },
+  alternates: {
+    canonical: 'https://www.gudaoforum.com',
+  },
   openGraph: {
     title: '古道论坛',
     description: '以文会友，以友辅仁',
+    url: 'https://www.gudaoforum.com',
+    siteName: '古道论坛',
     type: 'website',
     locale: 'zh_CN',
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 }
 
