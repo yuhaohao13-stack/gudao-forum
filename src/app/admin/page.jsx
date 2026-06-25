@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation'
 export default function AdminPage() {
   const { user, profile, loading } = useAuth()
   const [threads, setThreads] = useState([]); const [users, setUsers] = useState([]); const [tab, setTab] = useState('threads')
+  const [broadcastText, setBroadcastText] = useState(''); const [broadcasting, setBroadcasting] = useState(false); const [broadcastResult, setBroadcastResult] = useState('')
   const supabase = createClient(); const router = useRouter()
 
   useEffect(() => { if (!loading && (!user || profile?.role !== 'admin')) router.push('/') }, [user, profile, loading])
@@ -15,6 +16,30 @@ export default function AdminPage() {
     supabase.from('threads').select('*, profiles(username, display_name), categories(name)').order('created_at', { ascending: false }).limit(50).then(({ data }) => setThreads(data || []))
     supabase.from('profiles').select('*').order('created_at', { ascending: false }).then(({ data }) => setUsers(data || []))
   }, [profile])
+
+  const sendBroadcast = async () => {
+    if (!broadcastText.trim()) return
+    if (!confirm(`确定向 ${users.length} 位用户发送站内公告？`)) return
+    setBroadcasting(true); setBroadcastResult('')
+    const content = broadcastText.trim()
+    const messages = users
+      .filter(u => u.id !== user.id)  // 不给自己发
+      .map(u => ({
+        sender_id: user.id,
+        receiver_id: u.id,
+        content: `📢 站内公告：${content}`,
+      }))
+    // 分批插入，每批 50 条
+    let sent = 0
+    for (let i = 0; i < messages.length; i += 50) {
+      const batch = messages.slice(i, i + 50)
+      const { error } = await supabase.from('private_messages').insert(batch)
+      if (!error) sent += batch.length
+    }
+    setBroadcastResult(`✅ 已向 ${sent}/${users.length - 1} 位用户发送公告`)
+    setBroadcastText('')
+    setBroadcasting(false)
+  }
 
   const del = async (id) => { if (!confirm('确定删除？')) return; await supabase.from('threads').delete().eq('id', id); setThreads(threads.filter(t => t.id !== id)) }
   const toggle = (t, f) => async () => { await supabase.from('threads').update({ [f]: !t[f] }).eq('id', t.id); setThreads(threads.map(x => x.id === t.id ? { ...x, [f]: !x[f] } : x)) }
@@ -29,6 +54,7 @@ export default function AdminPage() {
       <div className="flex gap-2 mb-6">
         <button onClick={() => setTab('threads')} className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${tab === 'threads' ? 'bg-[#c23531] text-white shadow-sm' : 'bg-white text-[#666] border border-[#eee8dc]'}`}>帖子管理</button>
         <button onClick={() => setTab('users')} className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${tab === 'users' ? 'bg-[#c23531] text-white shadow-sm' : 'bg-white text-[#666] border border-[#eee8dc]'}`}>用户管理</button>
+        <button onClick={() => setTab('broadcast')} className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${tab === 'broadcast' ? 'bg-[#c23531] text-white shadow-sm' : 'bg-white text-[#666] border border-[#eee8dc]'}`}>📢 公告</button>
       </div>
       {tab === 'threads' && <div className="space-y-2.5">{threads.map(t => (
         <div key={t.id} className="card p-4 flex items-start justify-between gap-3 anim-scale">
@@ -47,6 +73,21 @@ export default function AdminPage() {
           <td className="py-2.5 px-4"><select value={u.role} onChange={e => roleChg(u.id, e.target.value)} className="bg-white border border-[#eee8dc] rounded-lg px-2 py-1 text-xs text-[#333] outline-none">{['user', 'moderator', 'admin'].map(r => <option key={r} value={r}>{r === 'admin' ? '管理员' : r === 'moderator' ? '版主' : '用户'}</option>)}</select></td>
         </tr>
       ))}</tbody></table></div>}
+      {tab === 'broadcast' && (
+        <div className="max-w-xl">
+          <h2 className="font-bold font-serif text-[#1a1a1a] mb-1">📢 站内公告群发</h2>
+          <p className="text-xs text-[#999] mb-4">发送私信公告给 <strong className="text-[#c23531]">{users.filter(u => u.id !== user?.id).length}</strong> 位注册用户</p>
+          <div className="card p-5 space-y-4">
+            <textarea value={broadcastText} onChange={e => setBroadcastText(e.target.value)}
+              className="input min-h-[120px] resize-none" placeholder="输入公告内容..." maxLength={1000} />
+            {broadcastResult && <div className="text-xs text-green-600 bg-green-50 border border-green-200 rounded-lg p-3">{broadcastResult}</div>}
+            <button onClick={sendBroadcast} disabled={broadcasting || !broadcastText.trim()}
+              className="btn-primary disabled:opacity-50">
+              {broadcasting ? '发送中...' : '📨 群发公告'}
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
