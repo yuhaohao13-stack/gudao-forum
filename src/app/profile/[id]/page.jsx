@@ -28,11 +28,32 @@ export default function ProfilePage() {
   useEffect(() => {
     if (!profile || !user) return
     if (user.id === id) {
-      // 自己的好友列表
-      supabase.from('friends').select('*, profiles!friends_requester_id_fkey(username,display_name), profiles!friends_addressee_id_fkey(username,display_name)')
-        .or(`requester_id.eq.${user.id},addressee_id.eq.${user.id}`).eq('status','accepted').then(({data}) => setFriends(data || []))
-      supabase.from('friends').select('*, profiles!friends_requester_id_fkey(username,display_name)')
-        .eq('addressee_id',user.id).eq('status','pending').then(({data}) => setPendingRequests(data || []))
+      // 自己的好友列表（不用FK join，分别查资料）
+      supabase.from('friends').select('*')
+        .or(`requester_id.eq.${user.id},addressee_id.eq.${user.id}`).eq('status','accepted')
+        .then(async ({data: fData}) => {
+          const list = fData || []
+          const ids = [...new Set(list.flatMap(f => [f.requester_id, f.addressee_id]).filter(i => i !== user.id))]
+          const {data: pData} = await supabase.from('profiles').select('id,username,display_name').in('id', ids)
+          const pmap = {}
+          for (const p of pData || []) pmap[p.id] = p
+          for (const f of list) {
+            const oid = f.requester_id === user.id ? f.addressee_id : f.requester_id
+            f._friendProfile = pmap[oid] || null
+          }
+          setFriends(list)
+        })
+      // 好友请求
+      supabase.from('friends').select('*').eq('addressee_id',user.id).eq('status','pending')
+        .then(async ({data: rData}) => {
+          const list = rData || []
+          const ids = [...new Set(list.map(r => r.requester_id))]
+          const {data: pData} = await supabase.from('profiles').select('id,username,display_name').in('id', ids)
+          const pmap = {}
+          for (const p of pData || []) pmap[p.id] = p
+          for (const r of list) r._requesterProfile = pmap[r.requester_id] || null
+          setPendingRequests(list)
+        })
     } else {
       // 查看他人好友关系
       supabase.from('friends').select('*')
@@ -283,7 +304,7 @@ export default function ProfilePage() {
           {pendingRequests.map(req => (
             <div key={req.id} className="flex items-center justify-between py-1.5">
               <Link href={`/profile/${req.requester_id}`} className="text-sm font-medium text-[#666] hover:text-[#c23531]">
-                {req.profiles?.display_name || req.profiles?.username || '用户'}
+                {req._requesterProfile?.display_name || req._requesterProfile?.username || '用户'}
               </Link>
               <div className="flex gap-2">
                 <button onClick={() => acceptFriend(req.id)} className="text-xs text-green-600 bg-green-100 px-2.5 py-1 rounded-full hover:bg-green-200">✅ 接受</button>
@@ -305,9 +326,7 @@ export default function ProfilePage() {
             </div>
           ) : friends.map(f => {
             const friendId = f.requester_id === user?.id ? f.addressee_id : f.requester_id
-            const friendName = f.requester_id === user?.id
-              ? (f.profiles?.display_name || f.profiles?.username)
-              : (f.profiles?.display_name || f.profiles?.username)
+            const friendName = f._friendProfile?.display_name || f._friendProfile?.username || '用户'
             return (
               <div key={f.id} className="card p-3 flex items-center justify-between">
                 <Link href={`/profile/${friendId}`} className="flex items-center gap-3 min-w-0">
