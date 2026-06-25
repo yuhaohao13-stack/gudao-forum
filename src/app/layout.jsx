@@ -43,7 +43,8 @@ export default function RootLayout({ children }) {
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="theme-color" content="#f8f6f2" />
         <script dangerouslySetInnerHTML={{
-          __html: `if('serviceWorker'in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('/sw.js')})}`
+          __html: `// 清除旧 Service Worker 缓存
+if('serviceWorker'in navigator){navigator.serviceWorker.getRegistrations().then(r=>r.forEach(s=>s.unregister()))}`
         }} />
       </head>
       <body className="min-h-screen flex flex-col bg-[#f8f6f2] text-[#1a1a1a]">
