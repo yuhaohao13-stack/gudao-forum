@@ -30,14 +30,6 @@ const nextConfig = {
             key: 'Content-Security-Policy',
             value: "default-src * 'unsafe-inline' 'unsafe-eval'; frame-ancestors 'none'",
           },
-          {
-            key: 'CDN-Cache-Control',
-            value: 'no-cache',
-          },
-          {
-            key: 'Vercel-CDN-Cache-Control',
-            value: 'no-cache',
-          },
         ],
       },
       // Supabase 图片代理的特殊规则

@@ -46,6 +46,7 @@ export default function RootLayout({ children }) {
         <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
         <meta http-equiv="Pragma" content="no-cache" />
         <meta http-equiv="Expires" content="0" />
+        <meta name="build-version" content="v2-final" />
         <script dangerouslySetInnerHTML={{
           __html: `// 注册新 SW（清除缓存后退出）
 if('serviceWorker'in navigator){
