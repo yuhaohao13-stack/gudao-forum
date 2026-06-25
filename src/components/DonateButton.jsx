@@ -35,7 +35,7 @@ export default function DonateButton({ className = '' }) {
       {/* 主弹窗 */}
       {showModal && (
         <div
-          className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4"
+          className="fixed inset-0 z-[100] bg-black/40 backdrop-blur-sm flex items-center justify-center p-4"
           onClick={() => { setShowModal(false); setShowPayNowQR(false) }}
         >
           <div
@@ -95,7 +95,7 @@ export default function DonateButton({ className = '' }) {
       {/* PayNow 二维码弹窗 */}
       {showPayNowQR && (
         <div
-          className="fixed inset-0 z-[60] bg-black/50 backdrop-blur-sm flex items-center justify-center p-4"
+          className="fixed inset-0 z-[110] bg-black/50 backdrop-blur-sm flex items-center justify-center p-4"
           onClick={() => setShowPayNowQR(false)}
         >
           <div
