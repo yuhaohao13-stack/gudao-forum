@@ -16,12 +16,16 @@ export function AuthProvider({ children }) {
       const { data: { user } } = await supabase.auth.getUser()
       setUser(user)
       if (user) {
-        const { data } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', user.id)
-          .single()
-        setProfile(data)
+        try {
+          const { data } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('id', user.id)
+            .single()
+          setProfile(data)
+        } catch (e) {
+          console.log('Profile fetch error:', e)
+        }
       }
       setLoading(false)
     }
@@ -32,6 +36,7 @@ export function AuthProvider({ children }) {
       if (session?.user) {
         supabase.from('profiles').select('*').eq('id', session.user.id).single()
           .then(({ data }) => setProfile(data))
+          .catch(() => {})
       } else {
         setProfile(null)
       }

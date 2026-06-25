@@ -12,31 +12,48 @@ export default function UnreadBadge({ className = '' }) {
   useEffect(() => {
     if (!user) return
 
-    const fetchCount = () => {
-      supabase.from('private_messages')
-        .select('id', { count: 'exact', head: true })
-        .eq('receiver_id', user.id)
-        .is('read_at', null)
-        .then(({ count }) => setCount(count || 0))
+    let cancelled = false
+    let sub = null
+
+    const fetchCount = async () => {
+      try {
+        const { count: c } = await supabase
+          .from('private_messages')
+          .select('id', { count: 'exact', head: true })
+          .eq('receiver_id', user.id)
+          .is('read_at', null)
+        if (!cancelled) setCount(c || 0)
+      } catch (e) {
+        // 表不存在时忽略
+        console.log('UnreadBadge: table not available (yet)')
+      }
     }
 
     fetchCount()
 
-    // 实时更新未读数
-    const sub = supabase
-      .channel('unread_count')
-      .on('postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'private_messages', filter: `receiver_id=eq.${user.id}` },
-        () => fetchCount()
-      )
-      .on('postgres_changes',
-        { event: 'UPDATE', schema: 'public', table: 'private_messages', filter: `receiver_id=eq.${user.id}` },
-        () => fetchCount()
-      )
-      .subscribe()
+    // 实时更新 - 用 try-catch 避免崩溃
+    try {
+      sub = supabase
+        .channel('unread_count')
+        .on('postgres_changes',
+          { event: 'INSERT', schema: 'public', table: 'private_messages', filter: `receiver_id=eq.${user.id}` },
+          fetchCount
+        )
+        .on('postgres_changes',
+          { event: 'UPDATE', schema: 'public', table: 'private_messages', filter: `receiver_id=eq.${user.id}` },
+          fetchCount
+        )
+        .subscribe()
+    } catch (e) {
+      console.log('UnreadBadge: realtime unavailable')
+    }
 
-    return () => supabase.removeChannel(sub)
-  }, [user])
+    return () => {
+      cancelled = true
+      if (sub) supabase.removeChannel(sub)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id])
 
   if (count === 0) return null
 
