@@ -287,22 +287,23 @@ export default function ChatRoomPage() {
                   isSelf ? 'bg-[#c23531]/5' : 'hover:bg-[#faf8f4]'
                 }`}
               >
-                <div
+                <Link href={isSelf ? '#' : `/profile/${msg.user_id}`}
                   className={`w-7 h-7 rounded-full shrink-0 flex items-center justify-center text-xs font-bold text-white shadow-sm ${
                     isAdmin ? 'bg-[#c23531]' : isMod ? 'bg-[#8b6914]' : 'bg-[#b0a898]'
                   }`}
                   title={displayName}
                 >
                   {avatarLetter}
-                </div>
+                </Link>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
-                    <span className={`text-xs font-medium ${
-                      isAdmin ? 'text-[#c23531]' : isMod ? 'text-[#8b6914]' : 'text-[#666]'
-                    }`}>
+                    <Link href={isSelf ? '#' : `/profile/${msg.user_id}`}
+                      className={`text-xs font-medium hover:underline ${
+                        isAdmin ? 'text-[#c23531]' : isMod ? 'text-[#8b6914]' : 'text-[#666]'
+                      }`}>
                       {displayName}
                       {isAdmin && <span className="ml-1 text-[10px] opacity-60">👑</span>}
-                    </span>
+                    </Link>
                     <span className="text-[10px] text-[#ccc]">
                       {new Date(msg.created_at).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })}
                     </span>

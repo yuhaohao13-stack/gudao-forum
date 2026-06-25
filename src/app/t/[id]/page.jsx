@@ -75,10 +75,10 @@ export default function ThreadPage() {
         )}
         <h1 className="text-xl sm:text-2xl font-bold font-serif text-[#1a1a1a] leading-snug">{thread.title}</h1>
         <div className="flex items-center gap-2 mt-3 text-xs text-[#999]">
-          <span className="w-6 h-6 rounded-full bg-[#c23531] flex items-center justify-center text-[10px] text-white font-bold shadow-sm">
+          <Link href={`/profile/${thread.author_id}`} className="w-6 h-6 rounded-full bg-[#c23531] flex items-center justify-center text-[10px] text-white font-bold shadow-sm hover:opacity-80">
             {(thread.profiles?.display_name || thread.profiles?.username || '?')[0]}
-          </span>
-          <span className="font-medium text-[#666]">{thread.profiles?.display_name || thread.profiles?.username}</span>
+          </Link>
+          <Link href={`/profile/${thread.author_id}`} className="font-medium text-[#666] hover:text-[#c23531] transition-colors">{thread.profiles?.display_name || thread.profiles?.username}</Link>
           <span className="text-[#ddd6c8]">·</span>
           <span>{new Date(thread.created_at).toLocaleString('zh-CN')}</span>
         </div>
@@ -127,10 +127,10 @@ export default function ThreadPage() {
               ) : (
                 <>
                   <div className="flex items-center gap-2 text-xs text-[#999] mb-2">
-                    <span className="w-5 h-5 rounded-full bg-[#ddd6c8] flex items-center justify-center text-[8px] text-white font-bold">
+                    <Link href={`/profile/${r.author_id}`} className="w-5 h-5 rounded-full bg-[#ddd6c8] flex items-center justify-center text-[8px] text-white font-bold hover:opacity-80">
                       {(r.profiles?.display_name || r.profiles?.username || '?')[0]}
-                    </span>
-                    <span className="font-medium text-[#666]">{r.profiles?.display_name || r.profiles?.username}</span>
+                    </Link>
+                    <Link href={`/profile/${r.author_id}`} className="font-medium text-[#666] hover:text-[#c23531] transition-colors">{r.profiles?.display_name || r.profiles?.username}</Link>
                     <span className="text-[#ddd6c8]">·</span>
                     <span>{new Date(r.created_at).toLocaleString('zh-CN')}</span>
                   </div>
