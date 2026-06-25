@@ -7,9 +7,15 @@ import { validatePassword, validatePhone, checkRateLimit } from '@/lib/moderatio
 
 const pageLoadTime = Date.now()
 
+function generateCaptcha() {
+  return Math.floor(1000 + Math.random() * 9000).toString()
+}
+
 export default function RegisterPage() {
+  const [captchaCode, setCaptchaCode] = useState('')
   const [form, setForm] = useState({
-    _honeypot: '',  // 隐藏字段防机器人
+    _honeypot: '',
+    _captcha: '',
     username: '', email: '', password: '', phone: '', gender: 'male',
     hobbies: '', bio: '', resume: '',
   })
@@ -18,6 +24,9 @@ export default function RegisterPage() {
   const [cooldown, setCooldown] = useState(0)
   const supabase = createClient()
   const router = useRouter()
+
+  // 初始化验证码
+  useEffect(() => { setCaptchaCode(generateCaptcha()) }, [])
 
   useEffect(() => {
     if (cooldown <= 0) return
@@ -32,13 +41,16 @@ export default function RegisterPage() {
     setError('')
     if (cooldown > 0) return
 
-    const { username, email, password, phone, gender, hobbies, bio, resume, _honeypot } = form
+    const { username, email, password, phone, gender, hobbies, bio, resume, _honeypot, _captcha } = form
 
     // 蜜罐检测：隐藏字段被填了说明是机器人
     if (_honeypot) { setError('提交过快，请稍后再试'); return }
 
     // 时间检测：注册页面打开不到3秒就提交 → 机器人
     if (Date.now() - pageLoadTime < 3000) { setError('请稍等几秒再提交'); return }
+
+    // 验证码校验
+    if (_captcha !== captchaCode) { setError('验证码错误'); setCaptchaCode(generateCaptcha()); return }
 
     // 昵称校验
     if (username.trim().length < 2) { setError('昵称至少 2 个字符'); return }
@@ -190,6 +202,31 @@ export default function RegisterPage() {
                 onChange={e => update('resume', e.target.value)}
                 className={`${inputClass} min-h-[100px] resize-none`} placeholder="工作经历、专业技能等..." maxLength={2000} />
               <p className="text-[10px] text-[#ccc] mt-1">{form.resume.length}/2000</p>
+            </div>
+          </div>
+
+          {/* 验证码 */}
+          <div className="pt-2">
+            <label className="block text-xs text-[#888] mb-2 font-medium">验证码 <span className="text-[#c23531]">*</span></label>
+            <div className="flex items-center gap-3">
+              <div className="flex gap-1 select-none">
+                {captchaCode.split('').map((digit, i) => (
+                  <span key={i}
+                    className="inline-flex items-center justify-center w-9 h-10 rounded-lg text-lg font-bold tracking-wider shadow-sm"
+                    style={{
+                      backgroundColor: ['#fef3c7', '#fee2e2', '#dbeafe', '#dcfce7'][i % 4],
+                      color: ['#92400e', '#991b1b', '#1e40af', '#166534'][i % 4],
+                      transform: `rotate(${[-3, 2, -2, 4][i]}deg)`,
+                      fontFamily: 'monospace',
+                    }}
+                  >{digit}</span>
+                ))}
+              </div>
+              <input type="text" value={form._captcha}
+                onChange={e => update('_captcha', e.target.value.replace(/\D/g, '').slice(0, 4))}
+                className="input w-24 text-center text-lg font-bold tracking-widest" placeholder="输入" maxLength={4} autoComplete="off" />
+              <button type="button" onClick={() => setCaptchaCode(generateCaptcha())}
+                className="btn-ghost text-xs shrink-0" title="换一张">🔄</button>
             </div>
           </div>
 
