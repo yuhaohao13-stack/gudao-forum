@@ -21,6 +21,7 @@ export default function ChatRoomPage() {
   const [loadingMore, setLoadingMore] = useState(false)
   const [hasMore, setHasMore] = useState(true)
   const [onlineNow, setOnlineNow] = useState(0)
+  const [sendError, setSendError] = useState('')
 
   const messagesEndRef = useRef(null)
   const messagesContainerRef = useRef(null)
@@ -35,14 +36,12 @@ export default function ChatRoomPage() {
   useEffect(() => {
     if (!slug) return
 
-    // 加载聊天室信息
     supabase.from('chat_rooms').select('*').eq('slug', slug).single()
       .then(({ data }) => {
         if (data) {
           setRoom(data)
-          // 加载初始消息
           supabase.from('chat_messages')
-            .select('*, profiles!inner(username, display_name, role)')
+            .select('*, profiles(username, display_name, role)')
             .eq('room_id', data.id)
             .order('created_at', { ascending: false })
             .limit(MESSAGES_PER_PAGE)
@@ -70,16 +69,14 @@ export default function ChatRoomPage() {
       .on('postgres_changes',
         { event: 'INSERT', schema: 'public', table: 'chat_messages', filter: `room_id=eq.${room.id}` },
         async (payload) => {
-          // 补全用户信息
           const { data: msg } = await supabase
             .from('chat_messages')
-            .select('*, profiles!inner(username, display_name, role)')
+            .select('*, profiles(username, display_name, role)')
             .eq('id', payload.new.id)
             .single()
 
           if (msg) {
             setMessages(prev => [...prev, msg])
-            // 如果在底部则自动滚动
             const container = messagesContainerRef.current
             if (container) {
               const isNearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 100
@@ -96,7 +93,7 @@ export default function ChatRoomPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [room?.id])
 
-  // 在线统计：显示最近 2 分钟在线的用户（通过去重消息中的 user_id）
+  // 在线统计
   useEffect(() => {
     if (!room?.id) return
     const updateOnline = () => {
@@ -120,7 +117,7 @@ export default function ChatRoomPage() {
     setLoadingMore(true)
     const oldest = messages[0]
     const { data } = await supabase.from('chat_messages')
-      .select('*, profiles!inner(username, display_name, role)')
+      .select('*, profiles(username, display_name, role)')
       .eq('room_id', room.id)
       .lt('created_at', oldest.created_at)
       .order('created_at', { ascending: false })
@@ -137,6 +134,7 @@ export default function ChatRoomPage() {
   // 发送消息
   const handleSend = async (e) => {
     e.preventDefault()
+    setSendError('')
     if (!user || !input.trim() || sending || !room?.id) return
     setSending(true)
     const content = input.trim()
@@ -150,6 +148,7 @@ export default function ChatRoomPage() {
 
     if (error) {
       console.error('发送失败:', error)
+      setSendError(error.message || '发送失败，请稍后再试')
       setInput(content)
     }
     setSending(false)
@@ -182,7 +181,7 @@ export default function ChatRoomPage() {
           <Link href="/chat" className="text-sm text-[#c23531]/70 hover:text-[#c23531] transition-colors">&larr;</Link>
           <span className="text-xl">{room.icon}</span>
           <h1 className="text-lg font-bold font-serif text-[#1a1a1a]">{room.name}</h1>
-          <span className="text-[10px] text-[#b0a898] bg-[#f5f0e8] rounded-full px-2 py-0.5">{room.description}</span>
+          <span className="hidden sm:inline text-[10px] text-[#b0a898] bg-[#f5f0e8] rounded-full px-2 py-0.5">{room.description}</span>
           {onlineNow > 0 && (
             <span className="hidden sm:inline-flex items-center gap-1 text-xs text-green-600 bg-green-50 border border-green-200 rounded-full px-2.5 py-0.5">
               <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
@@ -197,7 +196,6 @@ export default function ChatRoomPage() {
         ref={messagesContainerRef}
         className="flex-1 overflow-y-auto rounded-xl border border-[#eee8dc] bg-white p-4 space-y-1 scroll-smooth"
       >
-        {/* 加载更多 */}
         {hasMore && (
           <div className="text-center py-2">
             <button
@@ -224,7 +222,7 @@ export default function ChatRoomPage() {
             const isMod = msg.profiles?.role === 'moderator'
             const isSelf = user?.id === msg.user_id
             const avatarLetter = (msg.profiles?.display_name || msg.profiles?.username || '?')[0]
-            const displayName = msg.profiles?.display_name || msg.profiles?.username || '匿名'
+            const displayName = msg.profiles?.display_name || msg.profiles?.username || '匿名用户'
 
             return (
               <div
@@ -267,25 +265,30 @@ export default function ChatRoomPage() {
       {/* 输入框 */}
       <div className="mt-3 shrink-0">
         {user ? (
-          <form onSubmit={handleSend} className="flex gap-2">
-            <input
-              ref={inputRef}
-              type="text"
-              value={input}
-              onChange={e => setInput(e.target.value)}
-              placeholder={`在 #${room.name} 中发言...`}
-              maxLength={500}
-              className="input flex-1"
-              disabled={sending}
-              autoFocus
-            />
-            <button
-              type="submit"
-              disabled={sending || !input.trim()}
-              className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed !px-5"
-            >
-              {sending ? '发送中...' : '发送'}
-            </button>
+          <form onSubmit={handleSend} className="flex flex-col gap-2">
+            <div className="flex gap-2">
+              <input
+                ref={inputRef}
+                type="text"
+                value={input}
+                onChange={e => setInput(e.target.value)}
+                placeholder={`在 #${room.name} 中发言...`}
+                maxLength={500}
+                className="input flex-1"
+                disabled={sending}
+                autoFocus
+              />
+              <button
+                type="submit"
+                disabled={sending || !input.trim()}
+                className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed !px-5"
+              >
+                {sending ? '发送中...' : '发送'}
+              </button>
+            </div>
+            {sendError && (
+              <p className="text-xs text-[#c23531] bg-[#c23531]/8 border border-[#c23531]/15 rounded-lg px-3 py-2">{sendError}</p>
+            )}
           </form>
         ) : (
           <div className="card p-3 text-center border-dashed border-[#ddd6c8]">
