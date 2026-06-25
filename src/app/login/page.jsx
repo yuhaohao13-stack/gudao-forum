@@ -37,14 +37,8 @@ export default function LoginPage() {
     setLoading(true)
     const { error } = await supabase.auth.signInWithPassword({ email, password })
     if (error) {
-      const msg = error.message === 'Invalid login credentials'
-        ? '邮箱或密码错误'
-        : error.message === 'Email not confirmed'
-          ? '邮箱未验证，请检查收件箱'
-          : error.message === 'Invalid API key'
-            ? '服务暂时不可用'
-            : error.message
-      setError(msg)
+      console.error('Supabase login error:', error)
+      setError(`错误: ${error.message} (${error.status || '无状态码'})`)
     } else {
       router.push('/'); router.refresh()
     }
