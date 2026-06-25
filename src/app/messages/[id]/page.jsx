@@ -68,7 +68,8 @@ export default function PrivateChatPage() {
         { event: 'INSERT', schema: 'public', table: 'private_messages', filter: `sender_id=in.(${user.id},${otherUserId})` },
         async (payload) => {
           if (payload.new.sender_id === user.id || payload.new.sender_id === otherUserId) {
-            setMessages(prev => [...prev, payload.new])
+            // 去重：避免自己发送时重复
+            setMessages(prev => prev.some(m => m.id === payload.new.id) ? prev : [...prev, payload.new])
             scrollToBottom()
           }
         }
@@ -98,12 +99,16 @@ export default function PrivateChatPage() {
     }
     setImages([]); setPreviews([])
 
-    const { error } = await supabase.from('private_messages').insert({
+    const { data, error } = await supabase.from('private_messages').insert({
       sender_id: user.id, receiver_id: otherUserId,
       content: content || null,
       images: uploadedUrls.length ? uploadedUrls : null,
-    })
-    if (!error) loadMessages()
+    }).select()
+    if (!error && data?.[0]) {
+      // 直接添加，不重新拉取，避免实时订阅重复
+      setMessages(prev => [...prev, data[0]])
+      scrollToBottom()
+    }
     setSending(false)
   }
 
