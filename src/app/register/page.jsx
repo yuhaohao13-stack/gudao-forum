@@ -5,8 +5,11 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { validatePassword, validatePhone, checkRateLimit } from '@/lib/moderation'
 
+const pageLoadTime = Date.now()
+
 export default function RegisterPage() {
   const [form, setForm] = useState({
+    _honeypot: '',  // 隐藏字段防机器人
     username: '', email: '', password: '', phone: '', gender: 'male',
     hobbies: '', bio: '', resume: '',
   })
@@ -29,7 +32,13 @@ export default function RegisterPage() {
     setError('')
     if (cooldown > 0) return
 
-    const { username, email, password, phone, gender, hobbies, bio, resume } = form
+    const { username, email, password, phone, gender, hobbies, bio, resume, _honeypot } = form
+
+    // 蜜罐检测：隐藏字段被填了说明是机器人
+    if (_honeypot) { setError('提交过快，请稍后再试'); return }
+
+    // 时间检测：注册页面打开不到3秒就提交 → 机器人
+    if (Date.now() - pageLoadTime < 3000) { setError('请稍等几秒再提交'); return }
 
     // 昵称校验
     if (username.trim().length < 2) { setError('昵称至少 2 个字符'); return }
@@ -95,6 +104,10 @@ export default function RegisterPage() {
         <form onSubmit={handleRegister} className="space-y-4">
           {/* 必填区 */}
           <div className="space-y-4">
+            {/* 蜜罐：对用户不可见，机器人会填 */}
+            <div style={{ position: 'absolute', left: '-9999px' }} aria-hidden="true">
+              <input type="text" value={form._honeypot} onChange={e => update('_honeypot', e.target.value)} tabIndex={-1} autoComplete="off" />
+            </div>
             <p className="text-[10px] text-[#c23531] font-medium tracking-wide">必填信息</p>
 
             <div>
