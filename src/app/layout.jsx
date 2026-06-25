@@ -2,6 +2,7 @@ import './globals.css'
 import { AuthProvider } from '@/components/AuthProvider'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import DonateOverlay from '@/components/DonateOverlay'
 
 export const metadata = {
   metadataBase: new URL('https://www.gudaoforum.com'),
@@ -57,6 +58,7 @@ export default function RootLayout({ children }) {
           </main>
           <Footer />
         </AuthProvider>
+        <DonateOverlay />
       </body>
     </html>
   )
