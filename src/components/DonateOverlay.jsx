@@ -2,8 +2,35 @@
 
 import { useEffect, useState } from 'react'
 
+const overlayStyle = {
+  position: 'fixed',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  zIndex: 9999,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  backgroundColor: 'rgba(0,0,0,0.35)',
+  backdropFilter: 'blur(4px)',
+  WebkitBackdropFilter: 'blur(4px)',
+  padding: '1rem',
+}
+
+const innerStyle = {
+  backgroundColor: '#fff',
+  borderRadius: '1rem',
+  boxShadow: '0 25px 50px rgba(0,0,0,0.15)',
+  maxWidth: '24rem',
+  width: '100%',
+  padding: '1.5rem',
+  animation: 'scaleIn 0.3s ease-out both',
+}
+
 export default function DonateOverlay() {
   const [showModal, setShowModal] = useState(false)
+  const [showAlipayQR, setShowAlipayQR] = useState(false)
   const [showPayNowQR, setShowPayNowQR] = useState(false)
   const [toast, setToast] = useState('')
 
@@ -12,12 +39,6 @@ export default function DonateOverlay() {
     setTimeout(() => setToast(''), 2500)
   }
 
-  const closeAll = () => {
-    setShowModal(false)
-    setShowPayNowQR(false)
-  }
-
-  // 监听 window 事件
   useEffect(() => {
     const handler = () => setShowModal(true)
     window.addEventListener('open-donate', handler)
@@ -28,55 +49,75 @@ export default function DonateOverlay() {
     <>
       {/* 主弹窗 */}
       {showModal && (
-        <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4" onClick={closeAll}>
-          <div className="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 anim-scale" onClick={e => e.stopPropagation()}>
+        <div style={overlayStyle} onClick={() => { setShowModal(false); setShowAlipayQR(false); setShowPayNowQR(false) }}>
+          <div style={innerStyle} onClick={e => e.stopPropagation()}>
             <div className="text-center mb-5">
-              <div className="text-3xl mb-2">☕</div>
-              <h3 className="text-lg font-bold font-serif text-[#1a1a1a]">请我喝杯咖啡</h3>
-              <p className="text-xs text-[#999] mt-1">如果觉得论坛有用，欢迎打赏支持</p>
+              <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>☕</div>
+              <h3 style={{ fontSize: '1.125rem', fontWeight: 700, fontFamily: "'Noto Serif SC', serif", color: '#1a1a1a' }}>请我喝杯咖啡</h3>
+              <p style={{ fontSize: '0.75rem', color: '#999', marginTop: '0.25rem' }}>如果觉得论坛有用，欢迎打赏支持</p>
             </div>
 
-            <div className="space-y-3">
-              <button onClick={() => { window.open('alipays://platformapi/startapp?saId=20000067&userId=13573735550', '_blank'); showToast('正在打开支付宝...') }}
-                className="w-full flex items-center gap-4 p-4 rounded-xl border border-[#eee8dc] hover:border-[#1677ff]/40 hover:bg-[#1677ff]/5 transition-all group">
-                <div className="w-10 h-10 rounded-full bg-[#1677ff] flex items-center justify-center text-xl shrink-0">💳</div>
-                <div className="text-left flex-1">
-                  <div className="font-semibold text-sm text-[#1a1a1a]">支付宝</div>
-                  <div className="text-xs text-[#999]">点击跳转转账</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+              <button onClick={() => setShowAlipayQR(true)}
+                style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1rem', borderRadius: '0.75rem', border: '1px solid #eee8dc', width: '100%', cursor: 'pointer', background: 'none', fontSize: 'inherit' }}>
+                <div style={{ width: '2.5rem', height: '2.5rem', borderRadius: '50%', backgroundColor: '#1677ff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem', flexShrink: 0 }}>💳</div>
+                <div style={{ textAlign: 'left', flex: 1 }}>
+                  <div style={{ fontWeight: 600, fontSize: '0.875rem', color: '#1a1a1a' }}>支付宝</div>
+                  <div style={{ fontSize: '0.75rem', color: '#999' }}>扫描二维码支付</div>
                 </div>
-                <span className="text-[#1677ff] text-sm">→</span>
+                <span style={{ color: '#1677ff', fontSize: '0.875rem' }}>→</span>
               </button>
 
               <button onClick={() => setShowPayNowQR(true)}
-                className="w-full flex items-center gap-4 p-4 rounded-xl border border-[#eee8dc] hover:border-green-400/40 hover:bg-green-50/50 transition-all group">
-                <div className="w-10 h-10 rounded-full bg-green-600 flex items-center justify-center text-xl shrink-0">🇸🇬</div>
-                <div className="text-left flex-1">
-                  <div className="font-semibold text-sm text-[#1a1a1a]">PayNow</div>
-                  <div className="text-xs text-[#999]">扫描二维码支付</div>
+                style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1rem', borderRadius: '0.75rem', border: '1px solid #eee8dc', width: '100%', cursor: 'pointer', background: 'none', fontSize: 'inherit' }}>
+                <div style={{ width: '2.5rem', height: '2.5rem', borderRadius: '50%', backgroundColor: '#16a34a', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem', flexShrink: 0 }}>🇸🇬</div>
+                <div style={{ textAlign: 'left', flex: 1 }}>
+                  <div style={{ fontWeight: 600, fontSize: '0.875rem', color: '#1a1a1a' }}>PayNow</div>
+                  <div style={{ fontSize: '0.75rem', color: '#999' }}>扫描二维码支付</div>
                 </div>
-                <span className="text-green-600 text-sm">→</span>
+                <span style={{ color: '#16a34a', fontSize: '0.875rem' }}>→</span>
               </button>
             </div>
-            <p className="text-[10px] text-[#ccc] text-center mt-5">所有打赏将用于维持论坛运营 💪</p>
+
+            <p style={{ fontSize: '0.625rem', color: '#ccc', textAlign: 'center', marginTop: '1.25rem' }}>所有打赏将用于维持论坛运营 💪</p>
+          </div>
+        </div>
+      )}
+
+      {/* 支付宝二维码 */}
+      {showAlipayQR && (
+        <div style={{ ...overlayStyle, zIndex: 9999 }} onClick={() => setShowAlipayQR(false)}>
+          <div style={{ ...innerStyle, textAlign: 'center' }} onClick={e => e.stopPropagation()}>
+            <div style={{ fontSize: '1.125rem', fontWeight: 700, fontFamily: "'Noto Serif SC', serif", color: '#1a1a1a', marginBottom: '0.25rem' }}>💳 支付宝</div>
+            <p style={{ fontSize: '0.75rem', color: '#999', marginBottom: '1rem' }}>打开支付宝扫描二维码</p>
+            <div style={{ width: '100%', maxWidth: '15rem', margin: '0 auto', padding: '1rem', border: '1px solid #eee8dc', borderRadius: '0.75rem', color: '#ccc', fontSize: '0.75rem' }}>
+              请提供支付宝收款码图片
+            </div>
+            <p style={{ fontSize: '0.625rem', color: '#ccc', marginTop: '1rem' }}>截图保存到相册，在支付宝中扫码</p>
           </div>
         </div>
       )}
 
       {/* PayNow 二维码 */}
       {showPayNowQR && (
-        <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4" onClick={closeAll}>
-          <div className="bg-white rounded-2xl shadow-2xl max-w-xs w-full p-6 anim-scale text-center" onClick={e => e.stopPropagation()}>
-            <div className="text-lg font-bold font-serif text-[#1a1a1a] mb-1">🇸🇬 PayNow</div>
-            <p className="text-xs text-[#999] mb-4">扫描二维码支付</p>
-            <img src="/images/paynow-qr.jpg" alt="PayNow QR Code" className="w-full max-w-[240px] mx-auto rounded-xl border border-[#eee8dc] shadow-sm" />
-            <p className="text-[10px] text-[#ccc] mt-4">截图保存到相册扫码</p>
+        <div style={{ ...overlayStyle, zIndex: 9999 }} onClick={() => setShowPayNowQR(false)}>
+          <div style={{ ...innerStyle, textAlign: 'center' }} onClick={e => e.stopPropagation()}>
+            <div style={{ fontSize: '1.125rem', fontWeight: 700, fontFamily: "'Noto Serif SC', serif", color: '#1a1a1a', marginBottom: '0.25rem' }}>🇸🇬 PayNow</div>
+            <p style={{ fontSize: '0.75rem', color: '#999', marginBottom: '1rem' }}>打开银行 App 扫描二维码支付</p>
+            <img src="/images/paynow-qr.jpg" alt="PayNow QR" style={{ width: '100%', maxWidth: '15rem', margin: '0 auto', borderRadius: '0.75rem', border: '1px solid #eee8dc', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }} />
+            <p style={{ fontSize: '0.625rem', color: '#ccc', marginTop: '1rem' }}>截图保存到相册，在银行 App 中扫码</p>
           </div>
         </div>
       )}
 
       {/* Toast */}
       {toast && (
-        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-[999] bg-[#1a1a1a] text-white text-xs px-4 py-2 rounded-full shadow-lg anim-fade-in">
+        <div style={{
+          position: 'fixed', top: '1rem', left: '50%', transform: 'translateX(-50%)',
+          zIndex: 99999, backgroundColor: '#1a1a1a', color: '#fff',
+          fontSize: '0.75rem', padding: '0.5rem 1rem', borderRadius: '9999px',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+        }}>
           {toast}
         </div>
       )}
