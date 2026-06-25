@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://gudao-forum.vercel.app/sitemap.xml
