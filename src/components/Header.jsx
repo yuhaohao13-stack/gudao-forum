@@ -64,7 +64,7 @@ export default function Header() {
 
         <DonateButton className="btn-ghost font-bold text-sm" />
 
-        <nav className="flex items-center gap-4 sm:gap-5 text-sm shrink-0">
+        <nav className="flex items-center gap-5 sm:gap-6 text-sm shrink-0">
           {loading ? (
             <div className="w-4 h-4 border-2 border-[#c23531]/30 border-t-[#c23531] rounded-full animate-spin" />
           ) : user ? (
@@ -77,7 +77,7 @@ export default function Header() {
                 <span className="w-7 h-7 rounded-full bg-[#c23531] flex items-center justify-center text-xs text-white font-bold shadow-sm">
                   {(profile?.display_name || profile?.username || '?')[0]}
                 </span>
-                <span className="font-medium text-[#444] max-w-[5em] truncate">{profile?.display_name || profile?.username}</span>
+                <span className="font-medium text-[#444] min-w-[4em] max-w-[7em] truncate text-center">{profile?.display_name || profile?.username}</span>
               </Link>
               {isAdmin && <Link href="/admin" className="btn-ghost text-[#c23531]">管理</Link>}
               <button onClick={handleLogout} className="btn-ghost text-[#999] hover:text-[#c23531]">退出</button>

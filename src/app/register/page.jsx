@@ -33,7 +33,7 @@ export default function RegisterPage() {
 
     // 昵称校验
     if (username.trim().length < 2) { setError('昵称至少 2 个字符'); return }
-    if (username.trim().length > 20) { setError('昵称不能超过 20 个字符'); return }
+    if (username.trim().length > 10) { setError('昵称不能超过 10 个字符'); return }
     if (!/^[\u4e00-\u9fa5a-zA-Z0-9_]+$/.test(username.trim())) { setError('昵称只能包含中文、字母、数字和下划线'); return }
 
     // 手机号校验
@@ -101,7 +101,7 @@ export default function RegisterPage() {
               <label className="block text-xs text-[#888] mb-1.5 font-medium">昵称 / 姓名 <span className="text-[#c23531]">*</span></label>
               <input type="text" required value={form.username}
                 onChange={e => update('username', e.target.value)}
-                className={inputClass} placeholder="例如：张三" maxLength={20} autoComplete="name" />
+                className={inputClass} placeholder="例如：张三" maxLength={10} autoComplete="name" />
             </div>
 
             <div>

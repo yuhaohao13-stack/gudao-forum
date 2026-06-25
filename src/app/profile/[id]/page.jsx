@@ -208,7 +208,7 @@ export default function ProfilePage() {
               <label className="block text-xs text-[#888] mb-1.5 font-medium">昵称 / 姓名</label>
               <input type="text" value={form.display_name}
                 onChange={e => update('display_name', e.target.value)}
-                className="input" maxLength={20} />
+                className="input" maxLength={10} />
             </div>
 
             <div>
