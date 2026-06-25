@@ -30,7 +30,7 @@ const innerStyle = {
 
 export default function DonateOverlay() {
   const [showModal, setShowModal] = useState(false)
-  const [showAlipayQR, setShowAlipayQR] = useState(false)
+  const [showWechatQR, setShowWechatQR] = useState(false)
   const [showPayNowQR, setShowPayNowQR] = useState(false)
   const [toast, setToast] = useState('')
 
@@ -45,11 +45,22 @@ export default function DonateOverlay() {
     return () => window.removeEventListener('open-donate', handler)
   }, [])
 
+  // 微信二维码点击时自动关闭主弹窗
+  const openWechat = () => {
+    setShowModal(false)
+    setTimeout(() => setShowWechatQR(true), 200)
+  }
+
+  const openPayNow = () => {
+    setShowModal(false)
+    setTimeout(() => setShowPayNowQR(true), 200)
+  }
+
   return (
     <>
       {/* 主弹窗 */}
       {showModal && (
-        <div style={overlayStyle} onClick={() => { setShowModal(false); setShowAlipayQR(false); setShowPayNowQR(false) }}>
+        <div style={overlayStyle} onClick={() => { setShowModal(false); setShowWechatQR(false); setShowPayNowQR(false) }}>
           <div style={innerStyle} onClick={e => e.stopPropagation()}>
             <div className="text-center mb-5">
               <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>☕</div>
@@ -58,17 +69,17 @@ export default function DonateOverlay() {
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-              <button onClick={() => setShowAlipayQR(true)}
+              <button onClick={openWechat}
                 style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1rem', borderRadius: '0.75rem', border: '1px solid #eee8dc', width: '100%', cursor: 'pointer', background: 'none', fontSize: 'inherit' }}>
-                <div style={{ width: '2.5rem', height: '2.5rem', borderRadius: '50%', backgroundColor: '#1677ff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem', flexShrink: 0 }}>💳</div>
+                <div style={{ width: '2.5rem', height: '2.5rem', borderRadius: '50%', backgroundColor: '#07c160', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem', flexShrink: 0 }}>💚</div>
                 <div style={{ textAlign: 'left', flex: 1 }}>
-                  <div style={{ fontWeight: 600, fontSize: '0.875rem', color: '#1a1a1a' }}>支付宝</div>
+                  <div style={{ fontWeight: 600, fontSize: '0.875rem', color: '#1a1a1a' }}>微信</div>
                   <div style={{ fontSize: '0.75rem', color: '#999' }}>扫描二维码支付</div>
                 </div>
-                <span style={{ color: '#1677ff', fontSize: '0.875rem' }}>→</span>
+                <span style={{ color: '#07c160', fontSize: '0.875rem' }}>→</span>
               </button>
 
-              <button onClick={() => setShowPayNowQR(true)}
+              <button onClick={openPayNow}
                 style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1rem', borderRadius: '0.75rem', border: '1px solid #eee8dc', width: '100%', cursor: 'pointer', background: 'none', fontSize: 'inherit' }}>
                 <div style={{ width: '2.5rem', height: '2.5rem', borderRadius: '50%', backgroundColor: '#16a34a', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem', flexShrink: 0 }}>🇸🇬</div>
                 <div style={{ textAlign: 'left', flex: 1 }}>
@@ -84,16 +95,16 @@ export default function DonateOverlay() {
         </div>
       )}
 
-      {/* 支付宝二维码 */}
-      {showAlipayQR && (
-        <div style={{ ...overlayStyle, zIndex: 9999 }} onClick={() => setShowAlipayQR(false)}>
+      {/* 微信二维码 */}
+      {showWechatQR && (
+        <div style={{ ...overlayStyle, zIndex: 9999 }} onClick={() => setShowWechatQR(false)}>
           <div style={{ ...innerStyle, textAlign: 'center' }} onClick={e => e.stopPropagation()}>
-            <div style={{ fontSize: '1.125rem', fontWeight: 700, fontFamily: "'Noto Serif SC', serif", color: '#1a1a1a', marginBottom: '0.25rem' }}>💳 支付宝</div>
-            <p style={{ fontSize: '0.75rem', color: '#999', marginBottom: '1rem' }}>打开支付宝扫描二维码</p>
+            <div style={{ fontSize: '1.125rem', fontWeight: 700, fontFamily: "'Noto Serif SC', serif", color: '#1a1a1a', marginBottom: '0.25rem' }}>💚 微信</div>
+            <p style={{ fontSize: '0.75rem', color: '#999', marginBottom: '1rem' }}>打开微信扫描二维码支付</p>
             <div style={{ width: '100%', maxWidth: '15rem', margin: '0 auto', padding: '1rem', border: '1px solid #eee8dc', borderRadius: '0.75rem', color: '#ccc', fontSize: '0.75rem' }}>
-              请提供支付宝收款码图片
+              请发送微信收款码图片
             </div>
-            <p style={{ fontSize: '0.625rem', color: '#ccc', marginTop: '1rem' }}>截图保存到相册，在支付宝中扫码</p>
+            <p style={{ fontSize: '0.625rem', color: '#ccc', marginTop: '1rem' }}>截图保存到相册，在微信中扫码</p>
           </div>
         </div>
       )}
