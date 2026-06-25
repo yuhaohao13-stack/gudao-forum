@@ -43,9 +43,17 @@ export default function RootLayout({ children }) {
         <link rel="apple-touch-icon" sizes="512x512" href="/icons/icon-512.png" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="theme-color" content="#f8f6f2" />
+        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+        <meta http-equiv="Pragma" content="no-cache" />
+        <meta http-equiv="Expires" content="0" />
         <script dangerouslySetInnerHTML={{
-          __html: `// 清除旧 Service Worker 缓存
-if('serviceWorker'in navigator){navigator.serviceWorker.getRegistrations().then(r=>r.forEach(s=>s.unregister()))}`
+          __html: `// 注册新 SW（清除缓存后退出）
+if('serviceWorker'in navigator){
+  navigator.serviceWorker.getRegistrations().then(function(r){
+    r.forEach(function(s){s.unregister()})
+  })
+  navigator.serviceWorker.register('/sw.js')
+}`
         }} />
       </head>
       <body className="min-h-screen flex flex-col bg-[#f8f6f2] text-[#1a1a1a]">
