@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { useAuth } from '@/components/AuthProvider'
 import Link from 'next/link'
@@ -15,7 +15,49 @@ export default function ProfilePage() {
   const [message, setMessage] = useState('')
   const [form, setForm] = useState({})
   const supabase = createClient()
+  const router = useRouter()
   const isOwn = user?.id === id
+
+  // 好友相关
+  const [friendship, setFriendship] = useState(null)  // null/pending/accepted
+  const [friends, setFriends] = useState([])
+  const [pendingRequests, setPendingRequests] = useState([])
+  const [friendAction, setFriendAction] = useState('')
+  const [activeTab, setActiveTab] = useState('posts')  // posts / friends
+
+  useEffect(() => {
+    if (!profile || !user) return
+    if (user.id === id) {
+      // 自己的好友列表
+      supabase.from('friends').select('*, profiles!friends_requester_id_fkey(username,display_name), profiles!friends_addressee_id_fkey(username,display_name)')
+        .or(`requester_id.eq.${user.id},addressee_id.eq.${user.id}`).eq('status','accepted').then(({data}) => setFriends(data || []))
+      supabase.from('friends').select('*, profiles!friends_requester_id_fkey(username,display_name)')
+        .eq('addressee_id',user.id).eq('status','pending').then(({data}) => setPendingRequests(data || []))
+    } else {
+      // 查看他人好友关系
+      supabase.from('friends').select('*')
+        .or(`and(requester_id.eq.${user.id},addressee_id.eq.${id}),and(requester_id.eq.${id},addressee_id.eq.${user.id})`)
+        .single().then(({data}) => setFriendship(data?.status || null))
+    }
+  }, [profile?.id, user?.id, id])
+
+  const sendFriendRequest = async () => {
+    setFriendAction('发送中...')
+    const { error } = await supabase.from('friends').insert({ requester_id: user.id, addressee_id: id })
+    if (error) setFriendAction('请求失败')
+    else { setFriendship('pending'); setFriendAction('✅ 已发送请求') }
+    setTimeout(() => setFriendAction(''), 3000)
+  }
+
+  const acceptFriend = async (reqId) => {
+    await supabase.from('friends').update({ status: 'accepted' }).eq('id', reqId)
+    setPendingRequests(prev => prev.filter(r => r.id !== reqId))
+  }
+
+  const rejectFriend = async (reqId) => {
+    await supabase.from('friends').update({ status: 'rejected' }).eq('id', reqId)
+    setPendingRequests(prev => prev.filter(r => r.id !== reqId))
+  }
 
   useEffect(() => {
     supabase.from('profiles').select('*').eq('id', id).single().then(({ data }) => {
@@ -104,12 +146,22 @@ export default function ProfilePage() {
               <span className="text-[#999]">加入于 {new Date(profile.created_at).toLocaleDateString('zh-CN')}</span>
             </div>
 
-            {isOwn && (
-              <button onClick={() => setEditing(true)}
-                className="btn-primary mt-5 !px-6">
-                ✏️ 编辑资料
-              </button>
-            )}
+            <div className="flex items-center justify-center gap-3 mt-5">
+              {isOwn ? (
+                <button onClick={() => setEditing(true)} className="btn-primary !px-6">✏️ 编辑资料</button>
+              ) : user ? (
+                friendship === 'accepted' ? (
+                  <Link href={`/messages/${id}`} className="btn-primary !px-6">💬 发私信</Link>
+                ) : friendship === 'pending' ? (
+                  <span className="text-xs text-[#999] bg-[#f5f0e8] px-4 py-2 rounded-full">⏳ 等待对方确认</span>
+                ) : (
+                  <button onClick={sendFriendRequest} disabled={!!friendAction}
+                    className="btn-primary !px-6 disabled:opacity-50">
+                    {friendAction || '👥 加为好友'}
+                  </button>
+                )
+              ) : null}
+            </div>
           </>
         ) : (
           /* 编辑模式 */
@@ -195,36 +247,95 @@ export default function ProfilePage() {
         )}
       </div>
 
-      {/* 帖子列表 */}
-      <div className="mt-6">
-        <h2 className="font-semibold text-sm text-[#666] mb-3">
-          📝 发过的帖子 <span className="font-normal text-[#bbb] ml-1">({threads.length})</span>
-        </h2>
-        {threads.length === 0 ? (
-          <div className="card p-8 text-center">
-            <div className="text-2xl mb-2">📭</div>
-            <p className="text-[#999] text-sm">还没有发过帖子</p>
-          </div>
-        ) : (
-          <div className="space-y-2.5">
-            {threads.map((t, i) => (
-              <Link key={t.id} href={`/t/${t.id}`}
-                className={`post-card ${i > 0 ? `anim-delay-${Math.min(i, 5)}` : ''}`}>
-                <div className="text-[#1a1a1a]">
-                  <div className="font-semibold truncate">{t.title}</div>
-                  <div className="flex items-center justify-between mt-2">
-                    <div className="text-xs text-[#999] truncate min-w-0">
-                      {t.categories?.name} <span className="text-[#ddd6c8] mx-1.5">·</span>
-                      {new Date(t.created_at).toLocaleDateString('zh-CN')}
-                    </div>
-                    <div className="text-xs text-[#bbb] shrink-0 ml-3">💬 {t.reply_count || 0}</div>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-        )}
+      {/* Tabs */}
+      <div className="flex gap-2 mt-6 mb-4">
+        <button onClick={() => setActiveTab('posts')}
+          className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
+            activeTab === 'posts' ? 'bg-[#c23531] text-white shadow-sm' : 'bg-white text-[#666] border border-[#ece8e0]'
+          }`}>📝 帖子 ({threads.length})</button>
+        <button onClick={() => setActiveTab('friends')}
+          className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
+            activeTab === 'friends' ? 'bg-[#c23531] text-white shadow-sm' : 'bg-white text-[#666] border border-[#ece8e0]'
+          }`}>👥 好友 ({friends.length})</button>
       </div>
+
+      {/* Pending requests (own profile) */}
+      {isOwn && pendingRequests.length > 0 && activeTab === 'friends' && (
+        <div className="mb-4 p-4 rounded-xl bg-amber-50 border border-amber-200">
+          <h3 className="text-xs font-semibold text-amber-700 mb-2">📩 好友请求 ({pendingRequests.length})</h3>
+          {pendingRequests.map(req => (
+            <div key={req.id} className="flex items-center justify-between py-1.5">
+              <Link href={`/profile/${req.requester_id}`} className="text-sm font-medium text-[#666] hover:text-[#c23531]">
+                {req.profiles?.display_name || req.profiles?.username || '用户'}
+              </Link>
+              <div className="flex gap-2">
+                <button onClick={() => acceptFriend(req.id)} className="text-xs text-green-600 bg-green-100 px-2.5 py-1 rounded-full hover:bg-green-200">✅ 接受</button>
+                <button onClick={() => rejectFriend(req.id)} className="text-xs text-[#999] bg-[#f0f0f0] px-2.5 py-1 rounded-full hover:bg-[#e0e0e0]">✕ 拒绝</button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* 好友列表 */}
+      {activeTab === 'friends' && (
+        <div className="space-y-2">
+          {friends.length === 0 ? (
+            <div className="card p-8 text-center">
+              <div className="text-2xl mb-2">👥</div>
+              <p className="text-[#999] text-sm">还没有好友</p>
+              {!isOwn && <p className="text-[#ccc] text-xs mt-1">点「加为好友」发送请求</p>}
+            </div>
+          ) : friends.map(f => {
+            const friendId = f.requester_id === user?.id ? f.addressee_id : f.requester_id
+            const friendName = f.requester_id === user?.id
+              ? (f.profiles?.display_name || f.profiles?.username)
+              : (f.profiles?.display_name || f.profiles?.username)
+            return (
+              <div key={f.id} className="card p-3 flex items-center justify-between">
+                <Link href={`/profile/${friendId}`} className="flex items-center gap-3 min-w-0">
+                  <div className="w-8 h-8 rounded-full bg-[#c23531] flex items-center justify-center text-xs text-white font-bold shrink-0">{(friendName || '?')[0]}</div>
+                  <span className="text-sm font-medium text-[#1a1a1a] truncate">{friendName}</span>
+                </Link>
+                <Link href={`/messages/${friendId}`} className="btn-ghost text-xs shrink-0">💬 私信</Link>
+              </div>
+            )
+          })}
+        </div>
+      )}
+
+      {/* 帖子列表 */}
+      {activeTab === 'posts' && (
+        <div className="mt-2">
+          <h2 className="font-semibold text-sm text-[#666] mb-3">
+            📝 发过的帖子 <span className="font-normal text-[#bbb] ml-1">({threads.length})</span>
+          </h2>
+          {threads.length === 0 ? (
+            <div className="card p-8 text-center">
+              <div className="text-2xl mb-2">📭</div>
+              <p className="text-[#999] text-sm">还没有发过帖子</p>
+            </div>
+          ) : (
+            <div className="space-y-2.5">
+              {threads.map((t, i) => (
+                <Link key={t.id} href={`/t/${t.id}`}
+                  className={`post-card ${i > 0 ? `anim-delay-${Math.min(i, 5)}` : ''}`}>
+                  <div className="text-[#1a1a1a]">
+                    <div className="font-semibold truncate">{t.title}</div>
+                    <div className="flex items-center justify-between mt-2">
+                      <div className="text-xs text-[#999] truncate min-w-0">
+                        {t.categories?.name} <span className="text-[#ddd6c8] mx-1.5">·</span>
+                        {new Date(t.created_at).toLocaleDateString('zh-CN')}
+                      </div>
+                      <div className="text-xs text-[#bbb] shrink-0 ml-3">💬 {t.reply_count || 0}</div>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   )
 }
