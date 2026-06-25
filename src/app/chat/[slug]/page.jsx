@@ -150,6 +150,18 @@ export default function ChatRoomPage() {
       console.error('发送失败:', error)
       setSendError(error.message || '发送失败，请稍后再试')
       setInput(content)
+    } else {
+      // 重新拉取最新消息
+      const { data: newMsgs } = await supabase
+        .from('chat_messages')
+        .select('*, profiles(username, display_name, role)')
+        .eq('room_id', room.id)
+        .order('created_at', { ascending: false })
+        .limit(MESSAGES_PER_PAGE)
+      if (newMsgs) {
+        setMessages(newMsgs.reverse())
+        scrollToBottom(true)
+      }
     }
     setSending(false)
     inputRef.current?.focus()
