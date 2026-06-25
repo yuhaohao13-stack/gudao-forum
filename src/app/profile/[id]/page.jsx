@@ -151,7 +151,14 @@ export default function ProfilePage() {
                 <button onClick={() => setEditing(true)} className="btn-primary !px-6">✏️ 编辑资料</button>
               ) : user ? (
                 friendship === 'accepted' ? (
-                  <Link href={`/messages/${id}`} className="btn-primary !px-6">💬 发私信</Link>
+                  <div className="flex gap-2">
+                    <Link href={`/messages/${id}`} className="btn-primary !px-6">💬 发私信</Link>
+                    <button onClick={async () => {
+                      if (!confirm('确定删除好友？')) return
+                      await supabase.from('friends').delete().or(`and(requester_id.eq.${user.id},addressee_id.eq.${id}),and(requester_id.eq.${id},addressee_id.eq.${user.id})`)
+                      setFriendship(null)
+                    }} className="btn-ghost border border-[#eee8dc] text-[#999] hover:text-[#c23531]">解除好友</button>
+                  </div>
                 ) : friendship === 'pending' ? (
                   <span className="text-xs text-[#999] bg-[#f5f0e8] px-4 py-2 rounded-full">⏳ 等待对方确认</span>
                 ) : (

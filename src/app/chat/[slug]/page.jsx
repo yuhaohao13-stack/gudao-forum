@@ -355,6 +355,7 @@ export default function ChatRoomPage() {
         )}
         <div className="flex items-center justify-between mt-1.5">
           <span className="text-[10px] text-[#ccc]">友善交流，以文会友</span>
+          <span className="text-[10px] text-[#999]">💡 聊天记录保留 48 小时</span>
           <span className="text-[10px] text-[#ccc]">{messages.length} 条消息</span>
         </div>
       </div>

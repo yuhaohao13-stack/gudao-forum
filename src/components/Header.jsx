@@ -69,6 +69,7 @@ export default function Header() {
             <div className="w-4 h-4 border-2 border-[#c23531]/30 border-t-[#c23531] rounded-full animate-spin" />
           ) : user ? (
             <>
+              <Link href="/messages" className="btn-ghost font-medium">💬</Link>
               <Link href="/new-thread" className="btn-primary !px-4 !py-2 !text-sm">
                 ✏️ 发帖
               </Link>

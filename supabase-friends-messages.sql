@@ -56,7 +56,11 @@ CREATE POLICY "登录用户可发送私信" ON public.private_messages
   FOR INSERT WITH CHECK (auth.uid() = sender_id);
 
 -- 启用实时订阅
-ALTER PUBLICATION supabase_realtime ADD TABLE IF NOT EXISTS public.private_messages;
+DO $$ BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_publication_tables WHERE pubname = 'supabase_realtime' AND schemaname = 'public' AND tablename = 'private_messages') THEN
+    ALTER PUBLICATION supabase_realtime ADD TABLE public.private_messages;
+  END IF;
+END $$;
 
 -- ============================================
 -- 3. 聊天室消息支持图片

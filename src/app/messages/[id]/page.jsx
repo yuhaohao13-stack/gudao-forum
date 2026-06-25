@@ -107,6 +107,12 @@ export default function PrivateChatPage() {
     setSending(false)
   }
 
+  const deleteMessage = async (msgId) => {
+    if (!confirm('确定删除这条消息？')) return
+    await supabase.from('private_messages').delete().eq('id', msgId)
+    setMessages(prev => prev.filter(m => m.id !== msgId))
+  }
+
   const handleImages = (e) => {
     const files = Array.from(e.target.files || []).slice(0, 3)
     setImages(files)
@@ -142,19 +148,26 @@ export default function PrivateChatPage() {
             <div className={`max-w-[75%] rounded-2xl px-4 py-2.5 ${
               msg.sender_id === user.id ? 'bg-[#c23531] text-white rounded-br-md' : 'bg-[#f5f0e8] text-[#333] rounded-bl-md'
             }`}>
-              {msg.content && <p className="text-sm leading-relaxed whitespace-pre-wrap break-words">{msg.content}</p>}
-              {msg.images?.length > 0 && (
-                <div className={`flex flex-wrap gap-1.5 ${msg.content ? 'mt-2' : ''}`}>
-                  {msg.images.map((url, i) => (
-                    <a key={i} href={url} target="_blank" rel="noopener noreferrer">
-                      <img src={url} alt="" className="max-w-[200px] max-h-[200px] rounded-lg" loading="lazy" />
-                    </a>
-                  ))}
+              <div className="flex items-start gap-1 group">
+                <div className="flex-1 min-w-0">
+                  {msg.content && <p className="text-sm leading-relaxed whitespace-pre-wrap break-words">{msg.content}</p>}
+                  {msg.images?.length > 0 && (
+                    <div className={`flex flex-wrap gap-1.5 ${msg.content ? 'mt-2' : ''}`}>
+                      {msg.images.map((url, i) => (
+                        <a key={i} href={url} target="_blank" rel="noopener noreferrer">
+                          <img src={url} alt="" className="max-w-[200px] max-h-[200px] rounded-lg" loading="lazy" />
+                        </a>
+                      ))}
+                    </div>
+                  )}
+                  <p className={`text-[10px] mt-1 ${msg.sender_id === user.id ? 'text-white/60' : 'text-[#bbb]'}`}>
+                    {new Date(msg.created_at).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })}
+                  </p>
                 </div>
-              )}
-              <p className={`text-[10px] mt-1 ${msg.sender_id === user.id ? 'text-white/60' : 'text-[#bbb]'}`}>
-                {new Date(msg.created_at).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })}
-              </p>
+                <button onClick={() => deleteMessage(msg.id)}
+                  className="text-[10px] text-white/30 hover:text-[#c23531] opacity-0 group-hover:opacity-100 transition-all shrink-0 mt-0.5"
+                  title="删除">✕</button>
+              </div>
             </div>
           </div>
         ))}
