@@ -94,7 +94,7 @@ export default function Header() {
       {user && (
         <div className="hidden sm:flex items-center justify-end gap-3 px-4 pb-2 pt-1 border-t border-[#eee8dc]/50">
           <span className="text-xs font-medium text-[#444] min-w-[4em] text-right">
-            {(profile?.display_name || profile?.username || '').slice(0, 4)}
+            {profile?.display_name || profile?.username || ''}
           </span>
           <button onClick={handleLogout} className="text-[10px] text-[#999] hover:text-[#c23531] transition-colors">退出</button>
         </div>
