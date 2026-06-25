@@ -78,7 +78,7 @@ export default function Header() {
                 <span className="w-7 h-7 rounded-full bg-[#c23531] flex items-center justify-center text-xs text-white font-bold shadow-sm">
                   {(profile?.display_name || profile?.username || '?')[0]}
                 </span>
-                <span className="hidden sm:inline font-medium text-sm text-[#444]">{profile?.display_name || profile?.username || ''}</span>
+                <span className="inline font-medium text-sm text-[#444]">{profile?.display_name || profile?.username || ''}</span>
               </Link>
               {isAdmin && <Link href="/admin" className="btn-ghost text-[#c23531]">管理</Link>}
               <button onClick={handleLogout} className="btn-ghost text-[#999] hover:text-[#c23531]">退出</button>
@@ -140,6 +140,7 @@ export default function Header() {
                   <span className="w-6 h-6 rounded-full bg-[#c23531] flex items-center justify-center text-[10px] text-white font-bold shadow-sm shrink-0">
                     {(profile?.display_name || profile?.username || '?')[0]}
                   </span>
+                  <span className="text-xs font-medium text-[#444] max-w-[4em] truncate">{(profile?.display_name || profile?.username || '').slice(0, 4)}</span>
                 </Link>
                 {isAdmin && <Link href="/admin" className="px-1.5 py-1 text-[#c23531] text-xs">管理</Link>}
                 <button onClick={handleLogout} className="px-1.5 py-1 text-[#999] text-xs">退出</button>
