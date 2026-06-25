@@ -58,13 +58,15 @@ export default function ThreadPage() {
   }
 
   if (loading) return <div className="flex justify-center py-20"><div className="w-5 h-5 border-2 border-[#c23531]/30 border-t-[#c23531] rounded-full animate-spin" /></div>
-  if (!thread) return <div className="text-center py-20 text-[#999]"><div className="text-3xl mb-3">🔍</div><p>帖子不存在</p><Link href="/" className="text-[#c23531] hover:underline mt-2 inline-block">返回首页</Link></div>
+  if (!thread) return <div className="text-center py-20 text-[#999] anim-fade-in"><div className="text-3xl mb-3">🔍</div><p>帖子不存在</p><Link href="/" className="text-[#c23531] hover:underline mt-2 inline-block">返回首页</Link></div>
 
   return (
-    <div className="anim-fade-in">
-      <Link href={`/c/${thread.categories?.slug}`} className="text-sm text-[#c23531]/70 hover:text-[#c23531] transition-colors">&larr; {thread.categories?.name}</Link>
+    <div className="anim-fade-in max-w-3xl mx-auto">
+      <Link href={`/c/${thread.categories?.slug}`} className="text-sm text-[#c23531]/70 hover:text-[#c23531] transition-colors">
+        &larr; {thread.categories?.name}
+      </Link>
 
-      <article className="mt-3 card p-6 sm:p-8 anim-up">
+      <article className="mt-3 card p-5 sm:p-8 anim-up">
         {(thread.profiles?.role === 'admin' || thread.profiles?.role === 'moderator') && (
           <span className="meta-tag bg-[#c23531]/10 text-[#c23531] border border-[#c23531]/20 mb-2">👑 管理员</span>
         )}
@@ -78,7 +80,7 @@ export default function ThreadPage() {
           <span>{new Date(thread.created_at).toLocaleString('zh-CN')}</span>
         </div>
 
-        <div className="my-6 h-px bg-[#f0e8dc]" />
+        <div className="my-6 h-px bg-[#ece8e0]" />
 
         <div className="text-[#333] leading-7 sm:leading-8 whitespace-pre-wrap text-sm sm:text-base">
           {thread.content}
@@ -88,15 +90,15 @@ export default function ThreadPage() {
           <div className="mt-6 flex flex-wrap gap-3">
             {thread.images.map((url, i) => (
               <a key={i} href={url} target="_blank" rel="noopener noreferrer" className="block w-[45%] sm:w-[30%] group">
-                <img src={url} alt="" className="w-full h-auto max-h-60 object-cover rounded-xl border border-[#eee8dc] group-hover:border-[#c23531]/40 group-hover:opacity-90 transition-all" loading="lazy" />
+                <img src={url} alt="" className="w-full h-auto max-h-60 object-cover rounded-xl border border-[#ece8e0] group-hover:border-[#c23531]/40 group-hover:opacity-90 transition-all" loading="lazy" />
               </a>
             ))}
           </div>
         )}
 
-        <div className="mt-6 pt-5 border-t border-[#f0e8dc] flex items-center gap-4 text-sm">
+        <div className="mt-6 pt-5 border-t border-[#ece8e0] flex items-center gap-4 text-sm">
           <button onClick={toggleLike}
-            className={`flex items-center gap-1.5 px-4 py-2 rounded-full transition-all ${liked ? 'text-[#c23531] bg-[#c23531]/10 border border-[#c23531]/20' : 'text-[#999] border border-[#eee8dc] hover:text-[#c23531] hover:border-[#c23531]/30'}`}>
+            className={`flex items-center gap-1.5 px-4 py-2 rounded-full transition-all ${liked ? 'text-[#c23531] bg-[#c23531]/10 border border-[#c23531]/20' : 'text-[#999] border border-[#ece8e0] hover:text-[#c23531] hover:border-[#c23531]/30'}`}>
             {liked ? '❤️' : '🤍'} <span className="font-medium">{liked ? '已赞' : '点赞'}</span>
           </button>
           <span className="stat">💬 <span className="stat-num">{replies.length}</span> 回复</span>
@@ -108,7 +110,7 @@ export default function ThreadPage() {
         <h2 className="font-semibold text-sm text-[#666] mb-3">💬 全部回复<span className="font-normal text-[#bbb] ml-1">({replies.length})</span></h2>
         <div className="space-y-3">
           {replies.length === 0 ? (
-            <div className="card p-8 text-center"><div className="text-2xl mb-2">🛋️</div><p className="text-[#999] text-sm">暂无回复</p></div>
+            <div className="card p-8 text-center"><div className="text-2xl mb-2">🛋️</div><p className="text-[#999] text-sm">暂无回复，来坐沙发吧</p></div>
           ) : replies.map((r, i) => (
             <div key={r.id} className={`card p-4 sm:p-5 anim-scale ${i > 0 ? `anim-delay-${Math.min(i, 3)}` : ''}`}>
               {r.is_deleted ? (

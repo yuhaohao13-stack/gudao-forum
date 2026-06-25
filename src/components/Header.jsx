@@ -1,7 +1,7 @@
 'use client'
 import Link from 'next/link'
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import { useAuth } from './AuthProvider'
 import { createClient } from '@/lib/supabase/client'
 
@@ -11,7 +11,9 @@ export default function Header() {
   const [showSearch, setShowSearch] = useState(false)
   const supabase = createClient()
   const router = useRouter()
+  const pathname = usePathname()
   const isAdmin = profile?.role === 'admin' || profile?.role === 'moderator'
+  const isChatPage = pathname?.startsWith('/chat')
 
   const handleLogout = async () => {
     await supabase.auth.signOut()
@@ -24,14 +26,30 @@ export default function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-[#eee8dc]">
-      <div className="max-w-4xl mx-auto px-4 h-12 flex items-center justify-between gap-3">
-        <Link href="/" className="flex items-center gap-3 shrink-0 group">
-          <span className="text-xl group-hover:scale-110 transition-transform duration-300">🏛️</span>
-          <h1 className="text-xl sm:text-2xl font-bold font-serif tracking-wide text-[#1a1a1a]">古道论坛</h1>
-        </Link>
+    <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-[#eee8dc]">
+      <div className="max-w-4xl mx-auto px-4 h-12 flex items-center justify-between gap-2">
+        <div className="flex items-center gap-1">
+          <Link href="/" className="flex items-center gap-2 shrink-0 group">
+            <span className="text-xl group-hover:scale-110 transition-transform duration-300">🏛️</span>
+            <h1 className="text-xl sm:text-2xl font-bold font-serif tracking-wide text-[#1a1a1a]">古道论坛</h1>
+          </Link>
 
-        {/* Desk search */}
+          {/* 导航链接（桌面） */}
+          <nav className="hidden sm:flex items-center ml-4 gap-1 text-sm">
+            <Link href="/"
+              className={`px-3 py-1.5 rounded-full transition-all ${
+                !isChatPage ? 'bg-[#c23531]/10 text-[#c23531] font-medium' : 'text-[#888] hover:text-[#c23531] hover:bg-[#c23531]/5'
+              }`}
+            >🏠 首页</Link>
+            <Link href="/chat"
+              className={`px-3 py-1.5 rounded-full transition-all ${
+                isChatPage ? 'bg-[#c23531]/10 text-[#c23531] font-medium' : 'text-[#888] hover:text-[#c23531] hover:bg-[#c23531]/5'
+              }`}
+            >💬 聊天</Link>
+          </nav>
+        </div>
+
+        {/* 桌面搜索 */}
         <div className="hidden sm:flex flex-1 max-w-xs">
           <div className="relative w-full">
             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#ccc] text-sm">🔍</span>
@@ -43,8 +61,10 @@ export default function Header() {
           </div>
         </div>
 
-        <nav className="flex items-center gap-1.5 sm:gap-2 text-sm shrink-0">
-          <button onClick={() => setShowSearch(!showSearch)} className="sm:hidden btn-ghost px-2">🔍</button>
+        <nav className="flex items-center gap-1 sm:gap-2 text-sm shrink-0">
+          {/* 移动端导航 */}
+          <Link href="/chat" className="sm:hidden btn-ghost px-1.5">💬</Link>
+          <button onClick={() => setShowSearch(!showSearch)} className="sm:hidden btn-ghost px-1.5">🔍</button>
 
           {loading ? (
             <div className="w-4 h-4 border-2 border-[#c23531]/30 border-t-[#c23531] rounded-full animate-spin" />
@@ -71,7 +91,7 @@ export default function Header() {
         </nav>
       </div>
 
-      {/* Mobile search */}
+      {/* 移动端搜索 */}
       {showSearch && (
         <div className="sm:hidden px-4 pb-4 anim-fade-in">
           <div className="relative">
