@@ -42,6 +42,26 @@ export default function AdminPage() {
   }
 
   const del = async (id) => { if (!confirm('确定删除？')) return; await supabase.from('threads').delete().eq('id', id); setThreads(threads.filter(t => t.id !== id)) }
+
+  const deleteUser = async (userId, username) => {
+    if (!confirm(`确定删除用户 ${username}？\n\n将同时删除：\n- 该用户的所有帖子\n- 所有回复\n- 好友关系\n- 聊天记录\n- 个人资料`)) return
+    if (!confirm('⚠️ 此操作不可撤销，确定？')) return
+    try {
+      // 删除关联数据
+      await supabase.from('threads').delete().eq('author_id', userId)
+      await supabase.from('replies').delete().eq('author_id', userId)
+      await supabase.from('friends').delete().or(`requester_id.eq.${userId},addressee_id.eq.${userId}`)
+      await supabase.from('private_messages').delete().or(`sender_id.eq.${userId},receiver_id.eq.${userId}`)
+      await supabase.from('chat_messages').delete().eq('user_id', userId)
+      // 删除个人资料
+      await supabase.from('profiles').delete().eq('id', userId)
+      // 刷新列表
+      supabase.from('profiles').select('*').order('created_at', { ascending: false }).then(({ data }) => setUsers(data || []))
+      alert('✅ 用户数据已删除\n\n注：如需完全删除 auth 账号，请去 Supabase→Authentication 手动删除')
+    } catch (e) {
+      alert('删除失败: ' + e.message)
+    }
+  }
   const toggle = (t, f) => async () => { await supabase.from('threads').update({ [f]: !t[f] }).eq('id', t.id); setThreads(threads.map(x => x.id === t.id ? { ...x, [f]: !x[f] } : x)) }
   const roleChg = async (id, r) => { await supabase.from('profiles').update({ role: r }).eq('id', id); setUsers(users.map(u => u.id === id ? { ...u, role: r } : u)) }
 
@@ -71,6 +91,12 @@ export default function AdminPage() {
           <td className="py-2.5 px-4"><div className="font-medium text-[#333]">{u.display_name || u.username}</div><div className="text-[10px] text-[#999]">@{u.username}</div></td>
           <td className="py-2.5 px-4"><span className={`text-[10px] px-2 py-0.5 rounded font-medium ${u.role === 'admin' ? 'bg-[#c23531]/10 text-[#c23531] border border-[#c23531]/20' : u.role === 'moderator' ? 'bg-[#8b6914]/10 text-[#8b6914] border border-[#8b6914]/20' : 'text-[#999]'}`}>{u.role === 'admin' ? '管理员' : u.role === 'moderator' ? '版主' : '用户'}</span></td>
           <td className="py-2.5 px-4"><select value={u.role} onChange={e => roleChg(u.id, e.target.value)} className="bg-white border border-[#eee8dc] rounded-lg px-2 py-1 text-xs text-[#333] outline-none">{['user', 'moderator', 'admin'].map(r => <option key={r} value={r}>{r === 'admin' ? '管理员' : r === 'moderator' ? '版主' : '用户'}</option>)}</select></td>
+          <td className="py-2.5 px-4">
+            {u.role !== 'admin' && (
+              <button onClick={() => deleteUser(u.id, u.display_name || u.username)}
+                className="text-xs text-[#c23531] hover:bg-[#c23531]/10 px-2 py-1 rounded transition-colors">🗑️ 删除</button>
+            )}
+          </td>
         </tr>
       ))}</tbody></table></div>}
       {tab === 'broadcast' && (
