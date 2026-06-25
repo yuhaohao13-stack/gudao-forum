@@ -65,9 +65,9 @@ export default function DonateButton({ className = '' }) {
       {showModal && (
         <>
           {/* 遮罩 */}
-          <div className="fixed inset-0 z-[100] bg-black/40 backdrop-blur-sm" />
-          {/* 弹窗 */}
-          <div className="fixed inset-0 z-[101] flex items-center justify-center p-4 pointer-events-none">
+          <div className="fixed inset-0 z-[100] bg-black/40 backdrop-blur-sm" onClick={closeAll} />
+          {/* 弹窗 — 绝对居中 */}
+          <div className="fixed inset-0 z-[101] grid place-items-center p-4 pointer-events-none">
             <div
               className="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 anim-scale pointer-events-auto"
             >
@@ -118,8 +118,8 @@ export default function DonateButton({ className = '' }) {
       {/* PayNow 二维码弹窗 */}
       {showPayNowQR && (
         <>
-          <div className="fixed inset-0 z-[110] bg-black/50 backdrop-blur-sm" />
-          <div className="fixed inset-0 z-[111] flex items-center justify-center p-4 pointer-events-none">
+          <div className="fixed inset-0 z-[110] bg-black/50 backdrop-blur-sm" onClick={closeAll} />
+          <div className="fixed inset-0 z-[111] grid place-items-center p-4 pointer-events-none">
             <div className="bg-white rounded-2xl shadow-2xl max-w-xs w-full p-6 anim-scale text-center pointer-events-auto">
               <div className="text-lg font-bold font-serif text-[#1a1a1a] mb-1">🇸🇬 PayNow</div>
               <p className="text-xs text-[#999] mb-4">打开银行 App 扫描二维码支付</p>
