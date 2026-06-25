@@ -45,6 +45,9 @@ export default function PrivateChatPage() {
 
     // 加载私信
     loadMessages()
+    // 标记为已读
+    supabase.from('private_messages').update({ read_at: new Date().toISOString() })
+      .eq('receiver_id', user.id).eq('sender_id', otherUserId).is('read_at', null).then()
     setLoading(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, otherUserId])

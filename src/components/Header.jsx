@@ -5,6 +5,7 @@ import { useRouter, usePathname } from 'next/navigation'
 import { useAuth } from './AuthProvider'
 import { createClient } from '@/lib/supabase/client'
 import DonateButton from './DonateButton'
+import UnreadBadge from './UnreadBadge'
 
 export default function Header() {
   const { user, profile, loading } = useAuth()
@@ -69,7 +70,7 @@ export default function Header() {
             <div className="w-4 h-4 border-2 border-[#c23531]/30 border-t-[#c23531] rounded-full animate-spin" />
           ) : user ? (
             <>
-              <Link href="/messages" className="btn-ghost font-medium">💬</Link>
+              <Link href="/messages" className="btn-ghost font-medium relative">💬 <UnreadBadge className="absolute -top-1 -right-1" /></Link>
               <Link href="/new-thread" className="btn-primary !px-4 !py-2 !text-sm">
                 ✏️ 发帖
               </Link>
@@ -129,6 +130,7 @@ export default function Header() {
               <div className="w-4 h-4 border-2 border-[#c23531]/30 border-t-[#c23531] rounded-full animate-spin" />
             ) : user ? (
               <>
+                <Link href="/messages" className="px-2 py-1 text-sm relative">💬 <UnreadBadge className="absolute -top-1 -right-0" /></Link>
                 <Link href="/new-thread" className="btn-primary !px-2.5 !py-1.5 !text-xs !rounded-lg">
                   ✏️ 发帖
                 </Link>
