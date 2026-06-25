@@ -74,14 +74,12 @@ export default function Header() {
               <Link href="/new-thread" className="btn-primary !px-4 !py-2 !text-sm">
                 ✏️ 发帖
               </Link>
-              <Link href={`/profile/${user.id}`} className="btn-ghost flex items-center gap-1.5">
+              <Link href={`/profile/${user.id}`} className="btn-ghost">
                 <span className="w-7 h-7 rounded-full bg-[#c23531] flex items-center justify-center text-xs text-white font-bold shadow-sm">
                   {(profile?.display_name || profile?.username || '?')[0]}
                 </span>
-                <span className="font-medium text-[#444] min-w-[4em] max-w-[7em] truncate text-center">{profile?.display_name || profile?.username}</span>
               </Link>
               {isAdmin && <Link href="/admin" className="btn-ghost text-[#c23531]">管理</Link>}
-              <button onClick={handleLogout} className="btn-ghost text-[#999] hover:text-[#c23531]">退出</button>
             </>
           ) : (
             <>
@@ -91,6 +89,16 @@ export default function Header() {
           )}
         </nav>
       </div>
+
+      {/* 用户名+退出（第二排，桌面端） */}
+      {user && (
+        <div className="hidden sm:flex items-center justify-end gap-3 px-4 pb-2 pt-1 border-t border-[#eee8dc]/50">
+          <span className="text-xs font-medium text-[#444] min-w-[4em] text-right">
+            {(profile?.display_name || profile?.username || '').slice(0, 4)}
+          </span>
+          <button onClick={handleLogout} className="text-[10px] text-[#999] hover:text-[#c23531] transition-colors">退出</button>
+        </div>
+      )}
 
       {/* ========== 手机版 Header（两排） ========== */}
       <div className="sm:hidden">
