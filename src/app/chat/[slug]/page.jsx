@@ -15,6 +15,7 @@ export default function ChatRoomPage() {
 
   const [room, setRoom] = useState(null)
   const [messages, setMessages] = useState([])
+  const [userCache, setUserCache] = useState({})    // user_id -> {display_name, username, role}
   const [input, setInput] = useState('')
   const [sending, setSending] = useState(false)
   const [loading, setLoading] = useState(true)
@@ -33,25 +34,63 @@ export default function ChatRoomPage() {
     }, 50)
   }, [])
 
+  // 查询用户资料
+  const fetchUserProfiles = useCallback(async (userIds) => {
+    const uncached = userIds.filter(id => !userCache[id] && id)
+    if (uncached.length === 0) return
+
+    const { data } = await supabase
+      .from('profiles')
+      .select('id, username, display_name, role')
+      .in('id', uncached)
+
+    if (data) {
+      setUserCache(prev => {
+        const next = { ...prev }
+        for (const p of data) {
+          next[p.id] = p
+        }
+        return next
+      })
+    }
+  }, [userCache, supabase])
+
   useEffect(() => {
     if (!slug) return
 
     supabase.from('chat_rooms').select('*').eq('slug', slug).single()
-      .then(({ data }) => {
+      .then(async ({ data }) => {
         if (data) {
           setRoom(data)
-          supabase.from('chat_messages')
-            .select('*, profiles(username, display_name, role)')
+
+          const { data: msgs } = await supabase
+            .from('chat_messages')
+            .select('*')
             .eq('room_id', data.id)
             .order('created_at', { ascending: false })
             .limit(MESSAGES_PER_PAGE)
-            .then(({ data: msgs }) => {
-              const sorted = (msgs || []).reverse()
-              setMessages(sorted)
-              setHasMore(sorted.length >= MESSAGES_PER_PAGE)
-              setLoading(false)
-              setTimeout(() => scrollToBottom(false), 100)
-            })
+
+          const sorted = (msgs || []).reverse()
+          setMessages(sorted)
+
+          // 拉取所有发消息者的用户资料
+          const userIds = [...new Set((msgs || []).map(m => m.user_id))]
+          const { data: profiles } = await supabase
+            .from('profiles')
+            .select('id, username, display_name, role')
+            .in('id', userIds)
+
+          if (profiles) {
+            const cache = {}
+            for (const p of profiles) {
+              cache[p.id] = p
+            }
+            setUserCache(cache)
+          }
+
+          setHasMore(sorted.length >= MESSAGES_PER_PAGE)
+          setLoading(false)
+          setTimeout(() => scrollToBottom(false), 100)
         } else {
           setLoading(false)
         }
@@ -69,19 +108,14 @@ export default function ChatRoomPage() {
       .on('postgres_changes',
         { event: 'INSERT', schema: 'public', table: 'chat_messages', filter: `room_id=eq.${room.id}` },
         async (payload) => {
-          const { data: msg } = await supabase
-            .from('chat_messages')
-            .select('*, profiles(username, display_name, role)')
-            .eq('id', payload.new.id)
-            .single()
+          // 查询新消息的用户资料（如有需要）
+          await fetchUserProfiles([payload.new.user_id])
 
-          if (msg) {
-            setMessages(prev => [...prev, msg])
-            const container = messagesContainerRef.current
-            if (container) {
-              const isNearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 100
-              if (isNearBottom) scrollToBottom(true)
-            }
+          setMessages(prev => [...prev, payload.new])
+          const container = messagesContainerRef.current
+          if (container) {
+            const isNearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 100
+            if (isNearBottom) scrollToBottom(true)
           }
         }
       )
@@ -91,7 +125,7 @@ export default function ChatRoomPage() {
       supabase.removeChannel(subscription)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [room?.id])
+  }, [room?.id, fetchUserProfiles])
 
   // 在线统计
   useEffect(() => {
@@ -117,7 +151,7 @@ export default function ChatRoomPage() {
     setLoadingMore(true)
     const oldest = messages[0]
     const { data } = await supabase.from('chat_messages')
-      .select('*, profiles(username, display_name, role)')
+      .select('*')
       .eq('room_id', room.id)
       .lt('created_at', oldest.created_at)
       .order('created_at', { ascending: false })
@@ -127,6 +161,10 @@ export default function ChatRoomPage() {
       const sorted = data.reverse()
       setMessages(prev => [...sorted, ...prev])
       setHasMore(data.length >= MESSAGES_PER_PAGE)
+
+      // 拉取新出现的用户资料
+      const newIds = [...new Set(data.map(m => m.user_id))]
+      await fetchUserProfiles(newIds)
     }
     setLoadingMore(false)
   }
@@ -140,31 +178,30 @@ export default function ChatRoomPage() {
     const content = input.trim()
     setInput('')
 
-    const { error } = await supabase.from('chat_messages').insert({
+    const { error, data } = await supabase.from('chat_messages').insert({
       room_id: room.id,
       user_id: user.id,
       content,
-    })
+    }).select()
 
     if (error) {
-      console.error('发送失败:', error)
       setSendError(error.message || '发送失败，请稍后再试')
       setInput(content)
-    } else {
-      // 重新拉取最新消息
-      const { data: newMsgs } = await supabase
-        .from('chat_messages')
-        .select('*, profiles(username, display_name, role)')
-        .eq('room_id', room.id)
-        .order('created_at', { ascending: false })
-        .limit(MESSAGES_PER_PAGE)
-      if (newMsgs) {
-        setMessages(newMsgs.reverse())
-        scrollToBottom(true)
-      }
+    } else if (data && data.length > 0) {
+      // 直接添加新消息到列表（不用重新拉取全部）
+      setMessages(prev => [...prev, data[0]])
+      scrollToBottom(true)
     }
     setSending(false)
     inputRef.current?.focus()
+  }
+
+  // 获取用户显示名
+  const getUserDisplay = (msg) => {
+    const cached = userCache[msg.user_id]
+    if (cached) return cached
+    if (user?.id === msg.user_id && profile) return profile
+    return null
   }
 
   if (loading) {
@@ -187,7 +224,7 @@ export default function ChatRoomPage() {
 
   return (
     <div className="anim-fade-in flex flex-col h-[calc(100vh-8rem)] max-h-[800px]">
-      {/* 聊天室头部 */}
+      {/* 头部 */}
       <div className="flex items-center justify-between mb-3 shrink-0">
         <div className="flex items-center gap-2">
           <Link href="/chat" className="text-sm text-[#c23531]/70 hover:text-[#c23531] transition-colors">&larr;</Link>
@@ -230,11 +267,12 @@ export default function ChatRoomPage() {
           </div>
         ) : (
           messages.map((msg) => {
-            const isAdmin = msg.profiles?.role === 'admin'
-            const isMod = msg.profiles?.role === 'moderator'
+            const userInfo = getUserDisplay(msg)
+            const isAdmin = userInfo?.role === 'admin'
+            const isMod = userInfo?.role === 'moderator'
             const isSelf = user?.id === msg.user_id
-            const avatarLetter = (msg.profiles?.display_name || msg.profiles?.username || '?')[0]
-            const displayName = msg.profiles?.display_name || msg.profiles?.username || '匿名用户'
+            const avatarLetter = (userInfo?.display_name || userInfo?.username || '?')[0]
+            const displayName = userInfo?.display_name || userInfo?.username || '用户'
 
             return (
               <div
