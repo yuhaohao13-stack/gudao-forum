@@ -4,7 +4,7 @@ import { createClient } from '@/lib/supabase/client'
 import { useAuth } from '@/components/AuthProvider'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { validateImage, IMAGE_CONFIG } from '@/lib/moderation'
+import { validateImage, checkContent, validateInput, IMAGE_CONFIG } from '@/lib/moderation'
 
 export default function NewThreadPage() {
   const { user, profile } = useAuth()
@@ -38,6 +38,12 @@ export default function NewThreadPage() {
   const handleSubmit = async (e) => {
     e.preventDefault(); setError('')
     if (!title.trim() || !content.trim() || !category) { setError('请填写完整'); return }
+    const titleCheck = checkContent(title, true)
+    if (!titleCheck.pass) { setError('标题包含不当内容'); return }
+    const contentCheck = checkContent(content)
+    if (!contentCheck.pass) { setError('内容包含不当言论'); return }
+    const inputValid = validateInput(content)
+    if (!inputValid.valid) { setError(inputValid.error); return }
     setLoading(true)
     try {
       const urls = []

@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { useAuth } from '@/components/AuthProvider'
+import { checkContent, validateInput } from '@/lib/moderation'
 
 const MESSAGES_PER_PAGE = 50
 
@@ -174,6 +175,11 @@ export default function ChatRoomPage() {
     e.preventDefault()
     setSendError('')
     if (!user || !input.trim() || sending || !room?.id) return
+    // 内容安全检查
+    const safeCheck = checkContent(input)
+    if (!safeCheck.pass) { setSendError('消息包含不当言论'); return }
+    const inputCheck = validateInput(input, 500)
+    if (!inputCheck.valid) { setSendError(inputCheck.error); return }
     setSending(true)
     const content = input.trim()
     setInput('')

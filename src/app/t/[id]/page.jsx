@@ -4,6 +4,7 @@ import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { useAuth } from '@/components/AuthProvider'
+import { checkContent } from '@/lib/moderation'
 
 export default function ThreadPage() {
   const { id } = useParams()
@@ -41,6 +42,8 @@ export default function ThreadPage() {
     e.preventDefault()
     setError('')
     if (!replyContent.trim()) return
+    const replyCheck = checkContent(replyContent)
+    if (!replyCheck.pass) { setError('回复包含不当言论'); return }
     setSending(true)
     const { error: err } = await supabase.from('replies').insert({ thread_id: id, content: replyContent.trim(), author_id: user.id })
     if (err) { setError(err.message) } else {
