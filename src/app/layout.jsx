@@ -29,6 +29,10 @@ export const metadata = {
     index: true,
     follow: true,
   },
+  // Baidu 站点验证 — 替换为你在百度站长平台获取的验证码
+  // other: {
+  //   'baidu-site-verification': 'code-xxxxx',
+  // },
 }
 
 export const viewport = 'width=device-width, initial-scale=1, maximum-scale=1'
@@ -43,6 +47,8 @@ export default function RootLayout({ children }) {
         <link rel="apple-touch-icon" sizes="512x512" href="/icons/icon-512.png" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="theme-color" content="#f8f6f2" />
+        {/* 百度站长验证 */}
+        <meta name="baidu-site-verification" content="codeva-ivcpKCSsQj" />
         <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
         <meta http-equiv="Pragma" content="no-cache" />
         <meta http-equiv="Expires" content="0" />
