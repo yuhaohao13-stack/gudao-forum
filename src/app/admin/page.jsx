@@ -21,23 +21,22 @@ export default function AdminPage() {
     if (!broadcastText.trim()) return
     if (!confirm(`确定向 ${users.length} 位用户发送站内公告？`)) return
     setBroadcasting(true); setBroadcastResult('')
-    const content = broadcastText.trim()
-    const messages = users
-      .filter(u => u.id !== user.id)  // 不给自己发
-      .map(u => ({
-        sender_id: user.id,
-        receiver_id: u.id,
-        content: `📢 站内公告：${content}`,
-      }))
-    // 分批插入，每批 50 条
-    let sent = 0
-    for (let i = 0; i < messages.length; i += 50) {
-      const batch = messages.slice(i, i + 50)
-      const { error } = await supabase.from('private_messages').insert(batch)
-      if (!error) sent += batch.length
+    try {
+      const res = await fetch('/api/broadcast', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content: broadcastText.trim() }),
+      })
+      const data = await res.json()
+      if (res.ok && data.success) {
+        setBroadcastResult(data.message)
+        setBroadcastText('')
+      } else {
+        setBroadcastResult(`❌ 发送失败: ${data.error || '未知错误'}`)
+      }
+    } catch (e) {
+      setBroadcastResult(`❌ 网络错误: ${e.message}`)
     }
-    setBroadcastResult(`✅ 已向 ${sent}/${users.length - 1} 位用户发送公告`)
-    setBroadcastText('')
     setBroadcasting(false)
   }
 
