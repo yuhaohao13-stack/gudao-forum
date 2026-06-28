@@ -8,31 +8,38 @@ import ErrorBoundary from '@/components/ErrorBoundary'
 export const metadata = {
   metadataBase: new URL('https://www.gudaoforum.com'),
   title: {
-    default: '古道论坛',
-    template: '%s — 古道论坛',
+    default: '古道论坛 | 国际中文社区 · 中文聊天室 · 以文会友',
+    template: '%s — 古道论坛 | 国际中文社区',
   },
-  description: '古道论坛 — 以文会友，以友辅仁 | 一个温暖的现代中文社区',
+  description: '古道论坛是面向全球华人的国际中文社区与在线聊天室。以文会友，以友辅仁，弘扬中华文化，畅聊生活科技。免费注册，即刻加入，与万千华人共筑温暖的精神家园。',
   manifest: '/manifest.json',
   appleWebApp: { capable: true, statusBarStyle: 'default', title: '古道论坛' },
   alternates: {
     canonical: 'https://www.gudaoforum.com',
   },
+  keywords: ['古道论坛', '国际中文社区', '中文聊天室', '华人论坛', '中国文化', '以文会友', '中文社区', '海外华人', 'Chinese Forum', 'Chinese Community'],
   openGraph: {
-    title: '古道论坛',
-    description: '以文会友，以友辅仁',
+    title: '古道论坛 | 国际中文社区 · 中文聊天室',
+    description: '以文会友，以友辅仁 —— 面向全球华人的国际中文社区。论坛讨论、在线聊天、文化分享，弘扬中华文化，连接你我他。',
     url: 'https://www.gudaoforum.com',
     siteName: '古道论坛',
     type: 'website',
     locale: 'zh_CN',
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: '古道论坛 | 国际中文社区 · 中文聊天室',
+    description: '以文会友，以友辅仁 —— 面向全球华人的国际中文社区。',
+  },
   robots: {
     index: true,
     follow: true,
+    'max-snippet': 200,
+    'max-image-preview': 'large',
   },
-  // Baidu 站点验证 — 替换为你在百度站长平台获取的验证码
-  // other: {
-  //   'baidu-site-verification': 'code-xxxxx',
-  // },
+  verification: {
+    google: 'your-google-site-verification',
+  },
 }
 
 export const viewport = 'width=device-width, initial-scale=1, maximum-scale=1'
