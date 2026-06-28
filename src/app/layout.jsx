@@ -38,7 +38,7 @@ export const metadata = {
     'max-image-preview': 'large',
   },
   verification: {
-    google: 'your-google-site-verification',
+    google: '-S_PJiPjqohBHyP8xATwcVEFDTFTHRba1e4i16Cmk-E',
   },
 }
 
