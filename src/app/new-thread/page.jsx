@@ -23,7 +23,7 @@ export default function NewThreadPage() {
     })
   }, [profile])
 
-  if (!user) return <div className="card p-10 text-center anim-fade-in"><div className="text-3xl mb-2">🔐</div><p className="text-[#999] mb-3">请先登录再发帖</p><Link href="/login" className="btn-primary">去登录</Link></div>
+  if (!user) return <div className="card p-10 text-center anim-fade-in"><div className="text-2xl mb-2">🔐</div><p className="text-[#aaa] mb-3">请先登录再发帖</p><Link href="/login" className="btn-primary">去登录</Link></div>
 
   const handleImages = (e) => {
     const files = Array.from(e.target.files || []); const valid = []; const errs = []
@@ -64,34 +64,34 @@ export default function NewThreadPage() {
 
   return (
     <div className="max-w-2xl mx-auto anim-fade-in">
-      <h1 className="text-2xl font-bold font-serif text-[#1a1a1a] mb-6">✏️ 发新帖</h1>
+      <h1 className="text-xl font-bold font-serif text-[#1a1a1a] mb-6">✏️ 发新帖</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="card p-5 space-y-4">
+        <div className="card p-5 sm:p-6 space-y-5">
           <div>
-            <label className="block text-xs text-[#888] mb-1.5 font-medium">版块</label>
+            <label className="block text-xs text-[#aaa] mb-1.5 font-medium">版块</label>
             <select value={category} onChange={e => setCategory(e.target.value)} className="input">
               <option value="">选择版块</option>
               {categories.map(c => <option key={c.id} value={c.id}>{c.icon} {c.name}</option>)}
             </select>
           </div>
           <div>
-            <label className="block text-xs text-[#888] mb-1.5 font-medium">标题</label>
+            <label className="block text-xs text-[#aaa] mb-1.5 font-medium">标题</label>
             <input type="text" value={title} onChange={e => setTitle(e.target.value)} className="input" placeholder="写个标题" maxLength={200} />
           </div>
           <div>
-            <label className="block text-xs text-[#888] mb-1.5 font-medium">内容</label>
+            <label className="block text-xs text-[#aaa] mb-1.5 font-medium">内容</label>
             <textarea value={content} onChange={e => setContent(e.target.value)} rows={8} className="input resize-none min-h-[160px]" placeholder="写下你想说的..." maxLength={10000} />
           </div>
           <div>
-            <label className="block text-xs text-[#888] mb-1.5 font-medium">图片（可选）</label>
+            <label className="block text-xs text-[#aaa] mb-1.5 font-medium">图片（可选）</label>
             <input ref={fileRef} type="file" accept="image/jpeg,image/png,image/gif,image/webp" multiple onChange={handleImages} className="hidden" />
-            <button type="button" onClick={() => fileRef.current?.click()} className="btn-ghost border border-[#eee8dc] text-xs">📷 选择图片</button>
+            <button type="button" onClick={() => fileRef.current?.click()} className="btn-ghost border border-[#f0eee8] text-xs rounded-lg">📷 选择图片</button>
             {previews.length > 0 && (
               <div className="flex flex-wrap gap-3 mt-2">
                 {previews.map((p, i) => (
                   <div key={i} className="relative group w-[45%] sm:w-[30%]">
-                    <img src={p} alt="" className="w-full h-auto max-h-40 object-cover rounded-xl border border-[#eee8dc]" />
-                    <button type="button" onClick={() => removeImage(i)} className="absolute -top-2 -right-2 w-5 h-5 bg-[#c23531] rounded-full text-xs text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">✕</button>
+                    <img src={p} alt="" className="w-full h-auto max-h-40 object-cover rounded-xl border border-[#f0eee8]" />
+                    <button type="button" onClick={() => removeImage(i)} className="absolute -top-2 -right-2 w-5 h-5 bg-[#1a1a1a] rounded-full text-xs text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">✕</button>
                   </div>
                 ))}
               </div>
@@ -99,7 +99,7 @@ export default function NewThreadPage() {
             <span className="text-xs text-[#ccc] ml-2">{images.length}/{IMAGE_CONFIG.maxCount} · 每张 ≤5MB</span>
           </div>
         </div>
-        {error && <div className="text-xs text-[#c23531] bg-[#c23531]/8 border border-[#c23531]/15 rounded-lg p-3">{error}</div>}
+        {error && <div className="text-xs text-[#c23531] bg-[#fdf0ee] border border-[#f0ddd8] rounded-lg p-3">{error}</div>}
         <button type="submit" disabled={loading} className="btn-primary w-full justify-center !py-2.5">{loading ? '发布中...' : '发布帖子'}</button>
       </form>
     </div>

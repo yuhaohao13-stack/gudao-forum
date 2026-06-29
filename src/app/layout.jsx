@@ -53,7 +53,7 @@ export default function RootLayout({ children }) {
         <link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192.png" />
         <link rel="apple-touch-icon" sizes="512x512" href="/icons/icon-512.png" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="theme-color" content="#f8f6f2" />
+        <meta name="theme-color" content="#fafaf9" />
         {/* 百度站长验证 */}
         <meta name="baidu-site-verification" content="codeva-ivcpKCSsQj" />
         <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
@@ -70,11 +70,7 @@ if('serviceWorker'in navigator){
 }`
         }} />
       </head>
-      <body className="min-h-screen flex flex-col bg-[#f8f6f2] text-[#1a1a1a]">
-        {/* 纹理背景 */}
-        <div className="fixed inset-0 pointer-events-none -z-10 opacity-[0.025]"
-          style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23c23531\' fill-opacity=\'0.06\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")' }}
-        />
+      <body className="min-h-screen flex flex-col bg-[#fafaf9] text-[#1a1a1a]">
         <DonateOverlay />
         <AuthProvider>
           <Header />
