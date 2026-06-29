@@ -1,10 +1,10 @@
-import { createClient } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
 import { createServerClient } from '@supabase/ssr'
 
 /**
  * POST /api/broadcast
- * 管理员群发站内公告（服务端执行，绕过 RLS）
+ * 管理员群发站内公告
+ * 使用管理员自身的 session 插入私信，RLS 策略 (auth.uid() = sender_id) 天然允许
  */
 export async function POST(request) {
   try {
@@ -46,55 +46,54 @@ export async function POST(request) {
       return Response.json({ error: '内容不能为空' }, { status: 400 })
     }
 
-    // 3. 获取所有用户
+    // 3. 获取所有用户（排除自己）
     const { data: allUsers, error: userError } = await supabase
       .from('profiles')
       .select('id')
+      .neq('id', user.id)
 
     if (userError) {
       return Response.json({ error: '获取用户列表失败' }, { status: 500 })
     }
 
-    // 4. 使用 service_role 创建管理员客户端，批量插入私信
-    const serviceClient = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL,
-      process.env.SUPABASE_SERVICE_ROLE_KEY,
-      { auth: { persistSession: false } }
-    )
-
-    const messages = allUsers
-      .filter(u => u.id !== user.id) // 不给自己发
-      .map(u => ({
-        sender_id: user.id,
-        receiver_id: u.id,
-        content: `📢 站内公告：${content.trim()}`,
-      }))
-
-    if (messages.length === 0) {
+    if (!allUsers || allUsers.length === 0) {
       return Response.json({ error: '没有可发送的用户' }, { status: 400 })
     }
 
-    // 分批插入，每批 100 条
+    // 4. 使用管理员自身的 session 分批插入私信
+    //    RLS 策略要求 sender_id = auth.uid()，管理员本人发送，天然满足
+    const targetContent = `📢 站内公告：${content.trim()}`
     let sent = 0
-    for (let i = 0; i < messages.length; i += 100) {
-      const batch = messages.slice(i, i + 100)
-      const { error: insertError } = await serviceClient
+    const errors = []
+
+    // 逐条插入，便于定位失败原因
+    for (const targetUser of allUsers) {
+      const { error: insertError } = await supabase
         .from('private_messages')
-        .insert(batch)
+        .insert({
+          sender_id: user.id,
+          receiver_id: targetUser.id,
+          content: targetContent,
+        })
 
       if (insertError) {
-        console.error('批量插入失败:', insertError)
-        // 继续尝试下一批
+        errors.push({ userId: targetUser.id, error: insertError.message })
+        console.error(`发送给 ${targetUser.id} 失败:`, insertError)
       } else {
-        sent += batch.length
+        sent++
       }
     }
 
+    const total = allUsers.length
+
     return Response.json({
-      success: true,
+      success: sent > 0,
       sent,
-      total: messages.length,
-      message: `✅ 已向 ${sent}/${messages.length} 位用户发送公告`,
+      total,
+      errors: errors.length > 0 ? errors.slice(0, 5) : undefined,
+      message: errors.length === 0
+        ? `✅ 已向 ${sent} 位用户发送公告`
+        : `✅ 已向 ${sent}/${total} 位用户发送公告（${errors.length} 条失败）`,
     })
   } catch (err) {
     console.error('广播接口异常:', err)
