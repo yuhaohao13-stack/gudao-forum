@@ -56,31 +56,19 @@ export default function Home() {
 
   return (
     <div className="space-y-6 sm:space-y-8">
-      {/* ===== 站点头部 ===== */}
-      <div className="text-center pt-4 sm:pt-6 pb-2 anim-fade-in">
-        <p className="text-sm text-[#aaa] tracking-wide">以文会友 · 以友辅仁</p>
-
-        <div className="flex items-center justify-center gap-6 sm:gap-8 mt-4 text-sm text-[#999]">
-          <div className="text-center">
-            <div className="text-lg sm:text-xl font-bold font-serif text-[#1a1a1a]">{totalPosts}</div>
-            <div className="text-xs mt-0.5">帖子</div>
-          </div>
-          <div className="w-px h-7 bg-[#eee]" />
-          <div className="text-center">
-            <div className="text-lg sm:text-xl font-bold font-serif text-[#1a1a1a]">{totalViews.toLocaleString()}</div>
-            <div className="text-xs mt-0.5">浏览</div>
-          </div>
-          <div className="w-px h-7 bg-[#eee]" />
-          <div className="text-center">
-            <div className="text-lg sm:text-xl font-bold font-serif text-[#1a1a1a]">{totalUsers}</div>
-            <div className="text-xs mt-0.5">会员</div>
+      {/* ===== 站点头部（一排） ===== */}
+      <div className="flex items-center justify-between gap-4 py-4 sm:py-5 flex-wrap anim-fade-in">
+        <div className="flex items-center gap-3 sm:gap-5 text-sm flex-wrap">
+          <span className="text-sm text-[#aaa] tracking-wide whitespace-nowrap">以文会友 · 以友辅仁</span>
+          <div className="flex items-center gap-3 sm:gap-4 text-xs text-[#999]">
+            <span><strong className="text-sm font-semibold text-[#1a1a1a]">{totalPosts}</strong> 帖子</span>
+            <span className="text-[#ddd]">|</span>
+            <span><strong className="text-sm font-semibold text-[#1a1a1a]">{totalViews.toLocaleString()}</strong> 浏览</span>
+            <span className="text-[#ddd]">|</span>
+            <span><strong className="text-sm font-semibold text-[#1a1a1a]">{totalUsers}</strong> 会员</span>
           </div>
         </div>
-
-        <div className="flex items-center justify-center gap-3 mt-5">
-          <Link href="/new-thread" className="btn-primary">✏️ 发帖</Link>
-          <Link href="/chat" className="btn-secondary">💬 聊天室</Link>
-        </div>
+        <Link href="/chat" className="btn-secondary text-xs whitespace-nowrap">💬 聊天室</Link>
       </div>
 
       {/* ===== 公告 ===== */}
