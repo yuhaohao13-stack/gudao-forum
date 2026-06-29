@@ -74,9 +74,7 @@ export default function Header() {
               </div>
             </form>
 
-            {!user && !loading && (
-              <DonateButton className="hidden sm:inline-flex btn-ghost text-xs font-medium" />
-            )}
+            <DonateButton className="hidden sm:inline-flex btn-ghost text-xs font-medium" />
 
             {loading ? (
               <div className="w-4 h-4 border-[1.5px] border-[#ddd] border-t-[#1a1a1a] rounded-full animate-spin" />
@@ -84,7 +82,7 @@ export default function Header() {
               <div className="flex items-center gap-1 sm:gap-1.5">
                 <Link href="/messages" className="btn-ghost !px-2 !py-1.5 relative">
                   💬
-                  <UnreadBadge className="absolute -top-0.5 -right-0.5" />
+                  {UnreadBadge && <UnreadBadge className="absolute -top-0.5 -right-0.5" />}
                 </Link>
                 <Link href="/new-thread" className="btn-primary !px-3 !py-1.5 !text-xs whitespace-nowrap">
                   ✏️ 发帖
