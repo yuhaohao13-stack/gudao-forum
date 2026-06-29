@@ -80,14 +80,13 @@ export default function Header() {
               <div className="w-4 h-4 border-[1.5px] border-[#ddd] border-t-[#1a1a1a] rounded-full animate-spin" />
             ) : user ? (
               <div className="flex items-center gap-1 sm:gap-1.5">
-                {/* 会员名：在打赏后面空3-4格显示 */}
-                <span className="hidden sm:inline text-xs text-[#999] select-none">&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                <Link href={`/profile/${user.id}`} className="hidden sm:flex items-center gap-1.5 btn-ghost !px-2 !py-1">
+                {/* 会员名：在打赏后面空4格 */}
+                <Link href={`/profile/${user.id}`} className="flex items-center gap-1.5 btn-ghost !px-2 !py-1 ml-4 sm:ml-6">
                   <span className="w-7 h-7 rounded-full bg-[#c23531] flex items-center justify-center text-xs text-white font-bold shadow-sm">
                     {(profile?.display_name || profile?.username || '?')[0]}
                   </span>
-                  <span className="text-xs text-[#999] font-normal">会员名：</span>
-                  <span className="text-sm font-medium text-[#555] max-w-[5em] truncate">
+                  <span className="text-[10px] sm:text-xs text-[#999] font-normal whitespace-nowrap">会员名：</span>
+                  <span className="text-xs sm:text-sm font-medium text-[#555] max-w-[5em] truncate">
                     {profile?.display_name || profile?.username || ''}
                   </span>
                 </Link>
