@@ -4,17 +4,18 @@ import { useState } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import { useAuth } from './AuthProvider'
 import { createClient } from '@/lib/supabase/client'
+import DonateButton from './DonateButton'
 import UnreadBadge from './UnreadBadge'
 
 export default function Header() {
   const { user, profile, loading } = useAuth()
   const [search, setSearch] = useState('')
+  const [showSearch, setShowSearch] = useState(false)
   const supabase = createClient()
   const router = useRouter()
   const pathname = usePathname()
-
-  const isChatPage = pathname?.startsWith('/chat')
   const isAdmin = profile?.role === 'admin' || profile?.role === 'moderator'
+  const isChatPage = pathname?.startsWith('/chat')
 
   const handleLogout = async () => {
     await supabase.auth.signOut()
@@ -24,62 +25,75 @@ export default function Header() {
 
   const handleSearch = (e) => {
     e.preventDefault()
-    if (search.trim()) router.push(`/search?q=${encodeURIComponent(search.trim())}`)
+    if (search.trim()) {
+      router.push(`/search?q=${encodeURIComponent(search.trim())}`)
+      setShowSearch(false)
+    }
   }
 
   return (
-    <header className="sticky top-0 z-50 bg-white border-b border-[#f0f0f0]">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6">
-        <div className="flex items-center h-14 justify-between">
-          {/* Logo + 导航 */}
-          <div className="flex items-center gap-6">
-            <Link href="/" className="flex items-center gap-2">
-              <span className="text-lg">🏛️</span>
-              <span className="font-bold font-serif text-base tracking-wide">古道论坛</span>
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-[#f0f0f0]">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6">
+        {/* 主行 */}
+        <div className="flex items-center h-14 sm:h-16 justify-between gap-2">
+          {/* 左：Logo */}
+          <div className="flex items-center gap-0.5 shrink-0">
+            <Link href="/" className="flex items-center gap-2 group">
+              <span className="text-lg sm:text-xl select-none">🏛️</span>
+              <span className="text-base sm:text-lg font-bold font-serif tracking-wide text-[#1a1a1a]">古道论坛</span>
             </Link>
-            <nav className="hidden sm:flex items-center gap-1 text-sm">
-              <Link href="/"
-                className={`px-3 py-1.5 rounded-md transition-colors ${
-                  !isChatPage ? 'bg-[#f5f5f5] text-[#1a1a1a] font-medium' : 'text-[#999] hover:text-[#1a1a1a] hover:bg-[#f5f5f5]'
-                }`}
-              >首页</Link>
-              <Link href="/chat"
-                className={`px-3 py-1.5 rounded-md transition-colors ${
-                  isChatPage ? 'bg-[#f5f5f5] text-[#1a1a1a] font-medium' : 'text-[#999] hover:text-[#1a1a1a] hover:bg-[#f5f5f5]'
-                }`}
-              >聊天室</Link>
-            </nav>
           </div>
 
-          {/* 右侧 */}
-          <div className="flex items-center gap-2">
-            {/* 搜索 */}
+          {/* 中：导航（桌面） */}
+          <nav className="hidden sm:flex items-center gap-1 text-sm">
+            <Link href="/"
+              className={`px-3 py-1.5 rounded-lg transition-colors ${
+                !isChatPage ? 'bg-[#f5f5f5] text-[#1a1a1a] font-medium' : 'text-[#999] hover:text-[#1a1a1a] hover:bg-[#f5f5f5]'
+              }`}
+            >首页</Link>
+            <Link href="/chat"
+              className={`px-3 py-1.5 rounded-lg transition-colors ${
+                isChatPage ? 'bg-[#f5f5f5] text-[#1a1a1a] font-medium' : 'text-[#999] hover:text-[#1a1a1a] hover:bg-[#f5f5f5]'
+              }`}
+            >聊天室</Link>
+          </nav>
+
+          {/* 右：操作 */}
+          <div className="flex items-center gap-1 sm:gap-2">
+            {/* 桌面搜索 */}
             <form onSubmit={handleSearch} className="hidden sm:block">
-              <input
-                type="text"
-                value={search}
-                onChange={e => setSearch(e.target.value)}
-                placeholder="搜索帖子..."
-                className="w-36 lg:w-44 bg-[#f5f5f5] rounded-md px-3 py-1.5 text-sm text-[#1a1a1a] placeholder-[#bbb] outline-none transition-all focus:bg-white focus:border focus:border-[#e5e5e5] focus:w-48"
-              />
+              <div className="relative">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#ccc] text-xs pointer-events-none">🔍</span>
+                <input
+                  type="text"
+                  value={search}
+                  onChange={e => setSearch(e.target.value)}
+                  placeholder="搜索帖子..."
+                  className="w-36 lg:w-44 bg-[#f8f8f8] border border-transparent rounded-lg pl-8 pr-3 py-1.5 text-sm text-[#1a1a1a] placeholder-[#bbb] outline-none transition-all focus:border-[#e5e5e5] focus:bg-white focus:w-48"
+                />
+              </div>
             </form>
+
+            {!user && !loading && (
+              <DonateButton className="hidden sm:inline-flex btn-ghost text-xs font-medium" />
+            )}
 
             {loading ? (
               <div className="w-4 h-4 border-[1.5px] border-[#ddd] border-t-[#1a1a1a] rounded-full animate-spin" />
             ) : user ? (
-              <div className="flex items-center gap-1.5">
-                <Link href="/messages" className="btn-ghost !p-1.5 relative text-sm" title="私信">
+              <div className="flex items-center gap-1 sm:gap-1.5">
+                <Link href="/messages" className="btn-ghost !px-2 !py-1.5 relative">
                   💬
                   <UnreadBadge className="absolute -top-0.5 -right-0.5" />
                 </Link>
-                <Link href="/new-thread" className="btn-primary !px-3 !py-1.5 !text-xs">
-                  发帖
+                <Link href="/new-thread" className="btn-primary !px-3 !py-1.5 !text-xs whitespace-nowrap">
+                  ✏️ 发帖
                 </Link>
-                <Link href={`/profile/${user.id}`} className="flex items-center gap-1.5 btn-ghost !p-1">
-                  <span className="w-7 h-7 rounded-full bg-[#c23531] flex items-center justify-center text-xs text-white font-bold">
+                <Link href={`/profile/${user.id}`} className="flex items-center gap-1.5 btn-ghost !px-2 !py-1">
+                  <span className="w-7 h-7 rounded-full bg-[#c23531] flex items-center justify-center text-xs text-white font-bold shadow-sm">
                     {(profile?.display_name || profile?.username || '?')[0]}
                   </span>
-                  <span className="hidden sm:inline text-sm text-[#555]">
+                  <span className="hidden sm:inline text-sm font-medium text-[#555] max-w-[5em] truncate">
                     {profile?.display_name || profile?.username || ''}
                   </span>
                 </Link>
@@ -96,22 +110,48 @@ export default function Header() {
                 <Link href="/register" className="btn-primary !px-3 !py-1.5 !text-xs">注册</Link>
               </div>
             )}
+
+            {/* 移动端搜索开关 */}
+            <button
+              onClick={() => setShowSearch(!showSearch)}
+              className="sm:hidden btn-ghost !px-2 !py-1.5 text-[#999]"
+            >
+              {showSearch ? '✕' : '🔍'}
+            </button>
           </div>
         </div>
 
-        {/* 移动端导航 */}
+        {/* 移动端导航 + 打赏 */}
         <div className="flex sm:hidden items-center gap-2 pb-3 overflow-x-auto scrollbar-none">
           <Link href="/"
-            className={`whitespace-nowrap text-xs font-medium px-3 py-1 rounded-md transition-colors ${
+            className={`whitespace-nowrap text-xs font-medium px-3 py-1 rounded-lg transition-colors ${
               !isChatPage ? 'bg-[#f5f5f5] text-[#1a1a1a]' : 'text-[#999]'
             }`}
           >首页</Link>
           <Link href="/chat"
-            className={`whitespace-nowrap text-xs font-medium px-3 py-1 rounded-md transition-colors ${
+            className={`whitespace-nowrap text-xs font-medium px-3 py-1 rounded-lg transition-colors ${
               isChatPage ? 'bg-[#f5f5f5] text-[#1a1a1a]' : 'text-[#999]'
             }`}
           >聊天室</Link>
+          <DonateButton className="whitespace-nowrap text-xs font-medium px-3 py-1 rounded-lg text-[#999] hover:bg-[#f5f5f5] transition-colors" />
         </div>
+
+        {/* 移动端搜索 */}
+        {showSearch && (
+          <div className="sm:hidden pb-3 anim-fade-in">
+            <form onSubmit={handleSearch} className="relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#ccc] text-sm pointer-events-none">🔍</span>
+              <input
+                type="text"
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+                placeholder="搜索帖子..."
+                autoFocus
+                className="w-full bg-[#f8f8f8] border border-[#f0f0f0] rounded-lg pl-9 pr-3 py-2 text-sm outline-none focus:border-[#e0e0e0] focus:bg-white"
+              />
+            </form>
+          </div>
+        )}
       </div>
     </header>
   )

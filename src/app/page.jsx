@@ -55,58 +55,77 @@ export default function Home() {
   }, [])
 
   return (
-    <div>
-      {/* ===== Hero ===== */}
-      <div className="hero-section anim-fade-in">
-        <h1>古道论坛</h1>
-        <p className="tagline">以文会友 · 以友辅仁</p>
-        <div className="flex items-center justify-center gap-6 sm:gap-8 mt-6 text-sm text-[#999]">
-          <div>
-            <div className="text-2xl font-bold font-serif text-[#1a1a1a]">{totalPosts}</div>
-            <div className="mt-0.5">帖子</div>
+    <div className="space-y-6 sm:space-y-8">
+      {/* ===== 站点头部 ===== */}
+      <div className="text-center pt-4 sm:pt-6 pb-2 anim-fade-in">
+        <p className="text-sm text-[#aaa] tracking-wide">以文会友 · 以友辅仁</p>
+
+        <div className="flex items-center justify-center gap-6 sm:gap-8 mt-4 text-sm text-[#999]">
+          <div className="text-center">
+            <div className="text-lg sm:text-xl font-bold font-serif text-[#1a1a1a]">{totalPosts}</div>
+            <div className="text-xs mt-0.5">帖子</div>
           </div>
-          <div className="w-px h-8 bg-[#eee]" />
-          <div>
-            <div className="text-2xl font-bold font-serif text-[#1a1a1a]">{totalViews.toLocaleString()}</div>
-            <div className="mt-0.5">浏览</div>
+          <div className="w-px h-7 bg-[#eee]" />
+          <div className="text-center">
+            <div className="text-lg sm:text-xl font-bold font-serif text-[#1a1a1a]">{totalViews.toLocaleString()}</div>
+            <div className="text-xs mt-0.5">浏览</div>
           </div>
-          <div className="w-px h-8 bg-[#eee]" />
-          <div>
-            <div className="text-2xl font-bold font-serif text-[#1a1a1a]">{totalUsers}</div>
-            <div className="mt-0.5">会员</div>
+          <div className="w-px h-7 bg-[#eee]" />
+          <div className="text-center">
+            <div className="text-lg sm:text-xl font-bold font-serif text-[#1a1a1a]">{totalUsers}</div>
+            <div className="text-xs mt-0.5">会员</div>
           </div>
         </div>
-        <div className="flex items-center justify-center gap-3 mt-6">
+
+        <div className="flex items-center justify-center gap-3 mt-5">
           <Link href="/new-thread" className="btn-primary">✏️ 发帖</Link>
           <Link href="/chat" className="btn-secondary">💬 聊天室</Link>
         </div>
       </div>
 
+      {/* ===== 快速入口 — 聊天室 ===== */}
+      <div className="anim-up">
+        <Link
+          href="/chat"
+          className="card flex items-center gap-4 p-4 sm:p-5 hover:bg-[#fafafa] group"
+        >
+          <div className="text-2xl group-hover:scale-110 transition-transform duration-300">💬</div>
+          <div className="flex-1 min-w-0">
+            <h3 className="font-semibold text-sm text-[#1a1a1a]">在线聊天室</h3>
+            <p className="text-xs text-[#aaa] mt-0.5">10 个话题房间，与全球华人畅聊</p>
+          </div>
+          <div className="text-sm text-[#ccc] group-hover:text-[#888] transition-colors shrink-0">→</div>
+        </Link>
+      </div>
+
       {/* ===== 公告 ===== */}
       {announcements.length > 0 && (
-        <section className="mb-8 anim-up">
+        <section className="anim-up">
           <div className="flex items-center gap-2 mb-3">
-            <span className="text-xs font-semibold text-[#999] tracking-wide">📢 公告</span>
+            <span className="text-xs font-semibold text-[#999] tracking-wide">📢 站务公告</span>
+            <span className="tag">置顶</span>
           </div>
-          <div className="space-y-1.5">
+          <div className="card divide-y divide-[#f5f5f5]">
             {announcements.map((t, i) => (
               <Link key={t.id} href={`/t/${t.id}`}
-                className={`card p-3 flex items-center gap-2 hover:bg-[#fafafa] ${i > 0 ? `anim-delay-${i}` : ''}`}>
+                className={`flex items-center gap-2 px-4 py-3 hover:bg-[#fafafa] transition-colors ${i > 0 ? `anim-delay-${i}` : ''}`}>
                 <span className="text-[#b8860b] shrink-0 text-sm">📌</span>
                 <span className="text-sm font-medium text-[#1a1a1a] truncate">{t.title}</span>
+                <span className="ml-auto text-xs text-[#bbb]">{new Date(t.created_at).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })}</span>
               </Link>
             ))}
           </div>
         </section>
       )}
 
-      {/* ===== 版块卡片网格 ===== */}
-      <section className="mb-8 anim-up">
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+      {/* ===== 版块 ===== */}
+      <section className="anim-up">
+        <h2 className="text-xs font-semibold text-[#bbb] uppercase tracking-widest mb-3">版块</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
           {categories.map((c, i) => (
             <Link key={c.id} href={`/c/${c.slug}`}
               className={`feature-card ${i > 0 ? `anim-delay-${i}` : ''}`}>
-              <div className="text-2xl mb-2">{CAT_ICONS[c.slug] || c.icon || '📋'}</div>
+              <div className="text-xl mb-2">{CAT_ICONS[c.slug] || c.icon || '📋'}</div>
               <div className="font-semibold text-sm text-[#1a1a1a]">{c.name}</div>
               <div className="text-xs text-[#aaa] mt-1 line-clamp-1 leading-relaxed">{c.description}</div>
             </Link>
@@ -114,51 +133,53 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ===== 最新 / 热门帖子 ===== */}
+      {/* ===== 帖子列表 ===== */}
       <section className="anim-up">
-        <div className="flex items-center gap-2 mb-5">
+        <div className="flex items-center gap-2 mb-4">
           <button onClick={() => setActiveTab('recent')}
-            className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
-              activeTab === 'recent' ? 'bg-[#1a1a1a] text-white' : 'text-[#999] hover:text-[#1a1a1a] hover:bg-[#f5f5f5]'
+            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+              activeTab === 'recent' ? 'bg-[#1a1a1a] text-white' : 'bg-[#f5f5f5] text-[#888] hover:text-[#1a1a1a]'
             }`}
-          >最新</button>
+          >⏱ 最新</button>
           <button onClick={() => setActiveTab('hot')}
-            className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
-              activeTab === 'hot' ? 'bg-[#1a1a1a] text-white' : 'text-[#999] hover:text-[#1a1a1a] hover:bg-[#f5f5f5]'
+            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+              activeTab === 'hot' ? 'bg-[#1a1a1a] text-white' : 'bg-[#f5f5f5] text-[#888] hover:text-[#1a1a1a]'
             }`}
-          >热门</button>
+          >🔥 热门</button>
           <Link href="/search" className="ml-auto text-xs text-[#bbb] hover:text-[#888] transition-colors">搜索 →</Link>
         </div>
 
-        {(activeTab === 'recent' ? recentThreads : hotThreads).length === 0 ? (
-          <div className="text-center py-12 border border-dashed border-[#eee] rounded-xl">
-            <p className="text-[#bbb] text-sm">还没有帖子</p>
-            <Link href="/new-thread" className="btn-primary mt-3">发第一条帖子</Link>
-          </div>
-        ) : (
-          <div className="card divide-y divide-[#f5f5f5]">
-            {(activeTab === 'recent' ? recentThreads : hotThreads).map((t, i) => (
-              <Link key={t.id} href={`/t/${t.id}`} className="thread-item px-4 first:pt-4 last:pb-4">
+        <div className="card divide-y divide-[#f5f5f5]">
+          {(activeTab === 'recent' ? recentThreads : hotThreads).length === 0 ? (
+            <div className="py-12 text-center">
+              <div className="text-2xl mb-2">📝</div>
+              <p className="text-[#bbb] text-sm">还没有帖子</p>
+              <Link href="/new-thread" className="btn-primary mt-3">发第一条帖子</Link>
+            </div>
+          ) : (
+            (activeTab === 'recent' ? recentThreads : hotThreads).map((t, i) => (
+              <Link key={t.id} href={`/t/${t.id}`}
+                className={`thread-item px-4 first:pt-3 last:pb-3 ${i > 0 ? `anim-delay-${Math.min(i, 5)}` : ''}`}>
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0 flex-1">
-                    <h3 className="font-medium text-[#1a1a1a] truncate text-sm">{t.title}</h3>
+                    <h3 className="font-medium text-sm text-[#1a1a1a] truncate leading-snug">{t.title}</h3>
                     <div className="flex items-center gap-2 mt-1 text-xs text-[#bbb]">
-                      <span>{t.profiles?.display_name || t.profiles?.username}</span>
+                      <span className="text-[#888]">{t.profiles?.display_name || t.profiles?.username}</span>
                       <span>·</span>
                       <span>{t.categories?.name}</span>
                       <span>·</span>
                       <span>{new Date(t.created_at).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })}</span>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3 text-xs text-[#bbb] shrink-0">
+                  <div className="flex items-center gap-3 text-xs text-[#bbb] shrink-0 mt-0.5">
                     <span>💬 {t.reply_count || 0}</span>
                     <span>👁 {t.view_count || 0}</span>
                   </div>
                 </div>
               </Link>
-            ))}
-          </div>
-        )}
+            ))
+          )}
+        </div>
       </section>
     </div>
   )
