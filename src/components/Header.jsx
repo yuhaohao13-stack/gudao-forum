@@ -74,7 +74,7 @@ export default function Header() {
               </div>
             </form>
 
-            <DonateButton className="hidden sm:inline-flex btn-ghost text-xs font-medium" />
+            <DonateButton className="hidden sm:inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm font-semibold text-[#c23531] hover:bg-[#fef2f0] transition-colors" />
 
             {loading ? (
               <div className="w-4 h-4 border-[1.5px] border-[#ddd] border-t-[#1a1a1a] rounded-full animate-spin" />
@@ -133,7 +133,7 @@ export default function Header() {
               isChatPage ? 'bg-[#f5f5f5] text-[#1a1a1a]' : 'text-[#999]'
             }`}
           >聊天室</Link>
-          <DonateButton className="whitespace-nowrap text-xs font-medium px-3 py-1 rounded-lg text-[#999] hover:bg-[#f5f5f5] transition-colors" />
+          <DonateButton className="whitespace-nowrap text-sm font-semibold px-3 py-1.5 rounded-lg text-[#c23531] hover:bg-[#fef2f0] transition-colors" />
         </div>
 
         {/* 移动端搜索 */}
