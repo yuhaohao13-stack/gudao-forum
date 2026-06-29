@@ -90,9 +90,10 @@ export default function Header() {
                     {profile?.display_name || profile?.username || ''}
                   </span>
                 </Link>
-                <Link href="/messages" className="btn-ghost !px-2 !py-1.5 relative">
+                <Link href="/messages" className="btn-ghost !px-2 !py-1.5 flex items-center gap-1">
+                  <span className="text-xs text-[#999]">私信</span>
                   💬
-                  {UnreadBadge && <UnreadBadge className="absolute -top-0.5 -right-0.5" />}
+                  {UnreadBadge && <UnreadBadge />}
                 </Link>
                 <Link href="/new-thread" className="btn-primary !px-3 !py-1.5 !text-xs whitespace-nowrap">
                   ✏️ 发帖
