@@ -83,21 +83,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ===== 快速入口 — 聊天室 ===== */}
-      <div className="anim-up">
-        <Link
-          href="/chat"
-          className="card flex items-center gap-4 p-4 sm:p-5 hover:bg-[#fafafa] group"
-        >
-          <div className="text-2xl group-hover:scale-110 transition-transform duration-300">💬</div>
-          <div className="flex-1 min-w-0">
-            <h3 className="font-semibold text-sm text-[#1a1a1a]">在线聊天室</h3>
-            <p className="text-xs text-[#aaa] mt-0.5">10 个话题房间，与全球华人畅聊</p>
-          </div>
-          <div className="text-sm text-[#ccc] group-hover:text-[#888] transition-colors shrink-0">→</div>
-        </Link>
-      </div>
-
       {/* ===== 公告 ===== */}
       {announcements.length > 0 && (
         <section className="anim-up">
