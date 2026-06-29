@@ -42,7 +42,7 @@ export default function RootLayout({ children }) {
         <meta name="baidu-site-verification" content="codeva-ivcpKCSsQj" />
         <meta name="build-version" content="v3-refined" />
       </head>
-      <body className="min-h-screen flex flex-col bg-[#fafaf9] text-[#1a1a1a]">
+      <body className="min-h-screen flex flex-col bg-[#fafaf9] text-[#1a1a1a] overflow-x-hidden">
         <ErrorBoundary>
           <DonateOverlay />
           <AuthProvider>
