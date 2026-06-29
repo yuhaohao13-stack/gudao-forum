@@ -44,10 +44,10 @@ export default function CategoryPage() {
     setThreads(threads.map(t => t.id === thread.id ? { ...t, is_pinned: newVal } : t))
   }
 
-  if (!category) return <div className="flex justify-center py-16"><div className="w-4 h-4 border-[1.5px] border-[#ccc] border-t-[#1a1a1a] rounded-full animate-spin" /></div>
+  if (!category) return <div className="flex justify-center py-16"><div className="w-4 h-4 border-[1.5px] border-[#ddd] border-t-[#1a1a1a] rounded-full animate-spin" /></div>
 
   return (
-    <div className="anim-fade-in">
+    <div className="anim-fade-in max-w-3xl mx-auto">
       <div className="mb-5">
         <Link href="/" className="text-xs text-[#bbb] hover:text-[#888] transition-colors">&larr; 首页</Link>
         <h1 className="text-xl font-bold font-serif text-[#1a1a1a] mt-1">{category.icon} {category.name}</h1>
@@ -57,53 +57,52 @@ export default function CategoryPage() {
       <div className="flex items-center justify-between mb-4">
         <div className="flex gap-1.5">
           <button onClick={() => setSortBy('latest')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${sortBy === 'latest' ? 'bg-[#1a1a1a] text-white' : 'bg-[#f5f5f3] text-[#888] hover:text-[#1a1a1a]'}`}>⏱ 最新</button>
+            className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${sortBy === 'latest' ? 'bg-[#1a1a1a] text-white' : 'text-[#999] hover:text-[#1a1a1a] hover:bg-[#f5f5f5]'}`}>最新</button>
           <button onClick={() => setSortBy('hot')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${sortBy === 'hot' ? 'bg-[#1a1a1a] text-white' : 'bg-[#f5f5f3] text-[#888] hover:text-[#1a1a1a]'}`}>🔥 最热</button>
+            className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${sortBy === 'hot' ? 'bg-[#1a1a1a] text-white' : 'text-[#999] hover:text-[#1a1a1a] hover:bg-[#f5f5f5]'}`}>热门</button>
         </div>
         {(!isAnnouncements || isAdmin) && (
-          <Link href="/new-thread" className="btn-primary !px-3 !py-1.5 text-xs">✏️ 发帖</Link>
+          <Link href="/new-thread" className="btn-primary !px-3 !py-1.5 !text-xs">✏️ 发帖</Link>
         )}
       </div>
 
       {isAnnouncements && !isAdmin && (
-        <div className="card p-3 text-center mb-4"><p className="text-[#aaa] text-xs">🔒 此版块仅管理员可发帖</p></div>
+        <div className="border border-[#f0f0f0] rounded-xl p-3 text-center mb-4"><p className="text-[#aaa] text-xs">🔒 此版块仅管理员可发帖</p></div>
       )}
 
-      <div className="space-y-1.5">
+      <div className="card divide-y divide-[#f5f5f5]">
         {threads.length === 0 ? (
-          <div className="card p-10 text-center">
-            <div className="text-2xl mb-2">📭</div>
-            <p className="text-[#999] text-xs">这里还没有帖子</p>
+          <div className="py-12 text-center">
+            <p className="text-[#bbb] text-sm">这里还没有帖子</p>
             {(!isAnnouncements || isAdmin) && <Link href="/new-thread" className="btn-primary mt-3">发第一条帖子</Link>}
           </div>
         ) : threads.map((t, i) => (
           <div key={t.id} onClick={() => router.push(`/t/${t.id}`)}
-            className={`post-card cursor-pointer ${i > 0 ? `anim-delay-${Math.min(i, 5)}` : ''}`}>
-            <div className="flex items-start justify-between gap-2">
+            className={`thread-item px-4 ${i === 0 ? 'pt-4' : ''} last:pb-4 cursor-pointer`}>
+            <div className="flex items-start justify-between gap-3">
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-1.5 flex-wrap mb-0.5">
-                  {t.is_pinned && <span className="meta-tag bg-[#f5f0e8] text-[#8b6914] border border-[#e8e0d0]">📌 置顶</span>}
-                  {(t.profiles?.role === 'admin' || t.profiles?.role === 'moderator') && !t.is_pinned &&
-                    <span className="meta-tag bg-[#f5f0e8] text-[#8b6914] border border-[#e8e0d0]">👑 管理员</span>}
-                  {t.is_locked && <span className="meta-tag bg-[#f5f0e8] text-[#888] border border-[#e8e0d0]">🔒 已锁</span>}
+                  {t.is_pinned && <span className="tag">📌 置顶</span>}
+                  {(t.profiles?.role === 'admin' || t.profiles?.role === 'moderator') && !t.is_pinned && <span className="tag">👑 管理员</span>}
+                  {t.is_locked && <span className="tag">🔒 已锁</span>}
                 </div>
-                <h3 className="font-semibold text-[#1a1a1a] text-sm truncate leading-snug">{t.title}</h3>
-                <div className="text-xs text-[#aaa] mt-1">
-                  <span className="font-medium text-[#888]">{t.profiles?.display_name || t.profiles?.username}</span>
-                  <span className="text-[#ddd8d0] mx-1">·</span>
+                <h3 className="font-medium text-[#1a1a1a] text-sm truncate leading-snug">{t.title}</h3>
+                <div className="flex items-center gap-2 mt-1 text-xs text-[#bbb]">
+                  <span>{t.profiles?.display_name || t.profiles?.username}</span>
+                  <span>·</span>
                   <span>{new Date(t.created_at).toLocaleDateString('zh-CN')}</span>
-                  <span className="ml-2 stat">💬 <span className="stat-num">{t.reply_count || 0}</span></span>
-                  <span className="ml-1.5 stat">👁 <span className="stat-num">{t.view_count || 0}</span></span>
                 </div>
               </div>
-              {isAdmin && (
-                <button onClick={(e) => togglePin(e, t)}
-                  className={`shrink-0 mt-0.5 px-1.5 py-1 rounded text-xs transition-all ${t.is_pinned ? 'text-[#8b6914] bg-[#f5f0e8]' : 'text-[#ddd] hover:text-[#8b6914] hover:bg-[#f5f0e8]'}`}
-                  title={t.is_pinned ? '取消置顶' : '置顶'}>
-                  📌
-                </button>
-              )}
+              <div className="flex items-center gap-1 shrink-0 mt-1">
+                <span className="text-xs text-[#bbb]">💬 {t.reply_count || 0}</span>
+                {isAdmin && (
+                  <button onClick={(e) => togglePin(e, t)}
+                    className={`ml-1 px-1.5 py-0.5 rounded text-xs transition-colors ${t.is_pinned ? 'text-[#8b6914] bg-[#f5f5f5]' : 'text-[#ddd] hover:text-[#8b6914] hover:bg-[#f5f5f5]'}`}
+                    title={t.is_pinned ? '取消置顶' : '置顶'}>
+                    📌
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         ))}

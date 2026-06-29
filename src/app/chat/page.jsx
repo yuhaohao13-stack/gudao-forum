@@ -15,8 +15,6 @@ export default function ChatPage() {
     supabase.from('chat_rooms').select('*').order('sort_order').then(({ data }) => {
       setRooms(data || [])
     })
-
-    // 获取所有聊天室的在线人数（简单统计：最近 5 分钟有过消息的 unique 用户数）
     const fiveMinAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString()
     supabase.from('chat_messages').select('user_id', { count: 'exact', head: true })
       .gte('created_at', fiveMinAgo)
@@ -25,54 +23,41 @@ export default function ChatPage() {
 
   return (
     <div className="anim-fade-in">
-      {/* 头部 */}
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-xl font-bold font-serif text-[#1a1a1a]">💬 在线聊天室</h1>
-          <p className="text-sm text-[#aaa] mt-1">
-            非会员可查看聊天记录，会员可参与聊天
-            {onlineCount > 0 && (
-              <span className="ml-3 inline-flex items-center gap-1 text-xs text-green-700 bg-green-50 border border-green-200 rounded-full px-2.5 py-0.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-                {onlineCount} 人在线
-              </span>
-            )}
-          </p>
-        </div>
+      <div className="hero-section">
+        <h1>💬 在线聊天室</h1>
+        <p className="tagline">
+          非会员可查看聊天记录，会员可参与聊天
+          {onlineCount > 0 && (
+            <span className="ml-3 inline-flex items-center gap-1 text-xs text-green-700 bg-green-50 border border-green-200 rounded-full px-2.5 py-0.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+              {onlineCount} 人在线
+            </span>
+          )}
+        </p>
         {!authLoading && !user && (
-          <Link href="/login" className="btn-primary text-xs !px-3 !py-1.5">
-            登录聊天
-          </Link>
+          <div className="mt-4">
+            <Link href="/login" className="btn-primary">登录聊天</Link>
+          </div>
         )}
       </div>
 
-      {/* 聊天室网格 */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {rooms.map((room, i) => (
           <Link key={room.id} href={`/chat/${room.slug}`}
-            className={`card p-5 hover:bg-[#fafaf8] transition-all group anim-scale ${i > 0 ? `anim-delay-${Math.min(i, 5)}` : ''}`}
-          >
+            className={`feature-card ${i > 0 ? `anim-delay-${Math.min(i, 5)}` : ''}`}>
             <div className="flex items-start gap-4">
-              <div className="text-3xl shrink-0 mt-0.5 group-hover:scale-110 transition-transform duration-300">
-                {room.icon}
-              </div>
+              <div className="text-3xl shrink-0 mt-0.5">{room.icon}</div>
               <div className="min-w-0 flex-1">
-                <h3 className="font-semibold text-[#1a1a1a] text-base group-hover:text-[#c23531] transition-colors">
-                  {room.name}
-                </h3>
-                <p className="text-sm text-[#aaa] mt-0.5 line-clamp-1">{room.description}</p>
-                <div className="flex items-center gap-3 mt-2">
+                <h3 className="font-semibold text-[#1a1a1a]">{room.name}</h3>
+                <p className="text-sm text-[#aaa] mt-1 line-clamp-1">{room.description}</p>
+                <div className="flex items-center gap-2 mt-2 text-xs text-[#aaa]">
                   {user ? (
-                    <span className="inline-flex items-center gap-1 text-xs text-green-700 font-medium">
-                      <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                      可发言
-                    </span>
+                    <span className="text-green-700">✅ 可发言</span>
                   ) : (
-                    <span className="inline-flex items-center gap-1 text-xs text-[#bbb]">
-                      👁️ 可查看
-                    </span>
+                    <span>👁️ 可查看</span>
                   )}
-                  <span className="text-xs text-[#ccc]">进入 →</span>
+                  <span>·</span>
+                  <span>进入 →</span>
                 </div>
               </div>
             </div>
@@ -80,9 +65,8 @@ export default function ChatPage() {
         ))}
       </div>
 
-      {/* 提示 */}
       {!authLoading && !user && (
-        <div className="mt-6 card p-4 text-center bg-[#fafaf8]">
+        <div className="mt-6 border border-[#f0f0f0] rounded-xl p-4 text-center bg-[#fafafa]">
           <p className="text-sm text-[#888]">
             💡 非会员可以查看所有聊天记录，<Link href="/login" className="text-[#c23531] font-medium hover:underline">登录</Link>或<Link href="/register" className="text-[#c23531] font-medium hover:underline">注册</Link>后即可参与聊天
           </p>
@@ -91,4 +75,3 @@ export default function ChatPage() {
     </div>
   )
 }
-

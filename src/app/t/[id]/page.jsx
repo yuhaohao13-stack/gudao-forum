@@ -39,8 +39,7 @@ export default function ThreadPage() {
   }, [user, id])
 
   const handleReply = async (e) => {
-    e.preventDefault()
-    setError('')
+    e.preventDefault(); setError('')
     if (!replyContent.trim()) return
     const replyCheck = checkContent(replyContent)
     if (!replyCheck.pass) { setError('回复包含不当言论'); return }
@@ -60,8 +59,8 @@ export default function ThreadPage() {
     else { await supabase.from('thread_likes').insert({ thread_id: id, user_id: user.id }); setLiked(true) }
   }
 
-  if (loading) return <div className="flex justify-center py-20"><div className="w-5 h-5 border-[1.5px] border-[#ccc] border-t-[#1a1a1a] rounded-full animate-spin" /></div>
-  if (!thread) return <div className="text-center py-20 text-[#999] anim-fade-in"><div className="text-3xl mb-3">🔍</div><p>帖子不存在</p><Link href="/" className="text-[#888] hover:text-[#1a1a1a] mt-2 inline-block transition-colors">返回首页</Link></div>
+  if (loading) return <div className="flex justify-center py-20"><div className="w-5 h-5 border-[1.5px] border-[#ddd] border-t-[#1a1a1a] rounded-full animate-spin" /></div>
+  if (!thread) return <div className="text-center py-20 anim-fade-in"><p className="text-[#bbb]">帖子不存在</p><Link href="/" className="text-[#888] hover:text-[#1a1a1a] mt-2 inline-block transition-colors">返回首页</Link></div>
 
   return (
     <div className="anim-fade-in max-w-3xl mx-auto">
@@ -69,29 +68,29 @@ export default function ThreadPage() {
         &larr; {thread.categories?.name}
       </Link>
 
-      <article className="mt-3 card p-5 sm:p-8 anim-up">
+      <article className="mt-4 card p-6 sm:p-8 anim-up">
         {(thread.profiles?.role === 'admin' || thread.profiles?.role === 'moderator') && (
-          <span className="meta-tag bg-[#f5f0e8] text-[#8b6914] border border-[#e8e0d0] mb-2">👑 管理员</span>
+          <span className="tag mb-3 inline-block">👑 管理员</span>
         )}
         <h1 className="text-xl sm:text-2xl font-bold font-serif text-[#1a1a1a] leading-snug">{thread.title}</h1>
-        <div className="flex items-center gap-2 mt-3 text-xs text-[#aaa]">
-          <Link href={`/profile/${thread.author_id}`} className="w-6 h-6 rounded-full bg-[#c23531] flex items-center justify-center text-[10px] text-white font-bold shadow-sm hover:opacity-80">
+        <div className="flex items-center gap-2 mt-3 text-sm text-[#aaa]">
+          <Link href={`/profile/${thread.author_id}`} className="w-6 h-6 rounded-full bg-[#c23531] flex items-center justify-center text-[10px] text-white font-bold">
             {(thread.profiles?.display_name || thread.profiles?.username || '?')[0]}
           </Link>
-          <Link href={`/profile/${thread.author_id}`} className="font-medium text-[#888] hover:text-[#c23531] transition-colors">{thread.profiles?.display_name || thread.profiles?.username}</Link>
-          <span className="text-[#ddd8d0]">·</span>
+          <Link href={`/profile/${thread.author_id}`} className="text-[#888] hover:text-[#c23531] transition-colors">{thread.profiles?.display_name || thread.profiles?.username}</Link>
+          <span>·</span>
           <span>{new Date(thread.created_at).toLocaleString('zh-CN')}</span>
         </div>
 
-        <div className="my-6 h-px bg-[#f0eee8]" />
+        <div className="my-6 h-px bg-[#f0f0f0]" />
 
         <div className={`text-[#444] leading-7 sm:leading-8 whitespace-pre-wrap text-sm sm:text-base ${!user ? 'line-clamp-3' : ''}`}>
           {!user ? thread.content.split('\n').slice(0, 3).join('\n') : thread.content}
         </div>
         {!user && thread.content.split('\n').length > 3 && (
-          <div className="mt-4 p-4 rounded-xl bg-[#f5f5f3] border border-[#f0eee8] text-center">
+          <div className="mt-4 p-4 rounded-xl bg-[#fafafa] border border-[#f0f0f0] text-center">
             <p className="text-[#aaa] text-xs">🔒 登录后可查看完整内容</p>
-            <Link href="/login" className="btn-primary mt-2 !text-xs !px-4 !py-1.5">登录</Link>
+            <Link href="/login" className="btn-primary mt-2 !text-xs">登录</Link>
           </div>
         )}
 
@@ -99,39 +98,39 @@ export default function ThreadPage() {
           <div className="mt-6 flex flex-wrap gap-3">
             {thread.images.map((url, i) => (
               <a key={i} href={url} target="_blank" rel="noopener noreferrer" className="block w-[45%] sm:w-[30%] group">
-                <img src={url} alt="" className="w-full h-auto max-h-60 object-cover rounded-xl border border-[#f0eee8] group-hover:border-[#ddd] group-hover:opacity-90 transition-all" loading="lazy" />
+                <img src={url} alt="" className="w-full h-auto max-h-60 object-cover rounded-xl border border-[#f0f0f0] group-hover:opacity-90 transition-all" loading="lazy" />
               </a>
             ))}
           </div>
         )}
 
-        <div className="mt-6 pt-5 border-t border-[#f0eee8] flex items-center gap-4 text-sm">
+        <div className="mt-6 pt-5 border-t border-[#f0f0f0] flex items-center gap-4 text-sm">
           <button onClick={toggleLike}
-            className={`flex items-center gap-1.5 px-4 py-2 rounded-lg transition-all ${liked ? 'text-[#c23531] bg-[#f5f0e8] border border-[#e8e0d0]' : 'text-[#aaa] border border-[#f0eee8] hover:text-[#c23531] hover:border-[#e8e0d0]'}`}>
-            {liked ? '❤️' : '🤍'} <span className="font-medium">{liked ? '已赞' : '点赞'}</span>
+            className={`flex items-center gap-1.5 px-4 py-2 rounded-md transition-all ${liked ? 'text-[#c23531] bg-[#fafafa] border border-[#f0f0f0]' : 'text-[#aaa] border border-[#f0f0f0] hover:text-[#c23531] hover:border-[#e0e0e0]'}`}>
+            {liked ? '❤️' : '🤍'} <span>{liked ? '已赞' : '点赞'}</span>
           </button>
-          <span className="stat">💬 <span className="stat-num">{replies.length}</span> 回复</span>
-          <span className="stat">👁 <span className="stat-num">{thread.view_count || 0}</span> 浏览</span>
+          <span className="stat">💬 {replies.length} 回复</span>
+          <span className="stat">👁 {thread.view_count || 0} 浏览</span>
         </div>
       </article>
 
       <div className="mt-6 anim-up">
-        <h2 className="font-semibold text-sm text-[#888] mb-3">💬 全部回复<span className="font-normal text-[#ccc] ml-1">({replies.length})</span></h2>
+        <h2 className="text-sm font-medium text-[#888] mb-4">💬 全部回复<span className="font-normal text-[#bbb] ml-1">({replies.length})</span></h2>
         <div className="space-y-3">
           {replies.length === 0 ? (
-            <div className="card p-8 text-center"><div className="text-2xl mb-2">🛋️</div><p className="text-[#aaa] text-sm">暂无回复，来坐沙发吧</p></div>
+            <div className="card p-8 text-center"><p className="text-[#bbb] text-sm">暂无回复，来坐沙发吧</p></div>
           ) : replies.map((r, i) => (
             <div key={r.id} className={`card p-4 sm:p-5 anim-scale ${i > 0 ? `anim-delay-${Math.min(i, 3)}` : ''}`}>
               {r.is_deleted ? (
                 <p className="text-[#ddd] italic text-sm">[该回复已被删除]</p>
               ) : (
                 <>
-                  <div className="flex items-center gap-2 text-xs text-[#aaa] mb-2">
-                    <Link href={`/profile/${r.author_id}`} className="w-5 h-5 rounded-full bg-[#ddd8d0] flex items-center justify-center text-[8px] text-white font-bold hover:opacity-80">
+                  <div className="flex items-center gap-2 text-sm text-[#aaa] mb-2">
+                    <Link href={`/profile/${r.author_id}`} className="w-5 h-5 rounded-full bg-[#ddd] flex items-center justify-center text-[8px] text-white font-bold">
                       {(r.profiles?.display_name || r.profiles?.username || '?')[0]}
                     </Link>
-                    <Link href={`/profile/${r.author_id}`} className="font-medium text-[#888] hover:text-[#c23531] transition-colors">{r.profiles?.display_name || r.profiles?.username}</Link>
-                    <span className="text-[#ddd8d0]">·</span>
+                    <Link href={`/profile/${r.author_id}`} className="text-[#888] hover:text-[#c23531] transition-colors">{r.profiles?.display_name || r.profiles?.username}</Link>
+                    <span>·</span>
                     <span>{new Date(r.created_at).toLocaleString('zh-CN')}</span>
                   </div>
                   <div className="text-[#444] leading-7 whitespace-pre-wrap text-sm">{r.content}</div>
@@ -150,13 +149,13 @@ export default function ThreadPage() {
           <div className="flex items-center justify-between mt-3">
             <span className="text-xs text-[#ccc]">以文会友，友善交流</span>
             <button type="submit" disabled={sending || !replyContent.trim()}
-              className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed !px-5 !py-2"
+              className="btn-primary disabled:opacity-50"
             >{sending ? '发送中...' : '发表回复'}</button>
           </div>
         </form>
       ) : (
         <div className="mt-6 card p-5 text-center">
-          <p className="text-[#aaa] text-sm"><Link href="/login" className="text-[#888] hover:text-[#1a1a1a] font-medium transition-colors">登录</Link> 后可以回复</p>
+          <p className="text-[#aaa] text-sm"><Link href="/login" className="text-[#c23531] hover:underline">登录</Link> 后可以回复</p>
         </div>
       )}
     </div>
