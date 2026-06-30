@@ -157,6 +157,11 @@ export default function ProfilePage() {
           <>
             <h1 className="text-xl font-bold font-serif text-[#1a1a1a] mt-4">{profile.display_name || profile.username}</h1>
             <p className="text-[#999] text-sm">@{profile.username}</p>
+            {profile.member_no && (
+              <div className="mt-2 inline-block px-3 py-0.5 rounded-full bg-[#f5f0e8] border border-[#e8e0d0] text-xs font-mono text-[#8b6914]">
+                #{profile.member_no}
+              </div>
+            )}
 
             {/* 个人信息：靠左 + 带标签 */}
             <div className="mt-5 text-sm text-left space-y-2.5 max-w-sm mx-auto">
@@ -170,6 +175,12 @@ export default function ProfilePage() {
                 <span className="w-16 shrink-0 text-[#bbb] text-xs">{t('profile.username')}</span>
                 <span className="text-[#999]">@{profile.username}</span>
               </div>
+              {profile.member_no && (
+                <div className="flex items-baseline gap-2">
+                  <span className="w-16 shrink-0 text-[#bbb] text-xs">编号</span>
+                  <span className="text-[#666] font-mono">#{profile.member_no}</span>
+                </div>
+              )}
               {profile.phone && (
                 <div className="flex items-baseline gap-2">
                   <span className="w-16 shrink-0 text-[#bbb] text-xs">{t('profile.phone')}</span>
