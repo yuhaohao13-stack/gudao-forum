@@ -8,7 +8,7 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 )
 
-export const revalidate = 3600 // 每小时重新生成
+export const dynamic = 'force-dynamic'
 
 export default async function sitemap() {
   // 静态页面
