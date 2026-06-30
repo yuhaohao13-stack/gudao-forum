@@ -5,8 +5,10 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { User, Cake, Smartphone, CheckCircle, PartyPopper, ArrowRight } from 'lucide-react'
 import { checkRateLimit } from '@/lib/moderation'
+import { useLanguage } from '@/lib/LanguageContext'
 
 export default function LoginPage() {
+  const { t } = useLanguage()
   const [email, setEmail] = useState(''); const [password, setPassword] = useState('')
   const [error, setError] = useState(''); const [loading, setLoading] = useState(false)
   const [cooldown, setCooldown] = useState(0)
@@ -108,31 +110,31 @@ export default function LoginPage() {
 
   // ===== UI =====
   const methodBtns = [
-    { key: 'name', label: <><User size={14} className="inline-block align-text-bottom" /> 姓名+生日</> },
-    { key: 'dob', label: <><Cake size={14} className="inline-block align-text-bottom" /> 出生日期</> },
-    { key: 'phone', label: <><Smartphone size={14} className="inline-block align-text-bottom" /> 手机号</> },
+    { key: 'name', label: <><User size={14} className="inline-block align-text-bottom" /> {t('profile.name')}+{t('profile.dob')}</> },
+    { key: 'dob', label: <><Cake size={14} className="inline-block align-text-bottom" /> {t('profile.dob')}</> },
+    { key: 'phone', label: <><Smartphone size={14} className="inline-block align-text-bottom" /> {t('profile.phone')}</> },
   ]
 
   const loginForm = (
     <div className="max-w-sm mx-auto mt-16 anim-fade-in">
       <div className="card p-8">
         <div className="text-center mb-6">
-          <h1 className="text-2xl font-bold font-serif text-[#1a1a1a]">登录</h1>
+          <h1 className="text-2xl font-bold font-serif text-[#1a1a1a]">{t('auth.login')}</h1>
           <div className="w-10 h-0.5 bg-[#c23531] mx-auto mt-3 rounded-full" />
         </div>
         <form onSubmit={handleLogin} className="space-y-4">
-          <div><label className="block text-xs text-[#888] mb-1.5 font-medium">邮箱</label>
+          <div><label className="block text-xs text-[#888] mb-1.5 font-medium">{t('auth.email')}</label>
             <input type="email" required value={email} onChange={e => setEmail(e.target.value)} className="input" placeholder="your@email.com" autoComplete="email" /></div>
-          <div><label className="block text-xs text-[#888] mb-1.5 font-medium">密码</label>
+          <div><label className="block text-xs text-[#888] mb-1.5 font-medium">{t('auth.password')}</label>
             <input type="password" required value={password} onChange={e => setPassword(e.target.value)} className="input" autoComplete="current-password" /></div>
           {error && <div className="text-xs text-[#c23531] bg-[#c23531]/8 border border-[#c23531]/15 rounded-lg p-3">{error}</div>}
           <button type="submit" disabled={loading || cooldown > 0} className="btn-primary w-full justify-center">
-            {loading ? '登录中...' : cooldown > 0 ? `请等待 ${cooldown}s` : '登录'}
+            {loading ? t('auth.logging_in') : cooldown > 0 ? `${t('auth.wait')} ${cooldown}${t('common.seconds')}` : t('auth.login')}
           </button>
           <div className="flex items-center justify-between text-xs mt-2">
             <button type="button" onClick={() => { setResetStep(1); setError(''); setResetEmail(email) }}
-              className="text-[#999] hover:text-[#c23531] transition-colors">忘记密码？</button>
-            <Link href="/register" className="text-[#c23531] hover:underline font-medium">注册</Link>
+              className="text-[#999] hover:text-[#c23531] transition-colors">{t('auth.forgot_password')}</button>
+            <Link href="/register" className="text-[#c23531] hover:underline font-medium">{t('auth.register')}</Link>
           </div>
         </form>
       </div>
@@ -144,17 +146,17 @@ export default function LoginPage() {
     <div className="max-w-sm mx-auto mt-16 anim-fade-in">
       <div className="card p-8">
         <div className="text-center mb-6">
-          <h1 className="text-2xl font-bold font-serif text-[#1a1a1a]">找回密码</h1>
+          <h1 className="text-2xl font-bold font-serif text-[#1a1a1a]">{t('auth.reset_password')}</h1>
           <div className="w-10 h-0.5 bg-[#c23531] mx-auto mt-3 rounded-full" />
-          <p className="text-xs text-[#999] mt-2">输入你的注册邮箱</p>
+          <p className="text-xs text-[#999] mt-2">{t('auth.enter_email')}</p>
         </div>
         <form onSubmit={handleStep1} className="space-y-4">
-          <div><label className="block text-xs text-[#888] mb-1.5 font-medium">邮箱</label>
+          <div><label className="block text-xs text-[#888] mb-1.5 font-medium">{t('auth.email')}</label>
             <input type="email" required value={resetEmail} onChange={e => setResetEmail(e.target.value)}
               className="input" placeholder="your@email.com" autoComplete="email" /></div>
           {error && <div className="text-xs text-[#c23531] bg-[#c23531]/8 border border-[#c23531]/15 rounded-lg p-3">{error}</div>}
-          <button type="submit" disabled={loading} className="btn-primary w-full justify-center">{loading ? '验证中...' : '下一步'}</button>
-          <button type="button" onClick={() => { setResetStep(0); setError('') }} className="btn-ghost w-full justify-center text-xs">返回登录</button>
+          <button type="submit" disabled={loading} className="btn-primary w-full justify-center">{loading ? t('auth.wait')+'...' : '下一步'}</button>
+          <button type="button" onClick={() => { setResetStep(0); setError('') }} className="btn-ghost w-full justify-center text-xs">{t('auth.back_login')}</button>
         </form>
       </div>
     </div>
@@ -165,8 +167,8 @@ export default function LoginPage() {
     <div className="max-w-sm mx-auto mt-16 anim-fade-in">
       <div className="card p-8">
         <div className="text-center mb-5">
-          <h1 className="text-lg font-bold font-serif text-[#1a1a1a]">验证身份</h1>
-          <p className="text-xs text-[#999] mt-1">选择一种方式验证</p>
+          <h1 className="text-lg font-bold font-serif text-[#1a1a1a]">{t('auth.verify_identity')}</h1>
+          <p className="text-xs text-[#999] mt-1">{t('auth.choose_method')}</p>
           <p className="text-xs text-[#c23531] font-medium mt-2">{resetEmail.replace(/(.{3}).+(@.+)/, '$1***$2')}</p>
         </div>
         <div className="flex gap-1 mb-5 bg-[#f5f0e8] rounded-xl p-1">
@@ -179,22 +181,22 @@ export default function LoginPage() {
         </div>
         <form onSubmit={handleStep2} className="space-y-4">
           {resetMethod === 'name' && (
-            <><div><label className="block text-xs text-[#888] mb-1.5 font-medium">姓名</label>
+            <><div><label className="block text-xs text-[#888] mb-1.5 font-medium">{t('profile.name')}</label>
               <input type="text" required value={resetName} onChange={e => setResetName(e.target.value)} className="input" placeholder="注册时的姓名" /></div>
-              <div><label className="block text-xs text-[#888] mb-1.5 font-medium">出生日期</label>
+              <div><label className="block text-xs text-[#888] mb-1.5 font-medium">{t('profile.dob')}</label>
               <input type="date" required value={resetDob} onChange={e => setResetDob(e.target.value)} className="input" /></div></>
           )}
           {resetMethod === 'dob' && (
-            <div><label className="block text-xs text-[#888] mb-1.5 font-medium">出生日期</label>
+            <div><label className="block text-xs text-[#888] mb-1.5 font-medium">{t('profile.dob')}</label>
             <input type="date" required value={resetDob} onChange={e => setResetDob(e.target.value)} className="input" /></div>
           )}
           {resetMethod === 'phone' && (
-            <div><label className="block text-xs text-[#888] mb-1.5 font-medium">手机号</label>
+            <div><label className="block text-xs text-[#888] mb-1.5 font-medium">{t('profile.phone')}</label>
             <input type="tel" required value={resetPhone} onChange={e => setResetPhone(e.target.value)} className="input" placeholder="13812345678" maxLength={11} /></div>
           )}
           {error && <div className="text-xs text-[#c23531] bg-[#c23531]/8 border border-[#c23531]/15 rounded-lg p-3">{error}</div>}
-          <button type="submit" disabled={loading} className="btn-primary w-full justify-center">{loading ? '验证中...' : '验证身份'}</button>
-          <button type="button" onClick={() => { setResetStep(1); setError('') }} className="btn-ghost w-full justify-center text-xs">上一步</button>
+          <button type="submit" disabled={loading} className="btn-primary w-full justify-center">{loading ? t('auth.wait')+'...' : t('auth.verify_identity')}</button>
+          <button type="button" onClick={() => { setResetStep(1); setError('') }} className="btn-ghost w-full justify-center text-xs">{t('auth.back')}</button>
         </form>
       </div>
     </div>
@@ -206,18 +208,18 @@ export default function LoginPage() {
       <div className="card p-8">
         <div className="text-center mb-6">
           <div className="mb-2"><CheckCircle size={32} className="inline-block text-green-600" /></div>
-          <h1 className="text-lg font-bold font-serif text-[#1a1a1a]">身份验证通过</h1>
-          <p className="text-xs text-[#999] mt-1">设置新密码</p>
+          <h1 className="text-lg font-bold font-serif text-[#1a1a1a]">{t('auth.verified')}</h1>
+          <p className="text-xs text-[#999] mt-1">{t('auth.set_new_password')}</p>
         </div>
         <form onSubmit={handleStep3} className="space-y-4">
-          <div><label className="block text-xs text-[#888] mb-1.5 font-medium">新密码</label>
+          <div><label className="block text-xs text-[#888] mb-1.5 font-medium">{t('auth.password')}</label>
             <input type="password" required value={newPassword} onChange={e => setNewPassword(e.target.value)}
-              className="input" placeholder="至少8位，需包含字母和数字" autoComplete="new-password" /></div>
-          <div><label className="block text-xs text-[#888] mb-1.5 font-medium">确认密码</label>
+              className="input" placeholder={t('auth.password_placeholder')} autoComplete="new-password" /></div>
+          <div><label className="block text-xs text-[#888] mb-1.5 font-medium">{t('auth.confirm_password')}</label>
             <input type="password" required value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)}
-              className="input" placeholder="再次输入新密码" /></div>
+              className="input" placeholder={t('auth.confirm_password')}" /></div>
           {error && <div className="text-xs text-[#c23531] bg-[#c23531]/8 border border-[#c23531]/15 rounded-lg p-3">{error}</div>}
-          <button type="submit" disabled={loading} className="btn-primary w-full justify-center">{loading ? '设置中...' : '重置密码'}</button>
+          <button type="submit" disabled={loading} className="btn-primary w-full justify-center">{loading ? t('auth.wait')+'...' : t('auth.reset_password')}</button>
         </form>
       </div>
     </div>
@@ -228,10 +230,10 @@ export default function LoginPage() {
     <div className="max-w-sm mx-auto mt-16 anim-fade-in">
       <div className="card p-8 text-center">
         <div className="mb-3"><PartyPopper size={40} className="inline-block" /></div>
-        <h1 className="text-xl font-bold font-serif text-[#1a1a1a] mb-2">密码已重置</h1>
-        <p className="text-sm text-[#999]">请使用新密码登录</p>
+        <h1 className="text-xl font-bold font-serif text-[#1a1a1a] mb-2">{t('auth.password_reset')}</h1>
+        <p className="text-sm text-[#999]">{t('auth.use_new_password')}</p>
         <button onClick={() => { setResetStep(0); setPassword(''); setEmail(resetEmail); setError('') }}
-          className="btn-primary mt-5">去登录</button>
+          className="btn-primary mt-5">{t('auth.go_login')}</button>
       </div>
     </div>
   )

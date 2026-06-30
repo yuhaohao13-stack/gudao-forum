@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Mars, Venus, Sparkles, RefreshCw } from 'lucide-react'
 import { validatePassword, validatePhone, checkRateLimit } from '@/lib/moderation'
+import { useLanguage } from '@/lib/LanguageContext'
 
 const pageLoadTime = Date.now()
 
@@ -13,6 +14,7 @@ function generateCaptcha() {
 }
 
 export default function RegisterPage() {
+  const { t } = useLanguage()
   const [captchaCode, setCaptchaCode] = useState('')
   const [form, setForm] = useState({
     _honeypot: '',
@@ -117,9 +119,9 @@ export default function RegisterPage() {
     <div className="max-w-lg mx-auto mt-8 mb-16 anim-fade-in">
       <div className="card p-6 sm:p-8">
         <div className="text-center mb-6">
-          <h1 className="text-2xl font-bold font-serif text-[#1a1a1a]">注册</h1>
+          <h1 className="text-2xl font-bold font-serif text-[#1a1a1a]">{t('auth.register')}</h1>
           <div className="w-10 h-0.5 bg-[#c23531] mx-auto mt-3 rounded-full" />
-          <p className="text-[#bbb] text-xs mt-2">加入古道论坛</p>
+          <p className="text-[#bbb] text-xs mt-2">{t('footer.title')}</p>
         </div>
 
         <form onSubmit={handleRegister} className="space-y-4">
@@ -129,24 +131,24 @@ export default function RegisterPage() {
             <div style={{ position: 'absolute', left: '-9999px' }} aria-hidden="true">
               <input type="text" value={form._honeypot} onChange={e => update('_honeypot', e.target.value)} tabIndex={-1} autoComplete="off" />
             </div>
-            <p className="text-[10px] text-[#c23531] font-medium tracking-wide">必填信息</p>
+            <p className="text-[10px] text-[#c23531] font-medium tracking-wide">Required</p>
 
             <div>
-              <label className="block text-xs text-[#888] mb-1.5 font-medium">昵称 / 姓名 <span className="text-[#c23531]">*</span></label>
+              <label className="block text-xs text-[#888] mb-1.5 font-medium">{t('auth.display_name')} <span className="text-[#c23531]">*</span></label>
               <input type="text" required value={form.username}
                 onChange={e => update('username', e.target.value)}
                 className={inputClass} placeholder="例如：张三" maxLength={10} autoComplete="name" />
             </div>
 
             <div>
-              <label className="block text-xs text-[#888] mb-1.5 font-medium">邮箱 <span className="text-[#c23531]">*</span></label>
+              <label className="block text-xs text-[#888] mb-1.5 font-medium">{t('auth.email')} <span className="text-[#c23531]">*</span></label>
               <input type="email" required value={form.email}
                 onChange={e => update('email', e.target.value)}
                 className={inputClass} placeholder="your@email.com" autoComplete="email" />
             </div>
 
             <div>
-              <label className="block text-xs text-[#888] mb-1.5 font-medium">手机号 <span className="text-[#c23531]">*</span></label>
+              <label className="block text-xs text-[#888] mb-1.5 font-medium">{t('profile.phone')} <span className="text-[#c23531]">*</span></label>
               <input type="tel" required value={form.phone}
                 onChange={e => update('phone', e.target.value)}
                 className={inputClass} placeholder="13812345678" maxLength={11} autoComplete="tel" />
@@ -154,19 +156,19 @@ export default function RegisterPage() {
             </div>
 
             <div>
-              <label className="block text-xs text-[#888] mb-1.5 font-medium">出生日期 <span className="text-[#c23531]">*</span></label>
+              <label className="block text-xs text-[#888] mb-1.5 font-medium">{t('auth.dob_field')} <span className="text-[#c23531]">*</span></label>
               <input type="date" required value={form.date_of_birth}
                 onChange={e => update('date_of_birth', e.target.value)}
                 className={inputClass} max={new Date().toISOString().split('T')[0]} />
             </div>
 
             <div>
-              <label className="block text-xs text-[#888] mb-1.5 font-medium">性别 <span className="text-[#c23531]">*</span></label>
+              <label className="block text-xs text-[#888] mb-1.5 font-medium">{t('profile.gender')} <span className="text-[#c23531]">*</span></label>
               <div className="flex gap-3">
                 {[
-                  { value: 'male', label: <><Mars size={16} className="inline-block align-text-bottom" /> 男</> },
-                  { value: 'female', label: <><Venus size={16} className="inline-block align-text-bottom" /> 女</> },
-                  { value: 'other', label: <><Sparkles size={16} className="inline-block align-text-bottom" /> 其他</> },
+                  { value: 'male', label: <><Mars size={16} className="inline-block align-text-bottom" /> {t('profile.male')}</> },
+                  { value: 'female', label: <><Venus size={16} className="inline-block align-text-bottom" /> {t('profile.female')}</> },
+                  { value: 'other', label: <><Sparkles size={16} className="inline-block align-text-bottom" /> {t('profile.other')}</> },
                 ].map(opt => (
                   <label key={opt.value}
                     className={`flex-1 flex items-center justify-center gap-1 p-3 rounded-xl border cursor-pointer transition-all text-sm font-medium ${
@@ -185,27 +187,27 @@ export default function RegisterPage() {
             </div>
 
             <div>
-              <label className="block text-xs text-[#888] mb-1.5 font-medium">密码 <span className="text-[#c23531]">*</span></label>
+              <label className="block text-xs text-[#888] mb-1.5 font-medium">{t('auth.password')} <span className="text-[#c23531]">*</span></label>
               <input type="password" required value={form.password}
                 onChange={e => update('password', e.target.value)}
-                className={inputClass} placeholder="至少8位，需包含字母和数字" autoComplete="new-password" />
+                className={inputClass} placeholder={t('auth.password_placeholder')} autoComplete="new-password" />
               <p className="text-[10px] text-[#ccc] mt-1">至少 8 位，需包含字母和数字</p>
             </div>
           </div>
 
           {/* 选填区 */}
           <div className="pt-4 border-t border-[#f0e8dc] space-y-4">
-            <p className="text-[10px] text-[#999] tracking-wide">选填信息</p>
+            <p className="text-[10px] text-[#999] tracking-wide">Optional</p>
 
             <div>
-              <label className="block text-xs text-[#888] mb-1.5 font-medium">兴趣爱好</label>
+              <label className="block text-xs text-[#888] mb-1.5 font-medium">{t('profile.hobbies')}</label>
               <input type="text" value={form.hobbies}
                 onChange={e => update('hobbies', e.target.value)}
                 className={inputClass} placeholder="例如：摄影、编程、读书" />
             </div>
 
             <div>
-              <label className="block text-xs text-[#888] mb-1.5 font-medium">个人介绍</label>
+              <label className="block text-xs text-[#888] mb-1.5 font-medium">{t('profile.bio')}</label>
               <textarea value={form.bio}
                 onChange={e => update('bio', e.target.value)}
                 className={`${inputClass} min-h-[80px] resize-none`} placeholder="简单介绍一下自己..." maxLength={500} />
@@ -213,7 +215,7 @@ export default function RegisterPage() {
             </div>
 
             <div>
-              <label className="block text-xs text-[#888] mb-1.5 font-medium">简历 / 经历</label>
+              <label className="block text-xs text-[#888] mb-1.5 font-medium">{t('profile.resume')}</label>
               <textarea value={form.resume}
                 onChange={e => update('resume', e.target.value)}
                 className={`${inputClass} min-h-[100px] resize-none`} placeholder="工作经历、专业技能等..." maxLength={2000} />
@@ -223,7 +225,7 @@ export default function RegisterPage() {
 
           {/* 验证码 */}
           <div className="pt-2">
-            <label className="block text-xs text-[#888] mb-2 font-medium">验证码 <span className="text-[#c23531]">*</span></label>
+            <label className="block text-xs text-[#888] mb-2 font-medium">Captcha <span className="text-[#c23531]">*</span></label>
             <div className="flex items-center gap-3">
               <div className="flex gap-1 select-none">
                 {captchaCode.split('').map((digit, i) => (
@@ -250,12 +252,12 @@ export default function RegisterPage() {
 
           <button type="submit" disabled={loading || cooldown > 0}
             className="btn-primary w-full justify-center !py-2.5">
-            {loading ? '注册中...' : cooldown > 0 ? `请等待 ${cooldown}s` : '注册'}
+            {loading ? t('auth.logging_in') : cooldown > 0 ? `${t('auth.wait')} ${cooldown}${t('common.seconds')}` : t('auth.register')}
           </button>
         </form>
 
         <p className="text-center text-xs text-[#bbb] mt-5">
-          已有账号？<Link href="/login" className="text-[#c23531] hover:underline font-medium ml-1">登录</Link>
+          <Link href="/login" className="text-[#c23531] hover:underline font-medium ml-1">{t('auth.login')}</Link>
         </p>
       </div>
     </div>

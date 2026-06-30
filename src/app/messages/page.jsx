@@ -4,9 +4,11 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { Lock, MessageCircle, Trash2 } from 'lucide-react'
 import { useAuth } from '@/components/AuthProvider'
+import { useLanguage } from '@/lib/LanguageContext'
 import { useRouter } from 'next/navigation'
 
 export default function MessagesPage() {
+  const { t } = useLanguage()
   const { user, loading: authLoading } = useAuth()
   const [conversations, setConversations] = useState([])
   const [loading, setLoading] = useState(true)
@@ -57,7 +59,7 @@ export default function MessagesPage() {
 
   const deleteConversation = async (otherId, e) => {
     e.stopPropagation()
-    if (!confirm('确定删除与该用户的聊天记录？')) return
+    if (!confirm(t('messages.delete') + '?')) return
     await supabase.from('private_messages')
       .delete()
       .or(`and(sender_id.eq.${user.id},receiver_id.eq.${otherId}),and(sender_id.eq.${otherId},receiver_id.eq.${user.id})`)
@@ -68,29 +70,29 @@ export default function MessagesPage() {
   if (!user) return (
     <div className="card p-10 text-center anim-fade-in max-w-md mx-auto mt-16">
       <div className="mb-3"><Lock size={36} className="inline-block" /></div>
-      <p className="text-[#999] mb-3">请登录后查看私信</p>
-      <Link href="/login" className="btn-primary">去登录</Link>
+      <p className="text-[#999] mb-3">{t('messages.login_required')}</p>
+      <Link href="/login" className="btn-primary">{t('auth.go_login')}</Link>
     </div>
   )
 
   return (
     <div className="anim-fade-in max-w-2xl mx-auto">
-      <h1 className="text-2xl font-bold font-serif text-[#1a1a1a] mb-5"><MessageCircle size={20} className="inline-block align-text-bottom" /> 私信</h1>
-      <p className="text-xs text-[#999] mb-4">私信永久保留，仅你和对方可见</p>
+      <h1 className="text-2xl font-bold font-serif text-[#1a1a1a] mb-5"><MessageCircle size={20} className="inline-block align-text-bottom" /> {t('messages.title')}</h1>
+      <p className="text-xs text-[#999] mb-4">Messages are private between you and the other person.</p>
 
       {loading ? (
         <div className="flex justify-center py-12"><div className="w-5 h-5 border-2 border-[#c23531]/30 border-t-[#c23531] rounded-full animate-spin" /></div>
       ) : conversations.length === 0 ? (
         <div className="card p-12 text-center">
           <div className="mb-3"><MessageCircle size={36} className="inline-block text-[#ccc]" /></div>
-          <p className="text-[#999] text-sm">还没有私信</p>
-          <p className="text-[#ccc] text-xs mt-1">去好友个人页发送私信吧</p>
+          <p className="text-[#999] text-sm">{t('messages.no_conversations')}</p>
+          <p className="text-[#ccc] text-xs mt-1">{t('messages.send_first')}</p>
         </div>
       ) : (
         <div className="space-y-1.5">
           {conversations.map(conv => {
-            const name = conv.profile?.display_name || conv.profile?.username || '用户'
-            const lastContent = conv.lastMsg.content || (conv.lastMsg.images?.length > 0 ? '[图片]' : '')
+            const name = conv.profile?.display_name || conv.profile?.username || ''
+            const lastContent = conv.lastMsg.content || (conv.lastMsg.images?.length > 0 ? '[Image]' : '')
             const isMe = conv.lastMsg.sender_id === user.id
 
             return (
@@ -108,12 +110,12 @@ export default function MessagesPage() {
                     </span>
                   </div>
                   <p className="text-xs text-[#999] truncate mt-0.5">
-                    {isMe && <span className="text-[#ccc]">你: </span>}{lastContent || '（空消息）'}
+                    {isMe && <span className="text-[#ccc]">{t('messages.title')}: </span>}{lastContent || ''}
                   </p>
                 </Link>
                 <button onClick={(e) => deleteConversation(conv.otherId, e)}
                   className="text-[10px] text-[#bbb] hover:text-[#c23531] opacity-0 group-hover:opacity-100 transition-all shrink-0 px-2 py-1 rounded hover:bg-[#c23531]/5"
-                  title="删除聊天"><Trash2 size={14} className="inline-block" /></button>
+                  title={t('messages.delete')}><Trash2 size={14} className="inline-block" /></button>
               </div>
             )
           })}

@@ -4,9 +4,11 @@ import { useParams, useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Lock, Mars, Venus, Sparkles, Crown, Shield, User as UserIcon, Pencil, MessageCircle, Users, Clock, Mail, CheckCircle, X, FileText, Inbox } from 'lucide-react'
 import { useAuth } from '@/components/AuthProvider'
+import { useLanguage } from '@/lib/LanguageContext'
 import Link from 'next/link'
 
 export default function ProfilePage() {
+  const { t } = useLanguage()
   const { id } = useParams()
   const { user, profile: myProfile } = useAuth()
   const [profile, setProfile] = useState(null)
@@ -130,8 +132,8 @@ export default function ProfilePage() {
   if (!user) return (
     <div className="card p-12 text-center anim-fade-in max-w-md mx-auto mt-16">
       <div className="mb-3"><Lock size={36} className="inline-block" /></div>
-      <p className="text-[#999] mb-3">请登录后查看用户资料</p>
-      <Link href="/login" className="btn-primary">去登录</Link>
+      <p className="text-[#999] mb-3">{t('profile.login_required')}</p>
+      <Link href="/login" className="btn-primary">{t('auth.go_login')}</Link>
     </div>
   )
 
@@ -139,7 +141,7 @@ export default function ProfilePage() {
 
   const genderLabel = (g) => {
   const icon = g === 'male' ? <Mars size={14} className="inline-block align-text-bottom" /> : g === 'female' ? <Venus size={14} className="inline-block align-text-bottom" /> : <Sparkles size={14} className="inline-block align-text-bottom" />
-  const text = g === 'male' ? '男' : g === 'female' ? '女' : '其他'
+  const text = g === 'male' ? t('profile.male') : g === 'female' ? t('profile.female') : t('profile.other')
   return <>{icon} {text}</>
 }
 
@@ -160,35 +162,35 @@ export default function ProfilePage() {
             <div className="mt-5 text-sm text-left space-y-2.5 max-w-sm mx-auto">
               {profile.display_name && (
                 <div className="flex items-baseline gap-2">
-                  <span className="w-16 shrink-0 text-[#bbb] text-xs">姓名</span>
+                  <span className="w-16 shrink-0 text-[#bbb] text-xs">{t('profile.name')}</span>
                   <span className="text-[#1a1a1a] font-medium">{profile.display_name}</span>
                 </div>
               )}
               <div className="flex items-baseline gap-2">
-                <span className="w-16 shrink-0 text-[#bbb] text-xs">会员名</span>
+                <span className="w-16 shrink-0 text-[#bbb] text-xs">{t('profile.username')}</span>
                 <span className="text-[#999]">@{profile.username}</span>
               </div>
               {profile.phone && (
                 <div className="flex items-baseline gap-2">
-                  <span className="w-16 shrink-0 text-[#bbb] text-xs">手机号</span>
+                  <span className="w-16 shrink-0 text-[#bbb] text-xs">{t('profile.phone')}</span>
                   <span className="text-[#666]">{profile.phone.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2')}</span>
                 </div>
               )}
               {profile.date_of_birth && (
                 <div className="flex items-baseline gap-2">
-                  <span className="w-16 shrink-0 text-[#bbb] text-xs">出生日期</span>
-                  <span className="text-[#666]">{new Date(profile.date_of_birth).toLocaleDateString('zh-CN')}（{new Date().getFullYear() - new Date(profile.date_of_birth).getFullYear()}岁）</span>
+                  <span className="w-16 shrink-0 text-[#bbb] text-xs">{t('profile.dob')}</span>
+                  <span className="text-[#666]">{new Date(profile.date_of_birth).toLocaleDateString('zh-CN')}（{new Date().getFullYear() - new Date(profile.date_of_birth).getFullYear()}{t('profile.age')}）</span>
                 </div>
               )}
               {profile.gender && (
                 <div className="flex items-baseline gap-2">
-                  <span className="w-16 shrink-0 text-[#bbb] text-xs">性别</span>
+                  <span className="w-16 shrink-0 text-[#bbb] text-xs">{t('profile.gender')}</span>
                   <span className="text-[#666]">{genderLabel(profile.gender)}</span>
                 </div>
               )}
               {profile.hobbies && (
                 <div className="flex items-baseline gap-2">
-                  <span className="w-16 shrink-0 text-[#bbb] text-xs">兴趣</span>
+                  <span className="w-16 shrink-0 text-[#bbb] text-xs">{t('profile.hobbies')}</span>
                   <span className="text-[#666]">{profile.hobbies}</span>
                 </div>
               )}
@@ -196,13 +198,13 @@ export default function ProfilePage() {
 
             {profile.bio && (
               <div className="mt-4 text-left max-w-sm mx-auto">
-                <span className="text-[#bbb] text-xs">个人介绍</span>
+                <span className="text-[#bbb] text-xs">{t('profile.bio')}</span>
                 <p className="text-[#666] text-sm mt-1 leading-relaxed">{profile.bio}</p>
               </div>
             )}
             {profile.resume && (
               <div className="mt-4 text-left max-w-sm mx-auto">
-                <span className="text-[#bbb] text-xs">简历 / 经历</span>
+                <span className="text-[#bbb] text-xs">{t('profile.resume')}</span>
                 <p className="text-[#666] text-sm mt-1 whitespace-pre-wrap leading-relaxed">{profile.resume}</p>
               </div>
             )}
@@ -216,28 +218,28 @@ export default function ProfilePage() {
                 {profile.role === 'admin' ? <><Crown size={14} className="inline-block align-text-bottom" /> 管理员</> : profile.role === 'moderator' ? <><Shield size={14} className="inline-block align-text-bottom" /> 版主</> : <><UserIcon size={14} className="inline-block align-text-bottom" /> 用户</>}
               </span>
               <span className="text-[#ddd6c8]">·</span>
-              <span className="text-[#999]">加入于 {new Date(profile.created_at).toLocaleDateString('zh-CN')}</span>
+              <span className="text-[#999]">{t('profile.join_at')} {new Date(profile.created_at).toLocaleDateString('zh-CN')}</span>
             </div>
 
             <div className="flex items-center justify-center gap-3 mt-5">
               {isOwn ? (
-                <button onClick={() => setEditing(true)} className="btn-primary !px-6"><Pencil size={16} className="inline-block align-text-bottom" /> 编辑资料</button>
+                <button onClick={() => setEditing(true)} className="btn-primary !px-6"><Pencil size={16} className="inline-block align-text-bottom" /> {t('profile.edit')}</button>
               ) : user ? (
                 friendship === 'accepted' ? (
                   <div className="flex gap-2">
-                    <Link href={`/messages/${id}`} className="btn-primary !px-6"><MessageCircle size={16} className="inline-block align-text-bottom" /> 发私信</Link>
+                    <Link href={`/messages/${id}`} className="btn-primary !px-6"><MessageCircle size={16} className="inline-block align-text-bottom" /> {t('profile.send_message')}</Link>
                     <button onClick={async () => {
                       if (!confirm('确定删除好友？')) return
                       await supabase.from('friends').delete().or(`and(requester_id.eq.${user.id},addressee_id.eq.${id}),and(requester_id.eq.${id},addressee_id.eq.${user.id})`)
                       setFriendship(null)
-                    }} className="btn-ghost border border-[#eee8dc] text-[#999] hover:text-[#c23531]">解除好友</button>
+                    }} className="btn-ghost border border-[#eee8dc] text-[#999] hover:text-[#c23531]">{t('profile.remove_friend')}</button>
                   </div>
                 ) : friendship === 'pending' ? (
-                  <span className="text-xs text-[#999] bg-[#f5f0e8] px-4 py-2 rounded-full"><Clock size={14} className="inline-block align-text-bottom" /> 等待对方确认</span>
+                  <span className="text-xs text-[#999] bg-[#f5f0e8] px-4 py-2 rounded-full"><Clock size={14} className="inline-block align-text-bottom" /> {t('profile.friend_pending')}</span>
                 ) : (
                   <button onClick={sendFriendRequest} disabled={!!friendAction}
                     className="btn-primary !px-6 disabled:opacity-50">
-                    {friendAction || <><Users size={16} className="inline-block align-text-bottom" /> 加为好友</>}
+                    {friendAction || <><Users size={16} className="inline-block align-text-bottom" /> {t('profile.add_friend')}</>}
                   </button>
                 )
               ) : null}
@@ -246,36 +248,36 @@ export default function ProfilePage() {
         ) : (
           /* 编辑模式 */
           <div className="text-left mt-6 space-y-4 max-w-md mx-auto">
-            <h2 className="font-bold font-serif text-[#1a1a1a] text-center"><Pencil size={16} className="inline-block align-text-bottom" /> 编辑资料</h2>
+            <h2 className="font-bold font-serif text-[#1a1a1a] text-center"><Pencil size={16} className="inline-block align-text-bottom" /> {t('profile.edit')}</h2>
 
             <div>
-              <label className="block text-xs text-[#888] mb-1.5 font-medium">昵称 / 姓名</label>
+              <label className="block text-xs text-[#888] mb-1.5 font-medium">{t('auth.display_name')}</label>
               <input type="text" value={form.display_name}
                 onChange={e => update('display_name', e.target.value)}
                 className="input" maxLength={10} />
             </div>
 
             <div>
-              <label className="block text-xs text-[#888] mb-1.5 font-medium">手机号</label>
+              <label className="block text-xs text-[#888] mb-1.5 font-medium">{t('profile.phone')}</label>
               <input type="tel" value={form.phone}
                 onChange={e => update('phone', e.target.value)}
                 className="input" maxLength={11} placeholder="13812345678" />
             </div>
 
             <div>
-              <label className="block text-xs text-[#888] mb-1.5 font-medium">出生日期</label>
+              <label className="block text-xs text-[#888] mb-1.5 font-medium">{t('profile.dob')}</label>
               <input type="date" value={form.date_of_birth}
                 onChange={e => update('date_of_birth', e.target.value)}
                 className="input" max={new Date().toISOString().split('T')[0]} />
             </div>
 
             <div>
-              <label className="block text-xs text-[#888] mb-1.5 font-medium">性别</label>
+              <label className="block text-xs text-[#888] mb-1.5 font-medium">{t('profile.gender')}</label>
               <div className="flex gap-3">
                 {[
-                  { value: 'male', label: <><Mars size={16} className="inline-block align-text-bottom" /> 男</> },
-                  { value: 'female', label: <><Venus size={16} className="inline-block align-text-bottom" /> 女</> },
-                  { value: 'other', label: <><Sparkles size={16} className="inline-block align-text-bottom" /> 其他</> },
+                  { value: 'male', label: <><Mars size={16} className="inline-block align-text-bottom" /> {t('profile.male')}</> },
+                  { value: 'female', label: <><Venus size={16} className="inline-block align-text-bottom" /> {t('profile.female')}</> },
+                  { value: 'other', label: <><Sparkles size={16} className="inline-block align-text-bottom" /> {t('profile.other')}</> },
                 ].map(opt => (
                   <label key={opt.value}
                     className={`flex-1 flex items-center justify-center gap-1 p-2.5 rounded-xl border cursor-pointer transition-all text-sm font-medium ${
@@ -294,14 +296,14 @@ export default function ProfilePage() {
             </div>
 
             <div>
-              <label className="block text-xs text-[#888] mb-1.5 font-medium">兴趣爱好</label>
+              <label className="block text-xs text-[#888] mb-1.5 font-medium">{t('profile.hobbies')}</label>
               <input type="text" value={form.hobbies}
                 onChange={e => update('hobbies', e.target.value)}
                 className="input" placeholder="摄影、编程、读书" />
             </div>
 
             <div>
-              <label className="block text-xs text-[#888] mb-1.5 font-medium">个人介绍</label>
+              <label className="block text-xs text-[#888] mb-1.5 font-medium">{t('profile.bio')}</label>
               <textarea value={form.bio}
                 onChange={e => update('bio', e.target.value)}
                 className="input min-h-[80px] resize-none" maxLength={500} />
@@ -309,7 +311,7 @@ export default function ProfilePage() {
             </div>
 
             <div>
-              <label className="block text-xs text-[#888] mb-1.5 font-medium">简历 / 经历</label>
+              <label className="block text-xs text-[#888] mb-1.5 font-medium">{t('profile.resume')}</label>
               <textarea value={form.resume}
                 onChange={e => update('resume', e.target.value)}
                 className="input min-h-[100px] resize-none" maxLength={2000} />
@@ -323,11 +325,11 @@ export default function ProfilePage() {
             <div className="flex gap-3">
               <button onClick={() => { setEditing(false); setMessage('') }}
                 className="btn-ghost flex-1 justify-center border border-[#eee8dc]">
-                取消
+                {t('common.cancel')}
               </button>
               <button onClick={handleSave} disabled={saving}
                 className="btn-primary flex-1 justify-center">
-                {saving ? '保存中...' : '保存'}
+                {saving ? t('common.saving') : t('common.save')}
               </button>
             </div>
           </div>
@@ -339,27 +341,27 @@ export default function ProfilePage() {
         <button onClick={() => setActiveTab('posts')}
           className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
             activeTab === 'posts' ? 'bg-[#c23531] text-white shadow-sm' : 'bg-white text-[#666] border border-[#ece8e0]'
-          }`}><FileText size={14} className="inline-block align-text-bottom" /> 帖子 ({threads.length})</button>
+          }`}><FileText size={14} className="inline-block align-text-bottom" /> {t('profile.posts')} ({threads.length})</button>
         {isOwn && (
           <button onClick={() => setActiveTab('friends')}
             className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
               activeTab === 'friends' ? 'bg-[#c23531] text-white shadow-sm' : 'bg-white text-[#666] border border-[#ece8e0]'
-            }`}><Users size={14} className="inline-block align-text-bottom" /> 好友 ({friends.length})</button>
+            }`}><Users size={14} className="inline-block align-text-bottom" /> {t('profile.friends')} ({friends.length})</button>
         )}
       </div>
 
       {/* Pending requests (own profile) */}
       {isOwn && pendingRequests.length > 0 && activeTab === 'friends' && (
         <div className="mb-4 p-4 rounded-xl bg-amber-50 border border-amber-200">
-          <h3 className="text-xs font-semibold text-amber-700 mb-2"><Mail size={14} className="inline-block align-text-bottom" /> 好友请求 ({pendingRequests.length})</h3>
+          <h3 className="text-xs font-semibold text-amber-700 mb-2"><Mail size={14} className="inline-block align-text-bottom" /> {t('profile.friend_requests')} ({pendingRequests.length})</h3>
           {pendingRequests.map(req => (
             <div key={req.id} className="flex items-center justify-between py-1.5">
               <Link href={`/profile/${req.requester_id}`} className="text-sm font-medium text-[#666] hover:text-[#c23531]">
                 {req._requesterProfile?.display_name || req._requesterProfile?.username || '用户'}
               </Link>
               <div className="flex gap-2">
-                <button onClick={() => acceptFriend(req.id)} className="text-xs text-green-600 bg-green-100 px-2.5 py-1 rounded-full hover:bg-green-200"><CheckCircle size={14} className="inline-block align-text-bottom" /> 接受</button>
-                <button onClick={() => rejectFriend(req.id)} className="text-xs text-[#999] bg-[#f0f0f0] px-2.5 py-1 rounded-full hover:bg-[#e0e0e0]"><X size={14} className="inline-block align-text-bottom" /> 拒绝</button>
+                <button onClick={() => acceptFriend(req.id)} className="text-xs text-green-600 bg-green-100 px-2.5 py-1 rounded-full hover:bg-green-200"><CheckCircle size={14} className="inline-block align-text-bottom" /> {t('profile.accept')}</button>
+                <button onClick={() => rejectFriend(req.id)} className="text-xs text-[#999] bg-[#f0f0f0] px-2.5 py-1 rounded-full hover:bg-[#e0e0e0]"><X size={14} className="inline-block align-text-bottom" /> {t('profile.reject')}</button>
               </div>
             </div>
           ))}
@@ -372,7 +374,7 @@ export default function ProfilePage() {
           {friends.length === 0 ? (
             <div className="card p-8 text-center">
               <div className="mb-2"><Users size={28} className="inline-block text-[#ccc]" /></div>
-              <p className="text-[#999] text-sm">还没有好友</p>
+              <p className="text-[#999] text-sm">{t('profile.no_friends')}</p>
               {!isOwn && <p className="text-[#ccc] text-xs mt-1">点「加为好友」发送请求</p>}
             </div>
           ) : friends.map(f => {
@@ -384,7 +386,7 @@ export default function ProfilePage() {
                   <div className="w-8 h-8 rounded-full bg-[#c23531] flex items-center justify-center text-xs text-white font-bold shrink-0">{(friendName || '?')[0]}</div>
                   <span className="text-sm font-medium text-[#1a1a1a] truncate">{friendName}</span>
                 </Link>
-                <Link href={`/messages/${friendId}`} className="btn-ghost text-xs shrink-0"><MessageCircle size={14} className="inline-block align-text-bottom" /> 私信</Link>
+                <Link href={`/messages/${friendId}`} className="btn-ghost text-xs shrink-0"><MessageCircle size={14} className="inline-block align-text-bottom" /> {t('nav.messages')}</Link>
               </div>
             )
           })}
@@ -400,7 +402,7 @@ export default function ProfilePage() {
           {threads.length === 0 ? (
             <div className="card p-8 text-center">
               <div className="mb-2"><Inbox size={28} className="inline-block text-[#ccc]" /></div>
-              <p className="text-[#999] text-sm">还没有发过帖子</p>
+              <p className="text-[#999] text-sm">{t('profile.no_posts')}</p>
             </div>
           ) : (
             <div className="space-y-2.5">

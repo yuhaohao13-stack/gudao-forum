@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { MessageCircle, Megaphone, Pin, FileText, Eye, Clock, Flame, ArrowRight, Monitor, Flower2, Package, BookOpen, Sparkles } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
+import { useLanguage } from '@/lib/LanguageContext'
 
 const CAT_ICONS = {
   announcements: <Megaphone size={20} className="inline-block" />,
@@ -15,6 +16,7 @@ const CAT_ICONS = {
 }
 
 export default function Home() {
+  const { t } = useLanguage()
   const [categories, setCategories] = useState([])
   const [announcements, setAnnouncements] = useState([])
   const [recentThreads, setRecentThreads] = useState([])
@@ -65,16 +67,16 @@ export default function Home() {
       {/* ===== 站点头部（一排） ===== */}
       <div className="flex items-center justify-between gap-4 py-4 sm:py-5 flex-wrap anim-fade-in">
         <div className="flex items-center gap-3 sm:gap-5 text-sm flex-wrap">
-          <span className="text-sm text-[#aaa] tracking-wide whitespace-nowrap">以文会友 · 以友辅仁</span>
+          <span className="text-sm text-[#aaa] tracking-wide whitespace-nowrap">{t('home.slogan')}</span>
           <div className="flex items-center gap-3 sm:gap-4 text-xs text-[#999]">
-            <span><strong className="text-sm font-semibold text-[#1a1a1a]">{totalPosts}</strong> 帖子</span>
+            <span><strong className="text-sm font-semibold text-[#1a1a1a]">{totalPosts}</strong> {t('home.posts')}</span>
             <span className="text-[#ddd]">|</span>
-            <span><strong className="text-sm font-semibold text-[#1a1a1a]">{totalViews.toLocaleString()}</strong> 浏览</span>
+            <span><strong className="text-sm font-semibold text-[#1a1a1a]">{totalViews.toLocaleString()}</strong> {t('home.views')}</span>
             <span className="text-[#ddd]">|</span>
-            <span><strong className="text-sm font-semibold text-[#1a1a1a]">{totalUsers}</strong> 会员</span>
+            <span><strong className="text-sm font-semibold text-[#1a1a1a]">{totalUsers}</strong> {t('home.members')}</span>
           </div>
         </div>
-        <Link href="/chat" className="btn-secondary text-xs whitespace-nowrap"><MessageCircle size={14} className="inline-block align-text-bottom" /> 聊天室</Link>
+        <Link href="/chat" className="btn-secondary text-xs whitespace-nowrap"><MessageCircle size={14} className="inline-block align-text-bottom" /> {t('home.chatroom')}</Link>
       </div>
 
       {/* ===== 公告 ===== */}
@@ -99,7 +101,7 @@ export default function Home() {
 
       {/* ===== 版块 ===== */}
       <section className="anim-up">
-        <h2 className="text-xs font-semibold text-[#bbb] uppercase tracking-widest mb-3">版块</h2>
+        <h2 className="text-xs font-semibold text-[#bbb] uppercase tracking-widest mb-3">{t('board.title')}</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
           {categories.map((c, i) => (
             <Link key={c.id} href={`/c/${c.slug}`}
@@ -119,21 +121,21 @@ export default function Home() {
             className={`px-5 py-2.5 rounded-xl text-base font-semibold transition-colors ${
               activeTab === 'recent' ? 'bg-[#c23531] text-white shadow-md' : 'bg-[#f5f5f5] text-[#888] hover:text-[#1a1a1a] hover:bg-[#eee]'
             }`}
-          ><Clock size={22} className="inline-block align-text-bottom text-white" /> 最新</button>
+          ><Clock size={22} className="inline-block align-text-bottom text-white" /> {t('home.latest')}</button>
           <button onClick={() => setActiveTab('hot')}
             className={`px-5 py-2.5 rounded-xl text-base font-semibold transition-colors ${
               activeTab === 'hot' ? 'bg-[#c23531] text-white shadow-md' : 'bg-[#f5f5f5] text-[#888] hover:text-[#1a1a1a] hover:bg-[#eee]'
             }`}
-          ><Flame size={22} className="inline-block align-text-bottom text-white" /> 热门</button>
-          <Link href="/search" className="ml-auto text-xs text-[#bbb] hover:text-[#888] transition-colors">搜索 <ArrowRight size={12} className="inline-block align-text-bottom" /></Link>
+          ><Flame size={22} className="inline-block align-text-bottom text-white" /> {t('home.hot')}</button>
+          <Link href="/search" className="ml-auto text-xs text-[#bbb] hover:text-[#888] transition-colors">{t('nav.search')} <ArrowRight size={12} className="inline-block align-text-bottom" /></Link>
         </div>
 
         <div className="card divide-y divide-[#f5f5f5]">
           {(activeTab === 'recent' ? recentThreads : hotThreads).length === 0 ? (
             <div className="py-12 text-center">
               <div className="mb-2"><FileText size={28} className="inline-block text-[#ccc]" /></div>
-              <p className="text-[#bbb] text-sm">还没有帖子</p>
-              <Link href="/new-thread" className="btn-primary mt-3">发第一条帖子</Link>
+              <p className="text-[#bbb] text-sm">{t('home.no_posts')}</p>
+              <Link href="/new-thread" className="btn-primary mt-3">{t('home.first_post')}</Link>
             </div>
           ) : (
             (activeTab === 'recent' ? recentThreads : hotThreads).map((t, i) => (

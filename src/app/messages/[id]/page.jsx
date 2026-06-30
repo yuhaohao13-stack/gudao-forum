@@ -3,10 +3,12 @@ import { useEffect, useState, useRef, useCallback } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
-import { CheckCircle, Image, X } from 'lucide-react'
+import { CheckCircle, Image, X, MessageCircle } from 'lucide-react'
 import { useAuth } from '@/components/AuthProvider'
+import { useLanguage } from '@/lib/LanguageContext'
 
 export default function PrivateChatPage() {
+  const { t } = useLanguage()
   const { id: otherUserId } = useParams()
   const { user } = useAuth()
   const supabase = createClient()
@@ -117,7 +119,7 @@ export default function PrivateChatPage() {
   }
 
   const deleteMessage = async (msgId) => {
-    if (!confirm('确定删除这条消息？')) return
+    if (!confirm(t('messages.delete') + '?')) return
     await supabase.from('private_messages').delete().eq('id', msgId)
     setMessages(prev => prev.filter(m => m.id !== msgId))
   }
@@ -140,17 +142,17 @@ export default function PrivateChatPage() {
           </div>
           <div>
             <span className="font-semibold text-sm text-[#1a1a1a]">{otherProfile?.display_name || otherProfile?.username}</span>
-            {!areFriends && <span className="ml-2 text-[10px] text-[#bbb]">(非好友)</span>}
+            {!areFriends && <span className="ml-2 text-[10px] text-[#bbb]">({t('messages.not_friends')})</span>}
           </div>
         </Link>
-        {areFriends && <span className="text-[10px] text-green-600 bg-green-50 border border-green-200 rounded-full px-2 py-0.5"><CheckCircle size={10} className="inline-block align-text-bottom" /> 好友</span>}
+        {areFriends && <span className="text-[10px] text-green-600 bg-green-50 border border-green-200 rounded-full px-2 py-0.5"><CheckCircle size={10} className="inline-block align-text-bottom" /> {t('profile.friend_accepted')}</span>}
       </div>
 
       {/* 消息列表 */}
       <div className="flex-1 overflow-y-auto rounded-xl border border-[#eee8dc] bg-white p-4 space-y-3 scroll-smooth">
         {messages.length === 0 ? (
           <div className="flex items-center justify-center h-full text-[#ccc] text-sm">
-            {areFriends ? <>发送第一条私信吧 <MessageCircle size={14} className="inline-block align-text-bottom" /></> : '成为好友后才能发送私信'}
+            {areFriends ? <>{t('messages.send_first')} <MessageCircle size={14} className="inline-block align-text-bottom" /></> : t('messages.send_first')}
           </div>
         ) : messages.map(msg => (
           <div key={msg.id} className={`flex ${msg.sender_id === user.id ? 'justify-end' : 'justify-start'}`}>
@@ -175,7 +177,7 @@ export default function PrivateChatPage() {
                 </div>
                 <button onClick={() => deleteMessage(msg.id)}
                   className="text-white/30 hover:text-[#c23531] opacity-0 group-hover:opacity-100 transition-all shrink-0 mt-0.5"
-                  title="删除"><X size={10} /></button>
+                  title={t('messages.delete')}><X size={10} /></button>
               </div>
             </div>
           </div>
@@ -200,18 +202,18 @@ export default function PrivateChatPage() {
             )}
             <div className="flex gap-2">
               <input ref={inputRef} type="text" value={input} onChange={e => setInput(e.target.value)}
-                placeholder="发送私信..." maxLength={1000} className="input flex-1" disabled={sending} />
+                placeholder={t('messages.input_placeholder')} maxLength={1000} className="input flex-1" disabled={sending} />
               <button type="button" onClick={() => fileRef.current?.click()}
                 className="btn-ghost border border-[#eee8dc] px-3"><Image size={16} className="inline-block" /></button>
               <input ref={fileRef} type="file" accept="image/jpeg,image/png,image/gif,image/webp"
                 onChange={handleImages} className="hidden" />
               <button type="submit" disabled={sending || (!input.trim() && images.length === 0)}
-                className="btn-primary disabled:opacity-50 !px-5">发送</button>
+                className="btn-primary disabled:opacity-50 !px-5">{t('messages.send')}</button>
             </div>
           </form>
         ) : (
           <div className="card p-3 text-center border-dashed border-[#ddd6c8]">
-            <p className="text-sm text-[#999]">需要先添加为好友才能私信</p>
+            <p className="text-sm text-[#999]">{t('messages.send_first')}</p>
           </div>
         )}
         <p className="text-[10px] text-[#ccc] mt-1 text-right">私信保留 48 小时后自动清理</p>
