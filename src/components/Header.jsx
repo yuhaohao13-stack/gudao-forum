@@ -37,12 +37,18 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-[#f0f0f0]">
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
-        {/* 顶部行：仅居中Logo */}
-        <div className="flex items-center justify-center h-14 sm:h-16 overflow-hidden">
-          <Link href="/" className="flex items-center gap-2 sm:gap-3 group whitespace-nowrap">
+        {/* 顶部行：Logo居中 + 语言切换最右 */}
+        <div className="flex items-center h-14 sm:h-16 overflow-hidden relative">
+          <Link href="/" className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2 sm:gap-3 group whitespace-nowrap">
             <Landmark size={36} className="inline-block" />
             <span className="text-[2rem] sm:text-[2.25rem] font-bold font-serif tracking-wide text-[#1a1a1a]">古道论坛</span>
           </Link>
+          <div className="flex-1"></div>
+          <button onClick={toggleLang}
+            className="text-xs sm:text-sm font-medium px-2 sm:px-3 py-1.5 rounded-lg border border-[#e0ddd5] text-[#888] hover:text-[#1a1a1a] hover:border-[#ccc] transition-colors whitespace-nowrap"
+          >
+            <Globe size={14} className="inline-block align-text-bottom mr-1" />{lang === 'zh' ? 'English' : '中文'}
+          </button>
         </div>
 
         {/* 操作行：导航 + 打赏（左） | 会员/私信/发帖/搜索（右） */}
@@ -60,11 +66,6 @@ export default function Header() {
               }`}
             >{t('nav.chat')}</Link>
             <DonateButton className="whitespace-nowrap text-sm font-semibold px-3 py-1.5 rounded-lg text-[#c23531] hover:bg-[#fef2f0] transition-colors" />
-            <button onClick={toggleLang}
-              className="ml-2 sm:ml-3 whitespace-nowrap text-xs sm:text-sm font-medium px-2 sm:px-3 py-1.5 rounded-lg border border-[#e0ddd5] text-[#888] hover:text-[#1a1a1a] hover:border-[#ccc] transition-colors"
-            >
-              <Globe size={14} className="inline-block align-text-bottom mr-1" />{lang === 'zh' ? 'English' : '中文'}
-            </button>
           </div>
 
           {/* 右：用户操作 */}
