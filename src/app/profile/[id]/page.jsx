@@ -151,18 +151,54 @@ export default function ProfilePage() {
             <h1 className="text-xl font-bold font-serif text-[#1a1a1a] mt-4">{profile.display_name || profile.username}</h1>
             <p className="text-[#999] text-sm">@{profile.username}</p>
 
-            <div className="flex items-center justify-center gap-4 mt-4 text-xs text-[#666] flex-wrap">
-              {profile.phone && <span>📱 {profile.phone.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2')}</span>}
-              {profile.date_of_birth && <span>🎂 {new Date(profile.date_of_birth).toLocaleDateString('zh-CN')}（{new Date().getFullYear() - new Date(profile.date_of_birth).getFullYear()}岁）</span>}
-              {profile.gender && <span>{genderLabels[profile.gender]}</span>}
-              {profile.hobbies && <span>🎯 {profile.hobbies}</span>}
+            {/* 个人信息：靠左 + 带标签 */}
+            <div className="mt-5 text-sm text-left space-y-2.5 max-w-sm mx-auto">
+              {profile.display_name && (
+                <div className="flex items-baseline gap-2">
+                  <span className="w-16 shrink-0 text-[#bbb] text-xs">姓名</span>
+                  <span className="text-[#1a1a1a] font-medium">{profile.display_name}</span>
+                </div>
+              )}
+              <div className="flex items-baseline gap-2">
+                <span className="w-16 shrink-0 text-[#bbb] text-xs">会员名</span>
+                <span className="text-[#999]">@{profile.username}</span>
+              </div>
+              {profile.phone && (
+                <div className="flex items-baseline gap-2">
+                  <span className="w-16 shrink-0 text-[#bbb] text-xs">手机号</span>
+                  <span className="text-[#666]">{profile.phone.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2')}</span>
+                </div>
+              )}
+              {profile.date_of_birth && (
+                <div className="flex items-baseline gap-2">
+                  <span className="w-16 shrink-0 text-[#bbb] text-xs">出生日期</span>
+                  <span className="text-[#666]">{new Date(profile.date_of_birth).toLocaleDateString('zh-CN')}（{new Date().getFullYear() - new Date(profile.date_of_birth).getFullYear()}岁）</span>
+                </div>
+              )}
+              {profile.gender && (
+                <div className="flex items-baseline gap-2">
+                  <span className="w-16 shrink-0 text-[#bbb] text-xs">性别</span>
+                  <span className="text-[#666]">{genderLabels[profile.gender]}</span>
+                </div>
+              )}
+              {profile.hobbies && (
+                <div className="flex items-baseline gap-2">
+                  <span className="w-16 shrink-0 text-[#bbb] text-xs">兴趣</span>
+                  <span className="text-[#666]">{profile.hobbies}</span>
+                </div>
+              )}
             </div>
 
-            {profile.bio && <p className="text-[#666] text-sm mt-4 max-w-md mx-auto leading-relaxed">{profile.bio}</p>}
+            {profile.bio && (
+              <div className="mt-4 text-left max-w-sm mx-auto">
+                <span className="text-[#bbb] text-xs">个人介绍</span>
+                <p className="text-[#666] text-sm mt-1 leading-relaxed">{profile.bio}</p>
+              </div>
+            )}
             {profile.resume && (
-              <div className="mt-4 text-left max-w-md mx-auto">
-                <p className="text-xs text-[#999] font-medium mb-1">📄 简历 / 经历</p>
-                <p className="text-sm text-[#666] whitespace-pre-wrap leading-relaxed">{profile.resume}</p>
+              <div className="mt-4 text-left max-w-sm mx-auto">
+                <span className="text-[#bbb] text-xs">简历 / 经历</span>
+                <p className="text-[#666] text-sm mt-1 whitespace-pre-wrap leading-relaxed">{profile.resume}</p>
               </div>
             )}
 
