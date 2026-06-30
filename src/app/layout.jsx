@@ -1,5 +1,6 @@
 import './globals.css'
 import { AuthProvider } from '@/components/AuthProvider'
+import { LanguageProvider } from '@/lib/LanguageContext'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import DonateOverlay from '@/components/DonateOverlay'
@@ -45,6 +46,7 @@ export default function RootLayout({ children }) {
       <body className="min-h-screen flex flex-col bg-[#fafaf9] text-[#1a1a1a] overflow-x-hidden">
         <ErrorBoundary>
           <DonateOverlay />
+          <LanguageProvider>
           <AuthProvider>
             <Header />
             <main className="flex-1 max-w-4xl mx-auto w-full px-4 py-5 sm:py-6">
@@ -52,6 +54,7 @@ export default function RootLayout({ children }) {
             </main>
             <Footer />
           </AuthProvider>
+          </LanguageProvider>
         </ErrorBoundary>
       </body>
     </html>

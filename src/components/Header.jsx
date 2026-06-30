@@ -2,7 +2,8 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
-import { Landmark, Search, MessageCircle, Pencil, X } from 'lucide-react'
+import { Landmark, Search, MessageCircle, Pencil, X, Globe } from 'lucide-react'
+import { useLanguage } from '@/lib/LanguageContext'
 import { useAuth } from './AuthProvider'
 import { createClient } from '@/lib/supabase/client'
 import DonateButton from './DonateButton'
@@ -10,6 +11,7 @@ import UnreadBadge from './UnreadBadge'
 
 export default function Header() {
   const { user, profile, loading } = useAuth()
+  const { lang, toggleLang } = useLanguage()
   const [search, setSearch] = useState('')
   const [showSearch, setShowSearch] = useState(false)
   const supabase = createClient()
@@ -58,6 +60,11 @@ export default function Header() {
               }`}
             >聊天室</Link>
             <DonateButton className="whitespace-nowrap text-sm font-semibold px-3 py-1.5 rounded-lg text-[#c23531] hover:bg-[#fef2f0] transition-colors" />
+            <button onClick={toggleLang}
+              className="ml-2 sm:ml-3 whitespace-nowrap text-xs sm:text-sm font-medium px-2 sm:px-3 py-1.5 rounded-lg border border-[#e0ddd5] text-[#888] hover:text-[#1a1a1a] hover:border-[#ccc] transition-colors"
+            >
+              <Globe size={14} className="inline-block align-text-bottom mr-1" />{lang === 'zh' ? 'EN' : '中文'}
+            </button>
           </div>
 
           {/* 右：用户操作 */}
