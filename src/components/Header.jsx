@@ -85,13 +85,13 @@ export default function Header() {
                   <span className="w-6 sm:w-7 h-6 sm:h-7 rounded-full bg-[#c23531] flex items-center justify-center text-[10px] sm:text-xs text-white font-bold shadow-sm">
                     {(profile?.display_name || profile?.username || '?')[0]}
                   </span>
-                  <span className="hidden sm:inline text-[10px] sm:text-xs text-[#999] font-normal whitespace-nowrap">会员名：</span>
-                  <span className="hidden sm:inline text-xs sm:text-sm font-medium text-[#555] max-w-[5em] truncate">
+                  <span className="text-[10px] sm:text-xs text-[#999] font-normal whitespace-nowrap">会员名：</span>
+                  <span className="text-xs sm:text-sm font-medium text-[#555] max-w-[5em] truncate">
                     {profile?.display_name || profile?.username || ''}
                   </span>
                 </Link>
                 <Link href="/messages" className="btn-ghost !px-1.5 sm:!px-2 !py-1.5 flex items-center gap-0.5 sm:gap-1">
-                  <span className="hidden sm:inline text-xs text-[#999]">私信</span>
+                  <span className="text-xs text-[#999]">私信</span>
                   💬
                   {UnreadBadge && <UnreadBadge />}
                 </Link>
