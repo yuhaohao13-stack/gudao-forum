@@ -38,7 +38,7 @@ export default function Header() {
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-[#f0f0f0] pb-4 sm:pb-8">
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
         {/* 顶部行：Logo居中 + 语言切换最右 */}
-        <div className="flex items-center h-20 sm:h-24 mb-6 sm:mb-10 relative">
+        <div className="flex items-center h-20 sm:h-24 relative">
           <Link href="/" className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2 sm:gap-3 group whitespace-nowrap">
             <Landmark size={36} className="inline-block" />
             <span className="text-[2rem] sm:text-[2.25rem] font-bold font-serif tracking-wide text-[#1a1a1a]">古道论坛</span>
@@ -50,6 +50,9 @@ export default function Header() {
             <Globe size={14} className="inline-block align-text-bottom mr-1" />{lang === 'zh' ? 'English' : '中文'}
           </button>
         </div>
+
+        {/* 空白间隔行 */}
+        <div className="h-6 sm:h-10"></div>
 
         {/* 操作行：导航 + 打赏（左） | 会员/私信/发帖/搜索（右） */}
         <div className="flex items-center justify-between pb-3 gap-1 overflow-x-auto scrollbar-none">
