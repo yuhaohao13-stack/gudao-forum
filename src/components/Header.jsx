@@ -57,7 +57,7 @@ export default function Header() {
           </nav>
 
           {/* 右：操作 */}
-          <div className="flex items-center gap-0.5 sm:gap-2 min-w-0">
+          <div className="flex items-center gap-0.5 sm:gap-2 min-w-0 ml-auto">
             {/* 桌面搜索 */}
             <form onSubmit={handleSearch} className="hidden sm:block">
               <div className="relative">
