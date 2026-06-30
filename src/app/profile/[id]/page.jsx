@@ -159,7 +159,7 @@ export default function ProfilePage() {
             <p className="text-[#999] text-sm">@{profile.username}</p>
             {profile.member_no && (
               <div className="mt-2 inline-block px-3 py-0.5 rounded-full bg-[#f5f0e8] border border-[#e8e0d0] text-xs font-mono text-[#8b6914]">
-                #{profile.member_no}
+                {t('profile.member_no')}{profile.member_no}
               </div>
             )}
 
@@ -177,8 +177,8 @@ export default function ProfilePage() {
               </div>
               {profile.member_no && (
                 <div className="flex items-baseline gap-2">
-                  <span className="w-16 shrink-0 text-[#bbb] text-xs">编号</span>
-                  <span className="text-[#666] font-mono">#{profile.member_no}</span>
+                  <span className="w-16 shrink-0 text-[#bbb] text-xs">{t('profile.member_no')}</span>
+                  <span className="text-[#666] font-mono">{profile.member_no}</span>
                 </div>
               )}
               {profile.phone && (

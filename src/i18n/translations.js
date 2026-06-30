@@ -55,6 +55,7 @@ const zh = {
   // 个人资料
   'profile.name': '姓名',
   'profile.username': '会员名',
+  'profile.member_no': '会员编号：',
   'profile.phone': '手机号',
   'profile.dob': '出生日期',
   'profile.gender': '性别',
@@ -225,6 +226,7 @@ const en = {
   // Profile
   'profile.name': 'Name',
   'profile.username': 'Username',
+  'profile.member_no': 'Member No: ',
   'profile.phone': 'Phone',
   'profile.dob': 'Birth Date',
   'profile.gender': 'Gender',
