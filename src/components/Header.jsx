@@ -79,7 +79,7 @@ export default function Header() {
                   value={search}
                   onChange={e => setSearch(e.target.value)}
                   placeholder={t('nav.search_placeholder')}
-                  className="w-36 lg:w-44 bg-[#f8f8f8]" border border-transparent rounded-lg pl-8 pr-3 py-1.5 text-sm text-[#1a1a1a] placeholder-[#bbb] outline-none transition-all focus:border-[#e5e5e5] focus:bg-white focus:w-48"
+                  className="w-36 lg:w-44 bg-[#f8f8f8] border border-transparent rounded-lg pl-8 pr-3 py-1.5 text-sm text-[#1a1a1a] placeholder-[#bbb] outline-none transition-all focus:border-[#e5e5e5] focus:bg-white focus:w-48"
                 />
               </div>
             </form>
@@ -142,7 +142,7 @@ export default function Header() {
                 onChange={e => setSearch(e.target.value)}
                 placeholder={t('nav.search_placeholder')}
                 autoFocus
-                className="w-full bg-[#f8f8f8]" border border-[#f0f0f0] rounded-lg pl-9 pr-3 py-2 text-sm outline-none focus:border-[#e0e0e0] focus:bg-white"
+                className="w-full bg-[#f8f8f8] border border-[#f0f0f0] rounded-lg pl-9 pr-3 py-2 text-sm outline-none focus:border-[#e0e0e0] focus:bg-white"
               />
             </form>
           </div>

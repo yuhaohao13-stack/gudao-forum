@@ -217,7 +217,7 @@ export default function LoginPage() {
               className="input" placeholder={t('auth.password_placeholder')} autoComplete="new-password" /></div>
           <div><label className="block text-xs text-[#888] mb-1.5 font-medium">{t('auth.confirm_password')}</label>
             <input type="password" required value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)}
-              className="input" placeholder={t('auth.confirm_password')}" /></div>
+              className="input" placeholder={t('auth.confirm_password')} /></div>
           {error && <div className="text-xs text-[#c23531] bg-[#c23531]/8 border border-[#c23531]/15 rounded-lg p-3">{error}</div>}
           <button type="submit" disabled={loading} className="btn-primary w-full justify-center">{loading ? t('auth.wait')+'...' : t('auth.reset_password')}</button>
         </form>
