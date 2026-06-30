@@ -1,4 +1,5 @@
 'use client'
+import { Heart } from 'lucide-react'
 
 export default function DonateButton({ className = '' }) {
   return (
@@ -6,7 +7,7 @@ export default function DonateButton({ className = '' }) {
       onClick={() => window.dispatchEvent(new CustomEvent('open-donate'))}
       className={className || "btn-ghost flex items-center gap-1 font-bold"}
     >
-      <span className="text-[1.75rem]">💖</span> 打赏
+      <Heart size={20} className="inline-block align-text-bottom" /> 打赏
     </button>
   )
 }

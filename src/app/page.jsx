@@ -2,10 +2,16 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { MessageCircle, Megaphone, Pin, FileText, Eye, Clock, Flame, ArrowRight, Monitor, Flower2, Package, BookOpen, Sparkles } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 
 const CAT_ICONS = {
-  announcements: '📢', random: '💬', tech: '💻', life: '🌸', resources: '📦', fiction: '📖',
+  announcements: <Megaphone size={20} className="inline-block" />,
+  random: <MessageCircle size={20} className="inline-block" />,
+  tech: <Monitor size={20} className="inline-block" />,
+  life: <Flower2 size={20} className="inline-block" />,
+  resources: <Package size={20} className="inline-block" />,
+  fiction: <BookOpen size={20} className="inline-block" />,
 }
 
 export default function Home() {
@@ -68,21 +74,21 @@ export default function Home() {
             <span><strong className="text-sm font-semibold text-[#1a1a1a]">{totalUsers}</strong> 会员</span>
           </div>
         </div>
-        <Link href="/chat" className="btn-secondary text-xs whitespace-nowrap">💬 聊天室</Link>
+        <Link href="/chat" className="btn-secondary text-xs whitespace-nowrap"><MessageCircle size={14} className="inline-block align-text-bottom" /> 聊天室</Link>
       </div>
 
       {/* ===== 公告 ===== */}
       {announcements.length > 0 && (
         <section className="anim-up">
           <div className="flex items-center gap-2 mb-3">
-            <span className="text-xs font-semibold text-[#999] tracking-wide">📢 站务公告</span>
+            <span className="text-xs font-semibold text-[#999] tracking-wide"><Megaphone size={14} className="inline-block align-text-bottom" /> 站务公告</span>
             <span className="tag">置顶</span>
           </div>
           <div className="card divide-y divide-[#f5f5f5]">
             {announcements.map((t, i) => (
               <Link key={t.id} href={`/t/${t.id}`}
                 className={`flex items-center gap-2 px-4 py-3 hover:bg-[#fafafa] transition-colors ${i > 0 ? `anim-delay-${i}` : ''}`}>
-                <span className="text-[#b8860b] shrink-0 text-sm">📌</span>
+                <Pin size={14} className="text-[#b8860b] shrink-0 inline-block" />
                 <span className="text-sm font-medium text-[#1a1a1a] truncate">{t.title}</span>
                 <span className="ml-auto text-xs text-[#bbb]">{new Date(t.created_at).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })}</span>
               </Link>
@@ -98,7 +104,7 @@ export default function Home() {
           {categories.map((c, i) => (
             <Link key={c.id} href={`/c/${c.slug}`}
               className={`feature-card ${i > 0 ? `anim-delay-${i}` : ''}`}>
-              <div className="text-xl mb-2">{CAT_ICONS[c.slug] || c.icon || '📋'}</div>
+              <div className="text-xl mb-2">{CAT_ICONS[c.slug] || c.icon || <FileText size={20} className="inline-block" />}</div>
               <div className="font-semibold text-sm text-[#1a1a1a]">{c.name}</div>
               <div className="text-xs text-[#aaa] mt-1 line-clamp-1 leading-relaxed">{c.description}</div>
             </Link>
@@ -113,19 +119,19 @@ export default function Home() {
             className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
               activeTab === 'recent' ? 'bg-[#1a1a1a] text-white' : 'bg-[#f5f5f5] text-[#888] hover:text-[#1a1a1a]'
             }`}
-          >⏱ 最新</button>
+          ><Clock size={14} className="inline-block align-text-bottom" /> 最新</button>
           <button onClick={() => setActiveTab('hot')}
             className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
               activeTab === 'hot' ? 'bg-[#1a1a1a] text-white' : 'bg-[#f5f5f5] text-[#888] hover:text-[#1a1a1a]'
             }`}
-          >🔥 热门</button>
-          <Link href="/search" className="ml-auto text-xs text-[#bbb] hover:text-[#888] transition-colors">搜索 →</Link>
+          ><Flame size={14} className="inline-block align-text-bottom" /> 热门</button>
+          <Link href="/search" className="ml-auto text-xs text-[#bbb] hover:text-[#888] transition-colors">搜索 <ArrowRight size={12} className="inline-block align-text-bottom" /></Link>
         </div>
 
         <div className="card divide-y divide-[#f5f5f5]">
           {(activeTab === 'recent' ? recentThreads : hotThreads).length === 0 ? (
             <div className="py-12 text-center">
-              <div className="text-2xl mb-2">📝</div>
+              <div className="mb-2"><FileText size={28} className="inline-block text-[#ccc]" /></div>
               <p className="text-[#bbb] text-sm">还没有帖子</p>
               <Link href="/new-thread" className="btn-primary mt-3">发第一条帖子</Link>
             </div>
@@ -145,8 +151,8 @@ export default function Home() {
                     </div>
                   </div>
                   <div className="flex items-center gap-3 text-xs text-[#bbb] shrink-0 mt-0.5">
-                    <span>💬 {t.reply_count || 0}</span>
-                    <span>👁 {t.view_count || 0}</span>
+                    <span><MessageCircle size={14} className="inline-block align-text-bottom" /> {t.reply_count || 0}</span>
+                    <span><Eye size={14} className="inline-block align-text-bottom" /> {t.view_count || 0}</span>
                   </div>
                 </div>
               </Link>

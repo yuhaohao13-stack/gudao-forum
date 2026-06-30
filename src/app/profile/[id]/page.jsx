@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import { Lock, Mars, Venus, Sparkles, Crown, Shield, User as UserIcon, Pencil, MessageCircle, Users, Clock, Mail, CheckCircle, X, FileText, Inbox } from 'lucide-react'
 import { useAuth } from '@/components/AuthProvider'
 import Link from 'next/link'
 
@@ -128,7 +129,7 @@ export default function ProfilePage() {
 
   if (!user) return (
     <div className="card p-12 text-center anim-fade-in max-w-md mx-auto mt-16">
-      <div className="text-3xl mb-3">🔐</div>
+      <div className="mb-3"><Lock size={36} className="inline-block" /></div>
       <p className="text-[#999] mb-3">请登录后查看用户资料</p>
       <Link href="/login" className="btn-primary">去登录</Link>
     </div>
@@ -136,7 +137,11 @@ export default function ProfilePage() {
 
   if (!profile) return <div className="flex justify-center py-20"><div className="w-5 h-5 border-2 border-[#c23531]/30 border-t-[#c23531] rounded-full animate-spin" /></div>
 
-  const genderLabels = { male: '👨 男', female: '👩 女', other: '🔮 其他' }
+  const genderLabel = (g) => {
+  const icon = g === 'male' ? <Mars size={14} className="inline-block align-text-bottom" /> : g === 'female' ? <Venus size={14} className="inline-block align-text-bottom" /> : <Sparkles size={14} className="inline-block align-text-bottom" />
+  const text = g === 'male' ? '男' : g === 'female' ? '女' : '其他'
+  return <>{icon} {text}</>
+}
 
   return (
     <div className="anim-fade-in max-w-2xl mx-auto">
@@ -178,7 +183,7 @@ export default function ProfilePage() {
               {profile.gender && (
                 <div className="flex items-baseline gap-2">
                   <span className="w-16 shrink-0 text-[#bbb] text-xs">性别</span>
-                  <span className="text-[#666]">{genderLabels[profile.gender]}</span>
+                  <span className="text-[#666]">{genderLabel(profile.gender)}</span>
                 </div>
               )}
               {profile.hobbies && (
@@ -208,7 +213,7 @@ export default function ProfilePage() {
                 profile.role === 'moderator' ? 'bg-[#8b6914]/10 text-[#8b6914] border border-[#8b6914]/20' :
                 'text-[#999]'
               }`}>
-                {profile.role === 'admin' ? '👑 管理员' : profile.role === 'moderator' ? '🛡️ 版主' : '👤 用户'}
+                {profile.role === 'admin' ? <><Crown size={14} className="inline-block align-text-bottom" /> 管理员</> : profile.role === 'moderator' ? <><Shield size={14} className="inline-block align-text-bottom" /> 版主</> : <><UserIcon size={14} className="inline-block align-text-bottom" /> 用户</>}
               </span>
               <span className="text-[#ddd6c8]">·</span>
               <span className="text-[#999]">加入于 {new Date(profile.created_at).toLocaleDateString('zh-CN')}</span>
@@ -216,11 +221,11 @@ export default function ProfilePage() {
 
             <div className="flex items-center justify-center gap-3 mt-5">
               {isOwn ? (
-                <button onClick={() => setEditing(true)} className="btn-primary !px-6">✏️ 编辑资料</button>
+                <button onClick={() => setEditing(true)} className="btn-primary !px-6"><Pencil size={16} className="inline-block align-text-bottom" /> 编辑资料</button>
               ) : user ? (
                 friendship === 'accepted' ? (
                   <div className="flex gap-2">
-                    <Link href={`/messages/${id}`} className="btn-primary !px-6">💬 发私信</Link>
+                    <Link href={`/messages/${id}`} className="btn-primary !px-6"><MessageCircle size={16} className="inline-block align-text-bottom" /> 发私信</Link>
                     <button onClick={async () => {
                       if (!confirm('确定删除好友？')) return
                       await supabase.from('friends').delete().or(`and(requester_id.eq.${user.id},addressee_id.eq.${id}),and(requester_id.eq.${id},addressee_id.eq.${user.id})`)
@@ -228,11 +233,11 @@ export default function ProfilePage() {
                     }} className="btn-ghost border border-[#eee8dc] text-[#999] hover:text-[#c23531]">解除好友</button>
                   </div>
                 ) : friendship === 'pending' ? (
-                  <span className="text-xs text-[#999] bg-[#f5f0e8] px-4 py-2 rounded-full">⏳ 等待对方确认</span>
+                  <span className="text-xs text-[#999] bg-[#f5f0e8] px-4 py-2 rounded-full"><Clock size={14} className="inline-block align-text-bottom" /> 等待对方确认</span>
                 ) : (
                   <button onClick={sendFriendRequest} disabled={!!friendAction}
                     className="btn-primary !px-6 disabled:opacity-50">
-                    {friendAction || '👥 加为好友'}
+                    {friendAction || <><Users size={16} className="inline-block align-text-bottom" /> 加为好友</>}
                   </button>
                 )
               ) : null}
@@ -241,7 +246,7 @@ export default function ProfilePage() {
         ) : (
           /* 编辑模式 */
           <div className="text-left mt-6 space-y-4 max-w-md mx-auto">
-            <h2 className="font-bold font-serif text-[#1a1a1a] text-center">✏️ 编辑资料</h2>
+            <h2 className="font-bold font-serif text-[#1a1a1a] text-center"><Pencil size={16} className="inline-block align-text-bottom" /> 编辑资料</h2>
 
             <div>
               <label className="block text-xs text-[#888] mb-1.5 font-medium">昵称 / 姓名</label>
@@ -268,9 +273,9 @@ export default function ProfilePage() {
               <label className="block text-xs text-[#888] mb-1.5 font-medium">性别</label>
               <div className="flex gap-3">
                 {[
-                  { value: 'male', label: '👨 男' },
-                  { value: 'female', label: '👩 女' },
-                  { value: 'other', label: '🔮 其他' },
+                  { value: 'male', label: <><Mars size={16} className="inline-block align-text-bottom" /> 男</> },
+                  { value: 'female', label: <><Venus size={16} className="inline-block align-text-bottom" /> 女</> },
+                  { value: 'other', label: <><Sparkles size={16} className="inline-block align-text-bottom" /> 其他</> },
                 ].map(opt => (
                   <label key={opt.value}
                     className={`flex-1 flex items-center justify-center gap-1 p-2.5 rounded-xl border cursor-pointer transition-all text-sm font-medium ${
@@ -334,27 +339,27 @@ export default function ProfilePage() {
         <button onClick={() => setActiveTab('posts')}
           className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
             activeTab === 'posts' ? 'bg-[#c23531] text-white shadow-sm' : 'bg-white text-[#666] border border-[#ece8e0]'
-          }`}>📝 帖子 ({threads.length})</button>
+          }`}><FileText size={14} className="inline-block align-text-bottom" /> 帖子 ({threads.length})</button>
         {isOwn && (
           <button onClick={() => setActiveTab('friends')}
             className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
               activeTab === 'friends' ? 'bg-[#c23531] text-white shadow-sm' : 'bg-white text-[#666] border border-[#ece8e0]'
-            }`}>👥 好友 ({friends.length})</button>
+            }`}><Users size={14} className="inline-block align-text-bottom" /> 好友 ({friends.length})</button>
         )}
       </div>
 
       {/* Pending requests (own profile) */}
       {isOwn && pendingRequests.length > 0 && activeTab === 'friends' && (
         <div className="mb-4 p-4 rounded-xl bg-amber-50 border border-amber-200">
-          <h3 className="text-xs font-semibold text-amber-700 mb-2">📩 好友请求 ({pendingRequests.length})</h3>
+          <h3 className="text-xs font-semibold text-amber-700 mb-2"><Mail size={14} className="inline-block align-text-bottom" /> 好友请求 ({pendingRequests.length})</h3>
           {pendingRequests.map(req => (
             <div key={req.id} className="flex items-center justify-between py-1.5">
               <Link href={`/profile/${req.requester_id}`} className="text-sm font-medium text-[#666] hover:text-[#c23531]">
                 {req._requesterProfile?.display_name || req._requesterProfile?.username || '用户'}
               </Link>
               <div className="flex gap-2">
-                <button onClick={() => acceptFriend(req.id)} className="text-xs text-green-600 bg-green-100 px-2.5 py-1 rounded-full hover:bg-green-200">✅ 接受</button>
-                <button onClick={() => rejectFriend(req.id)} className="text-xs text-[#999] bg-[#f0f0f0] px-2.5 py-1 rounded-full hover:bg-[#e0e0e0]">✕ 拒绝</button>
+                <button onClick={() => acceptFriend(req.id)} className="text-xs text-green-600 bg-green-100 px-2.5 py-1 rounded-full hover:bg-green-200"><CheckCircle size={14} className="inline-block align-text-bottom" /> 接受</button>
+                <button onClick={() => rejectFriend(req.id)} className="text-xs text-[#999] bg-[#f0f0f0] px-2.5 py-1 rounded-full hover:bg-[#e0e0e0]"><X size={14} className="inline-block align-text-bottom" /> 拒绝</button>
               </div>
             </div>
           ))}
@@ -366,7 +371,7 @@ export default function ProfilePage() {
         <div className="space-y-2">
           {friends.length === 0 ? (
             <div className="card p-8 text-center">
-              <div className="text-2xl mb-2">👥</div>
+              <div className="mb-2"><Users size={28} className="inline-block text-[#ccc]" /></div>
               <p className="text-[#999] text-sm">还没有好友</p>
               {!isOwn && <p className="text-[#ccc] text-xs mt-1">点「加为好友」发送请求</p>}
             </div>
@@ -379,7 +384,7 @@ export default function ProfilePage() {
                   <div className="w-8 h-8 rounded-full bg-[#c23531] flex items-center justify-center text-xs text-white font-bold shrink-0">{(friendName || '?')[0]}</div>
                   <span className="text-sm font-medium text-[#1a1a1a] truncate">{friendName}</span>
                 </Link>
-                <Link href={`/messages/${friendId}`} className="btn-ghost text-xs shrink-0">💬 私信</Link>
+                <Link href={`/messages/${friendId}`} className="btn-ghost text-xs shrink-0"><MessageCircle size={14} className="inline-block align-text-bottom" /> 私信</Link>
               </div>
             )
           })}
@@ -390,11 +395,11 @@ export default function ProfilePage() {
       {activeTab === 'posts' && (
         <div className="mt-2">
           <h2 className="font-semibold text-sm text-[#666] mb-3">
-            📝 发过的帖子 <span className="font-normal text-[#bbb] ml-1">({threads.length})</span>
+            <FileText size={14} className="inline-block align-text-bottom" /> 发过的帖子 <span className="font-normal text-[#bbb] ml-1">({threads.length})</span>
           </h2>
           {threads.length === 0 ? (
             <div className="card p-8 text-center">
-              <div className="text-2xl mb-2">📭</div>
+              <div className="mb-2"><Inbox size={28} className="inline-block text-[#ccc]" /></div>
               <p className="text-[#999] text-sm">还没有发过帖子</p>
             </div>
           ) : (
@@ -409,7 +414,7 @@ export default function ProfilePage() {
                         {t.categories?.name} <span className="text-[#ddd6c8] mx-1.5">·</span>
                         {new Date(t.created_at).toLocaleDateString('zh-CN')}
                       </div>
-                      <div className="text-xs text-[#bbb] shrink-0 ml-3">💬 {t.reply_count || 0}</div>
+                      <div className="text-xs text-[#bbb] shrink-0 ml-3"><MessageCircle size={14} className="inline-block align-text-bottom" /> {t.reply_count || 0}</div>
                     </div>
                   </div>
                 </Link>

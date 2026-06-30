@@ -2,6 +2,7 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
+import { Landmark, Search, MessageCircle, Pencil, X } from 'lucide-react'
 import { useAuth } from './AuthProvider'
 import { createClient } from '@/lib/supabase/client'
 import DonateButton from './DonateButton'
@@ -37,7 +38,7 @@ export default function Header() {
         {/* 顶部行：仅居中Logo */}
         <div className="flex items-center justify-center h-14 sm:h-16 overflow-hidden">
           <Link href="/" className="flex items-center gap-2 sm:gap-3 group whitespace-nowrap">
-            <span className="text-[2.25rem] sm:text-[2.5rem] select-none">🏛️</span>
+            <Landmark size={36} className="inline-block text-[2.25rem] sm:text-[2.5rem]" />
             <span className="text-[2rem] sm:text-[2.25rem] font-bold font-serif tracking-wide text-[#1a1a1a]">古道论坛</span>
           </Link>
         </div>
@@ -64,7 +65,7 @@ export default function Header() {
             {/* 桌面搜索框 */}
             <form onSubmit={handleSearch} className="hidden sm:block">
               <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#ccc] text-xs pointer-events-none">🔍</span>
+                <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#ccc] pointer-events-none" />
                 <input
                   type="text"
                   value={search}
@@ -92,11 +93,11 @@ export default function Header() {
                 {/* 私信：桌面显示完整，移动端仅图标 */}
                 <Link href="/messages" className="btn-ghost !px-1.5 sm:!px-2 !py-1.5 flex items-center gap-0.5 sm:gap-1">
                   <span className="hidden sm:inline text-xs text-[#999]">私信</span>
-                  💬
+                  <MessageCircle size={16} className="inline-block align-text-bottom" />
                   {UnreadBadge && <UnreadBadge />}
                 </Link>
                 <Link href="/new-thread" className="btn-primary !px-2 sm:!px-3 !py-1.5 !text-xs whitespace-nowrap">
-                  ✏️ <span className="hidden sm:inline">发帖</span>
+                  <Pencil size={16} className="inline-block align-text-bottom" /> <span className="hidden sm:inline">发帖</span>
                 </Link>
                 {isAdmin && (
                   <Link href="/admin" className="btn-ghost !text-xs">管理</Link>
@@ -117,7 +118,7 @@ export default function Header() {
               onClick={() => setShowSearch(!showSearch)}
               className="sm:hidden btn-ghost !px-2 !py-1.5 text-[#999]"
             >
-              {showSearch ? '✕' : '🔍'}
+              {showSearch ? <X size={16} /> : <Search size={16} />}
             </button>
           </div>
         </div>
@@ -126,7 +127,7 @@ export default function Header() {
         {showSearch && (
           <div className="sm:hidden pb-3 anim-fade-in">
             <form onSubmit={handleSearch} className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#ccc] text-sm pointer-events-none">🔍</span>
+              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#ccc] pointer-events-none" />
               <input
                 type="text"
                 value={search}

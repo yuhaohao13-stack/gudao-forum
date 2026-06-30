@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useAuth } from '@/components/AuthProvider'
+import { Settings, Megaphone, Pin, Lock, Trash2, Send } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
 export default function AdminPage() {
@@ -56,14 +57,14 @@ export default function AdminPage() {
 
   return (
     <div className="anim-fade-in">
-      <h1 className="text-xl font-bold font-serif text-[#1a1a1a] mb-1">⚙️ 管理后台</h1>
+      <h1 className="text-xl font-bold font-serif text-[#1a1a1a] mb-1"><Settings size={20} className="inline-block align-text-bottom" /> 管理后台</h1>
       <p className="text-xs text-[#aaa] mb-6">古道论坛管理中心</p>
 
       <div className="flex gap-2 mb-6">
         {['threads', 'users', 'broadcast'].map(t => (
           <button key={t} onClick={() => setTab(t)}
             className={`px-4 py-1.5 rounded-md text-sm font-medium transition-colors ${tab === t ? 'bg-[#1a1a1a] text-white' : 'text-[#999] hover:text-[#1a1a1a] hover:bg-[#f5f5f5]'}`}>
-            {t === 'threads' ? '帖子管理' : t === 'users' ? '用户管理' : '📢 公告'}
+            {t === 'threads' ? '帖子管理' : t === 'users' ? '用户管理' : <><Megaphone size={14} className="inline-block align-text-bottom" /> 公告</>}
           </button>
         ))}
       </div>
@@ -77,9 +78,9 @@ export default function AdminPage() {
                 <div className="text-xs text-[#aaa] mt-0.5">{t.profiles?.display_name || t.profiles?.username} · {t.categories?.name}</div>
               </div>
               <div className="flex items-center gap-1 shrink-0">
-                <button onClick={toggle(t, 'is_pinned')} className={`text-xs px-2 py-1 rounded transition-colors hover:bg-[#f5f5f5] ${t.is_pinned ? 'text-[#8b6914]' : 'text-[#ddd]'}`}>📌</button>
-                <button onClick={toggle(t, 'is_locked')} className={`text-xs px-2 py-1 rounded transition-colors hover:bg-[#f5f5f5] ${t.is_locked ? 'text-[#c23531]' : 'text-[#ddd]'}`}>🔒</button>
-                <button onClick={() => del(t.id)} className="text-xs px-2 py-1 rounded text-[#ddd] hover:bg-[#f5f5f5] hover:text-[#c23531] transition-colors">🗑️</button>
+                <button onClick={toggle(t, 'is_pinned')} className={`text-xs px-2 py-1 rounded transition-colors hover:bg-[#f5f5f5] ${t.is_pinned ? 'text-[#8b6914]' : 'text-[#ddd]'}`}><Pin size={14} className="inline-block" /></button>
+                <button onClick={toggle(t, 'is_locked')} className={`text-xs px-2 py-1 rounded transition-colors hover:bg-[#f5f5f5] ${t.is_locked ? 'text-[#c23531]' : 'text-[#ddd]'}`}><Lock size={14} className="inline-block" /></button>
+                <button onClick={() => del(t.id)} className="text-xs px-2 py-1 rounded text-[#ddd] hover:bg-[#f5f5f5] hover:text-[#c23531] transition-colors"><Trash2 size={14} className="inline-block" /></button>
               </div>
             </div>
           ))}
@@ -113,7 +114,7 @@ export default function AdminPage() {
                     </select>
                     {u.role !== 'admin' && (
                       <button onClick={() => deleteUser(u.id, u.display_name || u.username)}
-                        className="text-xs text-[#c23531] hover:bg-[#fef2f0] px-2 py-1 rounded transition-colors">🗑️ 删除</button>
+                        className="text-xs text-[#c23531] hover:bg-[#fef2f0] px-2 py-1 rounded transition-colors"><Trash2 size={12} className="inline-block align-text-bottom" /> 删除</button>
                     )}
                   </td>
                 </tr>
@@ -125,14 +126,14 @@ export default function AdminPage() {
 
       {tab === 'broadcast' && (
         <div className="max-w-xl">
-          <h2 className="font-bold font-serif text-[#1a1a1a] mb-1">📢 站内公告群发</h2>
+          <h2 className="font-bold font-serif text-[#1a1a1a] mb-1"><Megaphone size={16} className="inline-block align-text-bottom" /> 站内公告群发</h2>
           <p className="text-xs text-[#aaa] mb-4">发送私信公告给 <strong className="text-[#c23531]">{users.filter(u => u.id !== user?.id).length}</strong> 位注册用户</p>
           <div className="border border-[#f0f0f0] rounded-xl p-5 space-y-4">
             <textarea value={broadcastText} onChange={e => setBroadcastText(e.target.value)}
               className="input min-h-[120px] resize-none" placeholder="输入公告内容..." maxLength={1000} />
             {broadcastResult && <div className="text-xs text-green-700 bg-[#f0fdf0] border border-[#dceddc] rounded-lg p-3">{broadcastResult}</div>}
             <button onClick={sendBroadcast} disabled={broadcasting || !broadcastText.trim()}
-              className="btn-primary disabled:opacity-50">{broadcasting ? '发送中...' : '📨 群发公告'}</button>
+              className="btn-primary disabled:opacity-50">{broadcasting ? '发送中...' : <><Send size={14} className="inline-block align-text-bottom" /> 群发公告</>}</button>
           </div>
         </div>
       )}

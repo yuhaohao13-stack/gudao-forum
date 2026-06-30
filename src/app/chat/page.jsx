@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
+import { MessageCircle, Eye, CheckCircle, Lightbulb } from 'lucide-react'
 import { useAuth } from '@/components/AuthProvider'
 
 export default function ChatPage() {
@@ -24,7 +25,7 @@ export default function ChatPage() {
   return (
     <div className="anim-fade-in">
       <div className="hero-section">
-        <h1>💬 在线聊天室</h1>
+        <h1><MessageCircle size={24} className="inline-block align-text-bottom" /> 在线聊天室</h1>
         <p className="tagline">
           非会员可查看聊天记录，会员可参与聊天
           {onlineCount > 0 && (
@@ -52,9 +53,9 @@ export default function ChatPage() {
                 <p className="text-sm text-[#aaa] mt-1 line-clamp-1">{room.description}</p>
                 <div className="flex items-center gap-2 mt-2 text-xs text-[#aaa]">
                   {user ? (
-                    <span className="text-green-700">✅ 可发言</span>
+                    <span className="text-green-700"><CheckCircle size={12} className="inline-block align-text-bottom" /> 可发言</span>
                   ) : (
-                    <span>👁️ 可查看</span>
+                    <span><Eye size={14} className="inline-block align-text-bottom" /> 可查看</span>
                   )}
                   <span>·</span>
                   <span>进入 →</span>
@@ -68,7 +69,7 @@ export default function ChatPage() {
       {!authLoading && !user && (
         <div className="mt-6 border border-[#f0f0f0] rounded-xl p-4 text-center bg-[#fafafa]">
           <p className="text-sm text-[#888]">
-            💡 非会员可以查看所有聊天记录，<Link href="/login" className="text-[#c23531] font-medium hover:underline">登录</Link>或<Link href="/register" className="text-[#c23531] font-medium hover:underline">注册</Link>后即可参与聊天
+            <Lightbulb size={14} className="inline-block align-text-bottom" /> 非会员可以查看所有聊天记录，<Link href="/login" className="text-[#c23531] font-medium hover:underline">登录</Link>或<Link href="/register" className="text-[#c23531] font-medium hover:underline">注册</Link>后即可参与聊天
           </p>
         </div>
       )}

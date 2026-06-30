@@ -4,6 +4,7 @@ import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { useAuth } from '@/components/AuthProvider'
+import { Crown, MessageCircle, Eye, Heart, Lock } from 'lucide-react'
 import { checkContent } from '@/lib/moderation'
 
 export default function ThreadPage() {
@@ -70,7 +71,7 @@ export default function ThreadPage() {
 
       <article className="mt-4 card p-6 sm:p-8 anim-up">
         {(thread.profiles?.role === 'admin' || thread.profiles?.role === 'moderator') && (
-          <span className="tag mb-3 inline-block">👑 管理员</span>
+          <span className="tag mb-3 inline-block"><Crown size={14} className="inline-block align-text-bottom" /> 管理员</span>
         )}
         <h1 className="text-xl sm:text-2xl font-bold font-serif text-[#1a1a1a] leading-snug">{thread.title}</h1>
         <div className="flex items-center gap-2 mt-3 text-sm text-[#aaa]">
@@ -89,7 +90,7 @@ export default function ThreadPage() {
         </div>
         {!user && thread.content.split('\n').length > 3 && (
           <div className="mt-4 p-4 rounded-xl bg-[#fafafa] border border-[#f0f0f0] text-center">
-            <p className="text-[#aaa] text-xs">🔒 登录后可查看完整内容</p>
+            <p className="text-[#aaa] text-xs"><Lock size={14} className="inline-block align-text-bottom" /> 登录后可查看完整内容</p>
             <Link href="/login" className="btn-primary mt-2 !text-xs">登录</Link>
           </div>
         )}
@@ -107,15 +108,15 @@ export default function ThreadPage() {
         <div className="mt-6 pt-5 border-t border-[#f0f0f0] flex items-center gap-4 text-sm">
           <button onClick={toggleLike}
             className={`flex items-center gap-1.5 px-4 py-2 rounded-md transition-all ${liked ? 'text-[#c23531] bg-[#fafafa] border border-[#f0f0f0]' : 'text-[#aaa] border border-[#f0f0f0] hover:text-[#c23531] hover:border-[#e0e0e0]'}`}>
-            {liked ? '❤️' : '🤍'} <span>{liked ? '已赞' : '点赞'}</span>
+            {liked ? <Heart size={16} className="fill-current inline-block align-text-bottom" /> : <Heart size={16} className="inline-block align-text-bottom" />} <span>{liked ? '已赞' : '点赞'}</span>
           </button>
-          <span className="stat">💬 {replies.length} 回复</span>
-          <span className="stat">👁 {thread.view_count || 0} 浏览</span>
+          <span className="stat"><MessageCircle size={14} className="inline-block align-text-bottom" /> {replies.length} 回复</span>
+          <span className="stat"><Eye size={14} className="inline-block align-text-bottom" /> {thread.view_count || 0} 浏览</span>
         </div>
       </article>
 
       <div className="mt-6 anim-up">
-        <h2 className="text-sm font-medium text-[#888] mb-4">💬 全部回复<span className="font-normal text-[#bbb] ml-1">({replies.length})</span></h2>
+        <h2 className="text-sm font-medium text-[#888] mb-4"><MessageCircle size={14} className="inline-block align-text-bottom" /> 全部回复<span className="font-normal text-[#bbb] ml-1">({replies.length})</span></h2>
         <div className="space-y-3">
           {replies.length === 0 ? (
             <div className="card p-8 text-center"><p className="text-[#bbb] text-sm">暂无回复，来坐沙发吧</p></div>

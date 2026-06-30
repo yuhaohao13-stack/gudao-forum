@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { User, Cake, Smartphone, CheckCircle, PartyPopper, ArrowRight } from 'lucide-react'
 import { checkRateLimit } from '@/lib/moderation'
 
 export default function LoginPage() {
@@ -107,9 +108,9 @@ export default function LoginPage() {
 
   // ===== UI =====
   const methodBtns = [
-    { key: 'name', label: '👤 姓名+生日' },
-    { key: 'dob', label: '🎂 出生日期' },
-    { key: 'phone', label: '📱 手机号' },
+    { key: 'name', label: <><User size={14} className="inline-block align-text-bottom" /> 姓名+生日</> },
+    { key: 'dob', label: <><Cake size={14} className="inline-block align-text-bottom" /> 出生日期</> },
+    { key: 'phone', label: <><Smartphone size={14} className="inline-block align-text-bottom" /> 手机号</> },
   ]
 
   const loginForm = (
@@ -204,7 +205,7 @@ export default function LoginPage() {
     <div className="max-w-sm mx-auto mt-16 anim-fade-in">
       <div className="card p-8">
         <div className="text-center mb-6">
-          <div className="text-2xl mb-2">✅</div>
+          <div className="mb-2"><CheckCircle size={32} className="inline-block text-green-600" /></div>
           <h1 className="text-lg font-bold font-serif text-[#1a1a1a]">身份验证通过</h1>
           <p className="text-xs text-[#999] mt-1">设置新密码</p>
         </div>
@@ -226,7 +227,7 @@ export default function LoginPage() {
   if (resetStep === 4) return (
     <div className="max-w-sm mx-auto mt-16 anim-fade-in">
       <div className="card p-8 text-center">
-        <div className="text-4xl mb-3">🎉</div>
+        <div className="mb-3"><PartyPopper size={40} className="inline-block" /></div>
         <h1 className="text-xl font-bold font-serif text-[#1a1a1a] mb-2">密码已重置</h1>
         <p className="text-sm text-[#999]">请使用新密码登录</p>
         <button onClick={() => { setResetStep(0); setPassword(''); setEmail(resetEmail); setError('') }}

@@ -2,6 +2,7 @@
 import { useEffect, useState, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { MessageCircle } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 
 function Results() {
@@ -46,7 +47,7 @@ function Results() {
                 <div className="flex items-center gap-2 mt-1 text-xs text-[#bbb]">
                   <span>{t.profiles?.display_name || t.profiles?.username}</span>
                   {t.categories && <><span>·</span><span>{t.categories?.name}</span></>}
-                  <span className="ml-auto">💬 {t.reply_count || 0}</span>
+                  <span className="ml-auto"><MessageCircle size={14} className="inline-block align-text-bottom" /> {t.reply_count || 0}</span>
                 </div>
               </Link>
             ))}

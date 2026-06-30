@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { useAuth } from '@/components/AuthProvider'
+import { Search, Crown, Lightbulb, Eye } from 'lucide-react'
 import { checkContent, validateInput } from '@/lib/moderation'
 
 const MESSAGES_PER_PAGE = 50
@@ -221,7 +222,7 @@ export default function ChatRoomPage() {
   if (!room) {
     return (
       <div className="text-center py-20 anim-fade-in">
-        <div className="text-4xl mb-3">🔍</div>
+        <div className="mb-3"><Search size={40} className="inline-block" /></div>
         <p className="text-[#999]">聊天室不存在</p>
         <Link href="/chat" className="text-[#c23531] hover:underline mt-2 inline-block">返回聊天室列表</Link>
       </div>
@@ -302,7 +303,7 @@ export default function ChatRoomPage() {
                         isAdmin ? 'text-[#c23531]' : isMod ? 'text-[#8b6914]' : 'text-[#666]'
                       }`}>
                       {displayName}
-                      {isAdmin && <span className="ml-1 text-[10px] opacity-60">👑</span>}
+                      {isAdmin && <Crown size={10} className="ml-1 inline-block opacity-60" />}
                     </Link>
                     <span className="text-[10px] text-[#ccc]">
                       {new Date(msg.created_at).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })}
@@ -350,13 +351,13 @@ export default function ChatRoomPage() {
         ) : (
           <div className="card p-3 text-center border-dashed border-[#ddd6c8]">
             <p className="text-sm text-[#999]">
-              👁️ <Link href="/login" className="text-[#c23531] font-medium hover:underline">登录</Link> 后可参与聊天，当前为只读模式
+              <Eye size={14} className="inline-block align-text-bottom" /> <Link href="/login" className="text-[#c23531] font-medium hover:underline">登录</Link> 后可参与聊天，当前为只读模式
             </p>
           </div>
         )}
         <div className="flex items-center justify-between mt-1.5">
           <span className="text-[10px] text-[#ccc]">友善交流，以文会友</span>
-          <span className="text-[10px] text-[#999]">💡 聊天记录保留 48 小时</span>
+          <span className="text-[10px] text-[#999]"><Lightbulb size={12} className="inline-block align-text-bottom" /> 聊天记录保留 48 小时</span>
           <span className="text-[10px] text-[#ccc]">{messages.length} 条消息</span>
         </div>
       </div>

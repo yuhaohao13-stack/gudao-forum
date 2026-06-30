@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/client'
 import { useAuth } from '@/components/AuthProvider'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { Pencil, Image, X } from 'lucide-react'
 import { validateImage, checkContent, validateInput, IMAGE_CONFIG } from '@/lib/moderation'
 
 export default function NewThreadPage() {
@@ -64,7 +65,7 @@ export default function NewThreadPage() {
 
   return (
     <div className="max-w-2xl mx-auto anim-fade-in">
-      <h1 className="text-xl font-bold font-serif text-[#1a1a1a] mb-6">✏️ 发新帖</h1>
+      <h1 className="text-xl font-bold font-serif text-[#1a1a1a] mb-6"><Pencil size={20} className="inline-block align-text-bottom" /> 发新帖</h1>
       <form onSubmit={handleSubmit} className="space-y-5">
         <div className="border border-[#f0f0f0] rounded-xl p-5 sm:p-6 space-y-5">
           <div>
@@ -85,13 +86,13 @@ export default function NewThreadPage() {
           <div>
             <label className="block text-xs text-[#aaa] mb-1.5 font-medium">图片（可选）</label>
             <input ref={fileRef} type="file" accept="image/jpeg,image/png,image/gif,image/webp" multiple onChange={handleImages} className="hidden" />
-            <button type="button" onClick={() => fileRef.current?.click()} className="btn-ghost border border-[#f0f0f0] text-xs rounded-md">📷 选择图片</button>
+            <button type="button" onClick={() => fileRef.current?.click()} className="btn-ghost border border-[#f0f0f0] text-xs rounded-md"><Image size={14} className="inline-block align-text-bottom" /> 选择图片</button>
             {previews.length > 0 && (
               <div className="flex flex-wrap gap-3 mt-2">
                 {previews.map((p, i) => (
                   <div key={i} className="relative group w-[45%] sm:w-[30%]">
                     <img src={p} alt="" className="w-full h-auto max-h-40 object-cover rounded-xl border border-[#f0f0f0]" />
-                    <button type="button" onClick={() => removeImage(i)} className="absolute -top-2 -right-2 w-5 h-5 bg-[#1a1a1a] rounded-full text-xs text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">✕</button>
+                    <button type="button" onClick={() => removeImage(i)} className="absolute -top-2 -right-2 w-5 h-5 bg-[#1a1a1a] rounded-full text-xs text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"><X size={10} /></button>
                   </div>
                 ))}
               </div>

@@ -3,6 +3,7 @@ import { useEffect, useState, useRef, useCallback } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
+import { CheckCircle, Image, X } from 'lucide-react'
 import { useAuth } from '@/components/AuthProvider'
 
 export default function PrivateChatPage() {
@@ -142,14 +143,14 @@ export default function PrivateChatPage() {
             {!areFriends && <span className="ml-2 text-[10px] text-[#bbb]">(非好友)</span>}
           </div>
         </Link>
-        {areFriends && <span className="text-[10px] text-green-600 bg-green-50 border border-green-200 rounded-full px-2 py-0.5">✅ 好友</span>}
+        {areFriends && <span className="text-[10px] text-green-600 bg-green-50 border border-green-200 rounded-full px-2 py-0.5"><CheckCircle size={10} className="inline-block align-text-bottom" /> 好友</span>}
       </div>
 
       {/* 消息列表 */}
       <div className="flex-1 overflow-y-auto rounded-xl border border-[#eee8dc] bg-white p-4 space-y-3 scroll-smooth">
         {messages.length === 0 ? (
           <div className="flex items-center justify-center h-full text-[#ccc] text-sm">
-            {areFriends ? '发送第一条私信吧 💬' : '成为好友后才能发送私信'}
+            {areFriends ? <>发送第一条私信吧 <MessageCircle size={14} className="inline-block align-text-bottom" /></> : '成为好友后才能发送私信'}
           </div>
         ) : messages.map(msg => (
           <div key={msg.id} className={`flex ${msg.sender_id === user.id ? 'justify-end' : 'justify-start'}`}>
@@ -173,8 +174,8 @@ export default function PrivateChatPage() {
                   </p>
                 </div>
                 <button onClick={() => deleteMessage(msg.id)}
-                  className="text-[10px] text-white/30 hover:text-[#c23531] opacity-0 group-hover:opacity-100 transition-all shrink-0 mt-0.5"
-                  title="删除">✕</button>
+                  className="text-white/30 hover:text-[#c23531] opacity-0 group-hover:opacity-100 transition-all shrink-0 mt-0.5"
+                  title="删除"><X size={10} /></button>
               </div>
             </div>
           </div>
@@ -192,7 +193,7 @@ export default function PrivateChatPage() {
                   <div key={i} className="relative">
                     <img src={p} alt="" className="h-16 w-16 object-cover rounded-lg border border-[#eee8dc]" />
                     <button type="button" onClick={() => { setImages([]); setPreviews([]) }}
-                      className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-[#c23531] rounded-full text-[8px] text-white">✕</button>
+                      className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-[#c23531] rounded-full flex items-center justify-center text-white"><X size={10} /></button>
                   </div>
                 ))}
               </div>
@@ -201,7 +202,7 @@ export default function PrivateChatPage() {
               <input ref={inputRef} type="text" value={input} onChange={e => setInput(e.target.value)}
                 placeholder="发送私信..." maxLength={1000} className="input flex-1" disabled={sending} />
               <button type="button" onClick={() => fileRef.current?.click()}
-                className="btn-ghost border border-[#eee8dc] px-3">📷</button>
+                className="btn-ghost border border-[#eee8dc] px-3"><Image size={16} className="inline-block" /></button>
               <input ref={fileRef} type="file" accept="image/jpeg,image/png,image/gif,image/webp"
                 onChange={handleImages} className="hidden" />
               <button type="submit" disabled={sending || (!input.trim() && images.length === 0)}

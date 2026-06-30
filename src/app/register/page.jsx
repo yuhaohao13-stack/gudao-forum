@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { Mars, Venus, Sparkles, RefreshCw } from 'lucide-react'
 import { validatePassword, validatePhone, checkRateLimit } from '@/lib/moderation'
 
 const pageLoadTime = Date.now()
@@ -163,9 +164,9 @@ export default function RegisterPage() {
               <label className="block text-xs text-[#888] mb-1.5 font-medium">性别 <span className="text-[#c23531]">*</span></label>
               <div className="flex gap-3">
                 {[
-                  { value: 'male', label: '👨 男' },
-                  { value: 'female', label: '👩 女' },
-                  { value: 'other', label: '🔮 其他' },
+                  { value: 'male', label: <><Mars size={16} className="inline-block align-text-bottom" /> 男</> },
+                  { value: 'female', label: <><Venus size={16} className="inline-block align-text-bottom" /> 女</> },
+                  { value: 'other', label: <><Sparkles size={16} className="inline-block align-text-bottom" /> 其他</> },
                 ].map(opt => (
                   <label key={opt.value}
                     className={`flex-1 flex items-center justify-center gap-1 p-3 rounded-xl border cursor-pointer transition-all text-sm font-medium ${
@@ -241,7 +242,7 @@ export default function RegisterPage() {
                 onChange={e => update('_captcha', e.target.value.replace(/\D/g, '').slice(0, 4))}
                 className="input w-24 text-center text-lg font-bold tracking-widest" placeholder="输入" maxLength={4} autoComplete="off" />
               <button type="button" onClick={() => setCaptchaCode(generateCaptcha())}
-                className="btn-ghost text-xs shrink-0" title="换一张">🔄</button>
+                className="btn-ghost text-xs shrink-0" title="换一张"><RefreshCw size={14} className="inline-block" /></button>
             </div>
           </div>
 
