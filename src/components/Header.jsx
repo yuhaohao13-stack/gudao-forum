@@ -34,31 +34,34 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-[#f0f0f0]">
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
-        {/* 主行 */}
-        <div className="flex items-center h-14 sm:h-16 justify-between gap-1 sm:gap-2 overflow-hidden relative">
-          {/* Logo：居中 + 真·2倍大 */}
-          <Link href="/" className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2 sm:gap-3 group whitespace-nowrap">
+        {/* 顶部行：仅居中Logo */}
+        <div className="flex items-center justify-center h-14 sm:h-16 overflow-hidden">
+          <Link href="/" className="flex items-center gap-2 sm:gap-3 group whitespace-nowrap">
             <span className="text-[2.25rem] sm:text-[2.5rem] select-none">🏛️</span>
             <span className="text-[2rem] sm:text-[2.25rem] font-bold font-serif tracking-wide text-[#1a1a1a]">古道论坛</span>
           </Link>
+        </div>
 
-          {/* 中：导航（桌面） */}
-          <nav className="hidden sm:flex items-center gap-1 text-sm">
+        {/* 操作行：导航 + 打赏（左） | 会员/私信/发帖/搜索（右） */}
+        <div className="flex items-center justify-between pb-3 gap-1 overflow-x-auto scrollbar-none">
+          {/* 左：导航 + 打赏 */}
+          <div className="flex items-center gap-2 shrink-0">
             <Link href="/"
-              className={`px-3 py-1.5 rounded-lg transition-colors ${
-                !isChatPage ? 'bg-[#f5f5f5] text-[#1a1a1a] font-medium' : 'text-[#999] hover:text-[#1a1a1a] hover:bg-[#f5f5f5]'
+              className={`whitespace-nowrap text-xs sm:text-sm font-medium px-3 py-1.5 rounded-lg transition-colors ${
+                !isChatPage ? 'bg-[#f5f5f5] text-[#1a1a1a]' : 'text-[#999] hover:text-[#1a1a1a] hover:bg-[#f5f5f5]'
               }`}
             >首页</Link>
             <Link href="/chat"
-              className={`px-3 py-1.5 rounded-lg transition-colors ${
-                isChatPage ? 'bg-[#f5f5f5] text-[#1a1a1a] font-medium' : 'text-[#999] hover:text-[#1a1a1a] hover:bg-[#f5f5f5]'
+              className={`whitespace-nowrap text-xs sm:text-sm font-medium px-3 py-1.5 rounded-lg transition-colors ${
+                isChatPage ? 'bg-[#f5f5f5] text-[#1a1a1a]' : 'text-[#999] hover:text-[#1a1a1a] hover:bg-[#f5f5f5]'
               }`}
             >聊天室</Link>
-          </nav>
+            <DonateButton className="whitespace-nowrap text-sm font-semibold px-3 py-1.5 rounded-lg text-[#c23531] hover:bg-[#fef2f0] transition-colors" />
+          </div>
 
-          {/* 右：操作 */}
-          <div className="flex items-center gap-0.5 sm:gap-2 min-w-0 ml-auto">
-            {/* 桌面搜索 */}
+          {/* 右：用户操作 */}
+          <div className="flex items-center gap-1 sm:gap-2 shrink-0 ml-auto">
+            {/* 桌面搜索框 */}
             <form onSubmit={handleSearch} className="hidden sm:block">
               <div className="relative">
                 <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#ccc] text-xs pointer-events-none">🔍</span>
@@ -72,29 +75,28 @@ export default function Header() {
               </div>
             </form>
 
-            <DonateButton className="hidden sm:inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm font-semibold text-[#c23531] hover:bg-[#fef2f0] transition-colors" />
-
             {loading ? (
               <div className="w-4 h-4 border-[1.5px] border-[#ddd] border-t-[#1a1a1a] rounded-full animate-spin" />
             ) : user ? (
               <div className="flex items-center gap-1 sm:gap-1.5">
-                {/* 会员名：在打赏后面空4格 */}
-                <Link href={`/profile/${user.id}`} className="flex items-center gap-1 btn-ghost !px-1.5 sm:!px-2 !py-1 ml-2 sm:ml-6">
+                {/* 会员名：桌面全显示，移动端也全显示 */}
+                <Link href={`/profile/${user.id}`} className="flex items-center gap-1 btn-ghost !px-1.5 sm:!px-2 !py-1">
                   <span className="w-6 sm:w-7 h-6 sm:h-7 rounded-full bg-[#c23531] flex items-center justify-center text-[10px] sm:text-xs text-white font-bold shadow-sm">
                     {(profile?.display_name || profile?.username || '?')[0]}
                   </span>
-                  <span className="text-[10px] sm:text-xs text-[#999] font-normal whitespace-nowrap">会员名：</span>
-                  <span className="text-xs sm:text-sm font-medium text-[#555] max-w-[5em] truncate">
+                  <span className="hidden sm:inline text-[10px] sm:text-xs text-[#999] font-normal whitespace-nowrap">会员名：</span>
+                  <span className="text-[10px] sm:text-sm font-medium text-[#555] max-w-[5em] truncate">
                     {profile?.display_name || profile?.username || ''}
                   </span>
                 </Link>
+                {/* 私信：桌面显示完整，移动端仅图标 */}
                 <Link href="/messages" className="btn-ghost !px-1.5 sm:!px-2 !py-1.5 flex items-center gap-0.5 sm:gap-1">
-                  <span className="text-xs text-[#999]">私信</span>
+                  <span className="hidden sm:inline text-xs text-[#999]">私信</span>
                   💬
                   {UnreadBadge && <UnreadBadge />}
                 </Link>
-                <Link href="/new-thread" className="btn-primary !px-3 !py-1.5 !text-xs whitespace-nowrap">
-                  ✏️ 发帖
+                <Link href="/new-thread" className="btn-primary !px-2 sm:!px-3 !py-1.5 !text-xs whitespace-nowrap">
+                  ✏️ <span className="hidden sm:inline">发帖</span>
                 </Link>
                 {isAdmin && (
                   <Link href="/admin" className="btn-ghost !text-xs">管理</Link>
@@ -105,8 +107,8 @@ export default function Header() {
               </div>
             ) : (
               <div className="flex items-center gap-2">
-                <Link href="/login" className="text-sm text-[#888] hover:text-[#1a1a1a] transition-colors">登录</Link>
-                <Link href="/register" className="btn-primary !px-3 !py-1.5 !text-xs">注册</Link>
+                <Link href="/login" className="text-xs sm:text-sm text-[#888] hover:text-[#1a1a1a] transition-colors">登录</Link>
+                <Link href="/register" className="btn-primary !px-2 sm:!px-3 !py-1.5 !text-xs">注册</Link>
               </div>
             )}
 
@@ -120,22 +122,7 @@ export default function Header() {
           </div>
         </div>
 
-        {/* 移动端导航 + 打赏 */}
-        <div className="flex sm:hidden items-center gap-2 pb-3 overflow-x-auto scrollbar-none">
-          <Link href="/"
-            className={`whitespace-nowrap text-xs font-medium px-3 py-1 rounded-lg transition-colors ${
-              !isChatPage ? 'bg-[#f5f5f5] text-[#1a1a1a]' : 'text-[#999]'
-            }`}
-          >首页</Link>
-          <Link href="/chat"
-            className={`whitespace-nowrap text-xs font-medium px-3 py-1 rounded-lg transition-colors ${
-              isChatPage ? 'bg-[#f5f5f5] text-[#1a1a1a]' : 'text-[#999]'
-            }`}
-          >聊天室</Link>
-          <DonateButton className="whitespace-nowrap text-sm font-semibold px-3 py-1.5 rounded-lg text-[#c23531] hover:bg-[#fef2f0] transition-colors" />
-        </div>
-
-        {/* 移动端搜索 */}
+        {/* 移动端搜索弹出框 */}
         {showSearch && (
           <div className="sm:hidden pb-3 anim-fade-in">
             <form onSubmit={handleSearch} className="relative">
