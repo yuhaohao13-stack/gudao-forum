@@ -11,7 +11,7 @@ import UnreadBadge from './UnreadBadge'
 
 export default function Header() {
   const { user, profile, loading } = useAuth()
-  const { lang, toggleLang } = useLanguage()
+  const { lang, toggleLang, t } = useLanguage()
   const [search, setSearch] = useState('')
   const [showSearch, setShowSearch] = useState(false)
   const supabase = createClient()
@@ -37,12 +37,25 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-[#f0f0f0]">
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
-        {/* 顶部行：仅居中Logo */}
-        <div className="flex items-center justify-center h-14 sm:h-16 overflow-hidden">
-          <Link href="/" className="flex items-center gap-2 sm:gap-3 group whitespace-nowrap">
-            <Landmark size={36} className="inline-block text-[2.25rem] sm:text-[2.5rem]" />
-            <span className="text-[2rem] sm:text-[2.25rem] font-bold font-serif tracking-wide text-[#1a1a1a]">古道论坛</span>
-          </Link>
+        {/* 顶部行：居中Logo + 右语言切换 */}
+        <div className="flex items-center h-14 sm:h-16 overflow-hidden">
+          {/* 左：占位（保持视觉平衡） */}
+          <div className="w-20 sm:w-28" />
+          {/* 中：Logo */}
+          <div className="flex-1 flex justify-center">
+            <Link href="/" className="flex items-center gap-2 sm:gap-3 group whitespace-nowrap">
+              <Landmark size={36} className="inline-block" />
+              <span className="text-[2rem] sm:text-[2.25rem] font-bold font-serif tracking-wide text-[#1a1a1a]">古道论坛</span>
+            </Link>
+          </div>
+          {/* 右：语言切换 */}
+          <div className="w-20 sm:w-28 flex justify-end">
+            <button onClick={toggleLang}
+              className="text-xs sm:text-sm font-medium px-2 sm:px-3 py-1.5 rounded-lg border border-[#e0ddd5] text-[#888] hover:text-[#1a1a1a] hover:border-[#ccc] transition-colors whitespace-nowrap"
+            >
+              <Globe size={14} className="inline-block align-text-bottom mr-1" />{lang === 'zh' ? 'English' : '中文'}
+            </button>
+          </div>
         </div>
 
         {/* 操作行：导航 + 打赏（左） | 会员/私信/发帖/搜索（右） */}
@@ -53,18 +66,13 @@ export default function Header() {
               className={`whitespace-nowrap text-xs sm:text-sm font-medium px-3 py-1.5 rounded-lg transition-colors ${
                 !isChatPage ? 'bg-[#f5f5f5] text-[#1a1a1a]' : 'text-[#999] hover:text-[#1a1a1a] hover:bg-[#f5f5f5]'
               }`}
-            >首页</Link>
+            >{t('nav.home')}</Link>
             <Link href="/chat"
               className={`whitespace-nowrap text-xs sm:text-sm font-medium px-3 py-1.5 rounded-lg transition-colors ${
                 isChatPage ? 'bg-[#f5f5f5] text-[#1a1a1a]' : 'text-[#999] hover:text-[#1a1a1a] hover:bg-[#f5f5f5]'
               }`}
-            >聊天室</Link>
+            >{t('nav.chat')}</Link>
             <DonateButton className="whitespace-nowrap text-sm font-semibold px-3 py-1.5 rounded-lg text-[#c23531] hover:bg-[#fef2f0] transition-colors" />
-            <button onClick={toggleLang}
-              className="ml-2 sm:ml-3 whitespace-nowrap text-xs sm:text-sm font-medium px-2 sm:px-3 py-1.5 rounded-lg border border-[#e0ddd5] text-[#888] hover:text-[#1a1a1a] hover:border-[#ccc] transition-colors"
-            >
-              <Globe size={14} className="inline-block align-text-bottom mr-1" />{lang === 'zh' ? 'EN' : '中文'}
-            </button>
           </div>
 
           {/* 右：用户操作 */}
@@ -77,8 +85,8 @@ export default function Header() {
                   type="text"
                   value={search}
                   onChange={e => setSearch(e.target.value)}
-                  placeholder="搜索帖子..."
-                  className="w-36 lg:w-44 bg-[#f8f8f8] border border-transparent rounded-lg pl-8 pr-3 py-1.5 text-sm text-[#1a1a1a] placeholder-[#bbb] outline-none transition-all focus:border-[#e5e5e5] focus:bg-white focus:w-48"
+                  placeholder={t('nav.search_placeholder')}
+                  className="w-36 lg:w-44 bg-[#f8f8f8]" border border-transparent rounded-lg pl-8 pr-3 py-1.5 text-sm text-[#1a1a1a] placeholder-[#bbb] outline-none transition-all focus:border-[#e5e5e5] focus:bg-white focus:w-48"
                 />
               </div>
             </form>
@@ -92,31 +100,31 @@ export default function Header() {
                   <span className="w-6 sm:w-7 h-6 sm:h-7 rounded-full bg-[#c23531] flex items-center justify-center text-[10px] sm:text-xs text-white font-bold shadow-sm">
                     {(profile?.display_name || profile?.username || '?')[0]}
                   </span>
-                  <span className="hidden sm:inline text-[10px] sm:text-xs text-[#999] font-normal whitespace-nowrap">会员名：</span>
+                  <span className="hidden sm:inline text-[10px] sm:text-xs text-[#999] font-normal whitespace-nowrap">{t('nav.profile')}：</span>
                   <span className="text-[10px] sm:text-sm font-medium text-[#555] max-w-[5em] truncate">
                     {profile?.display_name || profile?.username || ''}
                   </span>
                 </Link>
                 {/* 私信：桌面显示完整，移动端仅图标 */}
                 <Link href="/messages" className="btn-ghost !px-1.5 sm:!px-2 !py-1.5 flex items-center gap-0.5 sm:gap-1">
-                  <span className="hidden sm:inline text-xs text-[#999]">私信</span>
+                  <span className="hidden sm:inline text-xs text-[#999]">{t('nav.messages')}</span>
                   <MessageCircle size={16} className="inline-block align-text-bottom" />
                   {UnreadBadge && <UnreadBadge />}
                 </Link>
                 <Link href="/new-thread" className="btn-primary !px-2 sm:!px-3 !py-1.5 !text-xs whitespace-nowrap">
-                  <Pencil size={16} className="inline-block align-text-bottom" /> <span className="hidden sm:inline">发帖</span>
+                  <Pencil size={16} className="inline-block align-text-bottom" /> <span className="hidden sm:inline">{t('nav.new_thread')}</span>
                 </Link>
                 {isAdmin && (
-                  <Link href="/admin" className="btn-ghost !text-xs">管理</Link>
+                  <Link href="/admin" className="btn-ghost !text-xs">{t('nav.admin')}</Link>
                 )}
                 <button onClick={handleLogout} className="hidden sm:inline-flex btn-ghost !text-xs text-[#bbb]">
-                  退出
+                  {t('nav.logout')}
                 </button>
               </div>
             ) : (
               <div className="flex items-center gap-2">
-                <Link href="/login" className="text-xs sm:text-sm text-[#888] hover:text-[#1a1a1a] transition-colors">登录</Link>
-                <Link href="/register" className="btn-primary !px-2 sm:!px-3 !py-1.5 !text-xs">注册</Link>
+                <Link href="/login" className="text-xs sm:text-sm text-[#888] hover:text-[#1a1a1a] transition-colors">{t('nav.login')}</Link>
+                <Link href="/register" className="btn-primary !px-2 sm:!px-3 !py-1.5 !text-xs">{t('nav.register')}</Link>
               </div>
             )}
 
@@ -139,9 +147,9 @@ export default function Header() {
                 type="text"
                 value={search}
                 onChange={e => setSearch(e.target.value)}
-                placeholder="搜索帖子..."
+                placeholder={t('nav.search_placeholder')}
                 autoFocus
-                className="w-full bg-[#f8f8f8] border border-[#f0f0f0] rounded-lg pl-9 pr-3 py-2 text-sm outline-none focus:border-[#e0e0e0] focus:bg-white"
+                className="w-full bg-[#f8f8f8]" border border-[#f0f0f0] rounded-lg pl-9 pr-3 py-2 text-sm outline-none focus:border-[#e0e0e0] focus:bg-white"
               />
             </form>
           </div>
