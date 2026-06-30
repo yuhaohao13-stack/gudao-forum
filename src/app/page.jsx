@@ -116,15 +116,15 @@ export default function Home() {
       <section className="anim-up">
         <div className="flex items-center gap-2 mb-4">
           <button onClick={() => setActiveTab('recent')}
-            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-              activeTab === 'recent' ? 'bg-[#1a1a1a] text-white' : 'bg-[#f5f5f5] text-[#888] hover:text-[#1a1a1a]'
+            className={`px-5 py-2.5 rounded-xl text-base font-semibold transition-colors ${
+              activeTab === 'recent' ? 'bg-[#1a1a1a] text-white shadow-md' : 'bg-[#f5f5f5] text-[#888] hover:text-[#1a1a1a] hover:bg-[#eee]'
             }`}
-          ><Clock size={14} className="inline-block align-text-bottom" /> 最新</button>
+          ><Clock size={22} className="inline-block align-text-bottom" /> 最新</button>
           <button onClick={() => setActiveTab('hot')}
-            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-              activeTab === 'hot' ? 'bg-[#1a1a1a] text-white' : 'bg-[#f5f5f5] text-[#888] hover:text-[#1a1a1a]'
+            className={`px-5 py-2.5 rounded-xl text-base font-semibold transition-colors ${
+              activeTab === 'hot' ? 'bg-[#1a1a1a] text-white shadow-md' : 'bg-[#f5f5f5] text-[#888] hover:text-[#1a1a1a] hover:bg-[#eee]'
             }`}
-          ><Flame size={14} className="inline-block align-text-bottom" /> 热门</button>
+          ><Flame size={22} className="inline-block align-text-bottom" /> 热门</button>
           <Link href="/search" className="ml-auto text-xs text-[#bbb] hover:text-[#888] transition-colors">搜索 <ArrowRight size={12} className="inline-block align-text-bottom" /></Link>
         </div>
 
