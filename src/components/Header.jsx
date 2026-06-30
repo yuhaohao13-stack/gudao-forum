@@ -35,14 +35,12 @@ export default function Header() {
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-[#f0f0f0]">
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
         {/* 主行 */}
-        <div className="flex items-center h-14 sm:h-16 justify-between gap-1 sm:gap-2 overflow-hidden">
-          {/* 左：Logo */}
-          <div className="flex items-center gap-0.5 shrink-0">
-            <Link href="/" className="flex items-center gap-2 group">
-              <span className="text-lg sm:text-xl select-none">🏛️</span>
-              <span className="text-base sm:text-lg font-bold font-serif tracking-wide text-[#1a1a1a]">古道论坛</span>
-            </Link>
-          </div>
+        <div className="flex items-center h-14 sm:h-16 justify-between gap-1 sm:gap-2 overflow-hidden relative">
+          {/* Logo：居中 + 2倍大 */}
+          <Link href="/" className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2 sm:gap-3 group">
+            <span className="text-2xl sm:text-3xl select-none">🏛️</span>
+            <span className="text-xl sm:text-2xl font-bold font-serif tracking-wide text-[#1a1a1a]">古道论坛</span>
+          </Link>
 
           {/* 中：导航（桌面） */}
           <nav className="hidden sm:flex items-center gap-1 text-sm">
