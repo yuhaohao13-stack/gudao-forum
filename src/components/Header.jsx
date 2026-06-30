@@ -35,7 +35,7 @@ export default function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-[#f0f0f0]">
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-[#f0f0f0] pb-4 sm:pb-8">
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
         {/* 顶部行：Logo居中 + 语言切换最右 */}
         <div className="flex items-center h-20 sm:h-24 mb-6 sm:mb-10 relative">
