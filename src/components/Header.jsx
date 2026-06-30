@@ -38,7 +38,7 @@ export default function Header() {
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-[#f0f0f0]">
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
         {/* 顶部行：Logo居中 + 语言切换最右 */}
-        <div className="flex items-center h-20 sm:h-24 mb-3 sm:mb-6 relative">
+        <div className="flex items-center h-20 sm:h-24 mb-6 sm:mb-10 relative">
           <Link href="/" className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2 sm:gap-3 group whitespace-nowrap">
             <Landmark size={36} className="inline-block" />
             <span className="text-[2rem] sm:text-[2.25rem] font-bold font-serif tracking-wide text-[#1a1a1a]">古道论坛</span>
