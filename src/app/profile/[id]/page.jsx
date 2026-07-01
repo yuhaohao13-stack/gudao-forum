@@ -129,6 +129,12 @@ export default function ProfilePage() {
     setTimeout(() => setMessage(''), 3000)
   }
 
+  const handleLogout = async () => {
+    await supabase.auth.signOut()
+    router.push('/login')
+    router.refresh()
+  }
+
   if (!user) return (
     <div className="card p-12 text-center anim-fade-in max-w-md mx-auto mt-16">
       <div className="mb-3"><Lock size={36} className="inline-block" /></div>
@@ -255,6 +261,19 @@ export default function ProfilePage() {
                 )
               ) : null}
             </div>
+
+            {isOwn && (
+              <div className="mt-8 pt-5 border-t border-[#f0f0f0] flex items-center justify-center gap-3">
+                <button onClick={() => router.push('/login')}
+                  className="btn-ghost !text-sm text-[#888] border border-[#eee8dc] px-5 py-2 rounded-lg hover:text-[#1a1a1a]">
+                  切换账号
+                </button>
+                <button onClick={handleLogout}
+                  className="btn-ghost !text-sm text-[#c23531] border border-[#c23531]/20 px-5 py-2 rounded-lg hover:bg-[#c23531]/5">
+                  退出登录
+                </button>
+              </div>
+            )}
           </>
         ) : (
           /* 编辑模式 */
