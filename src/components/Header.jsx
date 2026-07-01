@@ -114,7 +114,7 @@ export default function Header() {
                 {isAdmin && (
                   <Link href="/admin" className="btn-ghost !text-xs">{t('nav.admin')}</Link>
                 )}
-                <button onClick={handleLogout} className="hidden sm:inline-flex btn-ghost !text-xs text-[#bbb]">
+                <button onClick={handleLogout} className="inline-flex btn-ghost !text-xs text-[#999] hover:text-[#c23531]">
                   {t('nav.logout')}
                 </button>
               </div>
