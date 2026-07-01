@@ -2,7 +2,7 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
-import { Landmark, Search, MessageCircle, Pencil, X, Globe } from 'lucide-react'
+import { Landmark, Search, MessageCircle, Pencil, X, Globe, LogOut } from 'lucide-react'
 import { useLanguage } from '@/lib/LanguageContext'
 import { useAuth } from './AuthProvider'
 import { createClient } from '@/lib/supabase/client'
@@ -114,8 +114,9 @@ export default function Header() {
                 {isAdmin && (
                   <Link href="/admin" className="btn-ghost !text-xs">{t('nav.admin')}</Link>
                 )}
-                <button onClick={handleLogout} className="inline-flex btn-ghost !text-xs text-[#999] hover:text-[#c23531]">
-                  {t('nav.logout')}
+                <button onClick={handleLogout} className="btn-ghost !px-1.5 !py-1.5 text-[#999] hover:text-[#c23531]">
+                  <span className="hidden sm:inline !text-xs">{t('nav.logout')}</span>
+                  <LogOut size={16} className="inline-block sm:hidden" />
                 </button>
               </div>
             ) : (
