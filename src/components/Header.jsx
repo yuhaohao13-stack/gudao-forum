@@ -69,7 +69,6 @@ export default function Header() {
                 isChatPage ? 'bg-[#f5f5f5] text-[#1a1a1a]' : 'text-[#999] hover:text-[#1a1a1a] hover:bg-[#f5f5f5]'
               }`}
             >{t('nav.chat')}</Link>
-            <a href="https://www.crazy-repair.com" target="_blank" rel="noopener" className="whitespace-nowrap text-xs sm:text-sm font-semibold px-2 sm:px-3 py-1.5 rounded-lg text-blue-600 hover:bg-blue-50 transition-colors">专业维修服务-Crazy维修</a>
             <a href="https://v.douyin.com/gjAo7iQN1h4/" target="_blank" rel="noopener"
               className="flex items-center gap-1 whitespace-nowrap text-xs sm:text-sm font-bold px-2 sm:px-3 py-1.5 rounded-lg bg-gradient-to-r from-[#00f2fe] to-[#fe2c55] text-white hover:opacity-90 transition-all shadow-sm"
               title="浩哥维修实录 @Crazy维修 抖音">
@@ -78,6 +77,7 @@ export default function Header() {
               </svg>
               <span>浩哥维修实录 → 抖音</span>
             </a><DonateButton className="whitespace-nowrap text-sm font-semibold px-3 py-1.5 rounded-lg text-[#c23531] hover:bg-[#fef2f0] transition-colors" />
+            <a href="https://www.crazy-repair.com" target="_blank" rel="noopener" className="whitespace-nowrap text-xs sm:text-sm font-semibold px-2 sm:px-3 py-1.5 rounded-lg text-blue-600 hover:bg-blue-50 transition-colors">专业维修服务-Crazy维修</a>
           </div>
 
           {/* 右：用户操作 */}
