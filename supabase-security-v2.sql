@@ -1,5 +1,5 @@
 -- ============================================
--- 古道论坛 — 安全加固 v2 (精简版)
+-- 古道论坛 — 安全加固 v2
 -- 在 Supabase SQL Editor 中运行
 -- SQL Editor: https://supabase.com/dashboard/project/rsndnhdimruisysacujg/sql/new
 -- ⚠️ 确保右上角已选择 Service Role（非 Anon Key）
@@ -49,15 +49,27 @@ END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
 -- ============================================
--- 4. 输入长度限制
+-- 4. 输入长度限制（PostgreSQL 不支持 IF NOT EXISTS）
 -- ============================================
-ALTER TABLE public.private_messages
-  ADD CONSTRAINT IF NOT EXISTS chk_content_length
-  CHECK (char_length(content) <= 5000);
+DO $$ BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_constraint WHERE conname = 'chk_content_length'
+  ) THEN
+    ALTER TABLE public.private_messages
+      ADD CONSTRAINT chk_content_length
+      CHECK (char_length(content) <= 5000);
+  END IF;
+END $$;
 
-ALTER TABLE public.chat_messages
-  ADD CONSTRAINT IF NOT EXISTS chk_chat_content_length
-  CHECK (char_length(content) <= 2000);
+DO $$ BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_constraint WHERE conname = 'chk_chat_content_length'
+  ) THEN
+    ALTER TABLE public.chat_messages
+      ADD CONSTRAINT chk_chat_content_length
+      CHECK (char_length(content) <= 2000);
+  END IF;
+END $$;
 
 -- ============================================
 -- 5. 清理索引优化
