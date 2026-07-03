@@ -69,7 +69,15 @@ export default function Header() {
                 isChatPage ? 'bg-[#f5f5f5] text-[#1a1a1a]' : 'text-[#999] hover:text-[#1a1a1a] hover:bg-[#f5f5f5]'
               }`}
             >{t('nav.chat')}</Link>
-            <a href="https://www.crazy-repair.com" target="_blank" rel="noopener" className="whitespace-nowrap text-xs sm:text-sm font-semibold px-2 sm:px-3 py-1.5 rounded-lg text-blue-600 hover:bg-blue-50 transition-colors">专业维修服务-Crazy维修</a><DonateButton className="whitespace-nowrap text-sm font-semibold px-3 py-1.5 rounded-lg text-[#c23531] hover:bg-[#fef2f0] transition-colors" />
+            <a href="https://www.crazy-repair.com" target="_blank" rel="noopener" className="whitespace-nowrap text-xs sm:text-sm font-semibold px-2 sm:px-3 py-1.5 rounded-lg text-blue-600 hover:bg-blue-50 transition-colors">专业维修服务-Crazy维修</a>
+            <a href="https://v.douyin.com/gjAo7iQN1h4/" target="_blank" rel="noopener"
+              className="flex items-center gap-1 whitespace-nowrap text-xs sm:text-sm font-bold px-2 sm:px-3 py-1.5 rounded-lg bg-gradient-to-r from-[#00f2fe] to-[#fe2c55] text-white hover:opacity-90 transition-all shadow-sm"
+              title="@Crazy维修 抖音">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" className="shrink-0">
+                <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.88 2.89 2.89 0 0 1-2.88-2.88 2.89 2.89 0 0 1 2.88-2.88c.35 0 .69.06 1.01.18V8.48a6.34 6.34 0 0 0-1.01-.08C5.9 8.4 3 11.3 3 14.86c0 3.56 2.9 6.46 6.46 6.46 3.56 0 6.46-2.9 6.46-6.46V9.33a8.28 8.28 0 0 0 4.67 1.4v-3.4a4.84 4.84 0 0 1-1-.64z"/>
+              </svg>
+              <span>抖音</span>
+            </a><DonateButton className="whitespace-nowrap text-sm font-semibold px-3 py-1.5 rounded-lg text-[#c23531] hover:bg-[#fef2f0] transition-colors" />
           </div>
 
           {/* 右：用户操作 */}
