@@ -163,13 +163,53 @@ export default function FloatingButtons() {
             </button>
 
             <div style={{ textAlign: 'center', marginBottom: '1.25rem' }}>
-              <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>🙋</div>
-              <h3 style={{ fontSize: '1.125rem', fontWeight: 700, fontFamily: "'Noto Serif SC', serif", color: '#1a1a1a' }}>联系站长</h3>
-              <p style={{ fontSize: '0.75rem', color: '#999', marginTop: '0.25rem' }}>有问题或建议，欢迎联系浩哥</p>
+              <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>🔧</div>
+              <h3 style={{ fontSize: '1.125rem', fontWeight: 700, fontFamily: "'Noto Serif SC', serif", color: '#1a1a1a' }}>Crazy 维修 — 联系我们</h3>
+              <p style={{ fontSize: '0.75rem', color: '#999', marginTop: '0.25rem' }}>新加坡电脑/手机/平板专业维修</p>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-              <a href="mailto:yuhaohao13@gmail.com"
+              {/* 微信 */}
+              <div onClick={() => { navigator.clipboard.writeText('crazy-repair') }}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: '1rem', padding: '1rem',
+                  borderRadius: '0.75rem', border: '1px solid #eee8dc', width: '100%',
+                  cursor: 'pointer', background: 'none', fontSize: 'inherit',
+                }}>
+                <div style={{
+                  width: '2.5rem', height: '2.5rem', borderRadius: '50%',
+                  backgroundColor: '#07c160', display: 'flex', alignItems: 'center',
+                  justifyContent: 'center', fontSize: '1.25rem', flexShrink: 0,
+                }}>💚</div>
+                <div style={{ textAlign: 'left', flex: 1 }}>
+                  <div style={{ fontWeight: 600, fontSize: '0.875rem', color: '#1a1a1a' }}>微信</div>
+                  <div style={{ fontSize: '0.75rem', color: '#666' }}>微信号：crazy-repair（点击复制）</div>
+                </div>
+                <span style={{ color: '#07c160', fontSize: '0.875rem' }}>📋</span>
+              </div>
+
+              {/* 新加坡电话 / WhatsApp */}
+              <a href="https://wa.me/6596146709?text=我想咨询手机电脑维修事宜" target="_blank" rel="noopener"
+                style={{
+                  display: 'flex', alignItems: 'center', gap: '1rem', padding: '1rem',
+                  borderRadius: '0.75rem', border: '1px solid #eee8dc', width: '100%',
+                  cursor: 'pointer', background: 'none', fontSize: 'inherit',
+                  textDecoration: 'none', color: 'inherit',
+                }}>
+                <div style={{
+                  width: '2.5rem', height: '2.5rem', borderRadius: '50%',
+                  backgroundColor: '#25d366', display: 'flex', alignItems: 'center',
+                  justifyContent: 'center', fontSize: '1.25rem', flexShrink: 0,
+                }}>📱</div>
+                <div style={{ textAlign: 'left', flex: 1 }}>
+                  <div style={{ fontWeight: 600, fontSize: '0.875rem', color: '#1a1a1a' }}>WhatsApp / 新加坡电话</div>
+                  <div style={{ fontSize: '0.75rem', color: '#666' }}>+65 96146709</div>
+                </div>
+                <span style={{ color: '#25d366', fontSize: '0.875rem' }}>→</span>
+              </a>
+
+              {/* 中国电话 */}
+              <a href="tel:+8613573735550"
                 style={{
                   display: 'flex', alignItems: 'center', gap: '1rem', padding: '1rem',
                   borderRadius: '0.75rem', border: '1px solid #eee8dc', width: '100%',
@@ -180,37 +220,35 @@ export default function FloatingButtons() {
                   width: '2.5rem', height: '2.5rem', borderRadius: '50%',
                   backgroundColor: '#ea4335', display: 'flex', alignItems: 'center',
                   justifyContent: 'center', fontSize: '1.25rem', flexShrink: 0,
-                }}>📧</div>
+                }}>📞</div>
                 <div style={{ textAlign: 'left', flex: 1 }}>
-                  <div style={{ fontWeight: 600, fontSize: '0.875rem', color: '#1a1a1a' }}>Email</div>
-                  <div style={{ fontSize: '0.75rem', color: '#666' }}>yuhaohao13@gmail.com</div>
+                  <div style={{ fontWeight: 600, fontSize: '0.875rem', color: '#1a1a1a' }}>中国电话</div>
+                  <div style={{ fontSize: '0.75rem', color: '#666' }}>+86 13573735550</div>
                 </div>
                 <span style={{ color: '#ea4335', fontSize: '0.875rem' }}>→</span>
               </a>
 
-              <div
+              {/* 网站链接 */}
+              <a href="https://www.crazy-repair.com" target="_blank" rel="noopener"
                 style={{
                   display: 'flex', alignItems: 'center', gap: '1rem', padding: '1rem',
                   borderRadius: '0.75rem', border: '1px solid #eee8dc', width: '100%',
                   cursor: 'pointer', background: 'none', fontSize: 'inherit',
-                }}
-                onClick={() => {
-                  const text = '浩哥的联系方式:\nEmail: yuhaohao13@gmail.com\n古道论坛: https://www.gudaoforum.com\nCrazy-Repair: https://www.crazy-repair.com\n抖音: https://v.douyin.com/NvUr5C82ZDM/'
-                  navigator.clipboard.writeText(text)
-                }}
-              >
+                  textDecoration: 'none', color: 'inherit',
+                }}>
                 <div style={{
                   width: '2.5rem', height: '2.5rem', borderRadius: '50%',
-                  backgroundColor: '#07c160', display: 'flex', alignItems: 'center',
+                  backgroundColor: '#2563eb', display: 'flex', alignItems: 'center',
                   justifyContent: 'center', fontSize: '1.25rem', flexShrink: 0,
-                }}>💬</div>
+                }}>🔧</div>
                 <div style={{ textAlign: 'left', flex: 1 }}>
-                  <div style={{ fontWeight: 600, fontSize: '0.875rem', color: '#1a1a1a' }}>联系方式</div>
-                  <div style={{ fontSize: '0.75rem', color: '#666' }}>点击复制全部信息</div>
+                  <div style={{ fontWeight: 600, fontSize: '0.875rem', color: '#1a1a1a' }}>官方网站</div>
+                  <div style={{ fontSize: '0.75rem', color: '#666' }}>www.crazy-repair.com</div>
                 </div>
-                <span style={{ color: '#07c160', fontSize: '0.875rem' }}>📋</span>
-              </div>
+                <span style={{ color: '#2563eb', fontSize: '0.875rem' }}>→</span>
+              </a>
 
+              {/* 抖音 */}
               <a href="https://v.douyin.com/NvUr5C82ZDM/" target="_blank" rel="noopener"
                 style={{
                   display: 'flex', alignItems: 'center', gap: '1rem', padding: '1rem',
@@ -234,6 +272,23 @@ export default function FloatingButtons() {
                 </div>
                 <span style={{ color: '#fe2c55', fontSize: '0.875rem' }}>→</span>
               </a>
+
+              {/* 到店地址 */}
+              <div style={{
+                display: 'flex', alignItems: 'center', gap: '1rem', padding: '1rem',
+                borderRadius: '0.75rem', border: '1px solid #eee8dc', width: '100%',
+                background: 'none', fontSize: 'inherit',
+              }}>
+                <div style={{
+                  width: '2.5rem', height: '2.5rem', borderRadius: '50%',
+                  backgroundColor: '#f59e0b', display: 'flex', alignItems: 'center',
+                  justifyContent: 'center', fontSize: '1.25rem', flexShrink: 0,
+                }}>📍</div>
+                <div style={{ textAlign: 'left', flex: 1 }}>
+                  <div style={{ fontWeight: 600, fontSize: '0.875rem', color: '#1a1a1a' }}>到店维修</div>
+                  <div style={{ fontSize: '0.75rem', color: '#666' }}>威海环翠区西门31号</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
