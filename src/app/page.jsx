@@ -2,17 +2,17 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { MessageCircle, Megaphone, Pin, FileText, Eye, Clock, Flame, ArrowRight, Monitor, Flower2, Package, BookOpen, Sparkles } from 'lucide-react'
+import { MessageCircle, Megaphone, Pin, Eye, Flame, Clock, MessageSquare, ArrowRight, TrendingUp, Sparkles, ChevronRight, PoundSterling } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useLanguage } from '@/lib/LanguageContext'
 
-const CAT_ICONS = {
-  announcements: <Megaphone size={20} className="inline-block" />,
-  random: <MessageCircle size={20} className="inline-block" />,
-  tech: <Monitor size={20} className="inline-block" />,
-  life: <Flower2 size={20} className="inline-block" />,
-  resources: <Package size={20} className="inline-block" />,
-  fiction: <BookOpen size={20} className="inline-block" />,
+const CAT_COLORS = {
+  announcements: { bg: '#fef3c7', text: '#b45309' },
+  random: { bg: '#dbeafe', text: '#2563eb' },
+  tech: { bg: '#e0e7ff', text: '#4338ca' },
+  life: { bg: '#fce7f3', text: '#db2777' },
+  resources: { bg: '#d1fae5', text: '#059669' },
+  fiction: { bg: '#f3e8ff', text: '#7c3aed' },
 }
 
 export default function Home() {
@@ -25,6 +25,7 @@ export default function Home() {
   const [totalPosts, setTotalPosts] = useState(0)
   const [totalViews, setTotalViews] = useState(0)
   const [totalUsers, setTotalUsers] = useState(0)
+  const [todayPosts, setTodayPosts] = useState(0)
   const supabase = createClient()
 
   useEffect(() => {
@@ -58,110 +59,151 @@ export default function Home() {
       setTotalViews((v || []).reduce((s, t) => s + (t.view_count || 0), 0))
       const { count: uc } = await supabase.from('profiles').select('*', { count: 'exact', head: true })
       setTotalUsers(uc || 0)
+      const { count: tc } = await supabase.from('threads').select('*', { count: 'exact', head: true }).gte('created_at', new Date(new Date().setHours(0,0,0,0)).toISOString())
+      setTodayPosts(tc || 0)
     }
     fetchData()
   }, [])
 
+  const getInitial = (p) => (p?.display_name || p?.username || '?')[0]
+
   return (
-    <div className="space-y-6 sm:space-y-8">
-      {/* ===== 站点头部（一排） ===== */}
-      <div className="flex items-center justify-between gap-4 py-4 sm:py-5 flex-wrap anim-fade-in">
-        <div className="flex items-center gap-3 sm:gap-5 text-sm flex-wrap">
-          <span className="text-sm text-[#aaa] tracking-wide whitespace-nowrap">{t('home.slogan')}</span>
-          <div className="flex items-center gap-3 sm:gap-4 text-xs text-[#999]">
-            <span><strong className="text-sm font-semibold text-[#1a1a1a]">{totalPosts}</strong> {t('home.posts')}</span>
-            <span className="text-[#ddd]">|</span>
-            <span><strong className="text-sm font-semibold text-[#1a1a1a]">{totalViews.toLocaleString()}</strong> {t('home.views')}</span>
-            <span className="text-[#ddd]">|</span>
-            <span><strong className="text-sm font-semibold text-[#1a1a1a]">{totalUsers}</strong> {t('home.members')}</span>
+    <div className="space-y-5">
+
+      {/* 统计栏 — 精简 */}
+      <div className="grid grid-cols-4 gap-2 sm:gap-3 anim-fade-in">
+        {[
+          { label: '帖子', value: totalPosts },
+          { label: '浏览', value: totalViews.toLocaleString() },
+          { label: '会员', value: totalUsers },
+          { label: '今日', value: todayPosts },
+        ].map((s, i) => (
+          <div key={i} className="bg-white border border-[#e8e2d8] rounded-xl px-3 py-2.5 sm:px-4 sm:py-3 text-center">
+            <div className="text-lg sm:text-xl font-bold text-[#2563eb]">{s.value}</div>
+            <div className="text-[10px] sm:text-xs text-[#999] mt-0.5">{s.label}</div>
           </div>
-        </div>
-        <Link href="/chat" className="btn-secondary text-xs whitespace-nowrap"><MessageCircle size={14} className="inline-block align-text-bottom" /> {t('home.chatroom')}</Link>
+        ))}
       </div>
 
-      {/* ===== 公告 ===== */}
+      {/* 公告栏 */}
       {announcements.length > 0 && (
-        <section className="anim-up">
-          <div className="flex items-center gap-2 mb-3">
-            <span className="text-xs font-semibold text-[#999] tracking-wide"><Megaphone size={14} className="inline-block align-text-bottom" /> 站务公告</span>
-            <span className="tag">置顶</span>
+        <div className="bg-[#fffbeb] border border-[#fde68a] rounded-xl overflow-hidden anim-fade-in">
+          <div className="flex items-center gap-2 px-4 py-2.5 border-b border-[#fde68a] bg-[#fef3c7]/50">
+            <Megaphone size={14} className="text-[#b45309]" />
+            <span className="text-xs font-semibold text-[#b45309]">公告</span>
           </div>
-          <div className="card divide-y divide-[#f5f5f5]">
-            {announcements.map((t, i) => (
-              <Link key={t.id} href={`/t/${t.id}`}
-                className={`flex items-center gap-2 px-4 py-3 hover:bg-[#fafafa] transition-colors ${i > 0 ? `anim-delay-${i}` : ''}`}>
-                <Pin size={14} className="text-[#b8860b] shrink-0 inline-block" />
-                <span className="text-sm font-medium text-[#1a1a1a] truncate">{t.title}</span>
-                <span className="ml-auto text-xs text-[#bbb]">{new Date(t.created_at).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })}</span>
-              </Link>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* ===== 版块 ===== */}
-      <section className="anim-up">
-        <h2 className="text-xs font-semibold text-[#bbb] uppercase tracking-widest mb-3">{t('board.title')}</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-          {categories.map((c, i) => (
-            <Link key={c.id} href={`/c/${c.slug}`}
-              className={`feature-card ${i > 0 ? `anim-delay-${i}` : ''}`}>
-              <div className="text-xl mb-2">{CAT_ICONS[c.slug] || c.icon || <FileText size={20} className="inline-block" />}</div>
-              <div className="font-semibold text-sm text-[#1a1a1a]">{c.name}</div>
-              <div className="text-xs text-[#aaa] mt-1 line-clamp-1 leading-relaxed">{c.description}</div>
+          {announcements.map((t, i) => (
+            <Link key={t.id} href={`/t/${t.id}`}
+              className="flex items-center gap-2 px-4 py-2.5 hover:bg-[#fffbeb] transition-colors border-b border-[#fef3c7] last:border-0">
+              <Pin size={12} className="text-[#b45309] shrink-0" />
+              <span className="text-sm text-[#1c1917] truncate flex-1">{t.title}</span>
+              <span className="text-[10px] text-[#bbb] shrink-0">{new Date(t.created_at).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })}</span>
             </Link>
           ))}
         </div>
-      </section>
+      )}
 
-      {/* ===== 帖子列表 ===== */}
+      {/* 分类导航 — 紧凑彩色标签 */}
+      <div className="flex flex-wrap gap-2 anim-fade-in">
+        {categories.map(c => {
+          const cc = CAT_COLORS[c.slug] || { bg: '#f3f1ed', text: '#666' }
+          return (
+            <Link key={c.id} href={`/c/${c.slug}`}
+              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium transition-all hover:scale-105"
+              style={{ backgroundColor: cc.bg, color: cc.text }}>
+              {c.name}
+            </Link>
+          )
+        })}
+        <Link href="/chat"
+          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium bg-[#f0f0f0] text-[#888] hover:bg-[#e8e8e8] transition-all">
+          💬 聊天室
+        </Link>
+      </div>
+
+      {/* 话题列表 */}
       <section className="anim-up">
-        <div className="flex items-center gap-2 mb-4">
+        <div className="flex items-center gap-2 mb-3">
           <button onClick={() => setActiveTab('recent')}
-            className={`px-5 py-2.5 rounded-xl text-base font-semibold transition-colors ${
-              activeTab === 'recent' ? 'bg-[#c23531] text-white shadow-md' : 'bg-[#f5f5f5] text-[#888] hover:text-[#1a1a1a] hover:bg-[#eee]'
-            }`}
-          ><Clock size={22} className="inline-block align-text-bottom text-white" /> {t('home.latest')}</button>
+            className={`px-4 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all ${
+              activeTab === 'recent' ? 'bg-[#2563eb] text-white shadow-sm' : 'bg-[#f3f1ed] text-[#888] hover:text-[#1c1917] hover:bg-[#e8e2d8]'
+            }`}>
+            <Clock size={15} className="inline-block align-text-bottom mr-1" />最新
+          </button>
           <button onClick={() => setActiveTab('hot')}
-            className={`px-5 py-2.5 rounded-xl text-base font-semibold transition-colors ${
-              activeTab === 'hot' ? 'bg-[#c23531] text-white shadow-md' : 'bg-[#f5f5f5] text-[#888] hover:text-[#1a1a1a] hover:bg-[#eee]'
-            }`}
-          ><Flame size={22} className="inline-block align-text-bottom text-white" /> {t('home.hot')}</button>
-          <Link href="/search" className="ml-auto text-xs text-[#bbb] hover:text-[#888] transition-colors">{t('nav.search')} <ArrowRight size={12} className="inline-block align-text-bottom" /></Link>
+            className={`px-4 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all ${
+              activeTab === 'hot' ? 'bg-[#2563eb] text-white shadow-sm' : 'bg-[#f3f1ed] text-[#888] hover:text-[#1c1917] hover:bg-[#e8e2d8]'
+            }`}>
+            <Flame size={15} className="inline-block align-text-bottom mr-1" />热门
+          </button>
+          <Link href="/new-thread" className="ml-auto btn-primary !px-3 !py-1.5 !text-xs">
+            <MessageSquare size={14} className="inline-block" /> 发帖
+          </Link>
         </div>
 
-        <div className="card divide-y divide-[#f5f5f5]">
+        <div className="card">
           {(activeTab === 'recent' ? recentThreads : hotThreads).length === 0 ? (
             <div className="py-12 text-center">
-              <div className="mb-2"><FileText size={28} className="inline-block text-[#ccc]" /></div>
-              <p className="text-[#bbb] text-sm">{t('home.no_posts')}</p>
-              <Link href="/new-thread" className="btn-primary mt-3">{t('home.first_post')}</Link>
+              <div className="text-3xl mb-2">📝</div>
+              <p className="text-sm text-[#bbb]">还没有帖子</p>
+              <Link href="/new-thread" className="btn-primary mt-3">发布第一篇帖子</Link>
             </div>
           ) : (
-            (activeTab === 'recent' ? recentThreads : hotThreads).map((t, i) => (
-              <Link key={t.id} href={`/t/${t.id}`}
-                className={`thread-item px-4 first:pt-3 last:pb-3 ${i > 0 ? `anim-delay-${Math.min(i, 5)}` : ''}`}>
-                <div className="flex items-start justify-between gap-3">
-                  <div className="min-w-0 flex-1">
-                    <h3 className="font-medium text-sm text-[#1a1a1a] truncate leading-snug">{t.title}</h3>
-                    <div className="flex items-center gap-2 mt-1 text-xs text-[#bbb]">
-                      <span className="text-[#888]">{t.profiles?.display_name || t.profiles?.username}</span>
-                      <span>·</span>
-                      <span>{t.categories?.name}</span>
-                      <span>·</span>
-                      <span>{new Date(t.created_at).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })}</span>
+            (activeTab === 'recent' ? recentThreads : hotThreads).map((t, i) => {
+              const cc = CAT_COLORS[t.categories?.slug] || { bg: '#f3f1ed', text: '#666' }
+              return (
+                <Link key={t.id} href={`/t/${t.id}`}
+                  className={`topic-item ${i > 0 ? `anim-delay-${Math.min(i, 5)}` : ''}`}>
+
+                  {/* 头像 — 这是核心视觉元素 */}
+                  <div className="avatar avatar-sm shrink-0 mt-0.5">
+                    {getInitial(t.profiles)}
+                  </div>
+
+                  {/* 内容区域 */}
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-sm font-semibold text-[#1c1917] truncate leading-snug">
+                      {t.title}
+                    </h3>
+                    <div className="flex items-center gap-2 mt-1 flex-wrap">
+                      {/* 分类标签 */}
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium"
+                        style={{ backgroundColor: cc.bg, color: cc.text }}>
+                        {t.categories?.name}
+                      </span>
+                      {/* 作者 */}
+                      <span className="text-[11px] text-[#999]">{t.profiles?.display_name || t.profiles?.username}</span>
+                      {/* 时间 */}
+                      <span className="text-[11px] text-[#bbb]">
+                        {(() => {
+                          const d = new Date(t.created_at)
+                          const now = new Date()
+                          const diff = now - d
+                          if (diff < 3600000) return Math.floor(diff/60000) + '分钟前'
+                          if (diff < 86400000) return Math.floor(diff/3600000) + '小时前'
+                          if (diff < 172800000) return '昨天'
+                          return d.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })
+                        })()}
+                      </span>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3 text-xs text-[#bbb] shrink-0 mt-0.5">
-                    <span><MessageCircle size={14} className="inline-block align-text-bottom" /> {t.reply_count || 0}</span>
-                    <span><Eye size={14} className="inline-block align-text-bottom" /> {t.view_count || 0}</span>
+
+                  {/* 回复数 */}
+                  <div className="flex flex-col items-center justify-center shrink-0 ml-2 min-w-[2.5rem]">
+                    <span className="text-sm font-bold text-[#888]">{t.reply_count || 0}</span>
+                    <span className="text-[9px] text-[#bbb]">回复</span>
                   </div>
-                </div>
-              </Link>
-            ))
+                </Link>
+              )
+            })
           )}
         </div>
       </section>
+
+      {/* 底部 */}
+      <div className="text-center py-4 anim-fade-in">
+        <p className="text-xs text-[#ccc] leading-relaxed">以文会友 · 以友辅仁</p>
+      </div>
     </div>
   )
 }

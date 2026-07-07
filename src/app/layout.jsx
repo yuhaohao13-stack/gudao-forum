@@ -25,14 +25,7 @@ export const metadata = {
     siteName: '古道论坛',
     type: 'website',
     locale: 'zh_CN',
-    images: [
-      {
-        url: 'https://www.gudaoforum.com/icons/icon-192.png',
-        width: 192,
-        height: 192,
-        alt: '古道论坛',
-      },
-    ],
+    images: [{ url: 'https://www.gudaoforum.com/icons/icon-192.png', width: 192, height: 192, alt: '古道论坛' }],
   },
   twitter: {
     card: 'summary_large_image',
@@ -47,54 +40,6 @@ export const metadata = {
 export const viewport = 'width=device-width, initial-scale=1, maximum-scale=1'
 
 export default function RootLayout({ children }) {
-  const websiteJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    name: '古道论坛',
-    alternateName: ['Gudao Forum', 'Gudao Community'],
-    url: 'https://www.gudaoforum.com',
-    description: '面向全球华人的国际中文社区与在线聊天室。以文会友，以友辅仁，弘扬中华文化，畅聊生活科技。免费注册，即刻加入全球华人社区。',
-    inLanguage: 'zh-CN',
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: {
-        '@type': 'EntryPoint',
-        urlTemplate: 'https://www.gudaoforum.com/search?q={search_term_string}',
-      },
-      'query-input': 'required name=search_term_string',
-    },
-  }
-
-  const organizationJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Organization',
-    name: '古道论坛',
-    url: 'https://www.gudaoforum.com',
-    description: '面向全球华人的国际中文社区。论坛讨论、在线聊天、文化交流。',
-    foundingDate: '2026',
-    areaServed: { '@type': 'Continent', name: 'Asia' },
-    inLanguage: 'zh-CN',
-    isAccessibleForFree: true,
-    hasPart: [
-      {
-        '@type': 'WebApplication',
-        name: '古道论坛聊天室',
-        applicationCategory: 'CommunicationApplication',
-        operatingSystem: 'All',
-      },
-    ],
-  }
-
-  const breadcrumbJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      { '@type': 'ListItem', position: 1, name: '古道论坛', item: 'https://www.gudaoforum.com' },
-      { '@type': 'ListItem', position: 2, name: '聊天室', item: 'https://www.gudaoforum.com/chat' },
-      { '@type': 'ListItem', position: 3, name: '论坛板块', item: 'https://www.gudaoforum.com/c' },
-    ],
-  }
-
   return (
     <html lang="zh-CN">
       <head>
@@ -102,31 +47,19 @@ export default function RootLayout({ children }) {
         <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png" />
         <link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192.png" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="theme-color" content="#fafaf9" />
+        <meta name="theme-color" content="#2563eb" />
         <link rel="sitemap" type="application/xml" title="古道论坛Sitemap" href="/sitemap.xml" />
         <meta name="baidu-site-verification" content="codeva-ivcpKCSsQj" />
-        <meta name="build-version" content="v3-refined" />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
-        />
+        <meta name="build-version" content="v4-modern" />
       </head>
-      <body className="min-h-screen flex flex-col bg-[#fafaf9] text-[#1a1a1a] overflow-x-hidden">
+      <body className="min-h-screen flex flex-col bg-[#fafaf9] text-[#1c1917]">
         <ErrorBoundary>
           <DonateOverlay />
           <FloatingButtons />
           <LanguageProvider>
           <AuthProvider>
             <Header />
-            <main className="flex-1 max-w-4xl mx-auto w-full px-4 py-5 sm:py-6">
+            <main className="flex-1 max-w-5xl mx-auto w-full px-4 sm:px-6 py-4 sm:py-6">
               {children}
             </main>
             <Footer />

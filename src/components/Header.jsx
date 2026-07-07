@@ -2,7 +2,7 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
-import { Landmark, Search, MessageCircle, Pencil, X, Globe, LogOut } from 'lucide-react'
+import { Landmark, Search, MessageCircle, Pencil, X, LogOut, Menu } from 'lucide-react'
 import { useLanguage } from '@/lib/LanguageContext'
 import { useAuth } from './AuthProvider'
 import { createClient } from '@/lib/supabase/client'
@@ -13,7 +13,7 @@ export default function Header() {
   const { user, profile, loading } = useAuth()
   const { lang, toggleLang, t } = useLanguage()
   const [search, setSearch] = useState('')
-  const [showSearch, setShowSearch] = useState(false)
+  const [showMobileMenu, setShowMobileMenu] = useState(false)
   const supabase = createClient()
   const router = useRouter()
   const pathname = usePathname()
@@ -30,134 +30,101 @@ export default function Header() {
     e.preventDefault()
     if (search.trim()) {
       router.push(`/search?q=${encodeURIComponent(search.trim())}`)
-      setShowSearch(false)
+      setShowMobileMenu(false)
     }
   }
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-[#f0f0f0]">
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-[#e8e2d8]">
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
-        {/* 顶部行：Logo居中 + 语言切换最右 */}
-        <div className="flex items-center h-20 sm:h-24 relative">
-          <Link href="/" className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2 sm:gap-3 group whitespace-nowrap">
-            <Landmark size={36} className="inline-block" />
-            <span className="text-[2rem] sm:text-[2.25rem] font-bold font-serif tracking-wide text-[#1a1a1a]">古道论坛</span>
+        <div className="flex items-center h-14 sm:h-16 gap-2">
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-2 shrink-0">
+            <div className="w-8 h-8 rounded-lg bg-[#2563eb] flex items-center justify-center text-white shadow-sm">
+              <Landmark size={18} />
+            </div>
+            <span className="text-lg sm:text-xl font-bold tracking-tight text-[#1c1917]">古道论坛</span>
           </Link>
-          <div className="flex-1"></div>
-          <button onClick={toggleLang}
-            className="text-xs sm:text-sm font-medium px-2 sm:px-3 py-1.5 rounded-lg border border-[#e0ddd5] text-[#888] hover:text-[#1a1a1a] hover:border-[#ccc] transition-colors whitespace-nowrap"
-          >
-            <Globe size={14} className="inline-block align-text-bottom mr-1" />{lang === 'zh' ? 'English' : '中文'}
-          </button>
-        </div>
 
-        {/* 空白间隔行（内联style确保生效） */}
-        <div style={{height: '24px'}} className="sm:hidden"></div>
-        <div style={{height: '40px'}} className="hidden sm:block"></div>
-
-        {/* 操作行：导航 + 打赏（左） | 会员/私信/发帖/搜索（右） */}
-        <div className="flex items-center justify-between pb-3 gap-1 overflow-x-auto scrollbar-none">
-          {/* 左：导航 + 打赏 */}
-          <div className="flex items-center gap-2 shrink-0">
-            <Link href="/"
-              className={`whitespace-nowrap text-xs sm:text-sm font-medium px-3 py-1.5 rounded-lg transition-colors ${
-                !isChatPage ? 'bg-[#f5f5f5] text-[#1a1a1a]' : 'text-[#999] hover:text-[#1a1a1a] hover:bg-[#f5f5f5]'
-              }`}
-            >{t('nav.home')}</Link>
-            <Link href="/chat"
-              className={`whitespace-nowrap text-xs sm:text-sm font-medium px-3 py-1.5 rounded-lg transition-colors ${
-                isChatPage ? 'bg-[#f5f5f5] text-[#1a1a1a]' : 'text-[#999] hover:text-[#1a1a1a] hover:bg-[#f5f5f5]'
-              }`}
-            >{t('nav.chat')}</Link>
-            <a href="https://v.douyin.com/NvUr5C82ZDM/" target="_blank" rel="noopener"
-              className="flex items-center gap-1 whitespace-nowrap text-xs sm:text-sm font-bold px-2 sm:px-3 py-1.5 rounded-lg bg-gradient-to-r from-[#00f2fe] to-[#fe2c55] text-white hover:opacity-90 transition-all shadow-sm"
-              title="浩哥维修实录 @Crazy维修 抖音">
-              <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" className="shrink-0">
-                <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.88 2.89 2.89 0 0 1-2.88-2.88 2.89 2.89 0 0 1 2.88-2.88c.35 0 .69.06 1.01.18V8.48a6.34 6.34 0 0 0-1.01-.08C5.9 8.4 3 11.3 3 14.86c0 3.56 2.9 6.46 6.46 6.46 3.56 0 6.46-2.9 6.46-6.46V9.33a8.28 8.28 0 0 0 4.67 1.4v-3.4a4.84 4.84 0 0 1-1-.64z"/>
-              </svg>
-              <span>浩哥维修实录 → 抖音</span>
-            </a><DonateButton className="whitespace-nowrap text-sm font-semibold px-3 py-1.5 rounded-lg text-[#c23531] hover:bg-[#fef2f0] transition-colors" />
-            <a href="https://www.crazy-repair.com" target="_blank" rel="noopener" className="whitespace-nowrap text-xs sm:text-sm font-semibold px-2 sm:px-3 py-1.5 rounded-lg text-blue-600 hover:bg-blue-50 transition-colors">专业维修服务-Crazy维修</a>
+          {/* 导航链接 - 桌面 */}
+          <div className="hidden sm:flex items-center gap-1 ml-4">
+            <Link href="/" className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${!isChatPage ? 'bg-[#eff6ff] text-[#2563eb]' : 'text-[#666] hover:text-[#1c1917] hover:bg-[#f8f7f5]'}`}>首页</Link>
+            <Link href="/chat" className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${isChatPage ? 'bg-[#eff6ff] text-[#2563eb]' : 'text-[#666] hover:text-[#1c1917] hover:bg-[#f8f7f5]'}`}>聊天室</Link>
           </div>
 
-          {/* 右：用户操作 */}
-          <div className="flex items-center gap-1 sm:gap-2 shrink-0 ml-auto">
-            {/* 桌面搜索框 */}
-            <form onSubmit={handleSearch} className="hidden sm:block">
-              <div className="relative">
-                <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#ccc] pointer-events-none" />
-                <input
-                  type="text"
-                  value={search}
-                  onChange={e => setSearch(e.target.value)}
-                  placeholder={t('nav.search_placeholder')}
-                  className="w-36 lg:w-44 bg-[#f8f8f8] border border-transparent rounded-lg pl-8 pr-3 py-1.5 text-sm text-[#1a1a1a] placeholder-[#bbb] outline-none transition-all focus:border-[#e5e5e5] focus:bg-white focus:w-48"
-                />
-              </div>
-            </form>
+          <div className="flex-1" />
 
+          {/* 搜索 - 桌面 */}
+          <form onSubmit={handleSearch} className="hidden sm:block">
+            <div className="relative">
+              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#ccc] pointer-events-none" />
+              <input type="text" value={search} onChange={e => setSearch(e.target.value)}
+                placeholder="搜索帖子..."
+                className="w-32 lg:w-40 bg-[#f8f7f5] border border-[#e8e2d8] rounded-md pl-8 pr-3 py-1.5 text-sm text-[#1c1917] placeholder-[#bbb] outline-none transition-all focus:border-[#2563eb] focus:bg-white focus:w-44" />
+            </div>
+          </form>
+
+          {/* 用户操作 */}
+          <div className="flex items-center gap-1">
             {loading ? (
-              <div className="w-4 h-4 border-[1.5px] border-[#ddd] border-t-[#1a1a1a] rounded-full animate-spin" />
+              <div className="w-4 h-4 border-2 border-[#ddd] border-t-[#2563eb] rounded-full animate-spin mx-2" />
             ) : user ? (
-              <div className="flex items-center gap-1 sm:gap-1.5">
-                {/* 会员名：桌面全显示，移动端也全显示 */}
-                <Link href={`/profile/${user.id}`} className="flex items-center gap-1 btn-ghost !px-1.5 sm:!px-2 !py-1">
-                  <span className="w-6 sm:w-7 h-6 sm:h-7 rounded-full bg-[#c23531] flex items-center justify-center text-[10px] sm:text-xs text-white font-bold shadow-sm">
+              <>
+                <Link href={`/profile/${user.id}`} className="flex items-center gap-1.5 px-2 py-1 rounded-md hover:bg-[#f8f7f5] transition-colors">
+                  <span className="w-7 h-7 rounded-full bg-[#2563eb] flex items-center justify-center text-xs text-white font-bold shadow-sm">
                     {(profile?.display_name || profile?.username || '?')[0]}
                   </span>
-                  <span className="hidden sm:inline text-[10px] sm:text-xs text-[#999] font-normal whitespace-nowrap">{t('nav.profile')}：</span>
-                  <span className="text-[10px] sm:text-sm font-medium text-[#555] max-w-[5em] truncate">
-                    {profile?.display_name || profile?.username || ''}
-                  </span>
+                  <span className="hidden sm:inline text-sm font-medium text-[#555] max-w-[4em] truncate">{profile?.display_name || profile?.username || ''}</span>
                 </Link>
-                {/* 私信：桌面显示完整，移动端仅图标 */}
-                <Link href="/messages" className="btn-ghost !px-1.5 sm:!px-2 !py-1.5 flex items-center gap-0.5 sm:gap-1">
-                  <span className="hidden sm:inline text-xs text-[#999]">{t('nav.messages')}</span>
-                  <MessageCircle size={16} className="inline-block align-text-bottom" />
-                  {UnreadBadge && <UnreadBadge />}
+                <Link href="/messages" className="p-2 rounded-md text-[#999] hover:text-[#2563eb] hover:bg-[#f8f7f5] transition-colors relative">
+                  <MessageCircle size={18} /><UnreadBadge />
                 </Link>
-                <Link href="/new-thread" className="btn-primary !px-2 sm:!px-3 !py-1.5 !text-xs whitespace-nowrap">
-                  <Pencil size={16} className="inline-block align-text-bottom" /> <span className="hidden sm:inline">{t('nav.new_thread')}</span>
+                <Link href="/new-thread" className="btn-primary !px-3 !py-1.5 !text-xs">
+                  <Pencil size={14} /> <span className="hidden sm:inline">发帖</span>
                 </Link>
-                {isAdmin && (
-                  <Link href="/admin" className="btn-ghost !text-xs">{t('nav.admin')}</Link>
-                )}
-                <button onClick={handleLogout} className="btn-ghost !px-1.5 !py-1.5 text-[#999] hover:text-[#c23531]">
-                  <span className="hidden sm:inline !text-xs">{t('nav.logout')}</span>
-                  <LogOut size={16} className="inline-block sm:hidden" />
-                </button>
-              </div>
+                {isAdmin && <Link href="/admin" className="px-2 py-1 rounded-md text-xs text-[#999] hover:text-[#2563eb] hover:bg-[#f8f7f5] transition-colors">管理</Link>}
+                <button onClick={handleLogout} className="p-2 rounded-md text-[#999] hover:text-[#2563eb] hover:bg-[#f8f7f5] transition-colors"><LogOut size={16} /></button>
+              </>
             ) : (
-              <div className="flex items-center gap-2">
-                <Link href="/login" className="text-xs sm:text-sm text-[#888] hover:text-[#1a1a1a] transition-colors">{t('nav.login')}</Link>
-                <Link href="/register" className="btn-primary !px-2 sm:!px-3 !py-1.5 !text-xs">{t('nav.register')}</Link>
+              <div className="flex items-center gap-1.5">
+                <Link href="/login" className="text-sm text-[#666] hover:text-[#1c1917] transition-colors px-2 py-1">登录</Link>
+                <Link href="/register" className="btn-primary !px-3 !py-1.5 !text-xs">注册</Link>
               </div>
             )}
 
-            {/* 移动端搜索开关 */}
-            <button
-              onClick={() => setShowSearch(!showSearch)}
-              className="sm:hidden btn-ghost !px-2 !py-1.5 text-[#999]"
-            >
-              {showSearch ? <X size={16} /> : <Search size={16} />}
+            {/* 语言切换 */}
+            <button onClick={() => toggleLang()} className="hidden sm:flex text-xs px-2 py-1.5 rounded-md border border-[#e8e2d8] text-[#888] hover:text-[#1c1917] hover:border-[#ccc] transition-colors items-center">
+              {lang === 'zh' ? 'EN' : '中文'}
+            </button>
+
+            {/* 移动端菜单 */}
+            <button onClick={() => setShowMobileMenu(!showMobileMenu)}
+              className="sm:hidden p-2 rounded-md text-[#999] hover:text-[#2563eb] transition-colors">
+              {showMobileMenu ? <X size={18} /> : <Menu size={18} />}
             </button>
           </div>
         </div>
 
-        {/* 移动端搜索弹出框 */}
-        {showSearch && (
-          <div className="sm:hidden pb-3 anim-fade-in">
-            <form onSubmit={handleSearch} className="relative">
-              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#ccc] pointer-events-none" />
-              <input
-                type="text"
-                value={search}
-                onChange={e => setSearch(e.target.value)}
-                placeholder={t('nav.search_placeholder')}
-                autoFocus
-                className="w-full bg-[#f8f8f8] border border-[#f0f0f0] rounded-lg pl-9 pr-3 py-2 text-sm outline-none focus:border-[#e0e0e0] focus:bg-white"
-              />
+        {/* 移动端菜单 */}
+        {showMobileMenu && (
+          <div className="sm:hidden pb-3 space-y-1 anim-fade-in border-t border-[#f5f4f0] pt-2 mt-0">
+            <form onSubmit={handleSearch} className="relative mb-2">
+              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#ccc]" />
+              <input type="text" value={search} onChange={e => setSearch(e.target.value)}
+                placeholder="搜索帖子..." autoFocus
+                className="w-full bg-[#f8f7f5] border border-[#e8e2d8] rounded-md pl-9 pr-3 py-2 text-sm outline-none focus:border-[#2563eb]" />
             </form>
+            <Link href="/" onClick={() => setShowMobileMenu(false)}
+              className="block px-3 py-2 rounded-md text-sm font-medium bg-[#eff6ff] text-[#2563eb]">首页</Link>
+            <Link href="/chat" onClick={() => setShowMobileMenu(false)}
+              className="block px-3 py-2 rounded-md text-sm text-[#666] hover:bg-[#f8f7f5]">聊天室</Link>
+            <Link href="/new-thread" onClick={() => setShowMobileMenu(false)}
+              className="block px-3 py-2 rounded-md text-sm text-[#666] hover:bg-[#f8f7f5]">发帖</Link>
+            <DonateButton className="w-full text-left px-3 py-2 rounded-md text-sm text-[#666] hover:bg-[#f8f7f5]" />
+            <button onClick={() => { toggleLang(); setShowMobileMenu(false); }}
+              className="w-full text-left px-3 py-2 rounded-md text-sm text-[#666] hover:bg-[#f8f7f5]">
+              {lang === 'zh' ? 'English' : '中文'}
+            </button>
           </div>
         )}
       </div>
