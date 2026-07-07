@@ -71,58 +71,48 @@
 
   .thread-item:hover { background: #fafaf8; }
 
-  /* 主按钮 — 红色（品牌色）圆滑立体 */
+  /* 主按钮 — 红色（品牌色）圆角扁平 */
   .btn-primary {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.375rem;
-    background: linear-gradient(180deg, #d4403c 0%, #a82d29 100%);
+    background: #c23531;
     color: #fff;
     font-weight: 600;
     font-size: 0.8125rem;
     padding: 0.5rem 1.25rem;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(194,53,49,0.2), 0 1px 3px rgba(0,0,0,0.08);
-    transition: all 0.2s ease;
+    transition: all 0.15s ease;
     cursor: pointer;
     border: none;
     line-height: 1.4;
   }
 
-  .btn-primary:hover {
-    background: linear-gradient(180deg, #e04e4a 0%, #b8312d 100%);
-    box-shadow: 0 6px 14px rgba(194,53,49,0.28), 0 2px 4px rgba(0,0,0,0.1);
-    transform: translateY(-1px);
-  }
-  .btn-primary:active {
-    transform: translateY(1px);
-    box-shadow: 0 2px 4px rgba(194,53,49,0.2);
-  }
+  .btn-primary:hover { background: #d4403c; }
+  .btn-primary:active { opacity: 0.85; }
 
-  /* 次要按钮 — 圆滑立体 */
+  /* 次要按钮 — 圆角扁平 */
   .btn-secondary {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.375rem;
-    background: #fff;
+    background: transparent;
     color: #555;
     font-weight: 500;
     font-size: 0.8125rem;
     padding: 0.5rem 1.25rem;
     border-radius: 10px;
-    border: 1px solid #d5d0c8;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.04);
-    transition: all 0.2s ease;
+    border: 1px solid #e0dcd4;
+    transition: all 0.15s ease;
     cursor: pointer;
     line-height: 1.4;
   }
 
-  .btn-secondary:hover { border-color: #c23531; color: #c23531; background: rgba(194,53,49,0.04); box-shadow: 0 4px 10px rgba(194,53,49,0.1); transform: translateY(-1px); }
-  .btn-secondary:active { transform: translateY(1px); box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+  .btn-secondary:hover { border-color: #c23531; color: #c23531; background: rgba(194,53,49,0.04); }
 
-  /* 幽灵按钮 — 圆滑立体 */
+  /* 幽灵按钮 — 圆角扁平 */
   .btn-ghost {
     display: inline-flex;
     align-items: center;
@@ -138,8 +128,7 @@
     line-height: 1.4;
   }
 
-  .btn-ghost:hover { color: #c23531; background: rgba(194,53,49,0.06); transform: translateY(-1px); }
-  .btn-ghost:active { transform: translateY(1px); }
+  .btn-ghost:hover { color: #c23531; background: rgba(194,53,49,0.05); }
 
   /* 输入框 */
   .input {
