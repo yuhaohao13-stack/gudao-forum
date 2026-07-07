@@ -2,25 +2,17 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { MessageCircle, Clock, Flame, Plus, ArrowRight, Pin, FileText, Monitor, Flower2, Package, BookOpen } from 'lucide-react'
+import { MessageCircle, Clock, Plus, Pin, FileText, Users, Eye } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useLanguage } from '@/lib/LanguageContext'
 
-const CAT_ICONS = {
-  announcements: <MegaphoneIcon />,
-  random: <MessageCircle size={16} />,
-  tech: <Monitor size={16} />,
-  life: <Flower2 size={16} />,
-  resources: <Package size={16} />,
-  fiction: <BookOpen size={16} />,
-}
-
-function MegaphoneIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-    </svg>
-  )
+const CAT_COLORS = {
+  announcements: { bg: '#f1f5f9', text: '#475569' },
+  random: { bg: '#f0f9ff', text: '#0369a1' },
+  tech: { bg: '#f5f3ff', text: '#6d28d9' },
+  life: { bg: '#f0fdf4', text: '#15803d' },
+  resources: { bg: '#fefce8', text: '#a16207' },
+  fiction: { bg: '#fdf2f8', text: '#be185d' },
 }
 
 function formatTime(dateStr) {
@@ -45,10 +37,9 @@ function formatTime(dateStr) {
 export default function Home() {
   const { t } = useLanguage()
   const [categories, setCategories] = useState([])
-  const [announcements, setAnnouncements] = useState([])
   const [threads, setThreads] = useState([])
-  const [activeTab, setActiveTab] = useState('latest')
   const [activeCategory, setActiveCategory] = useState('all')
+  const [activeTab, setActiveTab] = useState('latest')
   const [stats, setStats] = useState({ posts: 0, views: 0, members: 0 })
   const [loading, setLoading] = useState(true)
   const supabase = createClient()
@@ -57,7 +48,6 @@ export default function Home() {
     const fetchData = async () => {
       setLoading(true)
 
-      // Categories
       const { data: cats } = await supabase.from('categories').select('*').order('sort_order')
       const sorted = cats || []
       const annIdx = sorted.findIndex(c => c.slug === 'announcements')
@@ -67,20 +57,9 @@ export default function Home() {
       }
       setCategories(sorted)
 
-      // Announcements
       const annCat = sorted.find(c => c.slug === 'announcements')
-      if (annCat) {
-        const { data: a } = await supabase
-          .from('threads')
-          .select('*, profiles(username, display_name)')
-          .eq('category_id', annCat.id)
-          .order('created_at', { ascending: false })
-          .limit(5)
-        setAnnouncements(a || [])
-      }
-
-      // Recent threads (announcements excluded)
       const aid = annCat?.id
+
       let rq = supabase
         .from('threads')
         .select('*, profiles(username, display_name), categories(name, slug)')
@@ -91,7 +70,6 @@ export default function Home() {
         .limit(20)
       setThreads(recent || [])
 
-      // Stats
       const { count: pc } = await supabase.from('threads').select('*', { count: 'exact', head: true })
       const { data: v } = await supabase.from('threads').select('view_count')
       const { count: uc } = await supabase.from('profiles').select('*', { count: 'exact', head: true })
@@ -106,7 +84,7 @@ export default function Home() {
     fetchData()
   }, [])
 
-  const filteredThreads = threads.filter((t) => {
+  const filteredThreads = threads.filter(t => {
     if (activeCategory !== 'all' && t.categories?.slug !== activeCategory) return false
     return true
   })
@@ -130,73 +108,68 @@ export default function Home() {
     return name[0]
   }
 
+  const getBadgeColor = (slug) => CAT_COLORS[slug] || { bg: '#f1f5f9', text: '#64748b' }
+
   return (
-    <div className="space-y-6">
-      {/* ===== Header Area: Title + Stats Bar ===== */}
+    <div className="space-y-5">
+      {/* Stats Bar */}
       <div className="anim-fade-in">
-        <div className="flex items-center justify-between gap-4 mb-3">
+        <div className="flex items-center justify-between gap-4 mb-4">
           <div>
-            <h1 className="text-xl font-bold text-slate-800">古道论坛</h1>
-            <p className="text-xs text-slate-400 mt-0.5">{t('home.slogan')}</p>
+            <h1 className="text-xl font-bold text-[#1e293b]">古道论坛</h1>
+            <p className="text-xs text-[#64748b] mt-0.5">{t('home.slogan')}</p>
           </div>
           <Link
             href="/new-thread"
-            className="btn-primary !px-4 !py-2 text-sm"
+            className="btn-primary"
           >
-            <Plus size={16} />
+            <Plus size={15} />
             发帖
           </Link>
         </div>
-        {/* Stats bar */}
-        <div className="flex items-center gap-4 text-xs text-slate-400">
+
+        <div className="flex items-center gap-4 text-xs text-[#64748b]">
           <div className="flex items-center gap-1.5">
             <FileText size={13} />
             <span className="stat-num">{stats.posts.toLocaleString()}</span>
             <span>帖子</span>
           </div>
-          <span className="text-slate-200">|</span>
+          <span className="text-[#cbd5e1]">|</span>
           <div className="flex items-center gap-1.5">
-            <MessageCircle size={13} />
+            <Eye size={13} />
             <span className="stat-num">{stats.views.toLocaleString()}</span>
             <span>浏览</span>
           </div>
-          <span className="text-slate-200">|</span>
+          <span className="text-[#cbd5e1]">|</span>
           <div className="flex items-center gap-1.5">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-              <circle cx="9" cy="7" r="4" />
-              <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-              <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-            </svg>
+            <Users size={13} />
             <span className="stat-num">{stats.members.toLocaleString()}</span>
             <span>会员</span>
           </div>
         </div>
       </div>
 
-      {/* ===== Announcements ===== */}
-      {announcements.length > 0 && (
+      {/* Announcements */}
+      {threads.filter(t => t.is_pinned).length > 0 && (
         <section className="anim-up">
-          <div className="flex items-center gap-2 mb-2.5">
-            <span className="text-xs font-semibold text-slate-500 tracking-wide uppercase flex items-center gap-1">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-              </svg>
-              公告
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-xs font-semibold text-[#64748b] tracking-wide uppercase flex items-center gap-1">
+              <Pin size={12} />
+              置顶
             </span>
           </div>
           <div className="card overflow-hidden">
-            {announcements.map((t, i) => (
+            {threads.filter(t => t.is_pinned).map((t, i) => (
               <Link
                 key={t.id}
                 href={`/t/${t.id}`}
-                className={`flex items-center gap-2.5 px-4 py-2.5 hover:bg-slate-50 transition-colors ${
-                  i > 0 ? 'border-t border-slate-100' : ''
+                className={`flex items-center gap-2.5 px-4 py-2.5 hover:bg-[#f8fafc] transition-colors ${
+                  i > 0 ? 'border-t border-[#e2e8f0]' : ''
                 }`}
               >
-                <Pin size={12} className="text-slate-400 shrink-0" />
-                <span className="text-sm text-slate-700 truncate">{t.title}</span>
-                <span className="ml-auto text-xs text-slate-400 shrink-0">
+                <Pin size={12} className="text-[#94a3b8] shrink-0" />
+                <span className="text-sm text-[#1e293b] truncate">{t.title}</span>
+                <span className="ml-auto text-xs text-[#94a3b8] shrink-0">
                   {new Date(t.created_at).toLocaleDateString('zh-CN', {
                     month: 'short',
                     day: 'numeric',
@@ -208,7 +181,7 @@ export default function Home() {
         </section>
       )}
 
-      {/* ===== Category Pills ===== */}
+      {/* Category Pills */}
       <section className="anim-up">
         <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
           <button
@@ -218,8 +191,8 @@ export default function Home() {
             全部
           </button>
           {categories
-            .filter((c) => c.slug !== 'announcements')
-            .map((c) => (
+            .filter(c => c.slug !== 'announcements')
+            .map(c => (
               <button
                 key={c.id}
                 onClick={() => {
@@ -228,24 +201,22 @@ export default function Home() {
                 }}
                 className={`pill ${activeCategory === c.slug ? 'pill-active' : ''}`}
               >
-                {CAT_ICONS[c.slug] || <FileText size={14} />}
                 {c.name}
               </button>
             ))}
         </div>
       </section>
 
-      {/* ===== Tabs + Topic List ===== */}
+      {/* Tab + Topic List */}
       <section className="anim-up">
-        {/* Tabs */}
         <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-1 bg-slate-50 rounded-lg p-0.5">
+          <div className="flex items-center gap-1 bg-[#f8fafc] rounded-lg p-0.5">
             <button
               onClick={() => setActiveTab('latest')}
               className={`flex items-center gap-1.5 px-3.5 py-1.5 text-sm font-medium rounded-md transition-all ${
                 activeTab === 'latest'
-                  ? 'bg-white text-slate-800 shadow-sm'
-                  : 'text-slate-400 hover:text-slate-600'
+                  ? 'bg-white text-[#1e293b] shadow-sm'
+                  : 'text-[#94a3b8] hover:text-[#475569]'
               }`}
             >
               <Clock size={14} />
@@ -255,30 +226,30 @@ export default function Home() {
               onClick={() => setActiveTab('hot')}
               className={`flex items-center gap-1.5 px-3.5 py-1.5 text-sm font-medium rounded-md transition-all ${
                 activeTab === 'hot'
-                  ? 'bg-white text-slate-800 shadow-sm'
-                  : 'text-slate-400 hover:text-slate-600'
+                  ? 'bg-white text-[#1e293b] shadow-sm'
+                  : 'text-[#94a3b8] hover:text-[#475569]'
               }`}
             >
-              <Flame size={14} />
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" />
+              </svg>
               热门
             </button>
           </div>
           <Link
             href="/search"
-            className="text-xs text-slate-400 hover:text-slate-600 transition-colors flex items-center gap-0.5"
+            className="text-xs text-[#94a3b8] hover:text-[#475569] transition-colors"
           >
-            搜索
-            <ArrowRight size={12} />
+            搜索 →
           </Link>
         </div>
 
-        {/* Thread list */}
-        <div className="card overflow-hidden divide-y divide-slate-100">
+        <div className="card overflow-hidden divide-y divide-[#e2e8f0]">
           {loading ? (
             <div className="p-4 space-y-4">
-              {[1, 2, 3, 4, 5].map((n) => (
+              {[1, 2, 3, 4, 5].map(n => (
                 <div key={n} className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full skeleton" />
+                  <div className="w-9 h-9 rounded-full skeleton" />
                   <div className="flex-1 space-y-1.5">
                     <div className="h-4 w-3/4 skeleton" />
                     <div className="h-3 w-1/2 skeleton" />
@@ -289,59 +260,64 @@ export default function Home() {
             </div>
           ) : sortedThreads.length === 0 ? (
             <div className="py-12 text-center">
-              <FileText size={24} className="mx-auto text-slate-300 mb-2" />
-              <p className="text-sm text-slate-400">暂无帖子</p>
+              <FileText size={24} className="mx-auto text-[#cbd5e1] mb-2" />
+              <p className="text-sm text-[#94a3b8]">暂无帖子</p>
               <Link href="/new-thread" className="btn-primary mt-3">
                 发布第一篇帖子
               </Link>
             </div>
           ) : (
-            sortedThreads.map((t, i) => (
-              <Link
-                key={t.id}
-                href={`/t/${t.id}`}
-                className="thread-item flex items-center gap-3"
-              >
-                {/* Avatar */}
-                <div className="avatar-placeholder">
-                  {getAvatarLetter(t)}
-                </div>
-
-                {/* Content */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    {t.is_pinned && <Pin size={12} className="text-slate-400 shrink-0" />}
-                    <h3 className="text-sm font-medium text-slate-800 truncate leading-snug">
-                      {t.title}
-                    </h3>
-                    {t.categories?.name && (
-                      <span className="badge shrink-0">{t.categories.name}</span>
-                    )}
+            sortedThreads.map(t => {
+              const catSlug = t.categories?.slug
+              const badgeColor = getBadgeColor(catSlug)
+              return (
+                <Link
+                  key={t.id}
+                  href={`/t/${t.id}`}
+                  className="topic-row"
+                >
+                  <div className="avatar">
+                    {getAvatarLetter(t)}
                   </div>
-                  <div className="flex items-center gap-2 mt-1">
-                    <span className="text-xs text-slate-400">
-                      {t.profiles?.display_name || t.profiles?.username || '匿名'}
-                    </span>
-                    <span className="text-slate-200">·</span>
-                    <span className="text-xs text-slate-400">
-                      {formatTime(t.created_at)}
-                    </span>
-                  </div>
-                </div>
 
-                {/* Reply count */}
-                <div className="flex items-center gap-1.5 shrink-0 text-xs text-slate-400">
-                  <MessageCircle size={13} />
-                  <span className="font-medium text-slate-500">{t.reply_count || 0}</span>
-                </div>
-              </Link>
-            ))
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      {t.is_pinned && <Pin size={12} className="text-[#94a3b8] shrink-0" />}
+                      <h3 className="text-sm font-medium text-[#1e293b] truncate leading-snug">
+                        {t.title}
+                      </h3>
+                      {t.categories?.name && (
+                        <span
+                          className="badge shrink-0"
+                          style={{ background: badgeColor.bg, color: badgeColor.text }}
+                        >
+                          {t.categories.name}
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="text-xs text-[#64748b]">
+                        {t.profiles?.display_name || t.profiles?.username || '匿名'}
+                      </span>
+                      <span className="text-[#cbd5e1]">·</span>
+                      <span className="text-xs text-[#64748b]">
+                        {formatTime(t.created_at)}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-1.5 shrink-0 text-xs text-[#64748b]">
+                    <MessageCircle size={13} />
+                    <span className="font-medium text-[#475569]">{t.reply_count || 0}</span>
+                  </div>
+                </Link>
+              )
+            })
           )}
         </div>
 
-        {/* Bottom tagline */}
         <div className="text-center mt-6">
-          <p className="text-xs text-slate-300 italic">{tagline}</p>
+          <p className="text-xs text-[#cbd5e1] italic">{tagline}</p>
         </div>
       </section>
     </div>

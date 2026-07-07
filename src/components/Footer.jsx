@@ -1,41 +1,22 @@
 'use client'
+
 import Link from 'next/link'
-import { useLanguage } from '@/lib/LanguageContext'
 
 export default function Footer() {
-  const { t } = useLanguage()
-
   return (
-    <footer className="mt-auto border-t border-slate-100">
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-          {/* Brand */}
+    <footer className="mt-auto py-10">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6">
+        <div className="border-t border-[#e2e8f0] pt-8 flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="text-center sm:text-left">
-            <div className="flex items-center justify-center sm:justify-start gap-2 mb-1">
-              <div className="w-5 h-5 rounded bg-slate-700 flex items-center justify-center">
-                <span className="text-white text-[8px] font-bold">古</span>
-              </div>
-              <span className="text-sm font-semibold text-slate-600">古道论坛</span>
-            </div>
-            <p className="text-xs text-slate-400">{t('footer.slogan')}</p>
+            <p className="text-sm font-semibold text-[#475569]">古道论坛</p>
+            <p className="text-xs text-[#94a3b8] mt-1">以文会友 · 以友辅仁</p>
           </div>
-
-          {/* Links */}
-          <div className="flex items-center gap-4 text-xs text-slate-400">
-            <Link href="/" className="hover:text-slate-600 transition-colors">
-              首页
-            </Link>
-            <Link href="/chat" className="hover:text-slate-600 transition-colors">
-              聊天室
-            </Link>
-            <Link href="/search" className="hover:text-slate-600 transition-colors">
-              搜索
-            </Link>
+          <div className="flex items-center gap-5 text-xs text-[#94a3b8]">
+            <Link href="/" className="hover:text-[#475569] transition-colors">首页</Link>
+            <Link href="/chat" className="hover:text-[#475569] transition-colors">聊天室</Link>
           </div>
         </div>
-
-        {/* Copyright */}
-        <p className="text-[10px] text-slate-300 text-center mt-6">
+        <p className="text-[10px] text-[#cbd5e1] text-center mt-6">
           &copy; {new Date().getFullYear()} 古道论坛
         </p>
       </div>
