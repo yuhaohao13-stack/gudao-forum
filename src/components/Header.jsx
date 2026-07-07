@@ -2,25 +2,24 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
-import { Landmark, Search, MessageCircle, Pencil, LogOut, Menu, X } from 'lucide-react'
+import { Search, MessageCircle, Plus, LogOut, Menu, X } from 'lucide-react'
 import { useLanguage } from '@/lib/LanguageContext'
 import { useAuth } from './AuthProvider'
 import { createClient } from '@/lib/supabase/client'
+import DonateButton from './DonateButton'
+import UnreadBadge from './UnreadBadge'
 
 export default function Header() {
   const { user, profile, loading } = useAuth()
-  const { lang, toggleLang } = useLanguage()
-  const [search, setSearch] = useState('')
-  const [menuOpen, setMenuOpen] = useState(false)
+  const { t } = useLanguage()
+  const [searchQuery, setSearchQuery] = useState('')
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false)
+  const supabase = createClient()
   const router = useRouter()
   const pathname = usePathname()
-  const supabase = createClient()
-  const isAdmin = profile?.role === 'admin' || profile?.role === 'moderator'
 
-  const handleSearch = (e) => {
-    e.preventDefault()
-    if (search.trim()) router.push(`/search?q=${search.trim()}`)
-  }
+  const isChatPage = pathname?.startsWith('/chat')
 
   const handleLogout = async () => {
     await supabase.auth.signOut()
@@ -28,74 +27,269 @@ export default function Header() {
     router.refresh()
   }
 
+  const handleSearch = (e) => {
+    e.preventDefault()
+    if (searchQuery.trim()) {
+      router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`)
+      setSearchQuery('')
+      setMobileSearchOpen(false)
+      setMobileMenuOpen(false)
+    }
+  }
+
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen)
+    if (mobileSearchOpen) setMobileSearchOpen(false)
+  }
+
+  const getInitial = () => {
+    if (profile?.display_name) return profile.display_name[0]
+    if (profile?.username) return profile.username[0]
+    if (user?.email) return user.email[0].toUpperCase()
+    return '?'
+  }
+
   return (
-    <header className="sticky top-0 z-50 bg-white border-b border-[#e8e8e8]">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6">
-        <div className="flex items-center h-14 gap-2">
+    <header className="sticky top-0 z-50 bg-white border-b border-slate-100">
+      <div className="max-w-4xl mx-auto px-4">
+        <div className="flex items-center h-14 gap-3">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 shrink-0 mr-3">
-            <div className="w-8 h-8 rounded-md bg-[#0079d3] flex items-center justify-center text-white">
-              <Landmark size={17} />
+          <Link href="/" className="flex items-center gap-2 shrink-0 group">
+            <div className="w-7 h-7 rounded-md bg-slate-700 flex items-center justify-center">
+              <span className="text-white text-xs font-bold">古</span>
             </div>
-            <span className="text-lg font-bold text-[#222]">古道论坛</span>
+            <span className="text-base font-semibold text-slate-800 hidden sm:block">
+              古道论坛
+            </span>
           </Link>
 
-          {/* Desktop nav */}
-          <div className="hidden sm:flex items-center gap-1">
-            <Link href="/" className={`px-3 py-1.5 rounded-md text-sm font-medium ${pathname === '/' ? 'bg-[#e8f4fd] text-[#0079d3]' : 'text-[#666] hover:text-[#222] hover:bg-gray-100'}`}>首页</Link>
-            <Link href="/chat" className={`px-3 py-1.5 rounded-md text-sm font-medium ${pathname?.startsWith('/chat') ? 'bg-[#e8f4fd] text-[#0079d3]' : 'text-[#666] hover:text-[#222] hover:bg-gray-100'}`}>聊天室</Link>
-          </div>
+          {/* Desktop Nav */}
+          <nav className="hidden sm:flex items-center gap-1 ml-2">
+            <Link
+              href="/"
+              className={`text-sm px-3 py-1.5 rounded-md transition-colors ${
+                !isChatPage
+                  ? 'text-slate-800 bg-slate-50 font-medium'
+                  : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
+              }`}
+            >
+              首页
+            </Link>
+            <Link
+              href="/chat"
+              className={`text-sm px-3 py-1.5 rounded-md transition-colors ${
+                isChatPage
+                  ? 'text-slate-800 bg-slate-50 font-medium'
+                  : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
+              }`}
+            >
+              聊天室
+            </Link>
+          </nav>
 
+          {/* Spacer */}
           <div className="flex-1" />
 
-          {/* Search */}
-          <form onSubmit={handleSearch} className="hidden sm:block relative">
-            <Search size={14} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[#bbb]" />
-            <input type="text" value={search} onChange={e => setSearch(e.target.value)}
-              placeholder="搜索" className="input-search w-32 lg:w-40" />
+          {/* Desktop Search */}
+          <form onSubmit={handleSearch} className="hidden sm:block">
+            <div className="relative">
+              <Search size={14} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="搜索帖子..."
+                className="w-44 lg:w-52 h-8 bg-slate-50 border border-slate-100 rounded-md pl-8 pr-3 text-sm text-slate-700 placeholder-slate-400 outline-none transition-all focus:bg-white focus:border-slate-200"
+              />
+            </div>
           </form>
 
-          {/* User area */}
-          <div className="flex items-center gap-1">
+          {/* Desktop Right Actions */}
+          <div className="hidden sm:flex items-center gap-1.5">
+            <DonateButton />
+
             {loading ? (
-              <div className="w-4 h-4 border-2 border-gray-300 border-t-[#0079d3] rounded-full animate-spin" />
+              <div className="w-4 h-4 border-[1.5px] border-slate-200 border-t-slate-600 rounded-full animate-spin" />
             ) : user ? (
-              <>
-                <Link href={`/profile/${user.id}`} className="flex items-center gap-1.5 px-2 py-1 rounded-md hover:bg-gray-100">
-                  <span className="w-7 h-7 rounded-full bg-[#0079d3] flex items-center justify-center text-xs text-white font-bold">
-                    {(profile?.display_name || profile?.username || '?')[0]}
-                  </span>
-                  <span className="hidden sm:inline text-sm text-[#555] max-w-[4em] truncate">{profile?.display_name || profile?.username}</span>
-                </Link>
-                <Link href="/messages" className="btn-ghost !p-2 relative"><MessageCircle size={18} /></Link>
-                <Link href="/new-thread" className="btn btn-primary !py-1.5 !px-3 !text-xs"><Pencil size={14} /> <span className="hidden sm:inline">发帖</span></Link>
-                {isAdmin && <Link href="/admin" className="btn-ghost !text-xs">管理</Link>}
-                <button onClick={handleLogout} className="btn-ghost !p-2"><LogOut size={16} /></button>
-              </>
-            ) : (
               <div className="flex items-center gap-1">
-                <Link href="/login" className="px-3 py-1.5 rounded-md text-sm text-[#666] hover:text-[#222] hover:bg-gray-100">登录</Link>
-                <Link href="/register" className="btn btn-primary !py-1.5 !px-3 !text-xs">注册</Link>
+                <Link
+                  href="/messages"
+                  className="btn-ghost !px-2 !py-1.5 relative"
+                  title="消息"
+                >
+                  <MessageCircle size={16} />
+                  {UnreadBadge && <UnreadBadge />}
+                </Link>
+                <Link
+                  href="/new-thread"
+                  className="btn-primary !px-3 !py-1.5 !text-xs"
+                >
+                  <Plus size={14} />
+                  发帖
+                </Link>
+                <Link
+                  href={`/profile/${user.id}`}
+                  className="flex items-center gap-1.5 btn-ghost !px-2 !py-1.5"
+                >
+                  <div className="w-7 h-7 rounded-full bg-slate-600 flex items-center justify-center text-white text-xs font-semibold">
+                    {getInitial()}
+                  </div>
+                  <span className="text-sm text-slate-600 font-medium max-w-[6em] truncate">
+                    {profile?.display_name || profile?.username || ''}
+                  </span>
+                </Link>
+                <button onClick={handleLogout} className="btn-ghost !px-2 !py-1.5" title="退出">
+                  <LogOut size={15} />
+                </button>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                <Link
+                  href="/login"
+                  className="text-sm text-slate-400 hover:text-slate-600 transition-colors"
+                >
+                  登录
+                </Link>
+                <Link
+                  href="/register"
+                  className="btn-primary !px-3 !py-1.5 !text-xs"
+                >
+                  注册
+                </Link>
               </div>
             )}
+          </div>
 
-            <button onClick={() => setMenuOpen(!menuOpen)} className="sm:hidden p-2 rounded-md hover:bg-gray-100">
-              {menuOpen ? <X size={18} /> : <Menu size={18} />}
+          {/* Mobile Buttons */}
+          <div className="flex sm:hidden items-center gap-1">
+            <button
+              onClick={() => {
+                setMobileSearchOpen(!mobileSearchOpen)
+                if (mobileMenuOpen) setMobileMenuOpen(false)
+              }}
+              className="btn-ghost !px-2 !py-1.5"
+            >
+              <Search size={16} />
+            </button>
+            {user ? (
+              <Link
+                href="/new-thread"
+                className="btn-primary !px-2.5 !py-1.5 !text-xs"
+              >
+                <Plus size={14} />
+              </Link>
+            ) : (
+              <Link
+                href="/login"
+                className="btn-primary !px-2.5 !py-1.5 !text-xs"
+              >
+                登录
+              </Link>
+            )}
+            <button
+              onClick={toggleMobileMenu}
+              className="btn-ghost !px-2 !py-1.5"
+            >
+              {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
             </button>
           </div>
         </div>
 
-        {menuOpen && (
-          <div className="sm:hidden pb-3 space-y-1 border-t pt-2">
-            <form onSubmit={handleSearch} className="relative mb-2">
-              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#bbb]" />
-              <input type="text" value={search} onChange={e => setSearch(e.target.value)} placeholder="搜索帖子..." autoFocus
-                className="w-full bg-gray-100 rounded-md pl-9 pr-3 py-2 text-sm outline-none focus:bg-white focus:border focus:border-[#0079d3]" />
+        {/* Mobile Search */}
+        {mobileSearchOpen && (
+          <div className="sm:hidden pb-3 anim-fade-in">
+            <form onSubmit={handleSearch}>
+              <div className="relative">
+                <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="搜索帖子..."
+                  autoFocus
+                  className="w-full h-9 bg-slate-50 border border-slate-100 rounded-md pl-9 pr-3 text-sm text-slate-700 placeholder-slate-400 outline-none focus:bg-white focus:border-slate-200"
+                />
+              </div>
             </form>
-            <Link href="/" onClick={() => setMenuOpen(false)} className="block px-3 py-2 rounded-md text-sm font-medium bg-[#e8f4fd] text-[#0079d3]">首页</Link>
-            <Link href="/chat" onClick={() => setMenuOpen(false)} className="block px-3 py-2 rounded-md text-sm text-[#666] hover:bg-gray-100">聊天室</Link>
-            <Link href="/new-thread" onClick={() => setMenuOpen(false)} className="block px-3 py-2 rounded-md text-sm text-[#666] hover:bg-gray-100">发帖</Link>
-            <button onClick={() => { toggleLang(); setMenuOpen(false); }} className="w-full text-left px-3 py-2 rounded-md text-sm text-[#666] hover:bg-gray-100">{lang === 'zh' ? 'English' : '中文'}</button>
+          </div>
+        )}
+
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="sm:hidden pb-3 border-t border-slate-100 anim-fade-in">
+            <nav className="flex flex-col gap-1 pt-3">
+              <Link
+                href="/"
+                onClick={() => setMobileMenuOpen(false)}
+                className={`text-sm px-3 py-2 rounded-md transition-colors ${
+                  !isChatPage
+                    ? 'text-slate-800 bg-slate-50 font-medium'
+                    : 'text-slate-400 hover:text-slate-600'
+                }`}
+              >
+                首页
+              </Link>
+              <Link
+                href="/chat"
+                onClick={() => setMobileMenuOpen(false)}
+                className={`text-sm px-3 py-2 rounded-md transition-colors ${
+                  isChatPage
+                    ? 'text-slate-800 bg-slate-50 font-medium'
+                    : 'text-slate-400 hover:text-slate-600'
+                }`}
+              >
+                聊天室
+              </Link>
+              {user ? (
+                <>
+                  <Link
+                    href="/messages"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="text-sm px-3 py-2 rounded-md text-slate-400 hover:text-slate-600"
+                  >
+                    消息
+                  </Link>
+                  <Link
+                    href={`/profile/${user.id}`}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center gap-2 text-sm px-3 py-2 rounded-md text-slate-400 hover:text-slate-600"
+                  >
+                    <div className="w-6 h-6 rounded-full bg-slate-600 flex items-center justify-center text-white text-xs font-semibold">
+                      {getInitial()}
+                    </div>
+                    {profile?.display_name || profile?.username || '用户'}
+                  </Link>
+                  <button
+                    onClick={() => {
+                      setMobileMenuOpen(false)
+                      handleLogout()
+                    }}
+                    className="flex items-center gap-2 text-sm px-3 py-2 rounded-md text-slate-400 hover:text-slate-600 text-left"
+                  >
+                    <LogOut size={14} />
+                    退出
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    href="/login"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="text-sm px-3 py-2 rounded-md text-slate-400 hover:text-slate-600"
+                  >
+                    登录
+                  </Link>
+                  <Link
+                    href="/register"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="text-sm px-3 py-2 rounded-md text-slate-800 bg-slate-50 font-medium"
+                  >
+                    注册
+                  </Link>
+                </>
+              )}
+              <DonateButton />
+            </nav>
           </div>
         )}
       </div>

@@ -1,26 +1,42 @@
 'use client'
 import Link from 'next/link'
-import { Landmark } from 'lucide-react'
 import { useLanguage } from '@/lib/LanguageContext'
 
 export default function Footer() {
   const { t } = useLanguage()
+
   return (
-    <footer className="mt-auto py-12">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6">
-        <div className="border-t border-[#f0f0f0] pt-8 flex flex-col sm:flex-row items-center justify-between gap-3">
+    <footer className="mt-auto border-t border-slate-100">
+      <div className="max-w-4xl mx-auto px-4 py-8">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+          {/* Brand */}
           <div className="text-center sm:text-left">
-            <p className="text-sm font-serif font-semibold text-[#888]"><Landmark size={16} className="inline-block align-text-bottom" /> {t('footer.title')}</p>
-            <p className="text-xs text-[#bbb] mt-1">{t('footer.slogan')}</p>
+            <div className="flex items-center justify-center sm:justify-start gap-2 mb-1">
+              <div className="w-5 h-5 rounded bg-slate-700 flex items-center justify-center">
+                <span className="text-white text-[8px] font-bold">古</span>
+              </div>
+              <span className="text-sm font-semibold text-slate-600">古道论坛</span>
+            </div>
+            <p className="text-xs text-slate-400">{t('footer.slogan')}</p>
           </div>
-          <div className="flex items-center gap-5 text-xs text-[#bbb]">
-            <Link href="/" className="hover:text-[#888] transition-colors">{t('footer.home')}</Link>
-            <Link href="/chat" className="hover:text-[#888] transition-colors">{t('footer.chat')}</Link>
-            <Link href="/search" className="hover:text-[#888] transition-colors">{t('footer.search')}</Link>
+
+          {/* Links */}
+          <div className="flex items-center gap-4 text-xs text-slate-400">
+            <Link href="/" className="hover:text-slate-600 transition-colors">
+              首页
+            </Link>
+            <Link href="/chat" className="hover:text-slate-600 transition-colors">
+              聊天室
+            </Link>
+            <Link href="/search" className="hover:text-slate-600 transition-colors">
+              搜索
+            </Link>
           </div>
         </div>
-        <p className="text-[10px] text-[#ddd] text-center mt-6">
-          &copy; {new Date().getFullYear()} {t('footer.title')}
+
+        {/* Copyright */}
+        <p className="text-[10px] text-slate-300 text-center mt-6">
+          &copy; {new Date().getFullYear()} 古道论坛
         </p>
       </div>
     </footer>
