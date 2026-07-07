@@ -77,7 +77,7 @@ export default function MessagesPage() {
 
   return (
     <div className="anim-fade-in max-w-2xl mx-auto">
-      <h1 className="text-2xl font-bold font-serif text-[#1a1a1a] mb-5"><MessageCircle size={20} className="inline-block align-text-bottom" /> {t('messages.title')}</h1>
+      <h1 className="text-2xl font-bold text-[#1a1a1a] mb-5"><MessageCircle size={20} className="inline-block align-text-bottom" /> {t('messages.title')}</h1>
       <p className="text-xs text-[#999] mb-4">Messages are private between you and the other person.</p>
 
       {loading ? (

@@ -64,7 +64,7 @@ export default function DonateOverlay() {
           <div style={innerStyle} onClick={e => e.stopPropagation()}>
             <div className="text-center mb-5">
               <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>☕</div>
-              <h3 style={{ fontSize: '1.125rem', fontWeight: 700, fontFamily: "'Noto Serif SC', serif", color: '#1a1a1a' }}>请我喝杯咖啡</h3>
+              <h3 style={{ fontSize: '1.125rem', fontWeight: 700, fontFamily: "'Inter', 'Noto Sans SC', -apple-system, sans-serif", color: '#1a1a1a' }}>请我喝杯咖啡</h3>
               <p style={{ fontSize: '0.75rem', color: '#999', marginTop: '0.25rem' }}>如果觉得论坛有用，欢迎打赏支持</p>
             </div>
 
@@ -99,7 +99,7 @@ export default function DonateOverlay() {
       {showWechatQR && (
         <div style={{ ...overlayStyle, zIndex: 9999 }} onClick={() => setShowWechatQR(false)}>
           <div style={{ ...innerStyle, textAlign: 'center' }} onClick={e => e.stopPropagation()}>
-            <div style={{ fontSize: '1.125rem', fontWeight: 700, fontFamily: "'Noto Serif SC', serif", color: '#1a1a1a', marginBottom: '0.25rem' }}>💚 微信</div>
+            <div style={{ fontSize: '1.125rem', fontWeight: 700, fontFamily: "'Inter', 'Noto Sans SC', -apple-system, sans-serif", color: '#1a1a1a', marginBottom: '0.25rem' }}>💚 微信</div>
             <p style={{ fontSize: '0.75rem', color: '#999', marginBottom: '1rem' }}>打开微信扫描二维码支付</p>
             <img src="/images/wechat-qr.jpg" alt="WeChat Pay QR" style={{ width: '100%', maxWidth: '15rem', margin: '0 auto', borderRadius: '0.75rem', border: '1px solid #eee8dc', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }} />
             <p style={{ fontSize: '0.625rem', color: '#ccc', marginTop: '1rem' }}>截图保存到相册，在微信中扫码</p>
@@ -111,7 +111,7 @@ export default function DonateOverlay() {
       {showPayNowQR && (
         <div style={{ ...overlayStyle, zIndex: 9999 }} onClick={() => setShowPayNowQR(false)}>
           <div style={{ ...innerStyle, textAlign: 'center' }} onClick={e => e.stopPropagation()}>
-            <div style={{ fontSize: '1.125rem', fontWeight: 700, fontFamily: "'Noto Serif SC', serif", color: '#1a1a1a', marginBottom: '0.25rem' }}>🇸🇬 PayNow</div>
+            <div style={{ fontSize: '1.125rem', fontWeight: 700, fontFamily: "'Inter', 'Noto Sans SC', -apple-system, sans-serif", color: '#1a1a1a', marginBottom: '0.25rem' }}>🇸🇬 PayNow</div>
             <p style={{ fontSize: '0.75rem', color: '#999', marginBottom: '1rem' }}>打开银行 App 扫描二维码支付</p>
             <img src="/images/paynow-qr.jpg" alt="PayNow QR" style={{ width: '100%', maxWidth: '15rem', margin: '0 auto', borderRadius: '0.75rem', border: '1px solid #eee8dc', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }} />
             <p style={{ fontSize: '0.625rem', color: '#ccc', marginTop: '1rem' }}>截图保存到相册，在银行 App 中扫码</p>

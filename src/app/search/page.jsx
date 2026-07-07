@@ -29,7 +29,7 @@ function Results() {
 
   return (
     <div className="anim-fade-in max-w-3xl mx-auto">
-      <h1 className="text-xl font-bold font-serif text-[#1a1a1a] mb-5">搜索</h1>
+      <h1 className="text-xl font-bold text-[#1a1a1a] mb-5">搜索</h1>
       <form onSubmit={e => { e.preventDefault(); if (input.trim()) router.push(`/search?q=${encodeURIComponent(input.trim())}`) }} className="mb-6 flex gap-2">
         <input type="text" value={input} onChange={e => setInput(e.target.value)} placeholder="搜索帖子..." className="input" autoFocus />
         <button type="submit" disabled={loading} className="btn-primary">{loading ? '搜索中...' : '搜索'}</button>

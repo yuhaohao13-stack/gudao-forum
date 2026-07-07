@@ -39,7 +39,7 @@ export default function Header() {
         <div className="flex items-center h-20 sm:h-24 relative">
           <Link href="/" className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2 sm:gap-3 group whitespace-nowrap">
             <Landmark size={36} className="inline-block" />
-            <span className="text-[2rem] sm:text-[2.25rem] font-bold font-serif tracking-wide text-[#1a1a1a]">古道论坛</span>
+            <span className="text-[2rem] sm:text-[2.25rem] font-bold tracking-wide text-[#1a1a1a]">古道论坛</span>
           </Link>
           <div className="flex-1"></div>
           <button onClick={toggleLang}

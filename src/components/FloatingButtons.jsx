@@ -164,7 +164,7 @@ export default function FloatingButtons() {
 
             <div style={{ textAlign: 'center', marginBottom: '0.75rem' }}>
               <div style={{ fontSize: '1.5rem', marginBottom: '0.25rem' }}>🔧</div>
-              <h3 style={{ fontSize: '0.95rem', fontWeight: 700, fontFamily: "'Noto Serif SC', serif", color: '#1a1a1a' }}>Crazy 维修 — 联系我们</h3>
+              <h3 style={{ fontSize: '0.95rem', fontWeight: 700, fontFamily: "'Inter', 'Noto Sans SC', -apple-system, sans-serif", color: '#1a1a1a' }}>Crazy 维修 — 联系我们</h3>
               <p style={{ fontSize: '0.65rem', color: '#999', marginTop: '0.2rem' }}>新加坡电脑/手机/平板专业维修</p>
             </div>
 

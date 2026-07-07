@@ -10,7 +10,7 @@ export default function Footer() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         <div className="border-t border-[#f0f0f0] pt-8 flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="text-center sm:text-left">
-            <p className="text-sm font-serif font-semibold text-[#888]"><Landmark size={16} className="inline-block align-text-bottom" /> {t('footer.title')}</p>
+            <p className="text-sm font-semibold text-[#888]"><Landmark size={16} className="inline-block align-text-bottom" /> {t('footer.title')}</p>
             <p className="text-xs text-[#bbb] mt-1">{t('footer.slogan')}</p>
           </div>
           <div className="flex items-center gap-5 text-xs text-[#bbb]">

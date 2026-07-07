@@ -57,7 +57,7 @@ export default function AdminPage() {
 
   return (
     <div className="anim-fade-in">
-      <h1 className="text-xl font-bold font-serif text-[#1a1a1a] mb-1"><Settings size={20} className="inline-block align-text-bottom" /> 管理后台</h1>
+      <h1 className="text-xl font-bold text-[#1a1a1a] mb-1"><Settings size={20} className="inline-block align-text-bottom" /> 管理后台</h1>
       <p className="text-xs text-[#aaa] mb-6">古道论坛管理中心</p>
 
       <div className="flex gap-2 mb-6">
@@ -126,7 +126,7 @@ export default function AdminPage() {
 
       {tab === 'broadcast' && (
         <div className="max-w-xl">
-          <h2 className="font-bold font-serif text-[#1a1a1a] mb-1"><Megaphone size={16} className="inline-block align-text-bottom" /> 站内公告群发</h2>
+          <h2 className="font-bold text-[#1a1a1a] mb-1"><Megaphone size={16} className="inline-block align-text-bottom" /> 站内公告群发</h2>
           <p className="text-xs text-[#aaa] mb-4">发送私信公告给 <strong className="text-[#c23531]">{users.filter(u => u.id !== user?.id).length}</strong> 位注册用户</p>
           <div className="border border-[#f0f0f0] rounded-xl p-5 space-y-4">
             <textarea value={broadcastText} onChange={e => setBroadcastText(e.target.value)}

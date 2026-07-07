@@ -161,7 +161,7 @@ export default function ProfilePage() {
 
         {!editing ? (
           <>
-            <h1 className="text-xl font-bold font-serif text-[#1a1a1a] mt-4">{profile.display_name || profile.username}</h1>
+            <h1 className="text-xl font-bold text-[#1a1a1a] mt-4">{profile.display_name || profile.username}</h1>
             <p className="text-[#999] text-sm">@{profile.username}</p>
             {profile.member_no && (
               <div className="mt-2 inline-block px-3 py-0.5 rounded-full bg-[#f5f0e8] border border-[#e8e0d0] text-xs font-mono text-[#8b6914]">
@@ -278,7 +278,7 @@ export default function ProfilePage() {
         ) : (
           /* 编辑模式 */
           <div className="text-left mt-6 space-y-4 max-w-md mx-auto">
-            <h2 className="font-bold font-serif text-[#1a1a1a] text-center"><Pencil size={16} className="inline-block align-text-bottom" /> {t('profile.edit')}</h2>
+            <h2 className="font-bold text-[#1a1a1a] text-center"><Pencil size={16} className="inline-block align-text-bottom" /> {t('profile.edit')}</h2>
 
             <div>
               <label className="block text-xs text-[#888] mb-1.5 font-medium">{t('auth.display_name')}</label>

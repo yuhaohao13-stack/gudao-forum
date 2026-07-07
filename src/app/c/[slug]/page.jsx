@@ -51,7 +51,7 @@ export default function CategoryPage() {
     <div className="anim-fade-in">
       <div className="mb-5">
         <Link href="/" className="text-xs text-[#bbb] hover:text-[#888] transition-colors">&larr; 首页</Link>
-        <h1 className="text-xl font-bold font-serif text-[#1a1a1a] mt-1">{category.icon} {category.name}</h1>
+        <h1 className="text-xl font-bold text-[#1a1a1a] mt-1">{category.icon} {category.name}</h1>
         <p className="text-[#aaa] text-xs mt-0.5">{category.description}</p>
       </div>
 
