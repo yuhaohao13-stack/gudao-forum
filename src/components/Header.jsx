@@ -1,7 +1,7 @@
 'use client'
 import Link from 'next/link'
 import { useState } from 'react'
-import { useRouter, usePathname } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { Landmark, Search, MessageCircle, Pencil, X, Globe, LogOut } from 'lucide-react'
 import { useLanguage } from '@/lib/LanguageContext'
 import { useAuth } from './AuthProvider'
@@ -16,9 +16,7 @@ export default function Header() {
   const [showSearch, setShowSearch] = useState(false)
   const supabase = createClient()
   const router = useRouter()
-  const pathname = usePathname()
   const isAdmin = profile?.role === 'admin' || profile?.role === 'moderator'
-  const isChatPage = pathname?.startsWith('/chat')
 
   const handleLogout = async () => {
     await supabase.auth.signOut()
@@ -60,15 +58,8 @@ export default function Header() {
           {/* 左：导航 + 打赏 */}
           <div className="flex items-center gap-2 shrink-0">
             <Link href="/"
-              className={`whitespace-nowrap text-xs sm:text-sm font-medium px-3 py-1.5 rounded-lg transition-colors ${
-                !isChatPage ? 'bg-[#f5f5f5] text-[#1a1a1a]' : 'text-[#999] hover:text-[#1a1a1a] hover:bg-[#f5f5f5]'
-              }`}
+              className="whitespace-nowrap text-xs sm:text-sm font-medium px-3 py-1.5 rounded-lg transition-colors bg-[#f5f5f5] text-[#1a1a1a]"
             >{t('nav.home')}</Link>
-            <Link href="/chat"
-              className={`whitespace-nowrap text-xs sm:text-sm font-medium px-3 py-1.5 rounded-lg transition-colors ${
-                isChatPage ? 'bg-[#f5f5f5] text-[#1a1a1a]' : 'text-[#999] hover:text-[#1a1a1a] hover:bg-[#f5f5f5]'
-              }`}
-            >{t('nav.chat')}</Link>
             <a href="https://v.douyin.com/NvUr5C82ZDM/" target="_blank" rel="noopener"
               className="flex items-center gap-1 whitespace-nowrap text-xs sm:text-sm font-bold px-2 sm:px-3 py-1.5 rounded-lg bg-gradient-to-r from-[#00f2fe] to-[#fe2c55] text-white hover:opacity-90 transition-all shadow-sm"
               title="浩哥维修实录 @Crazy维修 抖音">
