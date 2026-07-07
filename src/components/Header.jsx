@@ -68,7 +68,7 @@ export default function Header() {
               </svg>
               <span>浩哥抖音</span>
             </a><DonateButton className="whitespace-nowrap text-sm font-semibold px-3 py-1.5 rounded-lg text-[#c23531] hover:bg-[#fef2f0] transition-colors" />
-            <a href="https://www.crazy-repair.com" target="_blank" rel="noopener" className="whitespace-nowrap text-xs sm:text-sm font-semibold px-2 sm:px-3 py-1.5 rounded-lg text-blue-600 hover:bg-blue-50 transition-colors">crazy 维修</a>
+            <a href="https://www.crazy-repair.com" target="_blank" rel="noopener" className="whitespace-nowrap text-xs sm:text-sm font-semibold px-3 sm:px-4 py-1.5 rounded-xl text-white bg-gradient-to-b from-[#4a8eff] to-[#2563eb] shadow-md hover:shadow-lg hover:from-[#5b98ff] hover:to-[#3b82f6] transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0.5 active:shadow-sm">crazy 维修</a>
           </div>
 
           {/* 右：用户操作 */}
