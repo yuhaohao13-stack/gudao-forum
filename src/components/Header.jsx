@@ -93,7 +93,7 @@ export default function Header() {
               <div className="flex items-center gap-1 sm:gap-1.5">
                 {/* 会员名：桌面全显示，移动端也全显示 */}
                 <Link href={`/profile/${user.id}`} className="flex items-center gap-1 btn-ghost !px-1.5 sm:!px-2 !py-1">
-                  <span className="w-6 sm:w-7 h-6 sm:h-7 rounded-full bg-[#c23531] flex items-center justify-center text-[10px] sm:text-xs text-white font-bold shadow-sm">
+                  <span className="w-6 sm:w-7 h-6 sm:h-7 rounded-full bg-[#c23531] flex items-center justify-center text-[10px] sm:text-xs text-white font-bold">
                     {(profile?.display_name || profile?.username || '?')[0]}
                   </span>
                   <span className="hidden sm:inline text-[10px] sm:text-xs text-[#999] font-normal whitespace-nowrap">{t('nav.profile')}：</span>

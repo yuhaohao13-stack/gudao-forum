@@ -137,7 +137,7 @@ export default function PrivateChatPage() {
       {/* 头部 */}
       <div className="flex items-center gap-3 mb-3 shrink-0">
         <Link href={`/profile/${otherUserId}`} className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-          <div className="w-8 h-8 rounded-full bg-[#c23531] flex items-center justify-center text-xs font-bold text-white shadow-sm">
+          <div className="w-8 h-8 rounded-full bg-[#c23531] flex items-center justify-center text-xs font-bold text-white">
             {(otherProfile?.display_name || otherProfile?.username || '?')[0]}
           </div>
           <div>

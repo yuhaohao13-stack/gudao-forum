@@ -289,7 +289,7 @@ export default function ChatRoomPage() {
                 }`}
               >
                 <Link href={isSelf ? '#' : `/profile/${msg.user_id}`}
-                  className={`w-7 h-7 rounded-full shrink-0 flex items-center justify-center text-xs font-bold text-white shadow-sm ${
+                  className={`w-7 h-7 rounded-full shrink-0 flex items-center justify-center text-xs font-bold text-white ${
                     isAdmin ? 'bg-[#c23531]' : isMod ? 'bg-[#8b6914]' : 'bg-[#b0a898]'
                   }`}
                   title={displayName}

@@ -230,7 +230,7 @@ export default function RegisterPage() {
               <div className="flex gap-1 select-none">
                 {captchaCode.split('').map((digit, i) => (
                   <span key={i}
-                    className="inline-flex items-center justify-center w-9 h-10 rounded-lg text-lg font-bold tracking-wider shadow-sm"
+                    className="inline-flex items-center justify-center w-9 h-10 rounded-lg text-lg font-bold tracking-wider"
                     style={{
                       backgroundColor: ['#fef3c7', '#fee2e2', '#dbeafe', '#dcfce7'][i % 4],
                       color: ['#92400e', '#991b1b', '#1e40af', '#166534'][i % 4],

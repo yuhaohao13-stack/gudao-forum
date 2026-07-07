@@ -98,7 +98,7 @@ export default function MessagesPage() {
             return (
               <div key={conv.otherId} className="card p-3 flex items-center gap-3 group hover:border-[#c23531]/30 transition-all">
                 <Link href={`/profile/${conv.otherId}`} className="shrink-0">
-                  <div className="w-10 h-10 rounded-full bg-[#c23531] flex items-center justify-center text-sm font-bold text-white shadow-sm hover:opacity-80 transition-opacity">
+                  <div className="w-10 h-10 rounded-full bg-[#c23531] flex items-center justify-center text-sm font-bold text-white hover:opacity-80 transition-opacity">
                     {name[0]}
                   </div>
                 </Link>

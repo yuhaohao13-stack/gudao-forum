@@ -155,7 +155,7 @@ export default function ProfilePage() {
     <div className="anim-fade-in max-w-2xl mx-auto">
       {/* 头像 & 基本信息 */}
       <div className="card p-6 sm:p-8 text-center">
-        <div className="w-20 h-20 mx-auto rounded-full bg-[#c23531] flex items-center justify-center text-3xl font-bold text-white shadow-sm">
+        <div className="w-20 h-20 mx-auto rounded-full bg-[#c23531] flex items-center justify-center text-3xl font-bold text-white">
           {(profile.display_name || profile.username || '?')[0]}
         </div>
 
@@ -370,12 +370,12 @@ export default function ProfilePage() {
       <div className="flex gap-2 mt-6 mb-4">
         <button onClick={() => setActiveTab('posts')}
           className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
-            activeTab === 'posts' ? 'bg-[#c23531] text-white shadow-sm' : 'bg-white text-[#666] border border-[#ece8e0]'
+            activeTab === 'posts' ? 'bg-[#c23531] text-white' : 'bg-white text-[#666] border border-[#ece8e0]'
           }`}><FileText size={14} className="inline-block align-text-bottom" /> {t('profile.posts')} ({threads.length})</button>
         {isOwn && (
           <button onClick={() => setActiveTab('friends')}
             className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
-              activeTab === 'friends' ? 'bg-[#c23531] text-white shadow-sm' : 'bg-white text-[#666] border border-[#ece8e0]'
+              activeTab === 'friends' ? 'bg-[#c23531] text-white' : 'bg-white text-[#666] border border-[#ece8e0]'
             }`}><Users size={14} className="inline-block align-text-bottom" /> {t('profile.friends')} ({friends.length})</button>
         )}
       </div>

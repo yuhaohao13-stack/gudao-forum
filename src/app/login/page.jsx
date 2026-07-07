@@ -175,7 +175,7 @@ export default function LoginPage() {
           {methodBtns.map(m => (
             <button key={m.key} onClick={() => { setResetMethod(m.key); setError('') }}
               className={`flex-1 py-2 rounded-lg text-xs font-medium transition-all ${
-                resetMethod === m.key ? 'bg-white text-[#c23531] shadow-sm' : 'text-[#999]'
+                resetMethod === m.key ? 'bg-white text-[#c23531]' : 'text-[#999]'
               }`}>{m.label}</button>
           ))}
         </div>
