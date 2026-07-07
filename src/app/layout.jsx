@@ -5,6 +5,7 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import DonateOverlay from '@/components/DonateOverlay'
 import ErrorBoundary from '@/components/ErrorBoundary'
+import FloatingButtons from '@/components/FloatingButtons'
 
 export const metadata = {
   metadataBase: new URL('https://www.gudaoforum.com'),
@@ -121,6 +122,7 @@ export default function RootLayout({ children }) {
       <body className="min-h-screen flex flex-col bg-[#fafaf9] text-[#1a1a1a] overflow-x-hidden">
         <ErrorBoundary>
           <DonateOverlay />
+          <FloatingButtons />
           <LanguageProvider>
           <AuthProvider>
             <Header />
