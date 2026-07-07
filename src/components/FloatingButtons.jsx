@@ -52,14 +52,11 @@ export default function FloatingButtons() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              boxShadow: '0 4px 12px rgba(194,53,49,0.35)',
               transition: 'all 0.2s ease',
             }}
-            onMouseOver={e => { e.currentTarget.style.transform = 'scale(1.1)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(194,53,49,0.45)' }}
-            onMouseOut={e => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.boxShadow = '0 4px 12px rgba(194,53,49,0.35)' }}
             title="打赏支持"
           >
-            <Heart size={22} fill="currentColor" />
+            <Heart size={22} />
           </button>
           {showDonateTip && (
             <div style={{
@@ -73,7 +70,6 @@ export default function FloatingButtons() {
               padding: '0.375rem 0.75rem',
               borderRadius: '0.5rem',
               whiteSpace: 'nowrap',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
             }}>
               请我喝杯咖啡 ☕
               <div style={{
@@ -105,11 +101,8 @@ export default function FloatingButtons() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            boxShadow: '0 4px 12px rgba(37,99,235,0.35)',
             transition: 'all 0.2s ease',
-          }}
-          onMouseOver={e => { e.currentTarget.style.transform = 'scale(1.1)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(37,99,235,0.45)' }}
-          onMouseOut={e => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.boxShadow = '0 4px 12px rgba(37,99,235,0.35)' }}
+          }
           title="联系站长"
         >
           <MessageCircle size={22} />
@@ -137,7 +130,7 @@ export default function FloatingButtons() {
             style={{
               backgroundColor: '#fff',
               borderRadius: '0.875rem',
-              boxShadow: '0 20px 40px rgba(0,0,0,0.12)',
+
               maxWidth: '20rem',
               width: '100%',
               padding: '1rem',
@@ -254,7 +247,7 @@ export default function FloatingButtons() {
                 }}>
                 <div style={{
                   width: '2rem', height: '2rem', borderRadius: '50%',
-                  background: 'linear-gradient(135deg, #00f2fe, #fe2c55)',
+                  backgroundColor: '#fe2c55',
                   display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
                 }}>
                   <svg viewBox="0 0 24 24" width="14" height="14" fill="#fff">

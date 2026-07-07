@@ -21,7 +21,7 @@ const overlayStyle = {
 const innerStyle = {
   backgroundColor: '#fff',
   borderRadius: '1rem',
-  boxShadow: '0 25px 50px rgba(0,0,0,0.15)',
+
   maxWidth: '24rem',
   width: '100%',
   padding: '1.5rem',
@@ -101,7 +101,7 @@ export default function DonateOverlay() {
           <div style={{ ...innerStyle, textAlign: 'center' }} onClick={e => e.stopPropagation()}>
             <div style={{ fontSize: '1.125rem', fontWeight: 700, fontFamily: "'Inter', 'Noto Sans SC', -apple-system, sans-serif", color: '#1a1a1a', marginBottom: '0.25rem' }}>💚 微信</div>
             <p style={{ fontSize: '0.75rem', color: '#999', marginBottom: '1rem' }}>打开微信扫描二维码支付</p>
-            <img src="/images/wechat-qr.jpg" alt="WeChat Pay QR" style={{ width: '100%', maxWidth: '15rem', margin: '0 auto', borderRadius: '0.75rem', border: '1px solid #eee8dc', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }} />
+            <img src="/images/wechat-qr.jpg" alt="WeChat Pay QR" style={{ width: '100%', maxWidth: '15rem', margin: '0 auto', borderRadius: '0.75rem', border: '1px solid #eee8dc' }} />
             <p style={{ fontSize: '0.625rem', color: '#ccc', marginTop: '1rem' }}>截图保存到相册，在微信中扫码</p>
           </div>
         </div>
@@ -113,7 +113,7 @@ export default function DonateOverlay() {
           <div style={{ ...innerStyle, textAlign: 'center' }} onClick={e => e.stopPropagation()}>
             <div style={{ fontSize: '1.125rem', fontWeight: 700, fontFamily: "'Inter', 'Noto Sans SC', -apple-system, sans-serif", color: '#1a1a1a', marginBottom: '0.25rem' }}>🇸🇬 PayNow</div>
             <p style={{ fontSize: '0.75rem', color: '#999', marginBottom: '1rem' }}>打开银行 App 扫描二维码支付</p>
-            <img src="/images/paynow-qr.jpg" alt="PayNow QR" style={{ width: '100%', maxWidth: '15rem', margin: '0 auto', borderRadius: '0.75rem', border: '1px solid #eee8dc', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }} />
+            <img src="/images/paynow-qr.jpg" alt="PayNow QR" style={{ width: '100%', maxWidth: '15rem', margin: '0 auto', borderRadius: '0.75rem', border: '1px solid #eee8dc' }} />
             <p style={{ fontSize: '0.625rem', color: '#ccc', marginTop: '1rem' }}>截图保存到相册，在银行 App 中扫码</p>
           </div>
         </div>
@@ -125,7 +125,7 @@ export default function DonateOverlay() {
           position: 'fixed', top: '1rem', left: '50%', transform: 'translateX(-50%)',
           zIndex: 99999, backgroundColor: '#1a1a1a', color: '#fff',
           fontSize: '0.75rem', padding: '0.5rem 1rem', borderRadius: '9999px',
-          boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+
         }}>
           {toast}
         </div>
