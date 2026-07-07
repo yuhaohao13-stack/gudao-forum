@@ -64,7 +64,7 @@ export default function DonateOverlay() {
           <div style={innerStyle} onClick={e => e.stopPropagation()}>
             <div className="text-center mb-5">
               <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>☕</div>
-              <h3 style={{ fontSize: '1.125rem', fontWeight: 700, color: '#1c1917' }}>请我喝杯咖啡</h3>
+              <h3 style={{ fontSize: '1.125rem', fontWeight: 700, fontFamily: "'Noto Serif SC', serif", color: '#1a1a1a' }}>请我喝杯咖啡</h3>
               <p style={{ fontSize: '0.75rem', color: '#999', marginTop: '0.25rem' }}>如果觉得论坛有用，欢迎打赏支持</p>
             </div>
 
@@ -73,7 +73,7 @@ export default function DonateOverlay() {
                 style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1rem', borderRadius: '0.75rem', border: '1px solid #eee8dc', width: '100%', cursor: 'pointer', background: 'none', fontSize: 'inherit' }}>
                 <div style={{ width: '2.5rem', height: '2.5rem', borderRadius: '50%', backgroundColor: '#07c160', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem', flexShrink: 0 }}>💚</div>
                 <div style={{ textAlign: 'left', flex: 1 }}>
-                  <div style={{ fontWeight: 600, fontSize: '0.875rem', color: '#1c1917' }}>微信</div>
+                  <div style={{ fontWeight: 600, fontSize: '0.875rem', color: '#1a1a1a' }}>微信</div>
                   <div style={{ fontSize: '0.75rem', color: '#999' }}>扫描二维码支付</div>
                 </div>
                 <span style={{ color: '#07c160', fontSize: '0.875rem' }}>→</span>
@@ -83,7 +83,7 @@ export default function DonateOverlay() {
                 style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1rem', borderRadius: '0.75rem', border: '1px solid #eee8dc', width: '100%', cursor: 'pointer', background: 'none', fontSize: 'inherit' }}>
                 <div style={{ width: '2.5rem', height: '2.5rem', borderRadius: '50%', backgroundColor: '#16a34a', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem', flexShrink: 0 }}>🇸🇬</div>
                 <div style={{ textAlign: 'left', flex: 1 }}>
-                  <div style={{ fontWeight: 600, fontSize: '0.875rem', color: '#1c1917' }}>PayNow</div>
+                  <div style={{ fontWeight: 600, fontSize: '0.875rem', color: '#1a1a1a' }}>PayNow</div>
                   <div style={{ fontSize: '0.75rem', color: '#999' }}>扫描二维码支付</div>
                 </div>
                 <span style={{ color: '#16a34a', fontSize: '0.875rem' }}>→</span>
@@ -99,7 +99,7 @@ export default function DonateOverlay() {
       {showWechatQR && (
         <div style={{ ...overlayStyle, zIndex: 9999 }} onClick={() => setShowWechatQR(false)}>
           <div style={{ ...innerStyle, textAlign: 'center' }} onClick={e => e.stopPropagation()}>
-            <div style={{ fontSize: '1.125rem', fontWeight: 700, color: '#1c1917', marginBottom: '0.25rem' }}>💚 微信</div>
+            <div style={{ fontSize: '1.125rem', fontWeight: 700, fontFamily: "'Noto Serif SC', serif", color: '#1a1a1a', marginBottom: '0.25rem' }}>💚 微信</div>
             <p style={{ fontSize: '0.75rem', color: '#999', marginBottom: '1rem' }}>打开微信扫描二维码支付</p>
             <img src="/images/wechat-qr.jpg" alt="WeChat Pay QR" style={{ width: '100%', maxWidth: '15rem', margin: '0 auto', borderRadius: '0.75rem', border: '1px solid #eee8dc', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }} />
             <p style={{ fontSize: '0.625rem', color: '#ccc', marginTop: '1rem' }}>截图保存到相册，在微信中扫码</p>
@@ -111,7 +111,7 @@ export default function DonateOverlay() {
       {showPayNowQR && (
         <div style={{ ...overlayStyle, zIndex: 9999 }} onClick={() => setShowPayNowQR(false)}>
           <div style={{ ...innerStyle, textAlign: 'center' }} onClick={e => e.stopPropagation()}>
-            <div style={{ fontSize: '1.125rem', fontWeight: 700, color: '#1c1917', marginBottom: '0.25rem' }}>🇸🇬 PayNow</div>
+            <div style={{ fontSize: '1.125rem', fontWeight: 700, fontFamily: "'Noto Serif SC', serif", color: '#1a1a1a', marginBottom: '0.25rem' }}>🇸🇬 PayNow</div>
             <p style={{ fontSize: '0.75rem', color: '#999', marginBottom: '1rem' }}>打开银行 App 扫描二维码支付</p>
             <img src="/images/paynow-qr.jpg" alt="PayNow QR" style={{ width: '100%', maxWidth: '15rem', margin: '0 auto', borderRadius: '0.75rem', border: '1px solid #eee8dc', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }} />
             <p style={{ fontSize: '0.625rem', color: '#ccc', marginTop: '1rem' }}>截图保存到相册，在银行 App 中扫码</p>
@@ -123,7 +123,7 @@ export default function DonateOverlay() {
       {toast && (
         <div style={{
           position: 'fixed', top: '1rem', left: '50%', transform: 'translateX(-50%)',
-          zIndex: 99999, backgroundColor: '#1c1917', color: '#fff',
+          zIndex: 99999, backgroundColor: '#1a1a1a', color: '#fff',
           fontSize: '0.75rem', padding: '0.5rem 1rem', borderRadius: '9999px',
           boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
         }}>

@@ -236,7 +236,7 @@ export default function ChatRoomPage() {
         <div className="flex items-center gap-2">
           <Link href="/chat" className="text-sm text-[#c23531]/70 hover:text-[#c23531] transition-colors">&larr;</Link>
           <span className="text-xl">{room.icon}</span>
-          <h1 className="text-lg font-bold text-[#1c1917]">{room.name}</h1>
+          <h1 className="text-lg font-bold font-serif text-[#1a1a1a]">{room.name}</h1>
           <span className="hidden sm:inline text-[10px] text-[#b0a898] bg-[#f5f0e8] rounded-full px-2 py-0.5">{room.description}</span>
           {onlineNow > 0 && (
             <span className="hidden sm:inline-flex items-center gap-1 text-xs text-green-600 bg-green-50 border border-green-200 rounded-full px-2.5 py-0.5">

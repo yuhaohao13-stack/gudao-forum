@@ -119,7 +119,7 @@ export default function RegisterPage() {
     <div className="max-w-lg mx-auto mt-8 mb-16 anim-fade-in">
       <div className="card p-6 sm:p-8">
         <div className="text-center mb-6">
-          <h1 className="text-2xl font-bold text-[#1c1917]">{t('auth.register')}</h1>
+          <h1 className="text-2xl font-bold font-serif text-[#1a1a1a]">{t('auth.register')}</h1>
           <div className="w-10 h-0.5 bg-[#c23531] mx-auto mt-3 rounded-full" />
           <p className="text-[#bbb] text-xs mt-2">{t('footer.title')}</p>
         </div>

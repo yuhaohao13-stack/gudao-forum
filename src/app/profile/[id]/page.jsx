@@ -161,7 +161,7 @@ export default function ProfilePage() {
 
         {!editing ? (
           <>
-            <h1 className="text-xl font-bold text-[#1c1917] mt-4">{profile.display_name || profile.username}</h1>
+            <h1 className="text-xl font-bold font-serif text-[#1a1a1a] mt-4">{profile.display_name || profile.username}</h1>
             <p className="text-[#999] text-sm">@{profile.username}</p>
             {profile.member_no && (
               <div className="mt-2 inline-block px-3 py-0.5 rounded-full bg-[#f5f0e8] border border-[#e8e0d0] text-xs font-mono text-[#8b6914]">
@@ -174,7 +174,7 @@ export default function ProfilePage() {
               {profile.display_name && (
                 <div className="flex items-baseline gap-2">
                   <span className="w-16 shrink-0 text-[#bbb] text-xs">{t('profile.name')}</span>
-                  <span className="text-[#1c1917] font-medium">{profile.display_name}</span>
+                  <span className="text-[#1a1a1a] font-medium">{profile.display_name}</span>
                 </div>
               )}
               <div className="flex items-baseline gap-2">
@@ -265,7 +265,7 @@ export default function ProfilePage() {
             {isOwn && (
               <div className="mt-8 pt-5 border-t border-[#f0f0f0] flex items-center justify-center gap-3">
                 <button onClick={() => router.push('/login')}
-                  className="btn-ghost !text-sm text-[#888] border border-[#eee8dc] px-5 py-2 rounded-lg hover:text-[#1c1917]">
+                  className="btn-ghost !text-sm text-[#888] border border-[#eee8dc] px-5 py-2 rounded-lg hover:text-[#1a1a1a]">
                   切换账号
                 </button>
                 <button onClick={handleLogout}
@@ -278,7 +278,7 @@ export default function ProfilePage() {
         ) : (
           /* 编辑模式 */
           <div className="text-left mt-6 space-y-4 max-w-md mx-auto">
-            <h2 className="font-bold text-[#1c1917] text-center"><Pencil size={16} className="inline-block align-text-bottom" /> {t('profile.edit')}</h2>
+            <h2 className="font-bold font-serif text-[#1a1a1a] text-center"><Pencil size={16} className="inline-block align-text-bottom" /> {t('profile.edit')}</h2>
 
             <div>
               <label className="block text-xs text-[#888] mb-1.5 font-medium">{t('auth.display_name')}</label>
@@ -414,7 +414,7 @@ export default function ProfilePage() {
               <div key={f.id} className="card p-3 flex items-center justify-between">
                 <Link href={`/profile/${friendId}`} className="flex items-center gap-3 min-w-0">
                   <div className="w-8 h-8 rounded-full bg-[#c23531] flex items-center justify-center text-xs text-white font-bold shrink-0">{(friendName || '?')[0]}</div>
-                  <span className="text-sm font-medium text-[#1c1917] truncate">{friendName}</span>
+                  <span className="text-sm font-medium text-[#1a1a1a] truncate">{friendName}</span>
                 </Link>
                 <Link href={`/messages/${friendId}`} className="btn-ghost text-xs shrink-0"><MessageCircle size={14} className="inline-block align-text-bottom" /> {t('nav.messages')}</Link>
               </div>
@@ -439,7 +439,7 @@ export default function ProfilePage() {
               {threads.map((t, i) => (
                 <Link key={t.id} href={`/t/${t.id}`}
                   className={`post-card ${i > 0 ? `anim-delay-${Math.min(i, 5)}` : ''}`}>
-                  <div className="text-[#1c1917]">
+                  <div className="text-[#1a1a1a]">
                     <div className="font-semibold truncate">{t.title}</div>
                     <div className="flex items-center justify-between mt-2">
                       <div className="text-xs text-[#999] truncate min-w-0">

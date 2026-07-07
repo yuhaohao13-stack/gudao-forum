@@ -53,17 +53,17 @@ export default function AdminPage() {
   const toggle = (t, f) => async () => { await supabase.from('threads').update({ [f]: !t[f] }).eq('id', t.id); setThreads(threads.map(x => x.id === t.id ? { ...x, [f]: !x[f] } : x)) }
   const roleChg = async (id, r) => { await supabase.from('profiles').update({ role: r }).eq('id', id); setUsers(users.map(u => u.id === id ? { ...u, role: r } : u)) }
 
-  if (loading || profile?.role !== 'admin') return <div className="flex justify-center py-20"><div className="w-5 h-5 border-[1.5px] border-[#ddd] border-t-[#1c1917] rounded-full animate-spin" /></div>
+  if (loading || profile?.role !== 'admin') return <div className="flex justify-center py-20"><div className="w-5 h-5 border-[1.5px] border-[#ddd] border-t-[#1a1a1a] rounded-full animate-spin" /></div>
 
   return (
     <div className="anim-fade-in">
-      <h1 className="text-xl font-bold text-[#1c1917] mb-1"><Settings size={20} className="inline-block align-text-bottom" /> 管理后台</h1>
+      <h1 className="text-xl font-bold font-serif text-[#1a1a1a] mb-1"><Settings size={20} className="inline-block align-text-bottom" /> 管理后台</h1>
       <p className="text-xs text-[#aaa] mb-6">古道论坛管理中心</p>
 
       <div className="flex gap-2 mb-6">
         {['threads', 'users', 'broadcast'].map(t => (
           <button key={t} onClick={() => setTab(t)}
-            className={`px-4 py-1.5 rounded-md text-sm font-medium transition-colors ${tab === t ? 'bg-[#1c1917] text-white' : 'text-[#999] hover:text-[#1c1917] hover:bg-[#f5f5f5]'}`}>
+            className={`px-4 py-1.5 rounded-md text-sm font-medium transition-colors ${tab === t ? 'bg-[#1a1a1a] text-white' : 'text-[#999] hover:text-[#1a1a1a] hover:bg-[#f5f5f5]'}`}>
             {t === 'threads' ? '帖子管理' : t === 'users' ? '用户管理' : <><Megaphone size={14} className="inline-block align-text-bottom" /> 公告</>}
           </button>
         ))}
@@ -126,7 +126,7 @@ export default function AdminPage() {
 
       {tab === 'broadcast' && (
         <div className="max-w-xl">
-          <h2 className="font-bold text-[#1c1917] mb-1"><Megaphone size={16} className="inline-block align-text-bottom" /> 站内公告群发</h2>
+          <h2 className="font-bold font-serif text-[#1a1a1a] mb-1"><Megaphone size={16} className="inline-block align-text-bottom" /> 站内公告群发</h2>
           <p className="text-xs text-[#aaa] mb-4">发送私信公告给 <strong className="text-[#c23531]">{users.filter(u => u.id !== user?.id).length}</strong> 位注册用户</p>
           <div className="border border-[#f0f0f0] rounded-xl p-5 space-y-4">
             <textarea value={broadcastText} onChange={e => setBroadcastText(e.target.value)}

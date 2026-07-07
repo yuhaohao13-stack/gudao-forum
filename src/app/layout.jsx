@@ -6,7 +6,6 @@ import Footer from '@/components/Footer'
 import DonateOverlay from '@/components/DonateOverlay'
 import ErrorBoundary from '@/components/ErrorBoundary'
 import FloatingButtons from '@/components/FloatingButtons'
-import { Landmark } from 'lucide-react'
 
 export const metadata = {
   metadataBase: new URL('https://www.gudaoforum.com'),
@@ -103,7 +102,7 @@ export default function RootLayout({ children }) {
         <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png" />
         <link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192.png" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="theme-color" content="#b45309" />
+        <meta name="theme-color" content="#fafaf9" />
         <link rel="sitemap" type="application/xml" title="古道论坛Sitemap" href="/sitemap.xml" />
         <meta name="baidu-site-verification" content="codeva-ivcpKCSsQj" />
         <meta name="build-version" content="v3-refined" />
@@ -120,14 +119,14 @@ export default function RootLayout({ children }) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
         />
       </head>
-      <body className="min-h-screen flex flex-col bg-[#fafaf9] text-[#1c1917] overflow-x-hidden">
+      <body className="min-h-screen flex flex-col bg-[#fafaf9] text-[#1a1a1a] overflow-x-hidden">
         <ErrorBoundary>
           <DonateOverlay />
           <FloatingButtons />
           <LanguageProvider>
           <AuthProvider>
             <Header />
-            <main className="flex-1 max-w-5xl mx-auto w-full px-4 sm:px-8 py-6 sm:py-8">
+            <main className="flex-1 max-w-4xl mx-auto w-full px-4 py-5 sm:py-6">
               {children}
             </main>
             <Footer />

@@ -49,7 +49,7 @@ export default function ChatPage() {
             <div className="flex items-start gap-4">
               <div className="text-3xl shrink-0 mt-0.5">{room.icon}</div>
               <div className="min-w-0 flex-1">
-                <h3 className="font-semibold text-[#1c1917]">{room.name}</h3>
+                <h3 className="font-semibold text-[#1a1a1a]">{room.name}</h3>
                 <p className="text-sm text-[#aaa] mt-1 line-clamp-1">{room.description}</p>
                 <div className="flex items-center gap-2 mt-2 text-xs text-[#aaa]">
                   {user ? (
