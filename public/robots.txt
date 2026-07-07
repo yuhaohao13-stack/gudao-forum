@@ -44,4 +44,26 @@ Disallow: /
 User-agent: CCBot
 Disallow: /
 
+# AI 爬虫屏蔽（学习训练用爬虫）
+User-agent: Claude-Web
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: cohere-ai
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: PerplexityBot
+Disallow: /
+
+User-agent: Amazonbot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
 Sitemap: https://www.gudaoforum.com/sitemap.xml
