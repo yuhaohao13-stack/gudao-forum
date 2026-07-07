@@ -119,7 +119,7 @@ export default function LoginPage() {
     <div className="max-w-sm mx-auto mt-16 anim-fade-in">
       <div className="card p-8">
         <div className="text-center mb-6">
-          <h1 className="text-2xl font-bold font-serif text-[#1a1a1a]">{t('auth.login')}</h1>
+          <h1 className="text-2xl font-bold text-[#1c1917]">{t('auth.login')}</h1>
           <div className="w-10 h-0.5 bg-[#c23531] mx-auto mt-3 rounded-full" />
         </div>
         <form onSubmit={handleLogin} className="space-y-4">
@@ -146,7 +146,7 @@ export default function LoginPage() {
     <div className="max-w-sm mx-auto mt-16 anim-fade-in">
       <div className="card p-8">
         <div className="text-center mb-6">
-          <h1 className="text-2xl font-bold font-serif text-[#1a1a1a]">{t('auth.reset_password')}</h1>
+          <h1 className="text-2xl font-bold text-[#1c1917]">{t('auth.reset_password')}</h1>
           <div className="w-10 h-0.5 bg-[#c23531] mx-auto mt-3 rounded-full" />
           <p className="text-xs text-[#999] mt-2">{t('auth.enter_email')}</p>
         </div>
@@ -167,7 +167,7 @@ export default function LoginPage() {
     <div className="max-w-sm mx-auto mt-16 anim-fade-in">
       <div className="card p-8">
         <div className="text-center mb-5">
-          <h1 className="text-lg font-bold font-serif text-[#1a1a1a]">{t('auth.verify_identity')}</h1>
+          <h1 className="text-lg font-bold text-[#1c1917]">{t('auth.verify_identity')}</h1>
           <p className="text-xs text-[#999] mt-1">{t('auth.choose_method')}</p>
           <p className="text-xs text-[#c23531] font-medium mt-2">{resetEmail.replace(/(.{3}).+(@.+)/, '$1***$2')}</p>
         </div>
@@ -208,7 +208,7 @@ export default function LoginPage() {
       <div className="card p-8">
         <div className="text-center mb-6">
           <div className="mb-2"><CheckCircle size={32} className="inline-block text-green-600" /></div>
-          <h1 className="text-lg font-bold font-serif text-[#1a1a1a]">{t('auth.verified')}</h1>
+          <h1 className="text-lg font-bold text-[#1c1917]">{t('auth.verified')}</h1>
           <p className="text-xs text-[#999] mt-1">{t('auth.set_new_password')}</p>
         </div>
         <form onSubmit={handleStep3} className="space-y-4">
@@ -230,7 +230,7 @@ export default function LoginPage() {
     <div className="max-w-sm mx-auto mt-16 anim-fade-in">
       <div className="card p-8 text-center">
         <div className="mb-3"><PartyPopper size={40} className="inline-block" /></div>
-        <h1 className="text-xl font-bold font-serif text-[#1a1a1a] mb-2">{t('auth.password_reset')}</h1>
+        <h1 className="text-xl font-bold text-[#1c1917] mb-2">{t('auth.password_reset')}</h1>
         <p className="text-sm text-[#999]">{t('auth.use_new_password')}</p>
         <button onClick={() => { setResetStep(0); setPassword(''); setEmail(resetEmail); setError('') }}
           className="btn-primary mt-5">{t('auth.go_login')}</button>

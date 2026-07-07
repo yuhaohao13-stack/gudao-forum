@@ -77,7 +77,7 @@ export default function MessagesPage() {
 
   return (
     <div className="anim-fade-in max-w-2xl mx-auto">
-      <h1 className="text-2xl font-bold font-serif text-[#1a1a1a] mb-5"><MessageCircle size={20} className="inline-block align-text-bottom" /> {t('messages.title')}</h1>
+      <h1 className="text-2xl font-bold text-[#1c1917] mb-5"><MessageCircle size={20} className="inline-block align-text-bottom" /> {t('messages.title')}</h1>
       <p className="text-xs text-[#999] mb-4">Messages are private between you and the other person.</p>
 
       {loading ? (
@@ -104,7 +104,7 @@ export default function MessagesPage() {
                 </Link>
                 <Link href={`/messages/${conv.otherId}`} className="flex-1 min-w-0">
                   <div className="flex items-center justify-between">
-                    <span className="font-semibold text-sm text-[#1a1a1a] truncate">{name}</span>
+                    <span className="font-semibold text-sm text-[#1c1917] truncate">{name}</span>
                     <span className="text-[10px] text-[#bbb] shrink-0 ml-2">
                       {new Date(conv.lastMsg.created_at).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })}
                     </span>

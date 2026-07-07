@@ -45,22 +45,22 @@ export default function CategoryPage() {
     setThreads(threads.map(t => t.id === thread.id ? { ...t, is_pinned: newVal } : t))
   }
 
-  if (!category) return <div className="flex justify-center py-16"><div className="w-4 h-4 border-[1.5px] border-[#ddd] border-t-[#1a1a1a] rounded-full animate-spin" /></div>
+  if (!category) return <div className="flex justify-center py-16"><div className="w-4 h-4 border-[1.5px] border-[#ddd] border-t-[#1c1917] rounded-full animate-spin" /></div>
 
   return (
     <div className="anim-fade-in">
       <div className="mb-5">
         <Link href="/" className="text-xs text-[#bbb] hover:text-[#888] transition-colors">&larr; 首页</Link>
-        <h1 className="text-xl font-bold font-serif text-[#1a1a1a] mt-1">{category.icon} {category.name}</h1>
+        <h1 className="text-xl font-bold text-[#1c1917] mt-1">{category.icon} {category.name}</h1>
         <p className="text-[#aaa] text-xs mt-0.5">{category.description}</p>
       </div>
 
       <div className="flex items-center justify-between mb-4">
         <div className="flex gap-1.5">
           <button onClick={() => setSortBy('latest')}
-            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${sortBy === 'latest' ? 'bg-[#1a1a1a] text-white' : 'bg-[#f5f5f3] text-[#888] hover:text-[#1a1a1a]'}`}><Clock size={14} className="inline-block align-text-bottom" /> 最新</button>
+            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${sortBy === 'latest' ? 'bg-[#1c1917] text-white' : 'bg-[#f5f5f3] text-[#888] hover:text-[#1c1917]'}`}><Clock size={14} className="inline-block align-text-bottom" /> 最新</button>
           <button onClick={() => setSortBy('hot')}
-            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${sortBy === 'hot' ? 'bg-[#1a1a1a] text-white' : 'bg-[#f5f5f3] text-[#888] hover:text-[#1a1a1a]'}`}><Flame size={14} className="inline-block align-text-bottom" /> 最热</button>
+            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${sortBy === 'hot' ? 'bg-[#1c1917] text-white' : 'bg-[#f5f5f3] text-[#888] hover:text-[#1c1917]'}`}><Flame size={14} className="inline-block align-text-bottom" /> 最热</button>
         </div>
         {(!isAnnouncements || isAdmin) && (
           <Link href="/new-thread" className="btn-primary !px-3 !py-1.5 !text-xs"><Pencil size={14} className="inline-block align-text-bottom" /> 发帖</Link>
@@ -87,7 +87,7 @@ export default function CategoryPage() {
                   {(t.profiles?.role === 'admin' || t.profiles?.role === 'moderator') && !t.is_pinned && <span className="tag"><Crown size={12} className="inline-block align-text-bottom" /> 管理员</span>}
                   {t.is_locked && <span className="tag"><Lock size={12} className="inline-block align-text-bottom" /> 已锁</span>}
                 </div>
-                <h3 className="font-medium text-sm text-[#1a1a1a] truncate leading-snug">{t.title}</h3>
+                <h3 className="font-medium text-sm text-[#1c1917] truncate leading-snug">{t.title}</h3>
                 <div className="flex items-center gap-2 text-xs text-[#bbb] mt-1">
                   <span>{t.profiles?.display_name || t.profiles?.username}</span>
                   <span>·</span>

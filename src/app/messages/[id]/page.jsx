@@ -141,7 +141,7 @@ export default function PrivateChatPage() {
             {(otherProfile?.display_name || otherProfile?.username || '?')[0]}
           </div>
           <div>
-            <span className="font-semibold text-sm text-[#1a1a1a]">{otherProfile?.display_name || otherProfile?.username}</span>
+            <span className="font-semibold text-sm text-[#1c1917]">{otherProfile?.display_name || otherProfile?.username}</span>
             {!areFriends && <span className="ml-2 text-[10px] text-[#bbb]">({t('messages.not_friends')})</span>}
           </div>
         </Link>

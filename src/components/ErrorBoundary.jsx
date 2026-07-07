@@ -18,7 +18,7 @@ export default class ErrorBoundary extends Component {
         <div className="min-h-screen flex items-center justify-center bg-[#f8f6f2] p-4">
           <div className="card max-w-lg w-full p-8 text-center anim-fade-in">
             <div className="text-4xl mb-4">🐛</div>
-            <h1 className="text-xl font-bold font-serif text-[#1a1a1a] mb-2">页面出错了</h1>
+            <h1 className="text-xl font-bold text-[#1c1917] mb-2">页面出错了</h1>
             <p className="text-sm text-[#999] mb-4">错误信息：</p>
             <pre className="text-xs text-left bg-[#f5f0e8] p-4 rounded-xl overflow-auto max-h-[300px] text-[#c23531]">
               {this.state.error?.toString()}

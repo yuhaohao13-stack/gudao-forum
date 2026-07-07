@@ -65,7 +65,7 @@ export default function NewThreadPage() {
 
   return (
     <div className="max-w-2xl mx-auto anim-fade-in">
-      <h1 className="text-xl font-bold font-serif text-[#1a1a1a] mb-6"><Pencil size={20} className="inline-block align-text-bottom" /> 发新帖</h1>
+      <h1 className="text-xl font-bold text-[#1c1917] mb-6"><Pencil size={20} className="inline-block align-text-bottom" /> 发新帖</h1>
       <form onSubmit={handleSubmit} className="space-y-5">
         <div className="border border-[#f0f0f0] rounded-xl p-5 sm:p-6 space-y-5">
           <div>
@@ -92,7 +92,7 @@ export default function NewThreadPage() {
                 {previews.map((p, i) => (
                   <div key={i} className="relative group w-[45%] sm:w-[30%]">
                     <img src={p} alt="" className="w-full h-auto max-h-40 object-cover rounded-xl border border-[#f0f0f0]" />
-                    <button type="button" onClick={() => removeImage(i)} className="absolute -top-2 -right-2 w-5 h-5 bg-[#1a1a1a] rounded-full text-xs text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"><X size={10} /></button>
+                    <button type="button" onClick={() => removeImage(i)} className="absolute -top-2 -right-2 w-5 h-5 bg-[#1c1917] rounded-full text-xs text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"><X size={10} /></button>
                   </div>
                 ))}
               </div>

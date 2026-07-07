@@ -60,8 +60,8 @@ export default function ThreadPage() {
     else { await supabase.from('thread_likes').insert({ thread_id: id, user_id: user.id }); setLiked(true) }
   }
 
-  if (loading) return <div className="flex justify-center py-20"><div className="w-5 h-5 border-[1.5px] border-[#ddd] border-t-[#1a1a1a] rounded-full animate-spin" /></div>
-  if (!thread) return <div className="text-center py-20 anim-fade-in"><p className="text-[#bbb]">帖子不存在</p><Link href="/" className="text-[#888] hover:text-[#1a1a1a] mt-2 inline-block transition-colors">返回首页</Link></div>
+  if (loading) return <div className="flex justify-center py-20"><div className="w-5 h-5 border-[1.5px] border-[#ddd] border-t-[#1c1917] rounded-full animate-spin" /></div>
+  if (!thread) return <div className="text-center py-20 anim-fade-in"><p className="text-[#bbb]">帖子不存在</p><Link href="/" className="text-[#888] hover:text-[#1c1917] mt-2 inline-block transition-colors">返回首页</Link></div>
 
   return (
     <div className="anim-fade-in max-w-3xl mx-auto">
@@ -73,7 +73,7 @@ export default function ThreadPage() {
         {(thread.profiles?.role === 'admin' || thread.profiles?.role === 'moderator') && (
           <span className="tag mb-3 inline-block"><Crown size={14} className="inline-block align-text-bottom" /> 管理员</span>
         )}
-        <h1 className="text-xl sm:text-2xl font-bold font-serif text-[#1a1a1a] leading-snug">{thread.title}</h1>
+        <h1 className="text-xl sm:text-2xl font-bold text-[#1c1917] leading-snug">{thread.title}</h1>
         <div className="flex items-center gap-2 mt-3 text-sm text-[#aaa]">
           <Link href={`/profile/${thread.author_id}`} className="w-6 h-6 rounded-full bg-[#c23531] flex items-center justify-center text-[10px] text-white font-bold">
             {(thread.profiles?.display_name || thread.profiles?.username || '?')[0]}
