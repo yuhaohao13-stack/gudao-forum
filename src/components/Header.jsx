@@ -61,14 +61,14 @@ export default function Header() {
               className="whitespace-nowrap text-xs sm:text-sm font-medium px-3 py-1.5 rounded-lg transition-colors bg-[#f5f5f5] text-[#1a1a1a]"
             >{t('nav.home')}</Link>
             <a href="https://v.douyin.com/NvUr5C82ZDM/" target="_blank" rel="noopener"
-              className="flex items-center gap-1 whitespace-nowrap text-xs sm:text-sm font-bold px-2 sm:px-3 py-1.5 rounded-full bg-[#fe2c55] text-white hover:opacity-90 transition-all"
+              className="flex items-center gap-1 whitespace-nowrap text-xs sm:text-sm font-bold px-2 sm:px-3 py-1.5 rounded-full bg-gradient-to-r from-[#00f2fe] to-[#fe2c55] text-white hover:opacity-90 transition-all"
               title="浩哥维修实录 @Crazy维修 抖音">
               <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" className="shrink-0">
                 <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.88 2.89 2.89 0 0 1-2.88-2.88 2.89 2.89 0 0 1 2.88-2.88c.35 0 .69.06 1.01.18V8.48a6.34 6.34 0 0 0-1.01-.08C5.9 8.4 3 11.3 3 14.86c0 3.56 2.9 6.46 6.46 6.46 3.56 0 6.46-2.9 6.46-6.46V9.33a8.28 8.28 0 0 0 4.67 1.4v-3.4a4.84 4.84 0 0 1-1-.64z"/>
               </svg>
               <span>浩哥抖音</span>
             </a><DonateButton className="whitespace-nowrap text-sm font-semibold px-3 py-1.5 rounded-full text-[#c23531] hover:bg-[#fef2f0] transition-colors" />
-            <a href="https://www.crazy-repair.com" target="_blank" rel="noopener" className="whitespace-nowrap text-xs sm:text-sm font-semibold px-3 sm:px-4 py-1.5 rounded-full text-white bg-[#2563eb] transition-all duration-200 hover:opacity-90">crazy 维修</a>
+            <a href="https://www.crazy-repair.com" target="_blank" rel="noopener" className="whitespace-nowrap text-xs sm:text-sm font-semibold px-3 sm:px-4 py-1.5 rounded-full text-white bg-gradient-to-b from-[#4a8eff] to-[#2563eb] transition-all duration-200 hover:opacity-90">crazy 维修</a>
           </div>
 
           {/* 右：用户操作 */}
