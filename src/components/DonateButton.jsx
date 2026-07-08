@@ -9,7 +9,7 @@ export default function DonateButton({ className = '' }) {
       onClick={() => window.dispatchEvent(new CustomEvent('open-donate'))}
       className={className || "btn-ghost flex items-center gap-1 font-bold"}
     >
-      <Heart size={22} className="text-[#c23531]" /> <span>{t('donate.title')}</span>
+      <Heart size={44} className="text-[#c23531]" /> <span>{t('donate.title')}</span>
     </button>
   )
 }
