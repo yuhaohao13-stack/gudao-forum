@@ -1,5 +1,4 @@
 'use client'
-import { Heart } from 'lucide-react'
 import { useLanguage } from '@/lib/LanguageContext'
 
 export default function DonateButton({ className = '' }) {

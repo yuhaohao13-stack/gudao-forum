@@ -102,7 +102,7 @@ export default function FloatingButtons() {
             alignItems: 'center',
             justifyContent: 'center',
             transition: 'all 0.2s ease',
-          }
+          }}
           title="联系站长"
         >
           <MessageCircle size={22} />
