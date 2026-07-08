@@ -52,7 +52,36 @@ export default function FloatingButtons() {
         } catch(e) { reject(e) }
       })
     }
-    doCopy().then(() => setCopied(true)).catch(() => setCopied(false))
+    doCopy().then(() => {
+      setCopied(true)
+      setTimeout(() => setCopied(false), 3000)
+    }).catch(() => setCopied(false))
+  }
+
+  // 点击微信号：复制 + 显示已复制
+  const copyWechatId = () => {
+    const doCopy = () => {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        return navigator.clipboard.writeText(WECHAT_ID)
+      }
+      return new Promise((resolve, reject) => {
+        try {
+          const ta = document.createElement('textarea')
+          ta.value = WECHAT_ID
+          ta.style.position = 'fixed'
+          ta.style.opacity = '0'
+          document.body.appendChild(ta)
+          ta.select()
+          document.execCommand('copy')
+          document.body.removeChild(ta)
+          resolve()
+        } catch(e) { reject(e) }
+      })
+    }
+    doCopy().then(() => {
+      setCopied(true)
+      setTimeout(() => setCopied(false), 3000)
+    }).catch(() => {})
   }
 
   // 短信
@@ -180,13 +209,18 @@ export default function FloatingButtons() {
             </div>
 
             {/* 微信号 */}
-            <div style={{
+            <button onClick={copyWechatId} style={{
               backgroundColor: '#f9f9f9', borderRadius: '0.5rem',
-              padding: '0.5rem', marginBottom: '0.75rem',
+              padding: '0.5rem', marginBottom: '0.75rem', width: '100%',
+              border: 'none', cursor: 'pointer',
             }}>
-              <p style={{ fontSize: '0.55rem', color: '#999', marginBottom: '0.2rem' }}>或复制微信号搜索</p>
-              <p style={{ fontSize: '0.9rem', fontWeight: 700, color: '#07c160', letterSpacing: '0.1em', userSelect: 'all' }}>{WECHAT_ID}</p>
-            </div>
+              <p style={{ fontSize: '0.55rem', color: '#999', marginBottom: '0.2rem' }}>
+                {copied ? '✅ 已复制' : '点击复制微信号'}
+              </p>
+              <p style={{ fontSize: '0.9rem', fontWeight: 700, letterSpacing: '0.1em', userSelect: 'all', color: copied ? '#10b981' : '#07c160' }}>
+                {copied ? '请到微信粘贴搜索' : WECHAT_ID}
+              </p>
+            </button>
 
             {/* 步骤 */}
             <div style={{ textAlign: 'left', fontSize: '0.6rem', color: '#666', marginBottom: '0.75rem', marginLeft: '0.75rem', lineHeight: '1.6' }}>
