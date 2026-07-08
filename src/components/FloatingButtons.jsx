@@ -7,7 +7,7 @@ import { Heart, MessageCircle, X, Phone, MessageSquare } from 'lucide-react'
 const WECHAT_ID = 'crazy-repair'
 const PHONE_CHINA = '+8613573735550'
 const PHONE_SG = '+6596146709'
-const QR_URL = 'https://www.crazy-repair.com/images/wechat-qr.jpg'
+const QR_URL = '/images/wechat-qr.jpg'
 
 export default function FloatingButtons() {
   const [showDonateTip, setShowDonateTip] = useState(false)
