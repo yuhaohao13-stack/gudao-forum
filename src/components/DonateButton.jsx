@@ -1,4 +1,5 @@
 'use client'
+import { Heart } from 'lucide-react'
 import { useLanguage } from '@/lib/LanguageContext'
 
 export default function DonateButton({ className = '' }) {
@@ -8,7 +9,7 @@ export default function DonateButton({ className = '' }) {
       onClick={() => window.dispatchEvent(new CustomEvent('open-donate'))}
       className={className || "btn-ghost flex items-center gap-1 font-bold"}
     >
-      💛 <span>{t('donate.title')}</span>
+      <Heart size={22} className="text-[#c23531]" /> <span>{t('donate.title')}</span>
     </button>
   )
 }

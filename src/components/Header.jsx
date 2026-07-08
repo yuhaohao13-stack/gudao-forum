@@ -56,7 +56,7 @@ export default function Header() {
         {/* 操作行：导航 + 打赏（左） | 会员/私信/发帖/搜索（右） */}
         <div className="flex items-center justify-between pb-3 gap-1 overflow-x-auto scrollbar-none">
           {/* 左：导航 + 打赏 */}
-          <div className="flex items-center gap-3 shrink-0">
+          <div className="flex items-center gap-4 shrink-0">
             <Link href="/"
               className="whitespace-nowrap text-xs sm:text-sm font-medium px-3 py-1.5 rounded-lg transition-colors bg-[#f5f5f5] text-[#1a1a1a]"
             >{t('nav.home')}</Link>
@@ -68,8 +68,8 @@ export default function Header() {
               </svg>
               <span>浩哥抖音</span>
             </a>
-            <DonateButton className="whitespace-nowrap text-xs sm:text-sm font-medium px-3 py-1.5 rounded-lg bg-[#f5f5f5] text-[#1a1a1a] hover:bg-[#e8e8e8] transition-colors" />
-            <a href="https://www.crazy-repair.com" target="_blank" rel="noopener" className="whitespace-nowrap text-xs sm:text-sm font-medium px-3 py-1.5 rounded-lg bg-[#f5f5f5] text-[#1a1a1a] hover:bg-[#e8e8e8] transition-colors">crazy 维修</a>
+            <a href="https://www.crazy-repair.com" target="_blank" rel="noopener" className="flex items-center gap-1 whitespace-nowrap text-xs sm:text-sm font-medium px-3 py-1.5 rounded-lg bg-[#f5f5f5] text-[#1a1a1a] hover:bg-[#e8e8e8] transition-colors">🔧 crazy 维修</a>
+            <DonateButton className="flex items-center gap-1.5 whitespace-nowrap text-base sm:text-lg font-semibold px-6 py-3 rounded-lg bg-[#f5f5f5] text-[#1a1a1a] hover:bg-[#e8e8e8] transition-colors" />
           </div>
 
           {/* 右：用户操作 */}
