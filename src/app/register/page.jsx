@@ -123,7 +123,7 @@ export default function RegisterPage() {
   const inputClass = "input"
 
   return (
-    <div className="max-w-lg mx-auto mt-8 mb-16 anim-fade-in">
+    <div className="max-w-md mx-auto mt-8 mb-16 anim-fade-in">
       <div className="card p-6 sm:p-8">
         <div className="text-center mb-6">
           <h1 className="text-2xl font-bold text-[#1a1a1a]">{t('auth.register')}</h1>
@@ -164,21 +164,27 @@ export default function RegisterPage() {
                 className={inputClass} placeholder="your@email.com" autoComplete="email" />
             </div>
 
-            <div>
-              <label className="block text-xs text-[#888] mb-1.5 font-medium">{t('auth.dob_field')} <span className="text-[#c23531]">*</span></label>
-              <DatePicker value={form.date_of_birth} onChange={(d) => update('date_of_birth', d)} lang={lang} max={new Date().toISOString().split('T')[0]} />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs text-[#888] mb-1.5 font-medium">{t('auth.dob_field')} <span className="text-[#c23531]">*</span></label>
+                <DatePicker value={form.date_of_birth} onChange={(d) => update('date_of_birth', d)} lang={lang} max={new Date().toISOString().split('T')[0]} />
+              </div>
+              <div>
+                <label className="block text-xs text-[#888] mb-1.5 font-medium">{t('profile.birth_place')} <span className="text-[#c23531]">*</span></label>
+                <BirthPlaceSelector value={parseBp(form.birth_place)} onChange={(v) => update('birth_place', bpStr(v))} lang={lang} />
+              </div>
             </div>
 
             <div>
               <label className="block text-xs text-[#888] mb-1.5 font-medium">{t('profile.gender')} <span className="text-[#c23531]">*</span></label>
-              <div className="flex gap-3">
+              <div className="flex gap-2">
                 {[
-                  { value: 'male', label: <><Mars size={16} className="inline-block align-text-bottom" /> {t('profile.male')}</> },
-                  { value: 'female', label: <><Venus size={16} className="inline-block align-text-bottom" /> {t('profile.female')}</> },
-                  { value: 'other', label: <><Sparkles size={16} className="inline-block align-text-bottom" /> {t('profile.other')}</> },
+                  { value: 'male', label: <><Mars size={14} className="inline-block align-text-bottom" /> {t('profile.male')}</> },
+                  { value: 'female', label: <><Venus size={14} className="inline-block align-text-bottom" /> {t('profile.female')}</> },
+                  { value: 'other', label: <><Sparkles size={14} className="inline-block align-text-bottom" /> {t('profile.other')}</> },
                 ].map(opt => (
                   <label key={opt.value}
-                    className={`flex-1 flex items-center justify-center gap-1 p-3 rounded-xl border cursor-pointer transition-all text-sm font-medium ${
+                    className={`flex-1 flex items-center justify-center gap-1 p-2.5 rounded-xl border cursor-pointer transition-all text-sm font-medium ${
                       form.gender === opt.value
                         ? 'border-[#c23531] bg-[#c23531]/5 text-[#c23531]'
                         : 'border-[#eee8dc] text-[#888] hover:border-[#c23531]/30'
@@ -191,11 +197,6 @@ export default function RegisterPage() {
                   </label>
                 ))}
               </div>
-            </div>
-
-            <div>
-              <label className="block text-xs text-[#888] mb-1.5 font-medium">{t('profile.birth_place')} <span className="text-[#c23531]">*</span></label>
-              <BirthPlaceSelector value={parseBp(form.birth_place)} onChange={(v) => update('birth_place', bpStr(v))} lang={lang} />
             </div>
 
             <div>
