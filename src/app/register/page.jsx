@@ -24,7 +24,7 @@ export default function RegisterPage() {
     _honeypot: '',
     _captcha: '',
     username: '', email: '', password: '', phone: '', gender: 'male',
-    date_of_birth: '', birth_place: '', hobbies: '', bio: '', resume: '',
+    date_of_birth: '', birth_place: '', address: '', hobbies: '', bio: '', resume: '',
   })
   const [phoneCode, setPhoneCode] = useState('86')
   const [error, setError] = useState('')
@@ -101,6 +101,7 @@ export default function RegisterPage() {
           gender,
           date_of_birth,
           birth_place: form.birth_place.trim(),
+          address: form.address.trim(),
           hobbies: hobbies.trim(),
           bio: bio.trim(),
           resume: resume.trim(),
@@ -216,6 +217,23 @@ export default function RegisterPage() {
             <div>
               <label className="block text-xs text-[#888] mb-1.5 font-medium">{t('profile.birth_place')}</label>
               <BirthPlaceSelector value={form.birth_place} onChange={(v) => update('birth_place', typeof v === 'string' ? v : (v.province + (v.city ? '/' + v.city : '')))} lang={lang} />
+            </div>
+
+            <div>
+              <label className="block text-xs text-[#888] mb-1.5 font-medium">{t('profile.address') || '详细地址'}</label>
+              {form.birth_place && (
+                <div className="text-[10px] text-[#c23531] font-medium mb-1">
+                  📍 {typeof form.birth_place === 'object' 
+                    ? (form.birth_place.province + (form.birth_place.city ? '/' + form.birth_place.city : ''))
+                    : form.birth_place === 'overseas' ? '海外' : form.birth_place
+                  }
+                </div>
+              )}
+              <input type="text" value={form.address}
+                onChange={e => update('address', e.target.value)}
+                className={inputClass} 
+                placeholder={form.birth_place ? '请输入详细地址' : '请先选择出生地'}
+                disabled={!form.birth_place} />
             </div>
 
             <div>
