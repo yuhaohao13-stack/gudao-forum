@@ -8,6 +8,8 @@ import { validatePassword, checkRateLimit } from '@/lib/moderation'
 import { validatePhone } from '@/lib/phone'
 import PhoneInput from '@/components/PhoneInput'
 import { useLanguage } from '@/lib/LanguageContext'
+import BirthPlaceSelector from '@/components/BirthPlaceSelector'
+import DatePicker from '@/components/DatePicker'
 
 const pageLoadTime = Date.now()
 
@@ -22,7 +24,7 @@ export default function RegisterPage() {
     _honeypot: '',
     _captcha: '',
     username: '', email: '', password: '', phone: '', gender: 'male',
-    date_of_birth: '', hobbies: '', bio: '', resume: '',
+    date_of_birth: '', birth_place: '', hobbies: '', bio: '', resume: '',
   })
   const [phoneCode, setPhoneCode] = useState('86')
   const [error, setError] = useState('')
@@ -98,6 +100,7 @@ export default function RegisterPage() {
           phone: phoneCheck.formatted,
           gender,
           date_of_birth,
+          birth_place: form.birth_place.trim(),
           hobbies: hobbies.trim(),
           bio: bio.trim(),
           resume: resume.trim(),
@@ -163,9 +166,7 @@ export default function RegisterPage() {
 
             <div>
               <label className="block text-xs text-[#888] mb-1.5 font-medium">{t('auth.dob_field')} <span className="text-[#c23531]">*</span></label>
-              <input type="date" required value={form.date_of_birth}
-                onChange={e => update('date_of_birth', e.target.value)}
-                className={inputClass} max={new Date().toISOString().split('T')[0]} />
+              <DatePicker value={form.date_of_birth} onChange={(d) => update('date_of_birth', d)} lang={lang} max={new Date().toISOString().split('T')[0]} required />
             </div>
 
             <div>
@@ -210,6 +211,11 @@ export default function RegisterPage() {
               <input type="text" value={form.hobbies}
                 onChange={e => update('hobbies', e.target.value)}
                 className={inputClass} placeholder="例如：摄影、编程、读书" />
+            </div>
+
+            <div>
+              <label className="block text-xs text-[#888] mb-1.5 font-medium">{t('profile.birth_place')}</label>
+              <BirthPlaceSelector value={form.birth_place} onChange={(v) => update('birth_place', typeof v === 'string' ? v : (v.province + (v.city ? '/' + v.city : '')))} lang={lang} />
             </div>
 
             <div>
