@@ -140,11 +140,19 @@ export default function RegisterPage() {
             </div>
             <p className="text-[10px] text-[#c23531] font-medium tracking-wide">Required</p>
 
-            <div>
-              <label className="block text-xs text-[#888] mb-1.5 font-medium">{t('auth.display_name')} <span className="text-[#c23531]">*</span></label>
-              <input type="text" required value={form.username}
-                onChange={e => update('username', e.target.value)}
-                className={inputClass} placeholder="例如：张三" maxLength={10} autoComplete="name" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs text-[#888] mb-1.5 font-medium">{t('auth.display_name')} <span className="text-[#c23531]">*</span></label>
+                <input type="text" required value={form.username}
+                  onChange={e => update('username', e.target.value)}
+                  className={inputClass} placeholder="例如：张三" maxLength={10} autoComplete="name" />
+              </div>
+              <div>
+                <label className="block text-xs text-[#888] mb-1.5 font-medium">{t('auth.email')} <span className="text-[#c23531]">*</span></label>
+                <input type="email" required value={form.email}
+                  onChange={e => update('email', e.target.value)}
+                  className={inputClass} placeholder="your@email.com" autoComplete="email" />
+              </div>
             </div>
 
             <div>
@@ -155,13 +163,6 @@ export default function RegisterPage() {
                 required
                 lang={lang}
               />
-            </div>
-
-            <div>
-              <label className="block text-xs text-[#888] mb-1.5 font-medium">{t('auth.email')} <span className="text-[#c23531]">*</span></label>
-              <input type="email" required value={form.email}
-                onChange={e => update('email', e.target.value)}
-                className={inputClass} placeholder="your@email.com" autoComplete="email" />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
