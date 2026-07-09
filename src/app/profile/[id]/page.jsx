@@ -87,10 +87,9 @@ export default function ProfilePage() {
     (async () => {
       const { data } = await supabase.from('profiles').select('*').eq('id', id).single()
       
-      // 从 auth user_metadata 补全省市和地址（数据库可能没有这列）
+      // 从 auth user_metadata 补充省市（数据库可能没有这列）
       if (data && user?.id === id) {
         const { data: { user: authUser } } = await supabase.auth.getUser()
-        if (authUser?.user_metadata?.address) data.address = authUser.user_metadata.address
         if (authUser?.user_metadata?.birth_place) data.birth_place = authUser.user_metadata.birth_place
       }
 
@@ -104,7 +103,6 @@ export default function ProfilePage() {
         bio: data?.bio || '',
         resume: data?.resume || '',
         birth_place: data?.birth_place || '',
-        address: data?.address || '',
       })
       if (data) {
         supabase.from('threads').select('*, categories(name, slug)').eq('author_id', id)
@@ -133,7 +131,6 @@ export default function ProfilePage() {
     // 地址信息存到 auth user_metadata
     await supabase.auth.updateUser({
       data: {
-        address: form.address.trim(),
         birth_place: form.birth_place,
       }
     })
@@ -229,12 +226,6 @@ export default function ProfilePage() {
                 <div className="flex items-baseline gap-2">
                   <span className="w-16 shrink-0 text-[#bbb] text-xs">省市</span>
                   <span className="text-[#666]">{profile.birth_place}</span>
-                </div>
-              )}
-              {profile.address && (
-                <div className="flex items-baseline gap-2">
-                  <span className="w-16 shrink-0 text-[#bbb] text-xs">详细地址</span>
-                  <span className="text-[#666]">{profile.address}</span>
                 </div>
               )}
               {profile.hobbies && (
@@ -362,13 +353,6 @@ export default function ProfilePage() {
               <input type="text" value={form.birth_place}
                 onChange={e => update('birth_place', e.target.value)}
                 className="input" placeholder="山东/威海" />
-            </div>
-
-            <div>
-              <label className="block text-xs text-[#888] mb-1.5 font-medium">详细地址</label>
-              <input type="text" value={form.address}
-                onChange={e => update('address', e.target.value)}
-                className="input" placeholder="详细地址" />
             </div>
 
             <div>
