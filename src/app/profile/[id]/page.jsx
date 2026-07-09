@@ -84,7 +84,16 @@ export default function ProfilePage() {
   }
 
   useEffect(() => {
-    supabase.from('profiles').select('*').eq('id', id).single().then(({ data }) => {
+    (async () => {
+      const { data } = await supabase.from('profiles').select('*').eq('id', id).single()
+      
+      // 从 auth user_metadata 补全省市和地址（数据库可能没有这列）
+      if (data && user?.id === id) {
+        const { data: { user: authUser } } = await supabase.auth.getUser()
+        if (authUser?.user_metadata?.address) data.address = authUser.user_metadata.address
+        if (authUser?.user_metadata?.birth_place) data.birth_place = authUser.user_metadata.birth_place
+      }
+
       setProfile(data)
       setForm({
         display_name: data?.display_name || '',
@@ -102,7 +111,7 @@ export default function ProfilePage() {
           .order('created_at', { ascending: false }).limit(50)
           .then(({ data: t }) => setThreads(t || []))
       }
-    })
+    })()
   }, [id])
 
   const update = (key, val) => setForm(prev => ({ ...prev, [key]: val }))
@@ -110,6 +119,7 @@ export default function ProfilePage() {
   const handleSave = async () => {
     setSaving(true)
     setMessage('')
+    // 更新 profiles 表（不含地址，数据库可能没这列）
     const { error } = await supabase.from('profiles').update({
       display_name: form.display_name.trim(),
       phone: form.phone,
@@ -118,9 +128,15 @@ export default function ProfilePage() {
       hobbies: form.hobbies.trim(),
       bio: form.bio.trim(),
       resume: form.resume.trim(),
-      birth_place: form.birth_place,
-      address: form.address.trim(),
     }).eq('id', id)
+
+    // 地址信息存到 auth user_metadata
+    await supabase.auth.updateUser({
+      data: {
+        address: form.address.trim(),
+        birth_place: form.birth_place,
+      }
+    })
 
     if (error) {
       setMessage('保存失败: ' + error.message)
