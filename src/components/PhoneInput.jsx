@@ -127,7 +127,7 @@ export default function PhoneInput({ value, onChange, placeholder, required, dis
               flex items-center gap-1.5 px-2.5 py-2.5 text-sm border border-r-0 rounded-l-xl
               ${disabled ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-white text-gray-800 hover:border-gray-400 cursor-pointer'}
               ${open ? 'border-blue-500 ring-2 ring-blue-200 z-10' : 'border-gray-300'}
-              transition-all min-w-[5.5rem]
+              transition-all min-w-[4.5rem]
             `}
           >
             <span className="text-base leading-none">{selected.flag}</span>

@@ -8,7 +8,7 @@ import { validatePassword, checkRateLimit } from '@/lib/moderation'
 import { validatePhone } from '@/lib/phone'
 import PhoneInput from '@/components/PhoneInput'
 import { useLanguage } from '@/lib/LanguageContext'
-import BirthPlaceSelector from '@/components/BirthPlaceSelector'
+import BirthPlaceSelector, { bpStr, parseBp } from '@/components/BirthPlaceSelector'
 import DatePicker from '@/components/DatePicker'
 
 const pageLoadTime = Date.now()
@@ -149,13 +149,6 @@ export default function RegisterPage() {
             </div>
 
             <div>
-              <label className="block text-xs text-[#888] mb-1.5 font-medium">{t('auth.email')} <span className="text-[#c23531]">*</span></label>
-              <input type="email" required value={form.email}
-                onChange={e => update('email', e.target.value)}
-                className={inputClass} placeholder="your@email.com" autoComplete="email" />
-            </div>
-
-            <div>
               <PhoneInput
                 value={{ code: phoneCode, number: form.phone }}
                 onChange={(v) => { setPhoneCode(v.code); update('phone', v.number) }}
@@ -166,8 +159,15 @@ export default function RegisterPage() {
             </div>
 
             <div>
+              <label className="block text-xs text-[#888] mb-1.5 font-medium">{t('auth.email')} <span className="text-[#c23531]">*</span></label>
+              <input type="email" required value={form.email}
+                onChange={e => update('email', e.target.value)}
+                className={inputClass} placeholder="your@email.com" autoComplete="email" />
+            </div>
+
+            <div>
               <label className="block text-xs text-[#888] mb-1.5 font-medium">{t('auth.dob_field')} <span className="text-[#c23531]">*</span></label>
-              <DatePicker value={form.date_of_birth} onChange={(d) => update('date_of_birth', d)} lang={lang} max={new Date().toISOString().split('T')[0]} required />
+              <DatePicker value={form.date_of_birth} onChange={(d) => update('date_of_birth', d)} lang={lang} max={new Date().toISOString().split('T')[0]} />
             </div>
 
             <div>
@@ -216,17 +216,14 @@ export default function RegisterPage() {
 
             <div>
               <label className="block text-xs text-[#888] mb-1.5 font-medium">{t('profile.birth_place')}</label>
-              <BirthPlaceSelector value={form.birth_place} onChange={(v) => update('birth_place', typeof v === 'string' ? v : (v.province + (v.city ? '/' + v.city : '')))} lang={lang} />
+              <BirthPlaceSelector value={parseBp(form.birth_place)} onChange={(v) => update('birth_place', bpStr(v))} lang={lang} />
             </div>
 
             <div>
               <label className="block text-xs text-[#888] mb-1.5 font-medium">{t('profile.address') || '详细地址'}</label>
-              {form.birth_place && (
+              {form.birth_place && form.birth_place !== '海外' && form.birth_place !== '' && (
                 <div className="text-[10px] text-[#c23531] font-medium mb-1">
-                  📍 {typeof form.birth_place === 'object' 
-                    ? (form.birth_place.province + (form.birth_place.city ? '/' + form.birth_place.city : ''))
-                    : form.birth_place === 'overseas' ? '海外' : form.birth_place
-                  }
+                  📍 {form.birth_place}
                 </div>
               )}
               <input type="text" value={form.address}
