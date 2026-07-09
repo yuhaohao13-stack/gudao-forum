@@ -94,6 +94,8 @@ export default function ProfilePage() {
         hobbies: data?.hobbies || '',
         bio: data?.bio || '',
         resume: data?.resume || '',
+        birth_place: data?.birth_place || '',
+        address: data?.address || '',
       })
       if (data) {
         supabase.from('threads').select('*, categories(name, slug)').eq('author_id', id)
@@ -116,6 +118,8 @@ export default function ProfilePage() {
       hobbies: form.hobbies.trim(),
       bio: form.bio.trim(),
       resume: form.resume.trim(),
+      birth_place: form.birth_place,
+      address: form.address.trim(),
     }).eq('id', id)
 
     if (error) {
@@ -203,6 +207,18 @@ export default function ProfilePage() {
                 <div className="flex items-baseline gap-2">
                   <span className="w-16 shrink-0 text-[#bbb] text-xs">{t('profile.gender')}</span>
                   <span className="text-[#666]">{genderLabel(profile.gender)}</span>
+                </div>
+              )}
+              {profile.birth_place && (
+                <div className="flex items-baseline gap-2">
+                  <span className="w-16 shrink-0 text-[#bbb] text-xs">省市</span>
+                  <span className="text-[#666]">{profile.birth_place}</span>
+                </div>
+              )}
+              {profile.address && (
+                <div className="flex items-baseline gap-2">
+                  <span className="w-16 shrink-0 text-[#bbb] text-xs">详细地址</span>
+                  <span className="text-[#666]">{profile.address}</span>
                 </div>
               )}
               {profile.hobbies && (
@@ -323,6 +339,20 @@ export default function ProfilePage() {
                   </label>
                 ))}
               </div>
+            </div>
+
+            <div>
+              <label className="block text-xs text-[#888] mb-1.5 font-medium">省市</label>
+              <input type="text" value={form.birth_place}
+                onChange={e => update('birth_place', e.target.value)}
+                className="input" placeholder="山东/威海" />
+            </div>
+
+            <div>
+              <label className="block text-xs text-[#888] mb-1.5 font-medium">详细地址</label>
+              <input type="text" value={form.address}
+                onChange={e => update('address', e.target.value)}
+                className="input" placeholder="详细地址" />
             </div>
 
             <div>
