@@ -194,6 +194,11 @@ export default function RegisterPage() {
             </div>
 
             <div>
+              <label className="block text-xs text-[#888] mb-1.5 font-medium">{t('profile.birth_place')} <span className="text-[#c23531]">*</span></label>
+              <BirthPlaceSelector value={parseBp(form.birth_place)} onChange={(v) => update('birth_place', bpStr(v))} lang={lang} />
+            </div>
+
+            <div>
               <label className="block text-xs text-[#888] mb-1.5 font-medium">{t('auth.password')} <span className="text-[#c23531]">*</span></label>
               <input type="password" required value={form.password}
                 onChange={e => update('password', e.target.value)}
@@ -211,11 +216,6 @@ export default function RegisterPage() {
               <input type="text" value={form.hobbies}
                 onChange={e => update('hobbies', e.target.value)}
                 className={inputClass} placeholder="例如：摄影、编程、读书" />
-            </div>
-
-            <div>
-              <label className="block text-xs text-[#888] mb-1.5 font-medium">{t('profile.birth_place')}</label>
-              <BirthPlaceSelector value={parseBp(form.birth_place)} onChange={(v) => update('birth_place', bpStr(v))} lang={lang} />
             </div>
 
             <div>
