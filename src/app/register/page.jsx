@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { Mars, Venus, Sparkles, RefreshCw } from 'lucide-react'
 import { validatePassword, checkRateLimit } from '@/lib/moderation'
 import { validatePhone } from '@/lib/phone'
+import PhoneInput from '@/components/PhoneInput'
 import { useLanguage } from '@/lib/LanguageContext'
 
 const pageLoadTime = Date.now()
@@ -15,7 +16,7 @@ function generateCaptcha() {
 }
 
 export default function RegisterPage() {
-  const { t } = useLanguage()
+  const { t, lang } = useLanguage()
   const [captchaCode, setCaptchaCode] = useState('')
   const [form, setForm] = useState({
     _honeypot: '',
@@ -23,6 +24,7 @@ export default function RegisterPage() {
     username: '', email: '', password: '', phone: '', gender: 'male',
     date_of_birth: '', hobbies: '', bio: '', resume: '',
   })
+  const [phoneCode, setPhoneCode] = useState('86')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [cooldown, setCooldown] = useState(0)
@@ -69,7 +71,8 @@ export default function RegisterPage() {
     if (age < 10 || age > 120) { setError('出生日期不合法，请检查'); return }
 
     // 手机号校验
-    const phoneCheck = validatePhone(phone)
+    const fullPhone = '+' + phoneCode + phone
+    const phoneCheck = validatePhone(fullPhone)
     if (!phoneCheck.valid) { setError(phoneCheck.error); return }
 
     // 密码强度校验
@@ -149,11 +152,13 @@ export default function RegisterPage() {
             </div>
 
             <div>
-              <label className="block text-xs text-[#888] mb-1.5 font-medium">{t('profile.phone')} <span className="text-[#c23531]">*</span></label>
-              <input type="tel" required value={form.phone}
-                onChange={e => update('phone', e.target.value)}
-                className={inputClass} placeholder="13812345678" maxLength={11} autoComplete="tel" />
-              <p className="text-[10px] text-[#ccc] mt-1">请输入真实的 11 位手机号</p>
+              <PhoneInput
+                value={{ code: phoneCode, number: form.phone }}
+                onChange={(v) => { setPhoneCode(v.code); update('phone', v.number) }}
+                label={t('profile.phone')}
+                required
+                lang={lang}
+              />
             </div>
 
             <div>
