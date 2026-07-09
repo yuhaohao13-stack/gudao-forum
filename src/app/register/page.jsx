@@ -4,7 +4,8 @@ import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Mars, Venus, Sparkles, RefreshCw } from 'lucide-react'
-import { validatePassword, validatePhone, checkRateLimit } from '@/lib/moderation'
+import { validatePassword, checkRateLimit } from '@/lib/moderation'
+import { validatePhone } from '@/lib/phone'
 import { useLanguage } from '@/lib/LanguageContext'
 
 const pageLoadTime = Date.now()
@@ -91,7 +92,7 @@ export default function RegisterPage() {
         data: {
           username: username.trim(),
           display_name: username.trim(),
-          phone: phoneCheck.phone,
+          phone: phoneCheck.formatted,
           gender,
           date_of_birth,
           hobbies: hobbies.trim(),
