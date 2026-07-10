@@ -203,11 +203,11 @@ export default function RacingGame({ onScore }) {
     <div className="flex flex-col items-center gap-[16px]">
       <div className="flex items-center gap-6 flex-wrap justify-center">
         <div className="text-sm text-[#888]">距离: <span className="text-[#c23531] font-bold text-lg">{score}</span>m</div>
-        {state === 'idle' && <button onClick={start} className="btn-primary" style={{fontSize:"20px",padding:"20px 40px"}}>🏁 开始比赛</button>}
+        {state === 'idle' && <button onClick={start} className="btn-primary" style={{fontSize:"10px",padding:"10px 20px"}}>🏁 开始比赛</button>}
         {state === 'over' && (
           <div className="flex items-center gap-3">
             <span className="text-[#e94560] font-bold text-[18px]">💥 撞车了!</span>
-            <button onClick={start} className="btn-primary" style={{fontSize:"20px",padding:"20px 40px"}}>再来一局</button>
+            <button onClick={start} className="btn-primary" style={{fontSize:"10px",padding:"10px 20px"}}>再来一局</button>
           </div>
         )}
         {state === 'playing' && <span className="text-xs text-[#999] hidden sm:inline">← → 左右移动</span>}

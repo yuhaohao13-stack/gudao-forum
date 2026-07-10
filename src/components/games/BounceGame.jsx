@@ -281,14 +281,14 @@ export default function BounceGame({ onScore }) {
           高度: <span className="text-[#c23531] font-bold text-[18px]">{Math.floor(score)}</span>
         </div>
         {state === 'idle' && (
-          <button onClick={start} className="btn-primary" style={{ fontSize: '20px', padding: '20px 40px' }}>
+          <button onClick={start} className="btn-primary" style={{fontSize:"10px",padding:"10px 20px"}}>
             开始游戏
           </button>
         )}
         {state === 'over' && (
           <div className="flex items-center gap-[12px]">
             <span className="text-[#e94560] font-bold text-[18px]">掉下去了!</span>
-            <button onClick={start} className="btn-primary" style={{ fontSize: '20px', padding: '20px 40px' }}>
+            <button onClick={start} className="btn-primary" style={{fontSize:"10px",padding:"10px 20px"}}>
               再来一局
             </button>
           </div>

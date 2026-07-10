@@ -255,14 +255,14 @@ export default function MemoryGame({ onScore }) {
         <div className="text-[14px] text-[#888]">配对: <span className="text-[#c23531] font-bold text-[18px]">{matches}</span>/8</div>
         <div className="text-[14px] text-[#888]">得分: <span className="text-[#c23531] font-bold text-[18px]">{score}</span></div>
         {state === 'idle' && (
-          <button onClick={start} className="btn-primary" style={{fontSize:"20px",padding:"20px 40px"}}>
+          <button onClick={start} className="btn-primary" style={{fontSize:"10px",padding:"10px 20px"}}>
             🧠 开始记忆
           </button>
         )}
         {state === 'over' && (
           <div className="flex items-center gap-[12px]">
             <span className="text-[#e94560] font-bold text-[18px]">🎉 全部配对!</span>
-            <button onClick={start} className="btn-primary" style={{fontSize:"20px",padding:"20px 40px"}}>
+            <button onClick={start} className="btn-primary" style={{fontSize:"10px",padding:"10px 20px"}}>
               再来一局
             </button>
           </div>

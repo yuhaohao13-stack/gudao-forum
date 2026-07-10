@@ -229,7 +229,7 @@ export default function PongGame({ onScore }) {
           AI: <span className="text-[#e94560] font-bold text-[18px]">{aiScore}</span>
         </div>
         {state === 'idle' && (
-          <button onClick={start} className="btn-primary" style={{ fontSize: '20px', padding: '20px 40px' }}>
+          <button onClick={start} className="btn-primary" style={{fontSize:"10px",padding:"10px 20px"}}>
             开始游戏
           </button>
         )}
@@ -238,7 +238,7 @@ export default function PongGame({ onScore }) {
             <span className="text-[#e94560] font-bold text-[18px]">
               {playerScore > aiScore ? '🎉 你赢了!' : '😢 AI 获胜'}
             </span>
-            <button onClick={start} className="btn-primary" style={{ fontSize: '20px', padding: '20px 40px' }}>
+            <button onClick={start} className="btn-primary" style={{fontSize:"10px",padding:"10px 20px"}}>
               再来一局
             </button>
           </div>
