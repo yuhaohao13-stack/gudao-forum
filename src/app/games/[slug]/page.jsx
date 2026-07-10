@@ -58,7 +58,7 @@ const GAMES = [
   { slug: 'pacman', name: '🟡 吃豆人', desc: '迷宫吃豆，躲避鬼怪', Component: PacmanGame,
     tips: { pc: '方向键 ↑↓←→ 控制吃豆人', mobile: '滑动画布 或 点击方向按钮控制' } },
   { slug: 'minesweeper', name: '💣 扫雷', desc: '推理排雷，步步为营', Component: MinesweeperGame,
-    tips: { pc: '左键点击翻开格子 · 右键标记🚩', mobile: '点击翻开格子（长按标记开发中）' } },
+    tips: { pc: '左键点击翻开格子 · 右键标记🚩', mobile: '单击翻开格子，长按标记小红旗🚩' } },
   { slug: 'dino', name: '🏃 恐龙跑酷', desc: '无尽跑酷，跳跃躲避障碍', Component: DinoRunGame,
     tips: { pc: '空格键 或 ↑ 上箭头 跳跃', mobile: '点击画布跳跃' } },
   { slug: 'flappy', name: '🐦 Flappy Bird', desc: '点击穿越管道，停不下来', Component: FlappyBirdGame,
