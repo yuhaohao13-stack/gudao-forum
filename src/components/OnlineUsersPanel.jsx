@@ -101,11 +101,16 @@ export default function OnlineUsersPanel({ roomSlug, currentUserId }) {
       className="flex items-center gap-1.5 py-1 px-1.5 rounded group hover:bg-[#faf8f4]"
     >
       {getAvatar(u)}
-      <div className="flex-1 min-w-0 flex items-center gap-1">
-        <span className={`text-[11px] truncate ${u.is_guest ? 'text-[#999]' : u.role === 'admin' ? 'text-[#c23531] font-semibold' : u.role === 'moderator' ? 'text-[#8b6914]' : 'text-[#555]'}`}>
-          {u.display_name}
-        </span>
-        {!u.is_guest && u.role === 'admin' && <Crown size={8} className="text-[#c23531] shrink-0" />}
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-1">
+          <span className={`text-[11px] truncate max-w-[80px] ${u.is_guest ? 'text-[#999]' : u.role === 'admin' ? 'text-[#c23531] font-semibold' : u.role === 'moderator' ? 'text-[#8b6914]' : 'text-[#555]'}`}>
+            {u.display_name}
+          </span>
+          {!u.is_guest && u.role === 'admin' && <Crown size={8} className="text-[#c23531] shrink-0" />}
+        </div>
+        {!u.is_guest && u.device_label && (
+          <div className="text-[8px] text-[#b0a898] truncate leading-tight">{u.device_label}</div>
+        )}
       </div>
       {getFriendAction(u)}
     </div>

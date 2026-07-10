@@ -149,7 +149,7 @@ export default function ChatRoomPage() {
         await fetch('/api/chat/heartbeat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ room_slug: slug, session_id: sessionId }),
+          body: JSON.stringify({ room_slug: slug, session_id: sessionId, user_agent: navigator.userAgent }),
         })
       } catch (e) {
         // 心跳失败静默处理

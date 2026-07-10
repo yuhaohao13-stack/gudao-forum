@@ -5,15 +5,62 @@ import { createClient } from '@supabase/supabase-js'
 /**
  * POST /api/chat/heartbeat
  * 客户端心跳：上报在线状态，返回访客标签
- * Body: { room_slug: string, session_id: string }
+ * Body: { room_slug: string, session_id: string, user_agent?: string }
  * 无需登录，检测IP自动生成访客标签
  */
 export async function POST(request) {
   try {
-    const { room_slug, session_id } = await request.json()
+    const { room_slug, session_id, user_agent } = await request.json()
     if (!room_slug || !session_id) {
       return Response.json({ error: '缺少参数' }, { status: 400 })
     }
+
+    // 解析设备标签
+    function getDeviceLabel(ua) {
+      if (!ua) return ''
+      const isMobile = /Mobile|Android|iPhone|iPad|iPod/i.test(ua)
+      // iPhone 机型
+      const iPhoneMatch = ua.match(/iPhone\d+|iPhone\s*\d+([,_]\d+)?/i)
+      if (iPhoneMatch) {
+        const raw = iPhoneMatch[0].replace(/[^\d,]/g, '')
+        const parts = raw.split(/[,_]/).filter(Boolean)
+        if (parts.length >= 2) return `iPhone${parts[0]},${parts[1]}`
+        return `iPhone${raw}`
+      }
+      // iPad
+      if (/iPad/i.test(ua)) return 'iPad'
+      // Android 机型
+      const androidMatch = ua.match(/;\s*([^;]+?)\s+Build\//i)
+      if (androidMatch) return androidMatch[1].trim()
+      // Mac
+      if (/Macintosh|Mac OS X/i.test(ua)) {
+        if (/Intel Mac/i.test(ua)) return 'Mac'
+        if (/ARM64|AppleWebKit.*Mac/i.test(ua)) return 'Mac (Apple Silicon)'
+        return 'Mac'
+      }
+      // Windows
+      if (/Windows/i.test(ua)) {
+        const winMatch = ua.match(/Windows NT (\d+\.?\d*)/i)
+        if (winMatch) {
+          const v = parseFloat(winMatch[1])
+          if (v >= 10) return 'Win 10/11'
+          if (v >= 6.2) return 'Win 8/8.1'
+          if (v >= 6.1) return 'Win 7'
+          return `Win NT ${winMatch[1]}`
+        }
+        return 'Windows'
+      }
+      // Linux
+      if (/Linux/i.test(ua)) return 'Linux'
+      // 兜底
+      if (isMobile) {
+        if (/Android/i.test(ua)) return 'Android'
+        return '手机'
+      }
+      return '电脑'
+    }
+
+    const deviceLabel = getDeviceLabel(user_agent || '')
 
     // 1. 检测客户端 IP
     const forwarded = request.headers.get('x-forwarded-for')
@@ -82,6 +129,7 @@ export async function POST(request) {
         ip_last3: ipLast3,
         guest_label: null,
         display_name: displayName,
+        device_label: deviceLabel,
         status: 'online',
         last_seen: new Date().toISOString(),
       }, {
@@ -92,6 +140,7 @@ export async function POST(request) {
         ok: true,
         is_guest: false,
         display_name: displayName,
+        device_label: deviceLabel,
       })
     } else {
       // === 访客 ===
@@ -128,6 +177,7 @@ export async function POST(request) {
         ip_last3: ipLast3,
         guest_label: guestLabel,
         display_name: `访客 ${guestLabel}`,
+        device_label: '',
         status: 'online',
         last_seen: new Date().toISOString(),
       }, {

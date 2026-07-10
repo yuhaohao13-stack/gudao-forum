@@ -96,3 +96,6 @@ $$;
 
 -- 定时任务：每分钟清理一次（需要 pg_cron 扩展）
 -- 如果 Supabase 不支持 pg_cron，将在 API 端做清理
+
+-- 6. 添加设备标签列（同一用户多设备区分显示）
+ALTER TABLE chat_presence ADD COLUMN IF NOT EXISTS device_label TEXT DEFAULT '';
