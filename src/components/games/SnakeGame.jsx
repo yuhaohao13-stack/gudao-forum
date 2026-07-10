@@ -137,20 +137,20 @@ export default function SnakeGame({ onScore }) {
         className="rounded-xl border-2 border-[#1a1a2e] shadow-lg touch-none" />
 
       {state === 'playing' && (
-        <div className="w-full" style={{maxWidth:CANVAS+'px'}}>
+        <div className="w-full sm:max-w-lg">
           <div className="flex justify-center mb-2">
-            <button className="flex-1 max-w-[30%] h-[288px] text-[60px] font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
+            <button className="flex-1 max-w-[30%] h-[96px] text-[60px] font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
               onTouchStart={e => { e.preventDefault(); setDirRef.current?.(DIRS.ArrowUp) }}
             >↑</button>
           </div>
           <div className="flex gap-5">
-            <button className="flex-1 h-[288px] text-[60px] font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
+            <button className="flex-1 h-[96px] text-[60px] font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
               onTouchStart={e => { e.preventDefault(); setDirRef.current?.(DIRS.ArrowLeft) }}
             >←</button>
-            <button className="flex-1 h-[288px] text-[60px] font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
+            <button className="flex-1 h-[96px] text-[60px] font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
               onTouchStart={e => { e.preventDefault(); setDirRef.current?.(DIRS.ArrowDown) }}
             >↓</button>
-            <button className="flex-1 h-[288px] text-[60px] font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
+            <button className="flex-1 h-[96px] text-[60px] font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
               onTouchStart={e => { e.preventDefault(); setDirRef.current?.(DIRS.ArrowRight) }}
             >→</button>
           </div>
