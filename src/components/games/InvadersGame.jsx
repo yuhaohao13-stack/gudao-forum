@@ -171,11 +171,11 @@ export default function InvadersGame({ onScore }) {
     <div className="flex flex-col items-center gap-5">
       <div className="flex items-center gap-4 flex-wrap justify-center">
         <div className="text-sm text-[#888]">得分: <span className="text-[#c23531] font-bold text-lg">{score}</span></div>
-        {state === 'idle' && <button onClick={start} className="btn-primary">开始游戏</button>}
+        {state === 'idle' && <button onClick={start} className="btn-primary text-xl py-5 px-10">开始游戏</button>}
         {state === 'over' && (
           <div className="flex items-center gap-3">
-            <span className="text-[#e94560] font-bold">游戏结束</span>
-            <button onClick={start} className="btn-primary">再来一局</button>
+            <span className="text-[#e94560] font-bold text-lg">游戏结束</span>
+            <button onClick={start} className="btn-primary text-xl py-5 px-10">再来一局</button>
           </div>
         )}
         {state === 'playing' && <span className="text-xs text-[#999] hidden sm:inline">←→移动 空格射击</span>}
@@ -186,15 +186,15 @@ export default function InvadersGame({ onScore }) {
       {state === 'playing' && (
         <div className="w-full" style={{maxWidth:W+"px"}}>
           <div className="flex gap-5">
-            <button className="flex-1 h-40 text-3xl font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
+            <button className="flex-1 h-48 text-3xl font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
               onTouchStart={e => { e.preventDefault(); window.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft' })) }}
               onTouchEnd={e => { e.preventDefault(); window.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowLeft' })) }}
             >◀ 左</button>
-            <button className="flex-1 h-40 text-3xl font-bold bg-red-50 border-2 border-[#f00] rounded-2xl active:bg-[#ffe0e0] shadow-lg touch-manipulation"
+            <button className="flex-1 h-48 text-3xl font-bold bg-red-50 border-2 border-[#f00] rounded-2xl active:bg-[#ffe0e0] shadow-lg touch-manipulation"
               onTouchStart={e => { e.preventDefault(); window.dispatchEvent(new KeyboardEvent('keydown', { key: ' ' })) }}
               onTouchEnd={e => { e.preventDefault(); window.dispatchEvent(new KeyboardEvent('keyup', { key: ' ' })) }}
             >🔫 射击</button>
-            <button className="flex-1 h-40 text-3xl font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
+            <button className="flex-1 h-48 text-3xl font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
               onTouchStart={e => { e.preventDefault(); window.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight' })) }}
               onTouchEnd={e => { e.preventDefault(); window.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowRight' })) }}
             >▶ 右</button>
