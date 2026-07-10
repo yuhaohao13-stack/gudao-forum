@@ -24,7 +24,6 @@ export default function ChatRoomPage() {
   const [loading, setLoading] = useState(true)
   const [loadingMore, setLoadingMore] = useState(false)
   const [hasMore, setHasMore] = useState(true)
-  const [onlineNow, setOnlineNow] = useState(0)
   const [sendError, setSendError] = useState('')
 
   const [sessionId] = useState(() => {
@@ -142,24 +141,6 @@ export default function ChatRoomPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [room?.id, fetchUserProfiles])
 
-  // 在线统计（基于心跳）
-  useEffect(() => {
-    if (!room?.id || !slug) return
-    const updateOnline = () => {
-      const twoMinAgo = new Date(Date.now() - 2 * 60 * 1000).toISOString()
-      supabase.from('chat_messages').select('user_id')
-        .eq('room_id', room.id)
-        .gte('created_at', twoMinAgo)
-        .then(({ data }) => {
-          const userIds = new Set((data || []).map(m => m.user_id))
-          setOnlineNow(userIds.size)
-        })
-    }
-    updateOnline()
-    const interval = setInterval(updateOnline, 30000)
-    return () => clearInterval(interval)
-  }, [room?.id, slug])
-
   // 心跳上报（每30秒）
   useEffect(() => {
     if (!slug || !sessionId) return
@@ -270,12 +251,7 @@ export default function ChatRoomPage() {
           <span className="text-xl shrink-0">{room.icon}</span>
           <h1 className="text-lg font-bold text-[#1a1a1a] truncate">{room.name}</h1>
           <span className="hidden sm:inline text-[10px] text-[#b0a898] bg-[#f5f0e8] rounded-full px-2 py-0.5 truncate max-w-[150px]">{room.description}</span>
-          {onlineNow > 0 && (
-            <span className="hidden sm:inline-flex items-center gap-1 text-xs text-green-600 bg-green-50 border border-green-200 rounded-full px-2.5 py-0.5 shrink-0">
-              <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-              {onlineNow} 在聊
-            </span>
-          )}
+
         </div>
       </div>
 
