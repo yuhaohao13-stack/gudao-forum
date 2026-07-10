@@ -5,7 +5,8 @@ import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { useAuth } from '@/components/AuthProvider'
-import { Search, Crown, Lightbulb, Eye } from 'lucide-react'
+import OnlineUsersPanel from '@/components/OnlineUsersPanel'
+import { Search, Crown, Lightbulb, Eye, Users } from 'lucide-react'
 import { checkContent, validateInput } from '@/lib/moderation'
 
 const MESSAGES_PER_PAGE = 50
@@ -25,6 +26,18 @@ export default function ChatRoomPage() {
   const [hasMore, setHasMore] = useState(true)
   const [onlineNow, setOnlineNow] = useState(0)
   const [sendError, setSendError] = useState('')
+
+  const [sessionId] = useState(() => {
+    if (typeof window !== 'undefined') {
+      let sid = localStorage.getItem('chat_session_id')
+      if (!sid) {
+        sid = crypto.randomUUID()
+        localStorage.setItem('chat_session_id', sid)
+      }
+      return sid
+    }
+    return ''
+  })
 
   const messagesEndRef = useRef(null)
   const messagesContainerRef = useRef(null)
@@ -129,9 +142,9 @@ export default function ChatRoomPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [room?.id, fetchUserProfiles])
 
-  // 在线统计
+  // 在线统计（基于心跳）
   useEffect(() => {
-    if (!room?.id) return
+    if (!room?.id || !slug) return
     const updateOnline = () => {
       const twoMinAgo = new Date(Date.now() - 2 * 60 * 1000).toISOString()
       supabase.from('chat_messages').select('user_id')
@@ -145,7 +158,26 @@ export default function ChatRoomPage() {
     updateOnline()
     const interval = setInterval(updateOnline, 30000)
     return () => clearInterval(interval)
-  }, [room?.id])
+  }, [room?.id, slug])
+
+  // 心跳上报（每30秒）
+  useEffect(() => {
+    if (!slug || !sessionId) return
+    const sendHeartbeat = async () => {
+      try {
+        await fetch('/api/chat/heartbeat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ room_slug: slug, session_id: sessionId }),
+        })
+      } catch (e) {
+        // 心跳失败静默处理
+      }
+    }
+    sendHeartbeat()
+    const interval = setInterval(sendHeartbeat, 30000)
+    return () => clearInterval(interval)
+  }, [slug, sessionId])
 
   // 加载更早的消息
   const loadMore = async () => {
@@ -230,18 +262,20 @@ export default function ChatRoomPage() {
   }
 
   return (
-    <div className="anim-fade-in flex flex-col h-[calc(100vh-8rem)] max-h-[800px]">
+    <div className="anim-fade-in flex gap-4 h-[calc(100vh-8rem)] max-h-[800px]">
+      {/* 主聊天区 */}
+      <div className="flex-1 flex flex-col min-w-0">
       {/* 头部 */}
       <div className="flex items-center justify-between mb-3 shrink-0">
-        <div className="flex items-center gap-2">
-          <Link href="/chat" className="text-sm text-[#c23531]/70 hover:text-[#c23531] transition-colors">&larr;</Link>
-          <span className="text-xl">{room.icon}</span>
-          <h1 className="text-lg font-bold text-[#1a1a1a]">{room.name}</h1>
-          <span className="hidden sm:inline text-[10px] text-[#b0a898] bg-[#f5f0e8] rounded-full px-2 py-0.5">{room.description}</span>
+        <div className="flex items-center gap-2 min-w-0">
+          <Link href="/chat" className="text-sm text-[#c23531]/70 hover:text-[#c23531] transition-colors shrink-0">&larr;</Link>
+          <span className="text-xl shrink-0">{room.icon}</span>
+          <h1 className="text-lg font-bold text-[#1a1a1a] truncate">{room.name}</h1>
+          <span className="hidden sm:inline text-[10px] text-[#b0a898] bg-[#f5f0e8] rounded-full px-2 py-0.5 truncate max-w-[150px]">{room.description}</span>
           {onlineNow > 0 && (
-            <span className="hidden sm:inline-flex items-center gap-1 text-xs text-green-600 bg-green-50 border border-green-200 rounded-full px-2.5 py-0.5">
+            <span className="hidden sm:inline-flex items-center gap-1 text-xs text-green-600 bg-green-50 border border-green-200 rounded-full px-2.5 py-0.5 shrink-0">
               <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-              {onlineNow} 人在聊
+              {onlineNow} 在聊
             </span>
           )}
         </div>
@@ -359,6 +393,34 @@ export default function ChatRoomPage() {
           <span className="text-[10px] text-[#ccc]">友善交流，以文会友</span>
           <span className="text-[10px] text-[#999]"><Lightbulb size={12} className="inline-block align-text-bottom" /> 聊天记录保留 48 小时</span>
           <span className="text-[10px] text-[#ccc]">{messages.length} 条消息</span>
+        </div>
+      </div>
+    </div>
+
+      {/* 在线用户侧边栏 — 移动端隐藏 */}
+      <div className="hidden md:block shrink-0">
+        <OnlineUsersPanel roomSlug={slug} currentUserId={user?.id || null} />
+      </div>
+
+      {/* 移动端在线用户入口 */}
+      <button
+        onClick={() => document.getElementById('mobile-online-users')?.classList.toggle('hidden')}
+        className="md:hidden fixed bottom-20 right-4 z-40 w-10 h-10 rounded-full bg-[#c23531] text-white shadow-lg flex items-center justify-center"
+        title="在线用户"
+      >
+        <Users size={16} />
+      </button>
+      <div id="mobile-online-users" className="md:hidden fixed inset-0 z-50 bg-black/40 hidden" onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          e.currentTarget.classList.add('hidden')
+        }
+      }}>
+        <div className="absolute right-0 top-0 bottom-0 w-56 bg-white shadow-xl overflow-y-auto">
+          <div className="flex items-center justify-between px-3 py-2.5 border-b border-[#eee8dc]">
+            <h3 className="text-sm font-bold text-[#1a1a1a]">在线用户</h3>
+            <button onClick={() => document.getElementById('mobile-online-users')?.classList.add('hidden')} className="text-[#999] hover:text-[#c23531] text-lg">&times;</button>
+          </div>
+          <OnlineUsersPanel roomSlug={slug} currentUserId={user?.id || null} />
         </div>
       </div>
     </div>
