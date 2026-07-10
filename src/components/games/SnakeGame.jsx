@@ -1,0 +1,163 @@
+'use client'
+
+import { useState, useEffect, useRef, useCallback } from 'react'
+
+const SIZE = 20
+const CELL = 18
+const CANVAS = SIZE * CELL
+const INIT_SNAKE = [{ x: 10, y: 10 }]
+const DIRS = { ArrowUp: { x: 0, y: -1 }, ArrowDown: { x: 0, y: 1 }, ArrowLeft: { x: -1, y: 0 }, ArrowRight: { x: 1, y: 0 } }
+
+export default function SnakeGame({ onScore }) {
+  const canvasRef = useRef(null)
+  const gameRef = useRef(null)
+  const [state, setState] = useState('idle') // idle | playing | over
+  const [score, setScore] = useState(0)
+
+  const start = useCallback(() => {
+    setState('playing')
+    setScore(0)
+  }, [])
+
+  useEffect(() => {
+    if (state !== 'playing') return
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')
+
+    let snake = INIT_SNAKE.map(p => ({ ...p }))
+    let dir = { x: 1, y: 0 }
+    let nextDir = { x: 1, y: 0 }
+    let food = { x: 15, y: 10 }
+    let gameScore = 0
+    let running = true
+
+    const draw = () => {
+      ctx.fillStyle = '#1a1a2e'
+      ctx.fillRect(0, 0, CANVAS, CANVAS)
+      // grid
+      ctx.strokeStyle = '#16213e'
+      ctx.lineWidth = 0.5
+      for (let i = 0; i <= SIZE; i++) {
+        ctx.beginPath(); ctx.moveTo(i * CELL, 0); ctx.lineTo(i * CELL, CANVAS); ctx.stroke()
+        ctx.beginPath(); ctx.moveTo(0, i * CELL); ctx.lineTo(CANVAS, i * CELL); ctx.stroke()
+      }
+      // snake
+      snake.forEach((s, i) => {
+        ctx.fillStyle = i === 0 ? '#e94560' : '#0f3460'
+        ctx.shadowColor = i === 0 ? '#e94560' : 'transparent'
+        ctx.shadowBlur = i === 0 ? 8 : 0
+        ctx.fillRect(s.x * CELL + 1, s.y * CELL + 1, CELL - 2, CELL - 2)
+        ctx.shadowBlur = 0
+      })
+      // food
+      ctx.fillStyle = '#ffd700'
+      ctx.shadowColor = '#ffd700'
+      ctx.shadowBlur = 10
+      ctx.beginPath()
+      ctx.arc(food.x * CELL + CELL / 2, food.y * CELL + CELL / 2, CELL / 2 - 2, 0, Math.PI * 2)
+      ctx.fill()
+      ctx.shadowBlur = 0
+    }
+
+    const spawnFood = () => {
+      const occupied = new Set(snake.map(s => `${s.x},${s.y}`))
+      let pos
+      do { pos = { x: Math.floor(Math.random() * SIZE), y: Math.floor(Math.random() * SIZE) } }
+      while (occupied.has(`${pos.x},${pos.y}`))
+      food = pos
+    }
+
+    const tick = () => {
+      if (!running) return
+      dir = { ...nextDir }
+      const head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y }
+      // wall collision
+      if (head.x < 0 || head.x >= SIZE || head.y < 0 || head.y >= SIZE) {
+        running = false
+        setState('over')
+        setScore(gameScore)
+        if (onScore) onScore(gameScore)
+        return
+      }
+      // self collision
+      if (snake.some(s => s.x === head.x && s.y === head.y)) {
+        running = false
+        setState('over')
+        setScore(gameScore)
+        if (onScore) onScore(gameScore)
+        return
+      }
+      snake.unshift(head)
+      if (head.x === food.x && head.y === food.y) {
+        gameScore += 10
+        setScore(gameScore)
+        spawnFood()
+      } else {
+        snake.pop()
+      }
+      draw()
+    }
+
+    spawnFood()
+    draw()
+    const interval = setInterval(tick, 120)
+    const keyHandler = (e) => {
+      const d = DIRS[e.key]
+      if (!d) return
+      e.preventDefault()
+      if (d.x + dir.x === 0 && d.y + dir.y === 0) return // can't reverse
+      nextDir = d
+    }
+    window.addEventListener('keydown', keyHandler)
+
+    gameRef.current = () => { running = false; clearInterval(interval); window.removeEventListener('keydown', keyHandler) }
+    return () => {
+      running = false
+      clearInterval(interval)
+      window.removeEventListener('keydown', keyHandler)
+    }
+  }, [state, onScore])
+
+  useEffect(() => {
+    return () => { if (gameRef.current) gameRef.current() }
+  }, [])
+
+  return (
+    <div className="flex flex-col items-center gap-4">
+      <div className="flex items-center gap-6">
+        <div className="text-sm font-medium text-[#888]">得分: <span className="text-[#c23531] font-bold text-lg">{score}</span></div>
+        {state === 'idle' && (
+          <button onClick={start} className="btn-primary">开始游戏</button>
+        )}
+        {state === 'over' && (
+          <div className="flex items-center gap-3">
+            <span className="text-[#e94560] font-bold">游戏结束</span>
+            <button onClick={start} className="btn-primary">再来一局</button>
+          </div>
+        )}
+        {state === 'playing' && (
+          <span className="text-xs text-[#999]">方向键控制移动</span>
+        )}
+      </div>
+      <canvas ref={canvasRef} width={CANVAS} height={CANVAS}
+        className="rounded-xl border-2 border-[#1a1a2e] shadow-lg" />
+      <div className="grid grid-cols-3 gap-1 mt-1 sm:hidden">
+        <div></div>
+        <button className="bg-[#f0f0f0] text-lg p-3 rounded-lg"
+          onTouchStart={e => { e.preventDefault(); window.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp' })) }}
+        >↑</button>
+        <div></div>
+        <button className="bg-[#f0f0f0] text-lg p-3 rounded-lg"
+          onTouchStart={e => { e.preventDefault(); window.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft' })) }}
+        >←</button>
+        <button className="bg-[#f0f0f0] text-lg p-3 rounded-lg"
+          onTouchStart={e => { e.preventDefault(); window.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown' })) }}
+        >↓</button>
+        <button className="bg-[#f0f0f0] text-lg p-3 rounded-lg"
+          onTouchStart={e => { e.preventDefault(); window.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight' })) }}
+        >→</button>
+      </div>
+    </div>
+  )
+}

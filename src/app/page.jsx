@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { MessageCircle, Megaphone, Pin, FileText, Eye, Clock, Flame, ArrowRight, Monitor, Flower2, Package, BookOpen, Sparkles } from 'lucide-react'
+import { MessageCircle, Megaphone, Pin, FileText, Eye, Clock, Flame, ArrowRight, Monitor, Flower2, Package, BookOpen, Sparkles, Gamepad2 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useLanguage } from '@/lib/LanguageContext'
 
@@ -14,6 +14,19 @@ const CAT_ICONS = {
   resources: <Package size={20} className="inline-block" />,
   fiction: <BookOpen size={20} className="inline-block" />,
 }
+
+const GAMES = [
+  { slug: 'snake', name: '🐍 贪吃蛇', desc: '吃食物变长，别碰墙', color: '#0f3460' },
+  { slug: 'tetris', name: '🧱 俄罗斯方块', desc: '经典方块堆叠消行', color: '#a000f0' },
+  { slug: 'breakout', name: '🏓 打砖块', desc: '挡板接球打砖块', color: '#00f000' },
+  { slug: '2048', name: '🔢 2048', desc: '合并数字挑战极限', color: '#edc22e' },
+  { slug: 'whackamole', name: '🔨 打地鼠', desc: '限时30秒打地鼠', color: '#8B4513' },
+  { slug: 'invaders', name: '👾 太空侵略者', desc: '射击入侵者（即将上线）', color: '#888', soon: true },
+  { slug: 'pacman', name: '🟡 吃豆人', desc: '迷宫吃豆躲鬼（即将上线）', color: '#888', soon: true },
+  { slug: 'minesweeper', name: '💣 扫雷', desc: '推理排雷（即将上线）', color: '#888', soon: true },
+  { slug: 'dino', name: '🏃 恐龙跑酷', desc: '无尽跑酷跳障碍（即将上线）', color: '#888', soon: true },
+  { slug: 'flappy', name: '🐦 Flappy Bird', desc: '点击穿越管道（即将上线）', color: '#888', soon: true },
+]
 
 export default function Home() {
   const { t } = useLanguage()
@@ -63,9 +76,9 @@ export default function Home() {
   }, [])
 
   return (
-    <div className="space-y-6 sm:space-y-8">
+    <div className="space-y-5 sm:space-y-6">
       {/* ===== 站点头部（一排） ===== */}
-      <div className="flex items-center justify-between gap-4 py-4 sm:py-5 flex-wrap anim-fade-in">
+      <div className="flex items-center justify-between gap-4 py-3 sm:py-4 flex-wrap anim-fade-in">
         <div className="flex items-center gap-3 sm:gap-5 text-sm flex-wrap">
           <span className="text-sm text-[#aaa] tracking-wide whitespace-nowrap">{t('home.slogan')}</span>
           <div className="flex items-center gap-3 sm:gap-4 text-xs text-[#999]">
@@ -82,14 +95,14 @@ export default function Home() {
       {/* ===== 公告 ===== */}
       {announcements.length > 0 && (
         <section className="anim-up">
-          <div className="flex items-center gap-2 mb-3">
+          <div className="flex items-center gap-2 mb-2">
             <span className="text-xs font-semibold text-[#999] tracking-wide"><Megaphone size={14} className="inline-block align-text-bottom" /> 站务公告</span>
             <span className="tag">置顶</span>
           </div>
           <div className="card divide-y divide-[#f5f5f5]">
             {announcements.map((t, i) => (
               <Link key={t.id} href={`/t/${t.id}`}
-                className={`flex items-center gap-2 px-4 py-3 hover:bg-[#fafafa] transition-colors ${i > 0 ? `anim-delay-${i}` : ''}`}>
+                className={`flex items-center gap-2 px-3 py-2.5 hover:bg-[#fafafa] transition-colors ${i > 0 ? `anim-delay-${i}` : ''}`}>
                 <Pin size={14} className="text-[#b8860b] shrink-0 inline-block" />
                 <span className="text-sm font-medium text-[#1a1a1a] truncate">{t.title}</span>
                 <span className="ml-auto text-xs text-[#bbb]">{new Date(t.created_at).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })}</span>
@@ -99,40 +112,72 @@ export default function Home() {
         </section>
       )}
 
-      {/* ===== 版块 ===== */}
+      {/* ===== 版块（缩小紧凑版） ===== */}
       <section className="anim-up">
-        <h2 className="text-xs font-semibold text-[#bbb] uppercase tracking-widest mb-3">{t('board.title')}</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+        <h2 className="text-xs font-semibold text-[#bbb] uppercase tracking-widest mb-2">{t('board.title')}</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
           {categories.map((c, i) => (
             <Link key={c.id} href={`/c/${c.slug}`}
-              className={`feature-card ${i > 0 ? `anim-delay-${i}` : ''}`}>
-              <div className="text-xl mb-2">{CAT_ICONS[c.slug] || c.icon || <FileText size={20} className="inline-block" />}</div>
-              <div className="font-semibold text-sm text-[#1a1a1a]">{c.name}</div>
-              <div className="text-xs text-[#aaa] mt-1 line-clamp-1 leading-relaxed">{c.description}</div>
+              className="block bg-white border border-[#ece8e0] rounded-xl px-3 py-2.5 transition-all hover:border-[#c23531] hover:shadow-sm hover:-translate-y-0.5">
+              <div className="flex items-center gap-2">
+                <div className="text-base shrink-0">{CAT_ICONS[c.slug] || <FileText size={16} className="inline-block" />}</div>
+                <div className="min-w-0">
+                  <div className="font-semibold text-xs text-[#1a1a1a] truncate">{c.name}</div>
+                  <div className="text-[10px] text-[#aaa] truncate leading-tight">{c.description}</div>
+                </div>
+              </div>
             </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* ===== 🎮 游戏娱乐（游戏加载后可离线畅玩） ===== */}
+      <section className="anim-up">
+        <h2 className="flex items-center gap-1.5 text-xs font-semibold text-[#bbb] uppercase tracking-widest mb-2">
+          <Gamepad2 size={14} />
+          游戏娱乐
+          <span className="font-normal lowercase text-[10px] text-[#ccc]">（游戏加载后可离线畅玩）</span>
+        </h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
+          {GAMES.map((g, i) => (
+            g.soon ? (
+              <div key={g.slug}
+                className="block bg-white border border-[#ece8e0] rounded-xl px-3 py-2.5 opacity-60 cursor-not-allowed">
+                <div className="text-lg mb-0.5">{g.name.split(' ')[0]}</div>
+                <div className="font-semibold text-xs text-[#1a1a1a]">{g.name.split(' ').slice(1).join(' ')}</div>
+                <div className="text-[10px] text-[#aaa] mt-0.5">{g.desc}</div>
+              </div>
+            ) : (
+              <Link key={g.slug} href={`/games/${g.slug}`}
+                className="block bg-white border border-[#ece8e0] rounded-xl px-3 py-2.5 transition-all hover:border-[#c23531] hover:shadow-sm hover:-translate-y-0.5">
+                <div className="text-lg mb-0.5">{g.name.split(' ')[0]}</div>
+                <div className="font-semibold text-xs text-[#1a1a1a]">{g.name.split(' ').slice(1).join(' ')}</div>
+                <div className="text-[10px] text-[#aaa] mt-0.5">{g.desc}</div>
+              </Link>
+            )
           ))}
         </div>
       </section>
 
       {/* ===== 帖子列表 ===== */}
       <section className="anim-up">
-        <div className="flex items-center gap-2 mb-4">
+        <div className="flex items-center gap-2 mb-3">
           <button onClick={() => setActiveTab('recent')}
-            className={`px-5 py-2.5 rounded-xl text-base font-semibold transition-colors ${
+            className={`px-4 py-2 rounded-xl text-sm font-semibold transition-colors ${
               activeTab === 'recent' ? 'bg-[#c23531] text-white' : 'bg-[#f5f5f5] text-[#888] hover:text-[#1a1a1a] hover:bg-[#eee]'
             }`}
-          ><Clock size={22} className="inline-block align-text-bottom text-white" /> {t('home.latest')}</button>
+          ><Clock size={18} className="inline-block align-text-bottom" /> {t('home.latest')}</button>
           <button onClick={() => setActiveTab('hot')}
-            className={`px-5 py-2.5 rounded-xl text-base font-semibold transition-colors ${
+            className={`px-4 py-2 rounded-xl text-sm font-semibold transition-colors ${
               activeTab === 'hot' ? 'bg-[#c23531] text-white' : 'bg-[#f5f5f5] text-[#888] hover:text-[#1a1a1a] hover:bg-[#eee]'
             }`}
-          ><Flame size={22} className="inline-block align-text-bottom text-white" /> {t('home.hot')}</button>
+          ><Flame size={18} className="inline-block align-text-bottom" /> {t('home.hot')}</button>
           <Link href="/search" className="ml-auto text-xs text-[#bbb] hover:text-[#888] transition-colors">{t('nav.search')} <ArrowRight size={12} className="inline-block align-text-bottom" /></Link>
         </div>
 
         <div className="card divide-y divide-[#f5f5f5]">
           {(activeTab === 'recent' ? recentThreads : hotThreads).length === 0 ? (
-            <div className="py-12 text-center">
+            <div className="py-10 text-center">
               <div className="mb-2"><FileText size={28} className="inline-block text-[#ccc]" /></div>
               <p className="text-[#bbb] text-sm">{t('home.no_posts')}</p>
               <Link href="/new-thread" className="btn-primary mt-3">{t('home.first_post')}</Link>
@@ -140,11 +185,11 @@ export default function Home() {
           ) : (
             (activeTab === 'recent' ? recentThreads : hotThreads).map((t, i) => (
               <Link key={t.id} href={`/t/${t.id}`}
-                className={`thread-item px-4 first:pt-3 last:pb-3 ${i > 0 ? `anim-delay-${Math.min(i, 5)}` : ''}`}>
+                className={`thread-item px-3 first:pt-2.5 last:pb-2.5 ${i > 0 ? `anim-delay-${Math.min(i, 5)}` : ''}`}>
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0 flex-1">
                     <h3 className="font-medium text-sm text-[#1a1a1a] truncate leading-snug">{t.title}</h3>
-                    <div className="flex items-center gap-2 mt-1 text-xs text-[#bbb]">
+                    <div className="flex items-center gap-2 mt-0.5 text-xs text-[#bbb]">
                       <span className="text-[#888]">{t.profiles?.display_name || t.profiles?.username}</span>
                       <span>·</span>
                       <span>{t.categories?.name}</span>
@@ -152,7 +197,7 @@ export default function Home() {
                       <span>{new Date(t.created_at).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })}</span>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3 text-xs text-[#bbb] shrink-0 mt-0.5">
+                  <div className="flex items-center gap-2 text-xs text-[#bbb] shrink-0 mt-0.5">
                     <span><MessageCircle size={14} className="inline-block align-text-bottom" /> {t.reply_count || 0}</span>
                     <span><Eye size={14} className="inline-block align-text-bottom" /> {t.view_count || 0}</span>
                   </div>
