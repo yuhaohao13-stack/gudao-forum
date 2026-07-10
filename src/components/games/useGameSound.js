@@ -22,10 +22,27 @@ export default function useGameSound() {
 
   const toggleSound = useCallback(() => {
     globalEnabled = !globalEnabled
-    if (globalEnabled && !globalAudioCtx && typeof window !== 'undefined') {
-      try {
-        globalAudioCtx = new (window.AudioContext || window.webkitAudioContext)()
-      } catch {}
+    if (globalEnabled) {
+      if (!globalAudioCtx && typeof window !== 'undefined') {
+        try {
+          globalAudioCtx = new (window.AudioContext || window.webkitAudioContext)()
+        } catch {}
+      }
+      // 点击声音按钮时立刻播放反馈音
+      if (globalAudioCtx) {
+        try {
+          const osc = globalAudioCtx.createOscillator()
+          const gain = globalAudioCtx.createGain()
+          osc.connect(gain)
+          gain.connect(globalAudioCtx.destination)
+          osc.type = 'sine'
+          osc.frequency.value = 660
+          gain.gain.setValueAtTime(0.08, globalAudioCtx.currentTime)
+          gain.gain.exponentialRampToValueAtTime(0.001, globalAudioCtx.currentTime + 0.1)
+          osc.start(globalAudioCtx.currentTime)
+          osc.stop(globalAudioCtx.currentTime + 0.1)
+        } catch {}
+      }
     }
     notifyListeners()
     return globalEnabled
