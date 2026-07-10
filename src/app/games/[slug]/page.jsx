@@ -79,13 +79,27 @@ function SoundButton({ enabled, onToggle }) {
   }, inner)
 }
 
+function GameWithSound({ GameComponent, handleScore }) {
+  const { toggleSound, enabled } = useGameSound()
+  return (
+    <div className="flex justify-center relative" style={{minHeight:'200px'}}>
+      <div className="relative" style={{display:'inline-block'}}>
+        <GameComponent onScore={handleScore} />
+        <div style={{position:'absolute',top:'8px',right:'8px',zIndex:10}}>
+          <SoundButton enabled={enabled} onToggle={toggleSound} />
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function GamePage() {
   const params = useParams()
   const slug = params.slug
   const { user, loading } = useAuth()
   const game = gameMap[slug]
   const [leaderboard, setLeaderboard] = useState([])
-  const { play, toggleSound, enabled: soundEnabled } = useGameSound()
+  const sound = useGameSound()
 
   useEffect(() => {
     const load = async () => {
@@ -173,14 +187,9 @@ export default function GamePage() {
         <p className="text-sm text-[#888] mt-1">{game.desc}</p>
       </div>
 
-      <div className="flex justify-center relative" style={{minHeight:'200px'}}>
-        <div className="relative" style={{display:'inline-block'}}>
-          <GameComponent onScore={handleScore} />
-          <div style={{position:'absolute',top:'8px',right:'8px',zIndex:10}}>
-            <SoundButton enabled={soundEnabled} onToggle={toggleSound} />
-          </div>
-        </div>
-      </div>
+      <SoundProvider>
+        <GameWithSound slug={slug} GameComponent={GameComponent} handleScore={handleScore} />
+      </SoundProvider>
 
       <div className="max-w-md mx-auto w-full">
         <div className="bg-[#fafaf8] border border-[#ece8e0] rounded-xl px-5 py-4">
