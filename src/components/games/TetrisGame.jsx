@@ -146,7 +146,7 @@ export default function TetrisGame({ onScore }) {
     </div>
 
       {state === 'playing' && (
-        <div className="sm:hidden w-full max-w-md mx-auto mt-2 select-none">
+        <div className="sm:hidden mt-2 select-none" style={{width:"100%",maxWidth:BOARD_W+"px"}}>
           <div className="flex gap-3">
             <button className="flex-1 h-20 text-xl font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
               onTouchStart={e => { e.preventDefault(); actRef.current?.left?.() }}

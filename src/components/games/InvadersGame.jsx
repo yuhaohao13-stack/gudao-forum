@@ -184,7 +184,7 @@ export default function InvadersGame({ onScore }) {
         className="rounded-xl border-2 border-[#0a0a1a] shadow-lg touch-none" />
     </div>
       {state === 'playing' && (
-        <div className="sm:hidden w-full max-w-md mx-auto mt-2 select-none">
+        <div className="sm:hidden mt-2 select-none" style={{width:"100%",maxWidth:W+"px"}}>
           <div className="flex gap-4">
             <button className="flex-1 h-20 text-2xl font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
               onTouchStart={e => { e.preventDefault(); window.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft' })) }}

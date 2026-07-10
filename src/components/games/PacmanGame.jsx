@@ -208,7 +208,7 @@ export default function PacmanGame({ onScore }) {
         className="rounded-xl border-2 border-[#2121de] shadow-lg touch-none" />
     </div>
       {state === 'playing' && (
-        <div className="sm:hidden w-full max-w-md mx-auto mt-2 select-none">
+        <div className="sm:hidden mt-2 select-none" style={{width:"100%",maxWidth:W+"px"}}>
           <div className="flex justify-center mb-2">
             <button className="flex-1 max-w-[30%] h-20 text-4xl font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
               onTouchStart={e => { e.preventDefault(); dirRef.current?.(0, -1) }}

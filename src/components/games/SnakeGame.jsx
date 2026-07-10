@@ -122,7 +122,8 @@ export default function SnakeGame({ onScore }) {
 
   return (
     <>
-    <div className="flex flex-col items-center gap-4">
+    <div className="flex flex-col gap-4" style={{alignItems:'center'}}>
+      <div className="w-full max-w-full" style={{maxWidth:CANVAS+'px'}}>
       <div className="flex items-center gap-6">
         <div className="text-sm font-medium text-[#888]">得分: <span className="text-[#c23531] font-bold text-lg">{score}</span></div>
         {state === 'idle' && <button onClick={start} className="btn-primary">开始游戏</button>}
@@ -138,7 +139,7 @@ export default function SnakeGame({ onScore }) {
         className="rounded-xl border-2 border-[#1a1a2e] shadow-lg touch-none" />
 
       {state === 'playing' && (
-        <div className="sm:hidden w-full max-w-md mx-auto mt-2 select-none">
+        <div className="sm:hidden mt-2 select-none">
           <div className="flex justify-center mb-2">
             <button className="flex-1 max-w-[30%] h-20 text-4xl font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
               onTouchStart={e => { e.preventDefault(); setDirRef.current?.(DIRS.ArrowUp) }}
@@ -157,6 +158,7 @@ export default function SnakeGame({ onScore }) {
           </div>
         </div>
       )}
+    </div>
     </div>
     </>
   )
