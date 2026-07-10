@@ -2,7 +2,7 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Landmark, Search, MessageCircle, Pencil, X, Globe, LogOut } from 'lucide-react'
+import { Landmark, Search, MessageCircle, Pencil, X, Globe, LogOut, Gamepad2 } from 'lucide-react'
 import { useLanguage } from '@/lib/LanguageContext'
 import { useAuth } from './AuthProvider'
 import { createClient } from '@/lib/supabase/client'
@@ -66,10 +66,14 @@ export default function Header() {
               <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" className="shrink-0">
                 <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.88 2.89 2.89 0 0 1-2.88-2.88 2.89 2.89 0 0 1 2.88-2.88c.35 0 .69.06 1.01.18V8.48a6.34 6.34 0 0 0-1.01-.08C5.9 8.4 3 11.3 3 14.86c0 3.56 2.9 6.46 6.46 6.46 3.56 0 6.46-2.9 6.46-6.46V9.33a8.28 8.28 0 0 0 4.67 1.4v-3.4a4.84 4.84 0 0 1-1-.64z"/>
               </svg>
-              <span>浩哥抖音</span>
+              <span>抖音</span>
             </a>
             <a href="https://www.crazy-repair.com" target="_blank" rel="noopener" className="flex items-center gap-1 whitespace-nowrap text-xs sm:text-sm font-medium px-3 py-1.5 rounded-lg bg-[#f5f5f5] text-[#1a1a1a] hover:bg-[#e8e8e8] transition-colors">🔧 crazy 维修</a>
             <DonateButton className="flex items-center gap-1.5 whitespace-nowrap text-lg sm:text-xl font-bold px-6 py-4 rounded-lg bg-[#f5f5f5] text-[#1a1a1a] hover:bg-[#e8e8e8] transition-colors" />
+            <Link href="/" className="flex items-center gap-1 whitespace-nowrap text-xs sm:text-sm font-medium px-3 py-1.5 rounded-lg bg-[#f5f5f5] text-[#1a1a1a] hover:bg-[#e8e8e8] transition-colors">
+              <Gamepad2 size={14} />
+              <span>游戏</span>
+            </Link>
           </div>
 
           {/* 右：用户操作 */}
