@@ -186,15 +186,15 @@ export default function InvadersGame({ onScore }) {
       {state === 'playing' && (
         <div className="w-full" style={{maxWidth:W+"px"}}>
           <div className="flex gap-5">
-            <button className="flex-1 h-48 text-3xl font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
+            <button className="flex-1 h-72 text-4xl font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
               onTouchStart={e => { e.preventDefault(); window.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft' })) }}
               onTouchEnd={e => { e.preventDefault(); window.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowLeft' })) }}
             >◀ 左</button>
-            <button className="flex-1 h-48 text-3xl font-bold bg-red-50 border-2 border-[#f00] rounded-2xl active:bg-[#ffe0e0] shadow-lg touch-manipulation"
+            <button className="flex-1 h-72 text-4xl font-bold bg-red-50 border-2 border-[#f00] rounded-2xl active:bg-[#ffe0e0] shadow-lg touch-manipulation"
               onTouchStart={e => { e.preventDefault(); window.dispatchEvent(new KeyboardEvent('keydown', { key: ' ' })) }}
               onTouchEnd={e => { e.preventDefault(); window.dispatchEvent(new KeyboardEvent('keyup', { key: ' ' })) }}
             >🔫 射击</button>
-            <button className="flex-1 h-48 text-3xl font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
+            <button className="flex-1 h-72 text-4xl font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
               onTouchStart={e => { e.preventDefault(); window.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight' })) }}
               onTouchEnd={e => { e.preventDefault(); window.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowRight' })) }}
             >▶ 右</button>
