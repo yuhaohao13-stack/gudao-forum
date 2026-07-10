@@ -2,12 +2,15 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 
+import useGameSound from '@/components/games/useGameSound'
 const W = 400, H = 500
 const PLAYER_W = 36, PLAYER_H = 20
 const ENEMY_W = 28, ENEMY_H = 20
 const BULLET_R = 3
 
 export default function InvadersGame({ onScore }) {
+  const { play } = useGameSound()
+  const { play } = useGameSound()
   const canvasRef = useRef(null)
   const gameRef = useRef(null)
   const [state, setState] = useState('idle')
@@ -91,7 +94,7 @@ export default function InvadersGame({ onScore }) {
       // player shoot
       const now = Date.now()
       if (keys.space && now - lastShot > 300) {
-        bullets.push({ x: player.x + PLAYER_W / 2, y: player.y, dy: -5 })
+          play('shoot');   play('shoot'); bullets.push({ x: player.x + PLAYER_W / 2, y: player.y, dy: -5 })
         lastShot = now
       }
 
@@ -112,7 +115,7 @@ export default function InvadersGame({ onScore }) {
 
       // check win
       if (enemies.every(e => !e.alive)) {
-        running = false; setState('over'); setScore(gameScore); if (onScore) onScore(gameScore)
+        running = false;   play('gameover');   play('gameover'); setState('over'); setScore(gameScore); if (onScore) onScore(gameScore)
       }
 
       // check loss - enemies reached bottom

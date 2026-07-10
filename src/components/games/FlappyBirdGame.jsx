@@ -2,12 +2,15 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 
+import useGameSound from '@/components/games/useGameSound'
 const W = 350, H = 500
 const BIRD_R = 12
 const PIPE_W = 50, PIPE_GAP = 140
 const GRAVITY = 0.4, FLAP = -7
 
 export default function FlappyBirdGame({ onScore }) {
+  const { play } = useGameSound()
+  const { play } = useGameSound()
   const canvasRef = useRef(null)
   const gameRef = useRef(null)
   const [state, setState] = useState('idle')
@@ -85,7 +88,7 @@ export default function FlappyBirdGame({ onScore }) {
       frame++
 
       // flap
-      if (flapPressed) { bird.vy = FLAP; flapPressed = false }
+        play('jump');   play('jump'); if (flapPressed) { bird.vy = FLAP; flapPressed = false }
 
       // physics
       bird.vy += GRAVITY
@@ -112,7 +115,7 @@ export default function FlappyBirdGame({ onScore }) {
 
       // collision
       if (bird.y + BIRD_R > H || bird.y - BIRD_R < 0) {
-        running = false; setState('over'); if (onScore) onScore(gameScore); return
+        running = false;   play('gameover');   play('gameover'); setState('over'); if (onScore) onScore(gameScore); return
       }
       for (const p of pipes) {
         if (bird.x + BIRD_R > p.x && bird.x - BIRD_R < p.x + PIPE_W) {

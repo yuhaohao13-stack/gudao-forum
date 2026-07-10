@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 
+import useGameSound from '@/components/games/useGameSound'
 const W = 500, H = 400
 const TARGET_R = 22
 const GAME_DURATION = 60
@@ -9,6 +10,8 @@ const MAX_TARGETS = 5
 const SPAWN_INTERVAL = 800 // ms between spawns
 
 export default function TargetGame({ onScore }) {
+  const { play } = useGameSound()
+  const { play } = useGameSound()
   const canvasRef = useRef(null)
   const [state, setState] = useState('idle')
   const [score, setScore] = useState(0)
@@ -150,7 +153,7 @@ export default function TargetGame({ onScore }) {
       if (remaining <= 0) {
         running = false
         if (animFrame) cancelAnimationFrame(animFrame)
-        setState('over')
+          play('gameover');   play('gameover'); setState('over')
         if (onScore) onScore(gameScore)
       }
     }
@@ -169,7 +172,7 @@ export default function TargetGame({ onScore }) {
         const dist = Math.sqrt((mx - t.x) ** 2 + (my - t.y) ** 2)
         if (dist < TARGET_R) {
           t.alive = false
-          gameScore += 10
+            play('hit');   play('hit'); gameScore += 10
           setScore(gameScore)
           hit = true
           break

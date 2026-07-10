@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 
+import useGameSound from '@/components/games/useGameSound'
 const COLS = 3, ROWS = 2
 const HOLE_R = 48
 const PADDING = 20
@@ -10,6 +11,8 @@ const CANVAS_H = ROWS * (HOLE_R * 2 + PADDING) + PADDING + 60
 const GAME_DURATION = 30 // seconds
 
 export default function WhackAMoleGame({ onScore }) {
+  const { play } = useGameSound()
+  const { play } = useGameSound()
   const canvasRef = useRef(null)
   const [state, setState] = useState('idle')
   const [score, setScore] = useState(0)

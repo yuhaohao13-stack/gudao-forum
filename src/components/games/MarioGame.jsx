@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 
+import useGameSound from '@/components/games/useGameSound'
 const W = 600, H = 300
 const PLAYER_W = 24, PLAYER_H = 32
 const PLAYER_X = 80
@@ -9,6 +10,8 @@ const GROUND_H = 24
 const GROUND_Y = H - GROUND_H
 
 export default function MarioGame({ onScore }) {
+  const { play } = useGameSound()
+  const { play } = useGameSound()
   const canvasRef = useRef(null)
   const gameRef = useRef(null)
   const jumpRef = useRef(false)

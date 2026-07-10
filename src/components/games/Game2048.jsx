@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 
+import useGameSound from '@/components/games/useGameSound'
 const SIZE = 4
 const CELL = 100, GAP = 8
 const BOARD = SIZE * CELL + (SIZE + 1) * GAP
@@ -54,7 +55,7 @@ function move(grid, dir) {
       if (dir === 2 || dir === 3) line.reverse()
       const { arr, score } = slideLine(line)
       if (dir === 2 || dir === 3) arr.reverse()
-      totalScore += score
+        play('score');   play('score'); totalScore += score
       for (let i = 0; i < SIZE; i++) {
         if (line[i] !== arr[i]) changed = true
         line[i] = arr[i]
@@ -84,6 +85,8 @@ function canMove(grid) {
 }
 
 export default function Game2048({ onScore }) {
+  const { play } = useGameSound()
+  const { play } = useGameSound()
   const canvasRef = useRef(null)
   const [state, setState] = useState('idle')
   const [score, setScore] = useState(0)

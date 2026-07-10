@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 
+import useGameSound from '@/components/games/useGameSound'
 const W = 400, H = 400
 const SIZE = 4
 const TILE_W = W / SIZE // 100
@@ -15,6 +16,8 @@ const COLORS = [
 ]
 
 export default function SlidingPuzzle({ onScore }) {
+  const { play } = useGameSound()
+  const { play } = useGameSound()
   const canvasRef = useRef(null)
   const [state, setState] = useState('idle')
   const [moves, setMoves] = useState(0)
@@ -139,7 +142,7 @@ export default function SlidingPuzzle({ onScore }) {
         running = false
         clearInterval(timerInterval)
         setElapsed(seconds)
-        setState('over')
+          play('win');   play('win'); setState('over')
         if (onScore) onScore(currentMoves)
         // best score tracking
         setBest(prev => prev === null ? currentMoves : Math.min(prev, currentMoves))

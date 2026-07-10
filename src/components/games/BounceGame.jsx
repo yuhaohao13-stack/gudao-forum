@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 
+import useGameSound from '@/components/games/useGameSound'
 const W = 400, H = 600
 const PLAYER_W = 30, PLAYER_H = 30
 const PLATFORM_W = 70, PLATFORM_H = 14
@@ -10,6 +11,8 @@ const JUMP_VEL = -10
 const MOVE_SPEED = 5
 
 export default function BounceGame({ onScore }) {
+  const { play } = useGameSound()
+  const { play } = useGameSound()
   const canvasRef = useRef(null)
   const gameRef = useRef(null)
   const [state, setState] = useState('idle')
@@ -214,7 +217,7 @@ export default function BounceGame({ onScore }) {
       // game over
       if (player.y - cameraY > H + 50) {
         running = false
-        setState('over')
+          play('gameover');   play('gameover'); setState('over')
         if (onScore) onScore(Math.floor(gameScore))
         return
       }

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 
+import useGameSound from '@/components/games/useGameSound'
 const COLS = 10, ROWS = 20, CELL = 24
 const BOARD_W = COLS * CELL, BOARD_H = ROWS * CELL
 
@@ -20,6 +21,8 @@ function rotateShape(shape) {
 }
 
 export default function TetrisGame({ onScore }) {
+  const { play } = useGameSound()
+  const { play } = useGameSound()
   const canvasRef = useRef(null)
   const [state, setState] = useState('idle')
   const [score, setScore] = useState(0)
@@ -54,7 +57,7 @@ export default function TetrisGame({ onScore }) {
       for (let y = ROWS - 1; y >= 0; y--) {
         if (board[y].every(c => c !== null)) { board.splice(y, 1); board.unshift(Array(COLS).fill(null)); cleared++; y++ }
       }
-      if (cleared) { const pts = [0, 100, 300, 500, 800][cleared] || cleared * 100; gameScore += pts; gameLines += cleared; setScore(gameScore); setLines(gameLines) }
+      if (cleared) { const pts = [0, 100, 300, 500, 800][cleared] || cleared * 100;   play('score');   play('score'); gameScore += pts; gameLines += cleared; setScore(gameScore); setLines(gameLines) }
     }
 
     const doMove = (dx, dy, rotate) => {
@@ -83,7 +86,7 @@ export default function TetrisGame({ onScore }) {
       else {
         merge(); clearLines()
         piece = randomPiece()
-        if (collision(piece.shape, piece.x, piece.y)) { running = false; setState('over'); setScore(gameScore); if (onScore) onScore(gameScore) }
+        if (collision(piece.shape, piece.x, piece.y)) { running = false;   play('gameover');   play('gameover'); setState('over'); setScore(gameScore); if (onScore) onScore(gameScore) }
       }
       draw()
     }

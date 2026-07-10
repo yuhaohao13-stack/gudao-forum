@@ -2,11 +2,14 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 
+import useGameSound from '@/components/games/useGameSound'
 const SIZE = 20, CELL = 18, CANVAS = SIZE * CELL
 const INIT_SNAKE = [{ x: 10, y: 10 }]
 const DIRS = { ArrowUp: { x: 0, y: -1 }, ArrowDown: { x: 0, y: 1 }, ArrowLeft: { x: -1, y: 0 }, ArrowRight: { x: 1, y: 0 } }
 
 export default function SnakeGame({ onScore }) {
+  const { play } = useGameSound()
+  const { play } = useGameSound()
   const canvasRef = useRef(null)
   const setDirRef = useRef(null) // 暴露给外部按钮
   const gameRef = useRef(null)
@@ -75,13 +78,13 @@ export default function SnakeGame({ onScore }) {
       dir = { ...nextDir }
       const head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y }
       if (head.x < 0 || head.x >= SIZE || head.y < 0 || head.y >= SIZE) {
-        running = false; setState('over'); setScore(gameScore); if (onScore) onScore(gameScore); return
+        running = false;   play('gameover');   play('gameover'); setState('over'); setScore(gameScore); if (onScore) onScore(gameScore); return
       }
       if (snake.some(s => s.x === head.x && s.y === head.y)) {
         running = false; setState('over'); setScore(gameScore); if (onScore) onScore(gameScore); return
       }
       snake.unshift(head)
-      if (head.x === food.x && head.y === food.y) { gameScore += 10; setScore(gameScore); spawnFood() }
+      if (head.x === food.x && head.y === food.y) {   play('score');   play('score'); gameScore += 10; setScore(gameScore); spawnFood() }
       else snake.pop()
       draw()
     }

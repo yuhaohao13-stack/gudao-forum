@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 
+import useGameSound from '@/components/games/useGameSound'
 const W = 500, H = 400
 const PADDLE_W = 10, PADDLE_H = 80
 const BALL_R = 8
@@ -10,6 +11,8 @@ const WIN_SCORE = 10
 const AI_SPEED = 3
 
 export default function PongGame({ onScore }) {
+  const { play } = useGameSound()
+  const { play } = useGameSound()
   const canvasRef = useRef(null)
   const gameRef = useRef(null)
   const [state, setState] = useState('idle')
@@ -134,7 +137,7 @@ export default function PongGame({ onScore }) {
         ball.y >= playerPaddle.y &&
         ball.y <= playerPaddle.y + PADDLE_H
       ) {
-        ball.dx = -ball.dx
+          play('bounce');   play('bounce'); ball.dx = -ball.dx
         ball.x = PADDLE_MARGIN + PADDLE_W + BALL_R
         // angle based on where ball hits paddle
         const hitPos = (ball.y - (playerPaddle.y + PADDLE_H / 2)) / (PADDLE_H / 2)
@@ -161,7 +164,7 @@ export default function PongGame({ onScore }) {
         setAiScore(aScore)
         if (aScore >= WIN_SCORE) {
           running = false
-          setState('over')
+            play('win');   play('win'); setState('over')
           if (onScore) onScore({ player: pScore, ai: aScore })
           return
         }

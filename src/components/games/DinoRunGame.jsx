@@ -2,12 +2,15 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 
+import useGameSound from '@/components/games/useGameSound'
 const W = 500, H = 300
 const DINO_W = 30, DINO_H = 40
 const GROUND_Y = H - 40
 const OBSTACLE_W = 20
 
 export default function DinoRunGame({ onScore }) {
+  const { play } = useGameSound()
+  const { play } = useGameSound()
   const canvasRef = useRef(null)
   const gameRef = useRef(null)
   const [state, setState] = useState('idle')
@@ -72,7 +75,7 @@ export default function DinoRunGame({ onScore }) {
       if (dino.y >= GROUND_Y - DINO_H) { dino.y = GROUND_Y - DINO_H; dino.vy = 0; dino.jumping = false }
 
       // jump
-      if (jumpPressed && !dino.jumping) { dino.vy = -11; dino.jumping = true; jumpPressed = false }
+        play('jump');   play('jump'); if (jumpPressed && !dino.jumping) { dino.vy = -11; dino.jumping = true; jumpPressed = false }
 
       // spawn obstacles
       if (frame % (60 - Math.min(speed * 3, 35)) === 0 && obstacles.length < 3) {

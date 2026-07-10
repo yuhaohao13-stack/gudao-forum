@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 
+import useGameSound from '@/components/games/useGameSound'
 const W = 480, H = 640
 const PADDLE_W = 80, PADDLE_H = 12
 const BALL_R = 6
@@ -10,6 +11,8 @@ const BRICK_W = 52, BRICK_H = 18, BRICK_GAP = 4, BRICK_TOP = 60
 const COLORS = ['#e94560', '#f0a000', '#00f0f0', '#00f000', '#a000f0', '#f0f000']
 
 export default function BreakoutGame({ onScore }) {
+  const { play } = useGameSound()
+  const { play } = useGameSound()
   const canvasRef = useRef(null)
   const [state, setState] = useState('idle')
   const [score, setScore] = useState(0)

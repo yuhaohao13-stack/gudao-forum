@@ -2,10 +2,11 @@
 
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
-import { ChevronLeft, Gamepad2, Trophy, LogIn, UserPlus } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { ChevronLeft, Gamepad2, Trophy, LogIn, UserPlus, Volume2, VolumeX } from 'lucide-react'
+import { useEffect, useState, useCallback } from 'react'
 import { useAuth } from '@/components/AuthProvider'
 import { submitScore, getLeaderboard } from '@/lib/submitScore'
+import useGameSound from '@/components/games/useGameSound'
 import SnakeGame from '@/components/games/SnakeGame'
 import TetrisGame from '@/components/games/TetrisGame'
 import BreakoutGame from '@/components/games/BreakoutGame'
@@ -72,6 +73,7 @@ export default function GamePage() {
   const { user, loading } = useAuth()
   const game = gameMap[slug]
   const [leaderboard, setLeaderboard] = useState([])
+  const { play, toggleSound, enabled: soundEnabled } = useGameSound()
 
   useEffect(() => {
     const load = async () => {
@@ -166,9 +168,21 @@ export default function GamePage() {
       </div>
 
       {/* 游戏画布 */}
-      <div className="flex justify-center">
+      <div className="flex justify-center relative">
         <GameComponent onScore={handleScore} />
-      </div>
+        <button onClick={toggleSound}
+          className={`absolute -right-12 sm:-right-14 top-2 w-[40px] h-[40px] sm:w-[46px] sm:h-[46px] flex items-center justify-center rounded-full border-2 shadow-lg transition-all duration-200 active:scale-90 touch-manipulation z-10 ${
+            soundEnabled
+              ? 'bg-[#e8f5e9] border-[#2e7d32]'
+              : 'bg-[#f5f5f5] border-[#ccc]'
+          }`}
+          title={soundEnabled ? '关闭声音' : '开启声音'}
+        >
+          {soundEnabled
+            ? <Volume2 size={22} className="text-[#2e7d32]" />
+            : <VolumeX size={22} className="text-[#888]" />
+          }
+        </button>
 
       {/* 💡 操作说明 */}
       <div className="max-w-md mx-auto w-full">

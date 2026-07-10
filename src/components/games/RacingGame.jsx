@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 
+import useGameSound from '@/components/games/useGameSound'
 const W = 300, H = 500
 const LANE_COUNT = 3
 const LANE_W = W / LANE_COUNT // 100
@@ -9,6 +10,8 @@ const CAR_W = 36, CAR_H = 60
 const PLAYER_Y = H - 80
 
 export default function RacingGame({ onScore }) {
+  const { play } = useGameSound()
+  const { play } = useGameSound()
   const canvasRef = useRef(null)
   const gameRef = useRef(null)
   const moveDirRef = useRef(null) // -1 left, 0 none, 1 right
@@ -143,7 +146,7 @@ export default function RacingGame({ onScore }) {
       })
 
       // score
-      gameScore += speed / 15
+        play('score');   play('score'); gameScore += speed / 15
       setScore(Math.floor(gameScore))
 
       // speed up

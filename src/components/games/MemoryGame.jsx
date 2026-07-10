@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 
+import useGameSound from '@/components/games/useGameSound'
 const W = 400, H = 400
 const ROWS = 4, COLS = 4
 const MARGIN = 16
@@ -30,6 +31,8 @@ function buildCards() {
 }
 
 export default function MemoryGame({ onScore }) {
+  const { play } = useGameSound()
+  const { play } = useGameSound()
   const canvasRef = useRef(null)
   const [state, setState] = useState('idle')
   const [score, setScore] = useState(0)
@@ -211,7 +214,7 @@ export default function MemoryGame({ onScore }) {
           if (gameMatches === PAIRS) {
             running = false
             if (animFrame) cancelAnimationFrame(animFrame)
-            setState('over')
+              play('win');   play('win'); setState('over')
             if (onScore) onScore(gameScore)
           }
         } else {
