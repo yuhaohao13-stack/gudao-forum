@@ -152,15 +152,49 @@ export default function MinesweeperGame({ onScore }) {
     canvas.addEventListener('click', clickHandler)
     canvas.addEventListener('contextmenu', rightClick)
 
+    // === Mobile: long press to flag ===
+    let longPressTimer = null
+    const touchStart = (e) => {
+      if (gameOver || !running) return
+      // Prevent copy/select on long press
+      e.preventDefault()
+      longPressTimer = setTimeout(() => {
+        longPressTimer = null
+        // Long press → toggle flag
+        const touch = e.touches[0]
+        const rect = canvas.getBoundingClientRect()
+        const scaleX = W / rect.width, scaleY = H / rect.height
+        const mx = (touch.clientX - rect.left) * scaleX - 20
+        const my = (touch.clientY - rect.top) * scaleY - 50
+        const c = Math.floor(mx / CELL), r = Math.floor(my / CELL)
+        if (c >= 0 && c < COLS && r >= 0 && r < ROWS && !revealed[r][c]) {
+          flagged[r][c] = !flagged[r][c]; draw()
+        }
+      }, 500)
+    }
+    const touchEnd = () => {
+      if (longPressTimer) { clearTimeout(longPressTimer); longPressTimer = null }
+    }
+    canvas.addEventListener('touchstart', touchStart, { passive: false })
+    canvas.addEventListener('touchend', touchEnd)
+    canvas.addEventListener('touchmove', touchEnd)
+    canvas.addEventListener('contextmenu', (e) => e.preventDefault())
+
     gameRef.current = () => {
       running = false
       canvas.removeEventListener('click', clickHandler)
       canvas.removeEventListener('contextmenu', rightClick)
+      canvas.removeEventListener('touchstart', touchStart)
+      canvas.removeEventListener('touchend', touchEnd)
+      canvas.removeEventListener('touchmove', touchEnd)
     }
     return () => {
       running = false
       canvas.removeEventListener('click', clickHandler)
       canvas.removeEventListener('contextmenu', rightClick)
+      canvas.removeEventListener('touchstart', touchStart)
+      canvas.removeEventListener('touchend', touchEnd)
+      canvas.removeEventListener('touchmove', touchEnd)
     }
   }, [state, onScore])
 
@@ -180,9 +214,10 @@ export default function MinesweeperGame({ onScore }) {
         {state === 'playing' && <span className="text-xs text-[#999]">左键翻开 右键插旗 🚩</span>}
       </div>
       <canvas ref={canvasRef} width={W} height={H}
-        className="rounded-xl border-2 border-[#aaa] shadow-lg touch-none" />
+        className="rounded-xl border-2 border-[#aaa] shadow-lg touch-none"
+        style={{userSelect:'none',WebkitUserSelect:'none',WebkitTouchCallout:'none'}} />
       <div className="text-xs text-[#999] sm:hidden text-center">
-        点击翻开格子 | 长按标记🚩（功能开发中）
+        点击翻开格子 | 长按标记🚩
       </div>
     </div>
   )
