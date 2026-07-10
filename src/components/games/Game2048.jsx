@@ -207,7 +207,7 @@ export default function Game2048({ onScore }) {
         {state === 'playing' && <span className="text-xs text-[#999]">方向键/滑动操作</span>}
       </div>
       <canvas ref={canvasRef} width={BOARD} height={BOARD}
-        className="rounded-xl border-2 border-[#bbada0] shadow-lg max-w-full" />
+        className="rounded-xl border-2 border-[#bbada0] shadow-lg max-w-full touch-none" />
     </div>
   )
 }

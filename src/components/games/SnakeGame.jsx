@@ -2,16 +2,14 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 
-const SIZE = 20
-const CELL = 18
-const CANVAS = SIZE * CELL
+const SIZE = 20, CELL = 18, CANVAS = SIZE * CELL
 const INIT_SNAKE = [{ x: 10, y: 10 }]
 const DIRS = { ArrowUp: { x: 0, y: -1 }, ArrowDown: { x: 0, y: 1 }, ArrowLeft: { x: -1, y: 0 }, ArrowRight: { x: 1, y: 0 } }
 
 export default function SnakeGame({ onScore }) {
   const canvasRef = useRef(null)
-  const gameRef = useRef(null)
-  const [state, setState] = useState('idle') // idle | playing | over
+  const setDirRef = useRef(null) // 暴露给外部按钮
+  const [state, setState] = useState('idle')
   const [score, setScore] = useState(0)
 
   const start = useCallback(() => {
@@ -32,17 +30,21 @@ export default function SnakeGame({ onScore }) {
     let gameScore = 0
     let running = true
 
+    const setDirection = (d) => {
+      if (d.x + dir.x === 0 && d.y + dir.y === 0) return
+      nextDir = d
+    }
+    setDirRef.current = setDirection
+
     const draw = () => {
       ctx.fillStyle = '#1a1a2e'
       ctx.fillRect(0, 0, CANVAS, CANVAS)
-      // grid
       ctx.strokeStyle = '#16213e'
       ctx.lineWidth = 0.5
       for (let i = 0; i <= SIZE; i++) {
         ctx.beginPath(); ctx.moveTo(i * CELL, 0); ctx.lineTo(i * CELL, CANVAS); ctx.stroke()
         ctx.beginPath(); ctx.moveTo(0, i * CELL); ctx.lineTo(CANVAS, i * CELL); ctx.stroke()
       }
-      // snake
       snake.forEach((s, i) => {
         ctx.fillStyle = i === 0 ? '#e94560' : '#0f3460'
         ctx.shadowColor = i === 0 ? '#e94560' : 'transparent'
@@ -50,7 +52,6 @@ export default function SnakeGame({ onScore }) {
         ctx.fillRect(s.x * CELL + 1, s.y * CELL + 1, CELL - 2, CELL - 2)
         ctx.shadowBlur = 0
       })
-      // food
       ctx.fillStyle = '#ffd700'
       ctx.shadowColor = '#ffd700'
       ctx.shadowBlur = 10
@@ -72,91 +73,82 @@ export default function SnakeGame({ onScore }) {
       if (!running) return
       dir = { ...nextDir }
       const head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y }
-      // wall collision
       if (head.x < 0 || head.x >= SIZE || head.y < 0 || head.y >= SIZE) {
-        running = false
-        setState('over')
-        setScore(gameScore)
-        if (onScore) onScore(gameScore)
-        return
+        running = false; setState('over'); setScore(gameScore); if (onScore) onScore(gameScore); return
       }
-      // self collision
       if (snake.some(s => s.x === head.x && s.y === head.y)) {
-        running = false
-        setState('over')
-        setScore(gameScore)
-        if (onScore) onScore(gameScore)
-        return
+        running = false; setState('over'); setScore(gameScore); if (onScore) onScore(gameScore); return
       }
       snake.unshift(head)
-      if (head.x === food.x && head.y === food.y) {
-        gameScore += 10
-        setScore(gameScore)
-        spawnFood()
-      } else {
-        snake.pop()
-      }
+      if (head.x === food.x && head.y === food.y) { gameScore += 10; setScore(gameScore); spawnFood() }
+      else snake.pop()
       draw()
     }
 
-    spawnFood()
-    draw()
+    spawnFood(); draw()
     const interval = setInterval(tick, 120)
     const keyHandler = (e) => {
-      const d = DIRS[e.key]
-      if (!d) return
-      e.preventDefault()
-      if (d.x + dir.x === 0 && d.y + dir.y === 0) return // can't reverse
-      nextDir = d
+      const d = DIRS[e.key]; if (!d) return; e.preventDefault(); setDirection(d)
     }
     window.addEventListener('keydown', keyHandler)
 
-    gameRef.current = () => { running = false; clearInterval(interval); window.removeEventListener('keydown', keyHandler) }
-    return () => {
-      running = false
-      clearInterval(interval)
+    // 滑动支持
+    let tx = 0, ty = 0
+    const ts = (e) => { tx = e.touches[0].clientX; ty = e.touches[0].clientY }
+    const te = (e) => {
+      const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty
+      const ax = Math.abs(dx), ay = Math.abs(dy)
+      if (Math.max(ax, ay) < 20) return
+      if (ax > ay) setDirection(dx > 0 ? DIRS.ArrowRight : DIRS.ArrowLeft)
+      else setDirection(dy > 0 ? DIRS.ArrowDown : DIRS.ArrowUp)
+    }
+    canvas.addEventListener('touchstart', ts)
+    canvas.addEventListener('touchend', te)
+
+    gameRef.current = () => {
+      running = false; clearInterval(interval)
       window.removeEventListener('keydown', keyHandler)
+      canvas.removeEventListener('touchstart', ts)
+      canvas.removeEventListener('touchend', te)
+    }
+    return () => {
+      running = false; clearInterval(interval)
+      window.removeEventListener('keydown', keyHandler)
+      canvas.removeEventListener('touchstart', ts)
+      canvas.removeEventListener('touchend', te)
     }
   }, [state, onScore])
 
-  useEffect(() => {
-    return () => { if (gameRef.current) gameRef.current() }
-  }, [])
+  const btn = (label, dirKey) => (
+    <button className="bg-[#f0f0f0] text-lg p-3 rounded-lg active:bg-[#ddd] select-none touch-manipulation"
+      onTouchStart={e => { e.preventDefault(); setDirRef.current?.(DIRS[dirKey]) }}
+      onMouseDown={e => { e.preventDefault(); setDirRef.current?.(DIRS[dirKey]) }}
+    >{label}</button>
+  )
 
   return (
     <div className="flex flex-col items-center gap-4">
       <div className="flex items-center gap-6">
         <div className="text-sm font-medium text-[#888]">得分: <span className="text-[#c23531] font-bold text-lg">{score}</span></div>
-        {state === 'idle' && (
-          <button onClick={start} className="btn-primary">开始游戏</button>
-        )}
+        {state === 'idle' && <button onClick={start} className="btn-primary">开始游戏</button>}
         {state === 'over' && (
           <div className="flex items-center gap-3">
             <span className="text-[#e94560] font-bold">游戏结束</span>
             <button onClick={start} className="btn-primary">再来一局</button>
           </div>
         )}
-        {state === 'playing' && (
-          <span className="text-xs text-[#999]">方向键控制移动</span>
-        )}
+        {state === 'playing' && <span className="text-xs text-[#999]">滑动或按键控制</span>}
       </div>
       <canvas ref={canvasRef} width={CANVAS} height={CANVAS}
-        className="rounded-xl border-2 border-[#1a1a2e] shadow-lg" />
-      <div className="grid grid-cols-3 gap-1 mt-1 sm:hidden">
+        className="rounded-xl border-2 border-[#1a1a2e] shadow-lg touch-none" />
+      {/* 手机方向按钮 */}
+      <div className="grid grid-cols-3 gap-1.5 mt-1 select-none">
         <div></div>
-        <button className="bg-[#f0f0f0] text-lg p-3 rounded-lg"
-          onTouchStart={e => { e.preventDefault(); window.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp' })) }}
-        >↑</button>
+        {btn('↑', 'ArrowUp')}
         <div></div>
-        <button className="bg-[#f0f0f0] text-lg p-3 rounded-lg"
-          onTouchStart={e => { e.preventDefault(); window.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft' })) }}
-        >←</button>
-        <button className="bg-[#f0f0f0] text-lg p-3 rounded-lg"
-          onTouchStart={e => { e.preventDefault(); window.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown' })) }}
-        >↓</button>
-        <button className="bg-[#f0f0f0] text-lg p-3 rounded-lg"
-          onTouchStart={e => { e.preventDefault(); window.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight' })) }}
-        >→</button>
+        {btn('←', 'ArrowLeft')}
+        {btn('↓', 'ArrowDown')}
+        {btn('→', 'ArrowRight')}
       </div>
     </div>
   )

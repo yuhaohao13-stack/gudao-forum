@@ -155,16 +155,19 @@ export default function BreakoutGame({ onScore }) {
     }
     canvas.addEventListener('mousemove', mouseHandler)
     canvas.addEventListener('touchmove', touchHandler, { passive: false })
+    canvas.addEventListener('touchstart', touchHandler, { passive: false })
 
     gameRef.current = () => {
       running = false; clearInterval(interval)
       canvas.removeEventListener('mousemove', mouseHandler)
       canvas.removeEventListener('touchmove', touchHandler)
+      canvas.removeEventListener('touchstart', touchHandler)
     }
     return () => {
       running = false; clearInterval(interval)
       canvas.removeEventListener('mousemove', mouseHandler)
       canvas.removeEventListener('touchmove', touchHandler)
+      canvas.removeEventListener('touchstart', touchHandler)
     }
   }, [state, onScore])
 
@@ -186,7 +189,7 @@ export default function BreakoutGame({ onScore }) {
         {state === 'playing' && <span className="text-xs text-[#999]">鼠标/手指移动控制挡板</span>}
       </div>
       <canvas ref={canvasRef} width={W} height={H}
-        className="rounded-xl border-2 border-[#1a1a3e] shadow-lg max-w-full" />
+        className="rounded-xl border-2 border-[#1a1a3e] shadow-lg max-w-full touch-none" />
     </div>
   )
 }

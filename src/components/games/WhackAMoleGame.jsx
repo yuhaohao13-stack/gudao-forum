@@ -169,7 +169,7 @@ export default function WhackAMoleGame({ onScore }) {
         {state === 'playing' && <span className="text-xs text-[#999]">点击地鼠打它！</span>}
       </div>
       <canvas ref={canvasRef} width={CANVAS_W} height={CANVAS_H}
-        className="rounded-xl border-2 border-[#2d5a27] shadow-lg max-w-full cursor-pointer" />
+        className="rounded-xl border-2 border-[#2d5a27] shadow-lg max-w-full cursor-pointer touch-none" />
     </div>
   )
 }
