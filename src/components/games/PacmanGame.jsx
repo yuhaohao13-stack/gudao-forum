@@ -206,27 +206,28 @@ export default function PacmanGame({ onScore }) {
       </div>
       <canvas ref={canvasRef} width={W} height={H}
         className="rounded-xl border-2 border-[#2121de] shadow-lg touch-none" />
-    </div>
+
       {state === 'playing' && (
-        <div className="sm:hidden mt-2 select-none" style={{width:"100%",maxWidth:W+"px"}}>
-          <div className="flex justify-center mb-2">
-            <button className="flex-1 max-w-[30%] h-20 text-4xl font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
+        <div className="sm:hidden mt-2 select-none w-full" style={{maxWidth:W+"px"}}>
+          <div className="flex justify-center mb-1">
+            <button className="flex-1 max-w-[30%] h-14 text-2xl font-bold bg-white border border-[#ddd] rounded-xl active:bg-[#eee] shadow touch-manipulation"
               onTouchStart={e => { e.preventDefault(); dirRef.current?.(0, -1) }}
             >↑</button>
           </div>
-          <div className="flex gap-4">
-            <button className="flex-1 h-20 text-4xl font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
+          <div className="flex gap-2">
+            <button className="flex-1 h-14 text-2xl font-bold bg-white border border-[#ddd] rounded-xl active:bg-[#eee] shadow touch-manipulation"
               onTouchStart={e => { e.preventDefault(); dirRef.current?.(-1, 0) }}
             >←</button>
-            <button className="flex-1 h-20 text-4xl font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
+            <button className="flex-1 h-14 text-2xl font-bold bg-white border border-[#ddd] rounded-xl active:bg-[#eee] shadow touch-manipulation"
               onTouchStart={e => { e.preventDefault(); dirRef.current?.(0, 1) }}
             >↓</button>
-            <button className="flex-1 h-20 text-4xl font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
+            <button className="flex-1 h-14 text-2xl font-bold bg-white border border-[#ddd] rounded-xl active:bg-[#eee] shadow touch-manipulation"
               onTouchStart={e => { e.preventDefault(); dirRef.current?.(1, 0) }}
             >→</button>
           </div>
         </div>
       )}
+    </div>
     </>
   )
 }

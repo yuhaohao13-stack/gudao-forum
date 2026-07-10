@@ -147,22 +147,22 @@ export default function TetrisGame({ onScore }) {
 
       {state === 'playing' && (
         <div className="sm:hidden mt-2 select-none w-full" style={{maxWidth:BOARD_W+"px"}}>
-          <div className="flex gap-3">
-            <button className="flex-1 h-20 text-xl font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
+          <div className="flex gap-2">
+            <button className="flex-1 h-14 text-sm font-bold bg-white border border-[#ddd] rounded-xl active:bg-[#eee] shadow touch-manipulation"
               onTouchStart={e => { e.preventDefault(); actRef.current?.left?.() }}
             >↩ 左</button>
-            <button className="flex-1 h-20 text-xl font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
+            <button className="flex-1 h-14 text-sm font-bold bg-white border border-[#ddd] rounded-xl active:bg-[#eee] shadow touch-manipulation"
               onTouchStart={e => { e.preventDefault(); actRef.current?.rotate?.() }}
             >↻ 旋转</button>
-            <button className="flex-1 h-20 text-xl font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
+            <button className="flex-1 h-14 text-sm font-bold bg-white border border-[#ddd] rounded-xl active:bg-[#eee] shadow touch-manipulation"
               onTouchStart={e => { e.preventDefault(); actRef.current?.right?.() }}
             >↪ 右</button>
           </div>
-          <div className="flex gap-3 mt-3">
-            <button className="flex-1 h-20 text-xl font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
+          <div className="flex gap-2 mt-2">
+            <button className="flex-1 h-14 text-sm font-bold bg-white border border-[#ddd] rounded-xl active:bg-[#eee] shadow touch-manipulation"
               onTouchStart={e => { e.preventDefault(); actRef.current?.drop?.() }}
             >↓ 下</button>
-            <button className="flex-1 h-20 text-xl font-bold bg-orange-50 border-2 border-[#f0a000] rounded-2xl active:bg-[#ffe0b0] shadow-lg touch-manipulation"
+            <button className="flex-1 h-14 text-sm font-bold bg-orange-50 border border-[#f0a000] rounded-xl active:bg-[#ffe0b0] shadow touch-manipulation"
               onTouchStart={e => { e.preventDefault(); actRef.current?.hardDrop?.() }}
             >⏬ 落底</button>
           </div>

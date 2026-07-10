@@ -182,25 +182,26 @@ export default function InvadersGame({ onScore }) {
       </div>
       <canvas ref={canvasRef} width={W} height={H}
         className="rounded-xl border-2 border-[#0a0a1a] shadow-lg touch-none" />
-    </div>
+
       {state === 'playing' && (
-        <div className="sm:hidden mt-2 select-none" style={{width:"100%",maxWidth:W+"px"}}>
-          <div className="flex gap-4">
-            <button className="flex-1 h-20 text-2xl font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
+        <div className="sm:hidden mt-2 select-none w-full" style={{maxWidth:W+"px"}}>
+          <div className="flex gap-2">
+            <button className="flex-1 h-14 text-base font-bold bg-white border border-[#ddd] rounded-xl active:bg-[#eee] shadow touch-manipulation"
               onTouchStart={e => { e.preventDefault(); window.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft' })) }}
               onTouchEnd={e => { e.preventDefault(); window.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowLeft' })) }}
             >◀ 左</button>
-            <button className="flex-1 h-20 text-2xl font-bold bg-red-50 border-2 border-[#f00] rounded-2xl active:bg-[#ffe0e0] shadow-lg touch-manipulation"
+            <button className="flex-1 h-14 text-base font-bold bg-red-50 border border-[#f00] rounded-xl active:bg-[#ffe0e0] shadow touch-manipulation"
               onTouchStart={e => { e.preventDefault(); window.dispatchEvent(new KeyboardEvent('keydown', { key: ' ' })) }}
               onTouchEnd={e => { e.preventDefault(); window.dispatchEvent(new KeyboardEvent('keyup', { key: ' ' })) }}
             >🔫 射击</button>
-            <button className="flex-1 h-20 text-2xl font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
+            <button className="flex-1 h-14 text-base font-bold bg-white border border-[#ddd] rounded-xl active:bg-[#eee] shadow touch-manipulation"
               onTouchStart={e => { e.preventDefault(); window.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight' })) }}
               onTouchEnd={e => { e.preventDefault(); window.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowRight' })) }}
             >▶ 右</button>
           </div>
         </div>
       )}
+    </div>
     </>
   )
 }
