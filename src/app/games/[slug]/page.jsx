@@ -173,12 +173,10 @@ export default function GamePage() {
         <p className="text-sm text-[#888] mt-1">{game.desc}</p>
       </div>
 
-      <div className="flex justify-center">
-        <div className="relative inline-block">
-          <GameComponent onScore={handleScore} />
-          <div className="absolute -top-2 -right-2 sm:static sm:ml-3" style={{zIndex:10}}>
-            <SoundButton enabled={soundEnabled} onToggle={toggleSound} />
-          </div>
+      <div className="flex justify-center relative" style={{minHeight:'200px'}}>
+        <GameComponent onScore={handleScore} />
+        <div className="absolute top-2 right-2" style={{zIndex:10}}>
+          <SoundButton enabled={soundEnabled} onToggle={toggleSound} />
         </div>
       </div>
 

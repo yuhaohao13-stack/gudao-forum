@@ -225,7 +225,7 @@ export default function MarioGame({ onScore }) {
       frame++
 
       // handle jump
-      if ((jumpPressed || jumpRef.current) && player.onGround) {
+      if ((jumpPressed || jumpRef.current) && player.onGround) { play('jump');
         player.vy = -9
         player.onGround = false
         jumpPressed = false

@@ -103,7 +103,7 @@ export default function BreakoutGame({ onScore }) {
         ball.dy = -ball.dy
         ball.y = paddle.y - BALL_R
         const hit = (ball.x - paddle.x) / PADDLE_W
-        ball.dx = 3 + (hit - 0.5) * 4 // angle varies by hit position
+        play('bounce'); ball.dx = 3 + (hit - 0.5) * 4 // angle varies by hit position
       }
 
       // brick collision
