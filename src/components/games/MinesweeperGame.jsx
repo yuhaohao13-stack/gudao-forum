@@ -13,8 +13,14 @@ export default function MinesweeperGame({ onScore }) {
   const gameRef = useRef(null)
   const [state, setState] = useState('idle')
   const [score, setScore] = useState(0)
+  const [mode, setMode] = useState('dig') // 'dig' | 'flag'
+  const modeRef = useRef('dig')
 
-  const start = useCallback(() => { setState('playing'); setScore(0) }, [])
+  // Keep ref in sync with state so game loop always reads latest mode
+  useEffect(() => { modeRef.current = mode }, [mode])
+
+  const start = useCallback(() => { setState('playing'); setScore(0); setMode('dig') }, [])
+  const toggleMode = useCallback(() => setMode(m => m === 'dig' ? 'flag' : 'dig'), [])
 
   useEffect(() => {
     if (state !== 'playing') return
@@ -113,15 +119,26 @@ export default function MinesweeperGame({ onScore }) {
 
     draw()
 
-    const clickHandler = (e) => {
-      if (gameOver || !running) return
+    const cellFromCoords = (clientX, clientY) => {
       const rect = canvas.getBoundingClientRect()
       const scaleX = W / rect.width, scaleY = H / rect.height
-      const mx = (e.clientX - rect.left) * scaleX - 20
-      const my = (e.clientY - rect.top) * scaleY - 50
-      const c = Math.floor(mx / CELL), r = Math.floor(my / CELL)
+      const mx = (clientX - rect.left) * scaleX - 20
+      const my = (clientY - rect.top) * scaleY - 50
+      return { c: Math.floor(mx / CELL), r: Math.floor(my / CELL) }
+    }
+
+    const clickHandler = (e) => {
+      if (gameOver || !running) return
+      const { c, r } = cellFromCoords(e.clientX, e.clientY)
       if (c < 0 || c >= COLS || r < 0 || r >= ROWS) return
 
+      if (modeRef.current === 'flag') {
+        // Flag mode: toggle flag
+        if (!revealed[r][c]) { flagged[r][c] = !flagged[r][c]; draw() }
+        return
+      }
+
+      // Dig mode
       if (!minesPlaced) placeMines(c, r)
 
       if (!revealed[r][c] && !flagged[r][c]) {
@@ -152,49 +169,17 @@ export default function MinesweeperGame({ onScore }) {
     canvas.addEventListener('click', clickHandler)
     canvas.addEventListener('contextmenu', rightClick)
 
-    // === Mobile: long press to flag ===
-    let longPressTimer = null
-    const touchStart = (e) => {
-      if (gameOver || !running) return
-      // Prevent copy/select on long press
-      e.preventDefault()
-      longPressTimer = setTimeout(() => {
-        longPressTimer = null
-        // Long press → toggle flag
-        const touch = e.touches[0]
-        const rect = canvas.getBoundingClientRect()
-        const scaleX = W / rect.width, scaleY = H / rect.height
-        const mx = (touch.clientX - rect.left) * scaleX - 20
-        const my = (touch.clientY - rect.top) * scaleY - 50
-        const c = Math.floor(mx / CELL), r = Math.floor(my / CELL)
-        if (c >= 0 && c < COLS && r >= 0 && r < ROWS && !revealed[r][c]) {
-          flagged[r][c] = !flagged[r][c]; draw()
-        }
-      }, 500)
-    }
-    const touchEnd = () => {
-      if (longPressTimer) { clearTimeout(longPressTimer); longPressTimer = null }
-    }
-    canvas.addEventListener('touchstart', touchStart, { passive: false })
-    canvas.addEventListener('touchend', touchEnd)
-    canvas.addEventListener('touchmove', touchEnd)
     canvas.addEventListener('contextmenu', (e) => e.preventDefault())
 
     gameRef.current = () => {
       running = false
       canvas.removeEventListener('click', clickHandler)
       canvas.removeEventListener('contextmenu', rightClick)
-      canvas.removeEventListener('touchstart', touchStart)
-      canvas.removeEventListener('touchend', touchEnd)
-      canvas.removeEventListener('touchmove', touchEnd)
     }
     return () => {
       running = false
       canvas.removeEventListener('click', clickHandler)
       canvas.removeEventListener('contextmenu', rightClick)
-      canvas.removeEventListener('touchstart', touchStart)
-      canvas.removeEventListener('touchend', touchEnd)
-      canvas.removeEventListener('touchmove', touchEnd)
     }
   }, [state, onScore])
 
@@ -211,14 +196,22 @@ export default function MinesweeperGame({ onScore }) {
             <button onClick={start} className="btn-primary">再来一局</button>
           </div>
         )}
-        {state === 'playing' && <span className="text-xs text-[#999]">左键翻开 右键插旗 🚩</span>}
+        {state === 'playing' && <span className="text-xs text-[#999]">点击翻开 右键/插旗按钮🚩</span>}
       </div>
       <canvas ref={canvasRef} width={W} height={H}
         className="rounded-xl border-2 border-[#aaa] shadow-lg touch-none"
         style={{userSelect:'none',WebkitUserSelect:'none',WebkitTouchCallout:'none'}} />
-      <div className="text-xs text-[#999] sm:hidden text-center">
-        点击翻开格子 | 长按标记🚩
-      </div>
+      {state === 'playing' && (
+        <button onClick={toggleMode}
+          className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${
+            mode === 'flag'
+              ? 'bg-[#ffd700] text-[#1a1a1a] ring-2 ring-[#ffd700]'
+              : 'bg-[#f5f5f5] text-[#888] hover:bg-[#eee]'
+          }`}
+          title={mode === 'flag' ? '当前：插旗模式' : '切换为插旗模式'}>
+          {mode === 'flag' ? '🚩 插旗中' : '⛏️ 挖掘中'} — 点击切换
+        </button>
+      )}
     </div>
   )
 }
