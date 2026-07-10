@@ -16,6 +16,14 @@ const CAT_ICONS = {
 }
 
 const GAMES = [
+  { slug: 'racing', name: '🏎️ 赛车', desc: '躲避来车，无尽狂飙' },
+  { slug: 'mario', name: '🍄 超级玛丽', desc: '经典平台跳跃，勇闯关卡' },
+  { slug: 'target', name: '🎯 打靶', desc: '限时60秒，射击移动靶' },
+  { slug: 'memory', name: '🧠 记忆翻牌', desc: '翻牌配对，考验记忆力' },
+  { slug: 'puzzle', name: '🧩 数字华容道', desc: '滑动方块，复原顺序' },
+  { slug: 'defender', name: '🪐 行星防御', desc: '保卫行星，击碎陨石' },
+  { slug: 'bounce', name: '🐱 跳跳乐', desc: '不断跳跃，越跳越高' },
+  { slug: 'pong', name: '🕹️ 乒乓球', desc: '经典乒乓，挑战AI' },
   { slug: 'snake', name: '🐍 贪吃蛇', desc: '吃食物变长，别碰墙' },
   { slug: 'tetris', name: '🧱 俄罗斯方块', desc: '经典方块堆叠消行' },
   { slug: 'breakout', name: '🏓 打砖块', desc: '挡板接球打砖块' },
