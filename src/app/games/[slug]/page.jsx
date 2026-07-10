@@ -1,8 +1,8 @@
 'use client'
 
-import { useParams, useRouter } from 'next/navigation'
+import { useParams } from 'next/navigation'
 import Link from 'next/link'
-import { ChevronLeft, Gamepad2, Trophy } from 'lucide-react'
+import { ChevronLeft, Gamepad2, Trophy, LogIn, UserPlus } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useAuth } from '@/components/AuthProvider'
 import { submitScore, getLeaderboard } from '@/lib/submitScore'
@@ -18,16 +18,26 @@ import DinoRunGame from '@/components/games/DinoRunGame'
 import FlappyBirdGame from '@/components/games/FlappyBirdGame'
 
 const GAMES = [
-  { slug: 'snake', name: '🐍 贪吃蛇', desc: '经典贪吃蛇，吃食物变长，别撞墙别咬自己', Component: SnakeGame },
-  { slug: 'tetris', name: '🧱 俄罗斯方块', desc: '经典方块堆叠，消行得分', Component: TetrisGame },
-  { slug: 'breakout', name: '🏓 打砖块', desc: '挡板接球打砖块，全消即胜', Component: BreakoutGame },
-  { slug: '2048', name: '🔢 2048', desc: '合并数字方块，挑战2048', Component: Game2048 },
-  { slug: 'whackamole', name: '🔨 打地鼠', desc: '限时30秒，打中地鼠得分', Component: WhackAMoleGame },
-  { slug: 'invaders', name: '👾 太空侵略者', desc: '射击入侵者，保卫地球', Component: InvadersGame },
-  { slug: 'pacman', name: '🟡 吃豆人', desc: '迷宫吃豆，躲避鬼怪', Component: PacmanGame },
-  { slug: 'minesweeper', name: '💣 扫雷', desc: '推理排雷，步步为营', Component: MinesweeperGame },
-  { slug: 'dino', name: '🏃 恐龙跑酷', desc: '无尽跑酷，跳跃躲避障碍', Component: DinoRunGame },
-  { slug: 'flappy', name: '🐦 Flappy Bird', desc: '点击穿越管道，停不下来', Component: FlappyBirdGame },
+  { slug: 'snake', name: '🐍 贪吃蛇', desc: '经典贪吃蛇，吃食物变长，别撞墙别咬自己', Component: SnakeGame,
+    tips: { pc: '键盘方向键 ↑↓←→ 控制蛇的移动方向', mobile: '滑动画布 或 点击下方方向按钮移动' } },
+  { slug: 'tetris', name: '🧱 俄罗斯方块', desc: '经典方块堆叠，消行得分', Component: TetrisGame,
+    tips: { pc: '↑旋转 ↓加速 ←→移动 空格直接落底', mobile: '点击下方按钮：左移 / 旋转 / 右移 / 下落 / 落底' } },
+  { slug: 'breakout', name: '🏓 打砖块', desc: '挡板接球打砖块，全消即胜', Component: BreakoutGame,
+    tips: { pc: '鼠标左右移动控制挡板接球', mobile: '手指在画布上滑动控制挡板' } },
+  { slug: '2048', name: '🔢 2048', desc: '合并数字方块，挑战2048！', Component: Game2048,
+    tips: { pc: '方向键 ↑↓←→ 滑动合并数字', mobile: '手指在画布上滑动合并数字' } },
+  { slug: 'whackamole', name: '🔨 打地鼠', desc: '限时30秒，疯狂点击打地鼠', Component: WhackAMoleGame,
+    tips: { pc: '鼠标点击地鼠击打得分', mobile: '手指点击地鼠击打得分' } },
+  { slug: 'invaders', name: '👾 太空侵略者', desc: '射击入侵者，保卫地球', Component: InvadersGame,
+    tips: { pc: '←→ 移动飞船 空格键射击', mobile: '点击下方按钮：左移 / 射击 / 右移' } },
+  { slug: 'pacman', name: '🟡 吃豆人', desc: '迷宫吃豆，躲避鬼怪', Component: PacmanGame,
+    tips: { pc: '方向键 ↑↓←→ 控制吃豆人', mobile: '滑动画布 或 点击方向按钮控制' } },
+  { slug: 'minesweeper', name: '💣 扫雷', desc: '推理排雷，步步为营', Component: MinesweeperGame,
+    tips: { pc: '左键点击翻开格子 · 右键标记🚩', mobile: '点击翻开格子（长按标记开发中）' } },
+  { slug: 'dino', name: '🏃 恐龙跑酷', desc: '无尽跑酷，跳跃躲避障碍', Component: DinoRunGame,
+    tips: { pc: '空格键 或 ↑ 上箭头 跳跃', mobile: '点击画布跳跃' } },
+  { slug: 'flappy', name: '🐦 Flappy Bird', desc: '点击穿越管道，停不下来', Component: FlappyBirdGame,
+    tips: { pc: '空格键 或 ↑ 上箭头 飞行', mobile: '点击画布飞行' } },
 ]
 
 const gameMap = Object.fromEntries(GAMES.map(g => [g.slug, g]))
@@ -35,19 +45,18 @@ const gameMap = Object.fromEntries(GAMES.map(g => [g.slug, g]))
 export default function GamePage() {
   const params = useParams()
   const slug = params.slug
-  const { user } = useAuth()
+  const { user, loading } = useAuth()
   const game = gameMap[slug]
   const [leaderboard, setLeaderboard] = useState([])
 
-  // 加载该游戏高分榜
   useEffect(() => {
     const load = async () => {
-      if (!game || game.soon) return
+      if (!game) return
       const data = await getLeaderboard(slug)
       setLeaderboard(data)
     }
     load()
-  }, [slug])
+  }, [slug, game])
 
   if (!game) {
     return (
@@ -64,10 +73,52 @@ export default function GamePage() {
     if (!user) return
     const result = await submitScore(slug, score)
     if (result.isNewHigh) {
-      // 刷新高分榜
       const data = await getLeaderboard(slug)
       setLeaderboard(data)
     }
+  }
+
+  // 🔒 未登录 → 显示注册/登录提示
+  if (!loading && !user) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-1.5 text-sm text-[#888] hover:text-[#1a1a1a] transition-colors">
+            <ChevronLeft size={18} /> 返回首页
+          </Link>
+          <div className="flex items-center gap-2 text-sm text-[#888]">
+            <Gamepad2 size={16} /> 游戏娱乐
+          </div>
+        </div>
+        <div className="text-center py-16">
+          <div className="text-6xl mb-6">🎮</div>
+          <h1 className="text-2xl font-bold text-[#1a1a1a] mb-2">{game.name}</h1>
+          <p className="text-sm text-[#888] mb-2">{game.desc}</p>
+          <div className="max-w-sm mx-auto mt-8 bg-white border border-[#ece8e0] rounded-2xl p-8 shadow-sm">
+            <div className="text-4xl mb-4">🔒</div>
+            <h2 className="text-lg font-bold text-[#1a1a1a] mb-2">注册后可畅玩</h2>
+            <p className="text-sm text-[#888] mb-6">注册登录后即可玩全部游戏，<br />还能冲击高分榜！</p>
+            <div className="flex flex-col gap-3">
+              <Link href="/register" className="btn-primary text-base py-3 flex items-center justify-center gap-2">
+                <UserPlus size={18} /> 免费注册
+              </Link>
+              <Link href="/login" className="btn-secondary text-base py-3 flex items-center justify-center gap-2">
+                <LogIn size={18} /> 已有账号？登录
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // ⏳ 加载中
+  if (loading) {
+    return (
+      <div className="text-center py-20">
+        <div className="w-8 h-8 border-2 border-[#ddd] border-t-[#1a1a1a] rounded-full animate-spin mx-auto" />
+      </div>
+    )
   }
 
   const GameComponent = game.Component
@@ -77,12 +128,10 @@ export default function GamePage() {
       {/* 顶部导航 */}
       <div className="flex items-center justify-between">
         <Link href="/" className="flex items-center gap-1.5 text-sm text-[#888] hover:text-[#1a1a1a] transition-colors">
-          <ChevronLeft size={18} />
-          返回首页
+          <ChevronLeft size={18} /> 返回首页
         </Link>
         <div className="flex items-center gap-2 text-sm text-[#888]">
-          <Gamepad2 size={16} />
-          游戏娱乐
+          <Gamepad2 size={16} /> 游戏娱乐
         </div>
       </div>
 
@@ -90,11 +139,6 @@ export default function GamePage() {
       <div className="text-center">
         <h1 className="text-2xl font-bold text-[#1a1a1a]">{game.name}</h1>
         <p className="text-sm text-[#888] mt-1">{game.desc}</p>
-        {!user && (
-          <p className="text-xs text-[#bbb] mt-1">
-            <Link href="/login" className="text-[#c23531] hover:underline">登录</Link>后可记录高分
-          </p>
-        )}
       </div>
 
       {/* 游戏画布 */}
@@ -102,11 +146,27 @@ export default function GamePage() {
         <GameComponent onScore={handleScore} />
       </div>
 
-      {/* ===== 🏆 高分榜 ===== */}
+      {/* 💡 操作说明 */}
+      <div className="max-w-md mx-auto w-full">
+        <div className="bg-[#fafaf8] border border-[#ece8e0] rounded-xl px-5 py-4">
+          <div className="text-xs font-semibold text-[#999] mb-2">💡 操作说明</div>
+          <div className="space-y-1.5">
+            <div className="flex items-center gap-2 text-sm text-[#666]">
+              <span className="text-base">🖥️</span>
+              <span>{game.tips.pc}</span>
+            </div>
+            <div className="flex items-center gap-2 text-sm text-[#666]">
+              <span className="text-base">📱</span>
+              <span>{game.tips.mobile}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 🏆 高分榜 */}
       <section>
         <h2 className="flex items-center gap-1.5 text-xs font-semibold text-[#bbb] uppercase tracking-widest mb-2">
-          <Trophy size={14} />
-          {game.name} 高分榜
+          <Trophy size={14} /> {game.name} 高分榜
         </h2>
         <div className="card">
           <div className="divide-y divide-[#f5f5f5]">
