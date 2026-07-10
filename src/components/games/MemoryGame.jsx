@@ -32,7 +32,6 @@ function buildCards() {
 
 export default function MemoryGame({ onScore }) {
   const { play } = useGameSound()
-  const { play } = useGameSound()
   const canvasRef = useRef(null)
   const [state, setState] = useState('idle')
   const [score, setScore] = useState(0)

@@ -11,7 +11,6 @@ const SPAWN_INTERVAL = 800 // ms between spawns
 
 export default function TargetGame({ onScore }) {
   const { play } = useGameSound()
-  const { play } = useGameSound()
   const canvasRef = useRef(null)
   const [state, setState] = useState('idle')
   const [score, setScore] = useState(0)

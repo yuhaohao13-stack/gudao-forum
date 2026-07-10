@@ -27,7 +27,6 @@ const DIRS = { ArrowUp: { x: 0, y: -1 }, ArrowDown: { x: 0, y: 1 }, ArrowLeft: {
 
 export default function PacmanGame({ onScore }) {
   const { play } = useGameSound()
-  const { play } = useGameSound()
   const canvasRef = useRef(null)
   const gameRef = useRef(null)
   const dirRef = useRef(null) // setDirection for touch buttons

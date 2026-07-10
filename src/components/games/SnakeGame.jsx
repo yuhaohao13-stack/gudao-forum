@@ -9,7 +9,6 @@ const DIRS = { ArrowUp: { x: 0, y: -1 }, ArrowDown: { x: 0, y: 1 }, ArrowLeft: {
 
 export default function SnakeGame({ onScore }) {
   const { play } = useGameSound()
-  const { play } = useGameSound()
   const canvasRef = useRef(null)
   const setDirRef = useRef(null) // 暴露给外部按钮
   const gameRef = useRef(null)

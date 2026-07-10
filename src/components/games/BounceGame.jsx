@@ -12,7 +12,6 @@ const MOVE_SPEED = 5
 
 export default function BounceGame({ onScore }) {
   const { play } = useGameSound()
-  const { play } = useGameSound()
   const canvasRef = useRef(null)
   const gameRef = useRef(null)
   const [state, setState] = useState('idle')

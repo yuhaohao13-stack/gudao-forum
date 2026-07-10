@@ -12,7 +12,6 @@ const COLORS = ['#e94560', '#f0a000', '#00f0f0', '#00f000', '#a000f0', '#f0f000'
 
 export default function BreakoutGame({ onScore }) {
   const { play } = useGameSound()
-  const { play } = useGameSound()
   const canvasRef = useRef(null)
   const [state, setState] = useState('idle')
   const [score, setScore] = useState(0)

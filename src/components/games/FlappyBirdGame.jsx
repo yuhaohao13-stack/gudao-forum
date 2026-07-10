@@ -10,7 +10,6 @@ const GRAVITY = 0.4, FLAP = -7
 
 export default function FlappyBirdGame({ onScore }) {
   const { play } = useGameSound()
-  const { play } = useGameSound()
   const canvasRef = useRef(null)
   const gameRef = useRef(null)
   const [state, setState] = useState('idle')

@@ -10,7 +10,6 @@ const BULLET_R = 3
 
 export default function InvadersGame({ onScore }) {
   const { play } = useGameSound()
-  const { play } = useGameSound()
   const canvasRef = useRef(null)
   const gameRef = useRef(null)
   const [state, setState] = useState('idle')

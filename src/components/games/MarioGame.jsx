@@ -11,7 +11,6 @@ const GROUND_Y = H - GROUND_H
 
 export default function MarioGame({ onScore }) {
   const { play } = useGameSound()
-  const { play } = useGameSound()
   const canvasRef = useRef(null)
   const gameRef = useRef(null)
   const jumpRef = useRef(false)

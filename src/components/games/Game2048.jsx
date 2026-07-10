@@ -86,7 +86,6 @@ function canMove(grid) {
 
 export default function Game2048({ onScore }) {
   const { play } = useGameSound()
-  const { play } = useGameSound()
   const canvasRef = useRef(null)
   const [state, setState] = useState('idle')
   const [score, setScore] = useState(0)

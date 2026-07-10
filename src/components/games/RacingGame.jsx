@@ -11,7 +11,6 @@ const PLAYER_Y = H - 80
 
 export default function RacingGame({ onScore }) {
   const { play } = useGameSound()
-  const { play } = useGameSound()
   const canvasRef = useRef(null)
   const gameRef = useRef(null)
   const moveDirRef = useRef(null) // -1 left, 0 none, 1 right
