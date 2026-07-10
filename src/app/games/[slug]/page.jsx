@@ -16,6 +16,14 @@ import PacmanGame from '@/components/games/PacmanGame'
 import MinesweeperGame from '@/components/games/MinesweeperGame'
 import DinoRunGame from '@/components/games/DinoRunGame'
 import FlappyBirdGame from '@/components/games/FlappyBirdGame'
+import RacingGame from '@/components/games/RacingGame'
+import MarioGame from '@/components/games/MarioGame'
+import TargetGame from '@/components/games/TargetGame'
+import MemoryGame from '@/components/games/MemoryGame'
+import SlidingPuzzle from '@/components/games/SlidingPuzzle'
+import DefenderGame from '@/components/games/DefenderGame'
+import BounceGame from '@/components/games/BounceGame'
+import PongGame from '@/components/games/PongGame'
 
 const GAMES = [
   { slug: 'snake', name: '🐍 贪吃蛇', desc: '经典贪吃蛇，吃食物变长，别撞墙别咬自己', Component: SnakeGame,
@@ -38,6 +46,22 @@ const GAMES = [
     tips: { pc: '空格键 或 ↑ 上箭头 跳跃', mobile: '点击画布跳跃' } },
   { slug: 'flappy', name: '🐦 Flappy Bird', desc: '点击穿越管道，停不下来', Component: FlappyBirdGame,
     tips: { pc: '空格键 或 ↑ 上箭头 飞行', mobile: '点击画布飞行' } },
+  { slug: 'racing', name: '🏎️ 赛车', desc: '3车道躲避迎面来车，越跑越远', Component: RacingGame,
+    tips: { pc: '← → 切换车道躲避来车', mobile: '点击按钮切换车道' } },
+  { slug: 'mario', name: '🍄 超级玛丽', desc: '经典横版过关，跳跃躲避障碍', Component: MarioGame,
+    tips: { pc: '空格/↑跳跃，自动前进', mobile: '点击跳跃' } },
+  { slug: 'target', name: '🎯 打靶', desc: '限时60秒，射击移动靶子得分', Component: TargetGame,
+    tips: { pc: '鼠标点击射击靶子', mobile: '点击射击靶子' } },
+  { slug: 'memory', name: '🧠 记忆翻牌', desc: '翻牌配对，考验记忆力', Component: MemoryGame,
+    tips: { pc: '点击翻牌，配对两张相同的', mobile: '点击翻牌' } },
+  { slug: 'slidingpuzzle', name: '🧩 数字华容道', desc: '滑动方块，还原数字顺序', Component: SlidingPuzzle,
+    tips: { pc: '点击方块滑动到空格', mobile: '点击方块滑动' } },
+  { slug: 'defender', name: '🪐 行星防御', desc: '击落陨石，保卫家园', Component: DefenderGame,
+    tips: { pc: '←→移动 空格射击', mobile: '点击按钮操作' } },
+  { slug: 'bounce', name: '🐱 跳跳乐', desc: '不断弹跳，挑战最高高度', Component: BounceGame,
+    tips: { pc: '←→ 左右移动 踩平台', mobile: '点击按钮左右移动' } },
+  { slug: 'pong', name: '🕹️ 乒乓球', desc: '经典乒乓球对战AI', Component: PongGame,
+    tips: { pc: '鼠标上下移动控制球拍', mobile: '手指滑动控制球拍' } },
 ]
 
 const gameMap = Object.fromEntries(GAMES.map(g => [g.slug, g]))

@@ -14,6 +14,14 @@ const GAMES = [
   { slug: 'minesweeper', name: '💣 扫雷', desc: '推理排雷，步步为营', tag: '已上线' },
   { slug: 'dino', name: '🏃 恐龙跑酷', desc: '无尽跑酷，跳跃躲避障碍', tag: '已上线' },
   { slug: 'flappy', name: '🐦 Flappy Bird', desc: '点击穿越管道，停不下来', tag: '已上线' },
+  { slug: 'racing', name: '🏎️ 赛车', desc: '3车道躲避迎面来车，越跑越远', tag: '已上线' },
+  { slug: 'mario', name: '🍄 超级玛丽', desc: '经典横版过关，跳跃躲避障碍', tag: '已上线' },
+  { slug: 'target', name: '🎯 打靶', desc: '限时60秒，射击移动靶子得分', tag: '已上线' },
+  { slug: 'memory', name: '🧠 记忆翻牌', desc: '翻牌配对，考验记忆力', tag: '已上线' },
+  { slug: 'slidingpuzzle', name: '🧩 数字华容道', desc: '滑动方块，还原数字顺序', tag: '已上线' },
+  { slug: 'defender', name: '🪐 行星防御', desc: '击落陨石，保卫家园', tag: '已上线' },
+  { slug: 'bounce', name: '🐱 跳跳乐', desc: '不断弹跳，挑战最高高度', tag: '已上线' },
+  { slug: 'pong', name: '🕹️ 乒乓球', desc: '经典乒乓球对战AI', tag: '已上线' },
 ]
 
 export default function GamesPage() {
@@ -31,7 +39,7 @@ export default function GamesPage() {
       <div className="text-center">
         <div className="text-4xl mb-3">🎮</div>
         <h1 className="text-2xl sm:text-3xl font-bold text-[#1a1a1a]">游戏娱乐厅</h1>
-        <p className="text-sm text-[#888] mt-2">全部10款游戏已上线，加载后可离线畅玩</p>
+        <p className="text-sm text-[#888] mt-2">全部18款游戏已上线，加载后可离线畅玩</p>
       </div>
 
       {/* 全部游戏 */}
