@@ -132,11 +132,11 @@ export default function TetrisGame({ onScore }) {
       <div className="flex items-center gap-4 flex-wrap justify-center">
         <div className="text-sm text-[#888]">得分: <span className="text-[#c23531] font-bold text-lg">{score}</span></div>
         <div className="text-sm text-[#888]">行数: <span className="text-[#f0a000] font-bold">{lines}</span></div>
-        {state === 'idle' && <button onClick={start} className="btn-primary text-xl py-5 px-10">开始游戏</button>}
+        {state === 'idle' && <button onClick={start} className="btn-primary" style={{fontSize:"20px",padding:"20px 40px"}}>开始游戏</button>}
         {state === 'over' && (
           <div className="flex items-center gap-3">
-            <span className="text-[#e94560] font-bold text-lg">游戏结束</span>
-            <button onClick={start} className="btn-primary text-xl py-5 px-10">再来一局</button>
+            <span className="text-[#e94560] font-bold text-[18px]">游戏结束</span>
+            <button onClick={start} className="btn-primary" style={{fontSize:"20px",padding:"20px 40px"}}>再来一局</button>
           </div>
         )}
         {state === 'playing' && <span className="text-xs text-[#999] hidden sm:inline">↑旋转 ↓加速 ←→移动 空格落底</span>}
@@ -147,21 +147,21 @@ export default function TetrisGame({ onScore }) {
       {state === 'playing' && (
         <div className="w-full" style={{maxWidth:BOARD_W+"px"}}>
           <div className="flex gap-6">
-            <button className="flex-1 h-72 text-3xl font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
+            <button className="flex-1 h-[288px] text-[30px] font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
               onTouchStart={e => { e.preventDefault(); actRef.current?.left?.() }}
             >↩ 左</button>
-            <button className="flex-1 h-72 text-3xl font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
+            <button className="flex-1 h-[288px] text-[30px] font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
               onTouchStart={e => { e.preventDefault(); actRef.current?.rotate?.() }}
             >↻ 旋转</button>
-            <button className="flex-1 h-72 text-3xl font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
+            <button className="flex-1 h-[288px] text-[30px] font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
               onTouchStart={e => { e.preventDefault(); actRef.current?.right?.() }}
             >↪ 右</button>
           </div>
           <div className="flex gap-6 mt-4">
-            <button className="flex-1 h-72 text-3xl font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
+            <button className="flex-1 h-[288px] text-[30px] font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
               onTouchStart={e => { e.preventDefault(); actRef.current?.drop?.() }}
             >↓ 下</button>
-            <button className="flex-1 h-72 text-3xl font-bold bg-orange-50 border-2 border-[#f0a000] rounded-2xl active:bg-[#ffe0b0] shadow-lg touch-manipulation"
+            <button className="flex-1 h-[288px] text-[30px] font-bold bg-orange-50 border-2 border-[#f0a000] rounded-2xl active:bg-[#ffe0b0] shadow-lg touch-manipulation"
               onTouchStart={e => { e.preventDefault(); actRef.current?.hardDrop?.() }}
             >⏬ 落底</button>
           </div>
