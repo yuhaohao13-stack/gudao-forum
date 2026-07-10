@@ -3,7 +3,7 @@
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { ChevronLeft, Gamepad2, Trophy, LogIn, UserPlus, Volume2, VolumeX } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useAuth } from '@/components/AuthProvider'
 import { submitScore, getLeaderboard } from '@/lib/submitScore'
 import useGameSound from '@/components/games/useGameSound'
