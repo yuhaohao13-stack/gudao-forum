@@ -1,30 +1,45 @@
 'use client'
 
-import { useRef, useCallback, useState } from 'react'
+import { useCallback, useState, useEffect } from 'react'
+
+// Module-level singleton — all instances share the same state
+let globalEnabled = false
+let globalAudioCtx = null
+const listeners = new Set()
+
+function notifyListeners() {
+  for (const fn of listeners) fn(globalEnabled)
+}
 
 export default function useGameSound() {
-  const audioCtxRef = useRef(null)
-  const enabledRef = useRef(false)
-  const [enabled, setEnabled] = useState(false)
+  const [enabled, setEnabled] = useState(globalEnabled)
+
+  useEffect(() => {
+    const handler = (val) => setEnabled(val)
+    listeners.add(handler)
+    return () => listeners.delete(handler)
+  }, [])
 
   const toggleSound = useCallback(() => {
-    setEnabled(prev => {
-      const next = !prev
-      enabledRef.current = next
-      return next
-    })
-    return !enabled
-  }, [enabled])
+    globalEnabled = !globalEnabled
+    if (globalEnabled && !globalAudioCtx && typeof window !== 'undefined') {
+      try {
+        globalAudioCtx = new (window.AudioContext || window.webkitAudioContext)()
+      } catch {}
+    }
+    notifyListeners()
+    return globalEnabled
+  }, [])
 
   const play = useCallback((type) => {
-    if (!enabledRef.current) return
-    if (!audioCtxRef.current && typeof window !== 'undefined') {
+    if (!globalEnabled) return
+    if (!globalAudioCtx && typeof window !== 'undefined') {
       try {
-        audioCtxRef.current = new (window.AudioContext || window.webkitAudioContext)()
+        globalAudioCtx = new (window.AudioContext || window.webkitAudioContext)()
       } catch { return }
     }
-    if (!audioCtxRef.current) return
-    const ctx = audioCtxRef.current
+    if (!globalAudioCtx) return
+    const ctx = globalAudioCtx
 
     const beep = (freq, duration, vol = 0.1) => {
       const osc = ctx.createOscillator()
