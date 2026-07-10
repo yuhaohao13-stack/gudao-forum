@@ -140,18 +140,18 @@ export default function SnakeGame({ onScore }) {
         <div className="w-full sm:max-w-lg">
           <div className="flex justify-center mb-2">
             <button className="flex-1 max-w-[30%] h-[48px] text-[60px] font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
-              onTouchStart={e => { e.preventDefault(); setDirRef.current?.(DIRS.ArrowUp) }}
+              onPointerDown={e => { e.preventDefault(); setDirRef.current?.(DIRS.ArrowUp) }}
             >↑</button>
           </div>
           <div className="flex gap-[32px]">
             <button className="flex-1 h-[48px] text-[60px] font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
-              onTouchStart={e => { e.preventDefault(); setDirRef.current?.(DIRS.ArrowLeft) }}
+              onPointerDown={e => { e.preventDefault(); setDirRef.current?.(DIRS.ArrowLeft) }}
             >←</button>
             <button className="flex-1 h-[48px] text-[60px] font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
-              onTouchStart={e => { e.preventDefault(); setDirRef.current?.(DIRS.ArrowDown) }}
+              onPointerDown={e => { e.preventDefault(); setDirRef.current?.(DIRS.ArrowDown) }}
             >↓</button>
             <button className="flex-1 h-[48px] text-[60px] font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
-              onTouchStart={e => { e.preventDefault(); setDirRef.current?.(DIRS.ArrowRight) }}
+              onPointerDown={e => { e.preventDefault(); setDirRef.current?.(DIRS.ArrowRight) }}
             >→</button>
           </div>
         </div>
