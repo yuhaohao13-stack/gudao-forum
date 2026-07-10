@@ -149,7 +149,6 @@ export default function MinesweeperGame({ onScore }) {
     const onTouchStart = (e) => {
       longPressBlock = false
       touchOrigin = { x: e.touches[0].clientX, y: e.touches[0].clientY }
-      e.preventDefault()
       longPressTimer = setTimeout(() => {
         longPressTimer = null
         const { c, r } = cellFromCoords(touchOrigin.x, touchOrigin.y)
