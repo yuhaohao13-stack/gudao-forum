@@ -11,10 +11,25 @@ function notifyListeners() {
   for (const fn of listeners) fn(globalEnabled)
 }
 
+function ensureCtx() {
+  if (!globalAudioCtx && typeof window !== 'undefined') {
+    try {
+      globalAudioCtx = new (window.AudioContext || window.webkitAudioContext)()
+    } catch { return null }
+  }
+  // Resume if suspended (browser autoplay policy)
+  if (globalAudioCtx && globalAudioCtx.state === 'suspended') {
+    globalAudioCtx.resume()
+  }
+  return globalAudioCtx
+}
+
 export default function useGameSound() {
-  const [enabled, setEnabled] = useState(globalEnabled)
+  const [enabled, setEnabled] = useState(false)
 
   useEffect(() => {
+    // Sync with global state on mount
+    setEnabled(globalEnabled)
     const handler = (val) => setEnabled(val)
     listeners.add(handler)
     return () => listeners.delete(handler)
@@ -23,40 +38,30 @@ export default function useGameSound() {
   const toggleSound = useCallback(() => {
     globalEnabled = !globalEnabled
     if (globalEnabled) {
-      if (!globalAudioCtx && typeof window !== 'undefined') {
+      const ctx = ensureCtx()
+      if (ctx) {
+        // Play immediate feedback beep
         try {
-          globalAudioCtx = new (window.AudioContext || window.webkitAudioContext)()
-        } catch {}
-      }
-      // 点击声音按钮时立刻播放反馈音
-      if (globalAudioCtx) {
-        try {
-          const osc = globalAudioCtx.createOscillator()
-          const gain = globalAudioCtx.createGain()
+          const osc = ctx.createOscillator()
+          const gain = ctx.createGain()
           osc.connect(gain)
-          gain.connect(globalAudioCtx.destination)
+          gain.connect(ctx.destination)
           osc.type = 'sine'
           osc.frequency.value = 660
-          gain.gain.setValueAtTime(0.08, globalAudioCtx.currentTime)
-          gain.gain.exponentialRampToValueAtTime(0.001, globalAudioCtx.currentTime + 0.1)
-          osc.start(globalAudioCtx.currentTime)
-          osc.stop(globalAudioCtx.currentTime + 0.1)
+          gain.gain.setValueAtTime(0.08, ctx.currentTime)
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1)
+          osc.start(ctx.currentTime)
+          osc.stop(ctx.currentTime + 0.1)
         } catch {}
       }
     }
     notifyListeners()
-    return globalEnabled
   }, [])
 
   const play = useCallback((type) => {
     if (!globalEnabled) return
-    if (!globalAudioCtx && typeof window !== 'undefined') {
-      try {
-        globalAudioCtx = new (window.AudioContext || window.webkitAudioContext)()
-      } catch { return }
-    }
-    if (!globalAudioCtx) return
-    const ctx = globalAudioCtx
+    const ctx = ensureCtx()
+    if (!ctx) return
 
     const beep = (freq, duration, vol = 0.1) => {
       const osc = ctx.createOscillator()
