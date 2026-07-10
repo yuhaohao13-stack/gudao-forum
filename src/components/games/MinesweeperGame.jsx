@@ -200,7 +200,9 @@ export default function MinesweeperGame({ onScore }) {
             <button onClick={start} className="btn-primary">再来一局</button>
           </div>
         )}
-        {state === 'playing' && <span className="text-xs text-[#999]">点击翻开 | 长按插旗🚩 | 右键插旗🚩</span>}
+      </div>
+      <div className="text-xs text-[#888] text-center leading-relaxed">
+        点击翻开格子 | <strong className="text-[#c23531]">长按</strong>插旗🚩 | 右键插旗🚩
       </div>
       <canvas ref={canvasRef} width={W} height={H}
         className="rounded-xl border-2 border-[#aaa] shadow-lg touch-none"
