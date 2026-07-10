@@ -150,7 +150,7 @@ export default function OnlineUsersPanel({ roomSlug, currentUserId }) {
   return (
     <>
       {/* 侧边面板 — 占1/4宽度，不自滚动，超过显示更多 */}
-      <div className="flex flex-col rounded-xl border border-[#eee8dc] bg-white overflow-hidden h-full">
+      <div className="flex flex-col bg-white h-full">
         <div className="px-2.5 py-2 border-b border-[#eee8dc] bg-[#faf8f4] shrink-0">
           <div className="flex items-center gap-1.5">
             <Users size={12} className="text-[#b0a898]" />

@@ -400,7 +400,7 @@ export default function ChatRoomPage() {
         </div>
 
         {/* 分割线 + 右：在线面板 (1/4) — 不自滚动 */}
-        <div className="hidden md:block border-l border-[#eee8dc] w-1/4 min-w-[140px] max-w-[220px]">
+        <div className="max-md:hidden border-l border-[#eee8dc] w-1/4 min-w-[140px] max-w-[220px]">
           <OnlineUsersPanel roomSlug={slug} currentUserId={user?.id || null} />
         </div>
       </div>
