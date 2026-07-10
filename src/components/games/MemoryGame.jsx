@@ -213,7 +213,7 @@ export default function MemoryGame({ onScore }) {
           if (gameMatches === PAIRS) {
             running = false
             if (animFrame) cancelAnimationFrame(animFrame)
-              play('win');   play('win'); setState('over')
+              play('win'); setState('over')
             if (onScore) onScore(gameScore)
           }
         } else {

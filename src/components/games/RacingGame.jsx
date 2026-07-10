@@ -145,7 +145,7 @@ export default function RacingGame({ onScore }) {
       })
 
       // score
-        play('score');   play('score'); gameScore += speed / 15
+        play('score'); gameScore += speed / 15
       setScore(Math.floor(gameScore))
 
       // speed up

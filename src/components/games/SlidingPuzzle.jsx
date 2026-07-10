@@ -141,7 +141,7 @@ export default function SlidingPuzzle({ onScore }) {
         running = false
         clearInterval(timerInterval)
         setElapsed(seconds)
-          play('win');   play('win'); setState('over')
+          play('win'); setState('over')
         if (onScore) onScore(currentMoves)
         // best score tracking
         setBest(prev => prev === null ? currentMoves : Math.min(prev, currentMoves))

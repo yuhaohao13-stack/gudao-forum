@@ -4,14 +4,20 @@ import { useRef, useCallback, useState } from 'react'
 
 export default function useGameSound() {
   const audioCtxRef = useRef(null)
+  const enabledRef = useRef(false)
   const [enabled, setEnabled] = useState(false)
 
   const toggleSound = useCallback(() => {
-    setEnabled(prev => !prev)
+    setEnabled(prev => {
+      const next = !prev
+      enabledRef.current = next
+      return next
+    })
     return !enabled
   }, [enabled])
 
   const play = useCallback((type) => {
+    if (!enabledRef.current) return
     if (!audioCtxRef.current && typeof window !== 'undefined') {
       try {
         audioCtxRef.current = new (window.AudioContext || window.webkitAudioContext)()

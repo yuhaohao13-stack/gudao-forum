@@ -121,9 +121,9 @@ export default function PacmanGame({ onScore }) {
         pac.x = nx < 0 ? COLS - 1 : nx >= COLS ? 0 : nx
         pac.y = ny
         // eat
-        if (grid[pac.y][pac.x] === 1) {   play('score');   play('score'); gameScore += 10; setScore(gameScore); dots--; grid[pac.y][pac.x] = 2 }
-        if (grid[pac.y][pac.x] === 3) {   play('win');   play('win'); gameScore += 50; setScore(gameScore); dots--; grid[pac.y][pac.x] = 2; powerMode = 180; ghosts.forEach(g => g.scared = true) }
-        if (dots <= 0) { running = false;   play('gameover');   play('gameover'); setState('over'); setScore(gameScore); if (onScore) onScore(gameScore); return }
+        if (grid[pac.y][pac.x] === 1) {   play('score'); gameScore += 10; setScore(gameScore); dots--; grid[pac.y][pac.x] = 2 }
+        if (grid[pac.y][pac.x] === 3) {   play('win'); gameScore += 50; setScore(gameScore); dots--; grid[pac.y][pac.x] = 2; powerMode = 180; ghosts.forEach(g => g.scared = true) }
+        if (dots <= 0) { running = false;   play('gameover'); setState('over'); setScore(gameScore); if (onScore) onScore(gameScore); return }
       }
       if (powerMode > 0) powerMode--
       if (powerMode === 0) ghosts.forEach(g => g.scared = false)
@@ -145,7 +145,7 @@ export default function PacmanGame({ onScore }) {
       ghosts.forEach(g => {
         if (Math.abs(g.x - pac.x) + Math.abs(g.y - pac.y) < 1) {
           if (g.scared && powerMode > 0) {
-              play('hit');   play('hit'); gameScore += 200; setScore(gameScore)
+              play('hit'); gameScore += 200; setScore(gameScore)
             g.x = 7; g.y = 6; g.scared = false
           } else if (!g.scared) {
             running = false; setState('over'); setScore(gameScore); if (onScore) onScore(gameScore)

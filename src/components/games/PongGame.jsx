@@ -136,7 +136,7 @@ export default function PongGame({ onScore }) {
         ball.y >= playerPaddle.y &&
         ball.y <= playerPaddle.y + PADDLE_H
       ) {
-          play('bounce');   play('bounce'); ball.dx = -ball.dx
+          play('bounce'); ball.dx = -ball.dx
         ball.x = PADDLE_MARGIN + PADDLE_W + BALL_R
         // angle based on where ball hits paddle
         const hitPos = (ball.y - (playerPaddle.y + PADDLE_H / 2)) / (PADDLE_H / 2)
@@ -163,7 +163,7 @@ export default function PongGame({ onScore }) {
         setAiScore(aScore)
         if (aScore >= WIN_SCORE) {
           running = false
-            play('win');   play('win'); setState('over')
+            play('win'); setState('over')
           if (onScore) onScore({ player: pScore, ai: aScore })
           return
         }

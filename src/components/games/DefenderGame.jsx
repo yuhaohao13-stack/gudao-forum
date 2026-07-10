@@ -163,7 +163,7 @@ export default function DefenderGame({ onScore }) {
       // player shoot
       const now = Date.now()
       if (keys.space && now - lastShot > 250) {
-          play('shoot');   play('shoot'); bullets.push({ x: player.x + PLAYER_W / 2, y: player.y - 10, dy: -6 })
+          play('shoot'); bullets.push({ x: player.x + PLAYER_W / 2, y: player.y - 10, dy: -6 })
         lastShot = now
       }
 
@@ -176,7 +176,7 @@ export default function DefenderGame({ onScore }) {
           if (b.x > a.x - 4 && b.x < a.x + AST_W + 4 &&
               b.y > a.y - 4 && b.y < a.y + AST_H + 4) {
             a.alive = false
-              play('explode');   play('explode'); gameScore += 10
+              play('explode'); gameScore += 10
             setScore(gameScore)
             return false
           }
@@ -188,7 +188,7 @@ export default function DefenderGame({ onScore }) {
       for (const a of asteroids) {
         if (a.alive && a.y + AST_H >= H - 40) {
           running = false
-            play('gameover');   play('gameover'); setState('over')
+            play('gameover'); setState('over')
           setScore(gameScore)
           if (onScore) onScore(gameScore)
           return

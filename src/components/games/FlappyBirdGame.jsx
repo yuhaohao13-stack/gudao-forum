@@ -87,7 +87,7 @@ export default function FlappyBirdGame({ onScore }) {
       frame++
 
       // flap
-        play('jump');   play('jump'); if (flapPressed) { bird.vy = FLAP; flapPressed = false }
+        play('jump'); if (flapPressed) { bird.vy = FLAP; flapPressed = false }
 
       // physics
       bird.vy += GRAVITY
@@ -114,7 +114,7 @@ export default function FlappyBirdGame({ onScore }) {
 
       // collision
       if (bird.y + BIRD_R > H || bird.y - BIRD_R < 0) {
-        running = false;   play('gameover');   play('gameover'); setState('over'); if (onScore) onScore(gameScore); return
+        running = false;   play('gameover'); setState('over'); if (onScore) onScore(gameScore); return
       }
       for (const p of pipes) {
         if (bird.x + BIRD_R > p.x && bird.x - BIRD_R < p.x + PIPE_W) {

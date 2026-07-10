@@ -55,7 +55,7 @@ function move(grid, dir) {
       if (dir === 2 || dir === 3) line.reverse()
       const { arr, score } = slideLine(line)
       if (dir === 2 || dir === 3) arr.reverse()
-        play('score');   play('score'); totalScore += score
+        play('score'); totalScore += score
       for (let i = 0; i < SIZE; i++) {
         if (line[i] !== arr[i]) changed = true
         line[i] = arr[i]

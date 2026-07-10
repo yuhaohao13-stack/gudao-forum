@@ -93,7 +93,7 @@ export default function InvadersGame({ onScore }) {
       // player shoot
       const now = Date.now()
       if (keys.space && now - lastShot > 300) {
-          play('shoot');   play('shoot'); bullets.push({ x: player.x + PLAYER_W / 2, y: player.y, dy: -5 })
+          play('shoot'); bullets.push({ x: player.x + PLAYER_W / 2, y: player.y, dy: -5 })
         lastShot = now
       }
 
@@ -114,7 +114,7 @@ export default function InvadersGame({ onScore }) {
 
       // check win
       if (enemies.every(e => !e.alive)) {
-        running = false;   play('gameover');   play('gameover'); setState('over'); setScore(gameScore); if (onScore) onScore(gameScore)
+        running = false;   play('gameover'); setState('over'); setScore(gameScore); if (onScore) onScore(gameScore)
       }
 
       // check loss - enemies reached bottom

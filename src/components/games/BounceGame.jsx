@@ -216,7 +216,7 @@ export default function BounceGame({ onScore }) {
       // game over
       if (player.y - cameraY > H + 50) {
         running = false
-          play('gameover');   play('gameover'); setState('over')
+          play('gameover'); setState('over')
         if (onScore) onScore(Math.floor(gameScore))
         return
       }

@@ -54,7 +54,7 @@ export default function MinesweeperGame({ onScore }) {
     const floodFill = (x, y) => {
       if (x < 0 || x >= COLS || y < 0 || y >= ROWS || revealed[y][x]) return
       revealed[y][x] = true
-        play('click');   play('click'); gameScore++
+        play('click'); gameScore++
       setScore(gameScore)
       if (board[y][x] === 0) {
         for (let dr = -1; dr <= 1; dr++) for (let dc = -1; dc <= 1; dc++)
@@ -69,7 +69,7 @@ export default function MinesweeperGame({ onScore }) {
       if (safe === COLS * ROWS - MINES) {
         gameWon = true; gameOver = true
         setState('over')
-          play('win');   play('win'); if (onScore) onScore(Math.max(gameScore, 100))
+          play('win'); if (onScore) onScore(Math.max(gameScore, 100))
       }
     }
 
@@ -128,7 +128,7 @@ export default function MinesweeperGame({ onScore }) {
         if (board[r][c] === -1) {
           // boom
           revealed[r][c] = true; gameOver = true
-            play('explode');   play('explode'); setState('over'); if (onScore) onScore(0)
+            play('explode'); setState('over'); if (onScore) onScore(0)
           draw(); return
         }
         floodFill(c, r)

@@ -152,7 +152,7 @@ export default function TargetGame({ onScore }) {
       if (remaining <= 0) {
         running = false
         if (animFrame) cancelAnimationFrame(animFrame)
-          play('gameover');   play('gameover'); setState('over')
+          play('gameover'); setState('over')
         if (onScore) onScore(gameScore)
       }
     }
@@ -171,7 +171,7 @@ export default function TargetGame({ onScore }) {
         const dist = Math.sqrt((mx - t.x) ** 2 + (my - t.y) ** 2)
         if (dist < TARGET_R) {
           t.alive = false
-            play('hit');   play('hit'); gameScore += 10
+            play('hit'); gameScore += 10
           setScore(gameScore)
           hit = true
           break

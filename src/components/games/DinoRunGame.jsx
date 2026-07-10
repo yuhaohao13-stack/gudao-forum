@@ -74,7 +74,7 @@ export default function DinoRunGame({ onScore }) {
       if (dino.y >= GROUND_Y - DINO_H) { dino.y = GROUND_Y - DINO_H; dino.vy = 0; dino.jumping = false }
 
       // jump
-        play('jump');   play('jump'); if (jumpPressed && !dino.jumping) { dino.vy = -11; dino.jumping = true; jumpPressed = false }
+        play('jump'); if (jumpPressed && !dino.jumping) { dino.vy = -11; dino.jumping = true; jumpPressed = false }
 
       // spawn obstacles
       if (frame % (60 - Math.min(speed * 3, 35)) === 0 && obstacles.length < 3) {
