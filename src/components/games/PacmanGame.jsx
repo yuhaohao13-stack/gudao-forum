@@ -205,16 +205,16 @@ export default function PacmanGame({ onScore }) {
       </div>
       <canvas ref={canvasRef} width={W} height={H}
         className="rounded-xl border-2 border-[#2121de] shadow-lg touch-none" />
-      <div className="grid grid-cols-3 gap-1.5 mt-1 select-none sm:hidden">
+      <div className="grid grid-cols-3 gap-2 mt-2 select-none sm:hidden">
         <div></div>
-        <button className="bg-[#f0f0f0] text-lg p-3 rounded-lg active:bg-[#ddd] touch-manipulation"
+        <button className="bg-[#f0f0f0] text-2xl p-5 rounded-xl active:bg-[#ddd] touch-manipulation"
           onTouchStart={e => { e.preventDefault(); dirRef.current?.(0, -1) }}>↑</button>
         <div></div>
-        <button className="bg-[#f0f0f0] text-lg p-3 rounded-lg active:bg-[#ddd] touch-manipulation"
+        <button className="bg-[#f0f0f0] text-2xl p-5 rounded-xl active:bg-[#ddd] touch-manipulation"
           onTouchStart={e => { e.preventDefault(); dirRef.current?.(-1, 0) }}>←</button>
-        <button className="bg-[#f0f0f0] text-lg p-3 rounded-lg active:bg-[#ddd] touch-manipulation"
+        <button className="bg-[#f0f0f0] text-2xl p-5 rounded-xl active:bg-[#ddd] touch-manipulation"
           onTouchStart={e => { e.preventDefault(); dirRef.current?.(0, 1) }}>↓</button>
-        <button className="bg-[#f0f0f0] text-lg p-3 rounded-lg active:bg-[#ddd] touch-manipulation"
+        <button className="bg-[#f0f0f0] text-2xl p-5 rounded-xl active:bg-[#ddd] touch-manipulation"
           onTouchStart={e => { e.preventDefault(); dirRef.current?.(1, 0) }}>→</button>
       </div>
     </div>

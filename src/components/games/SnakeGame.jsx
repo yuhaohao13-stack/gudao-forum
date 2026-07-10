@@ -121,7 +121,7 @@ export default function SnakeGame({ onScore }) {
   }, [state, onScore])
 
   const btn = (label, dirKey) => (
-    <button className="bg-[#f0f0f0] text-lg p-3 rounded-lg active:bg-[#ddd] select-none touch-manipulation"
+    <button className="bg-[#f0f0f0] text-2xl p-5 rounded-xl active:bg-[#ddd] select-none touch-manipulation"
       onTouchStart={e => { e.preventDefault(); setDirRef.current?.(DIRS[dirKey]) }}
       onMouseDown={e => { e.preventDefault(); setDirRef.current?.(DIRS[dirKey]) }}
     >{label}</button>
@@ -143,7 +143,7 @@ export default function SnakeGame({ onScore }) {
       <canvas ref={canvasRef} width={CANVAS} height={CANVAS}
         className="rounded-xl border-2 border-[#1a1a2e] shadow-lg touch-none" />
       {/* 手机方向按钮 */}
-      <div className="grid grid-cols-3 gap-1.5 mt-1 select-none">
+      <div className="grid grid-cols-3 gap-2 mt-2 select-none">
         <div></div>
         {btn('↑', 'ArrowUp')}
         <div></div>

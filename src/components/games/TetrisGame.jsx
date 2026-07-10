@@ -128,7 +128,7 @@ export default function TetrisGame({ onScore }) {
   }, [state, onScore])
 
   const tBtn = (label, action, cls = '') => (
-    <button className={`bg-[#f0f0f0] text-sm p-2.5 rounded-lg active:bg-[#ddd] select-none touch-manipulation ${cls}`}
+    <button className={`bg-[#f0f0f0] text-lg p-4 rounded-xl active:bg-[#ddd] select-none touch-manipulation ${cls}`}
       onTouchStart={e => { e.preventDefault(); actRef.current?.[action]?.() }}
       onMouseDown={e => { e.preventDefault(); actRef.current?.[action]?.() }}
     >{label}</button>
@@ -151,13 +151,13 @@ export default function TetrisGame({ onScore }) {
       <canvas ref={canvasRef} width={BOARD_W} height={BOARD_H}
         className="rounded-xl border-2 border-[#1a1a3e] shadow-lg touch-none" />
       {/* 手机控制按钮 */}
-      <div className="flex flex-col items-center gap-1.5 sm:hidden select-none">
-        <div className="flex gap-1.5">
+      <div className="flex flex-col items-center gap-2.5 sm:hidden select-none">
+        <div className="flex gap-3">
           {tBtn('↩ 左', 'left', 'px-4')}
           {tBtn('↻ 旋转', 'rotate', 'px-3')}
           {tBtn('↪ 右', 'right', 'px-4')}
         </div>
-        <div className="flex gap-1.5">
+        <div className="flex gap-3">
           {tBtn('↓ 下', 'drop', 'px-4')}
           {tBtn('⏬ 落底', 'hardDrop', 'px-3 bg-[#f0e0e0]')}
         </div>

@@ -183,15 +183,15 @@ export default function InvadersGame({ onScore }) {
       <canvas ref={canvasRef} width={W} height={H}
         className="rounded-xl border-2 border-[#0a0a1a] shadow-lg touch-none" />
       <div className="flex gap-4 sm:hidden select-none">
-        <button className="bg-[#f0f0f0] text-lg px-6 py-3 rounded-lg active:bg-[#ddd] touch-manipulation"
+        <button className="bg-[#f0f0f0] text-xl px-8 py-5 rounded-xl active:bg-[#ddd] touch-manipulation"
           onTouchStart={e => { e.preventDefault(); const ev = new KeyboardEvent('keydown', { key: 'ArrowLeft' }); window.dispatchEvent(ev) }}
           onTouchEnd={e => { e.preventDefault(); const ev = new KeyboardEvent('keyup', { key: 'ArrowLeft' }); window.dispatchEvent(ev) }}
         >◀ 左</button>
-        <button className="bg-[#f0e0e0] text-lg px-6 py-3 rounded-lg active:bg-[#ddd] touch-manipulation"
+        <button className="bg-[#f0e0e0] text-xl px-8 py-5 rounded-xl active:bg-[#ddd] touch-manipulation"
           onTouchStart={e => { e.preventDefault(); const ev = new KeyboardEvent('keydown', { key: ' ' }); window.dispatchEvent(ev) }}
           onTouchEnd={e => { e.preventDefault(); const ev = new KeyboardEvent('keyup', { key: ' ' }); window.dispatchEvent(ev) }}
         >🔫 射击</button>
-        <button className="bg-[#f0f0f0] text-lg px-6 py-3 rounded-lg active:bg-[#ddd] touch-manipulation"
+        <button className="bg-[#f0f0f0] text-xl px-8 py-5 rounded-xl active:bg-[#ddd] touch-manipulation"
           onTouchStart={e => { e.preventDefault(); const ev = new KeyboardEvent('keydown', { key: 'ArrowRight' }); window.dispatchEvent(ev) }}
           onTouchEnd={e => { e.preventDefault(); const ev = new KeyboardEvent('keyup', { key: 'ArrowRight' }); window.dispatchEvent(ev) }}
         >▶ 右</button>
