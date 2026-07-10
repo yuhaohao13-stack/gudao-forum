@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { useAuth } from '@/components/AuthProvider'
 import OnlineUsersPanel from '@/components/OnlineUsersPanel'
-import { Search, Crown, Lightbulb, Eye, Users } from 'lucide-react'
+import { Search, Crown, Lightbulb, Eye } from 'lucide-react'
 import { checkContent, validateInput } from '@/lib/moderation'
 
 const MESSAGES_PER_PAGE = 50
@@ -381,29 +381,6 @@ export default function ChatRoomPage() {
         </div>
       </div>
 
-      {/* 移动端在线用户入口 */}
-      <button
-        onClick={() => document.getElementById('mobile-online-users')?.classList.toggle('hidden')}
-        className="md:hidden fixed bottom-20 right-4 z-40 w-10 h-10 rounded-full bg-[#c23531] text-white shadow-lg flex items-center justify-center"
-        title="在线用户"
-      >
-        <Users size={16} />
-      </button>
-      <div id="mobile-online-users" className="md:hidden fixed inset-0 z-50 bg-black/40 hidden" onClick={(e) => {
-        if (e.target === e.currentTarget) {
-          e.currentTarget.classList.add('hidden')
-        }
-      }}>
-        <div className="absolute right-0 top-0 bottom-0 w-56 bg-white shadow-xl overflow-y-auto flex flex-col">
-          <div className="flex items-center justify-between px-3 py-2.5 border-b border-[#eee8dc]">
-            <h3 className="text-sm font-bold text-[#1a1a1a]">在线用户</h3>
-            <button onClick={() => document.getElementById('mobile-online-users')?.classList.add('hidden')} className="text-[#999] hover:text-[#c23531] text-lg">&times;</button>
-          </div>
-          <div className="flex-1">
-            <OnlineUsersPanel roomSlug={slug} currentUserId={user?.id || null} />
-          </div>
-        </div>
-      </div>
     </div>
   )
 }
