@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { createPortal } from 'react-dom'
 
 const COLS = 10, ROWS = 20, CELL = 24
 const BOARD_W = COLS * CELL, BOARD_H = ROWS * CELL
@@ -146,37 +145,29 @@ export default function TetrisGame({ onScore }) {
         className="rounded-xl border-2 border-[#1a1a3e] shadow-lg touch-none" />
     </div>
 
-    {state === 'playing' && typeof document !== 'undefined' && createPortal(
-      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 sm:hidden select-none">
-        <div className="flex flex-col items-center gap-3">
+      {state === 'playing' && (
+        <div className="sm:hidden w-full max-w-md mx-auto mt-2 select-none">
           <div className="flex gap-3">
-            <button className="bg-white/90 shadow-lg backdrop-blur text-lg font-bold w-20 h-16 rounded-2xl active:bg-[#ddd] touch-manipulation"
+            <button className="flex-1 h-20 text-xl font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
               onTouchStart={e => { e.preventDefault(); actRef.current?.left?.() }}
-              onMouseDown={e => { e.preventDefault(); actRef.current?.left?.() }}
             >↩ 左</button>
-            <button className="bg-white/90 shadow-lg backdrop-blur text-lg font-bold w-20 h-16 rounded-2xl active:bg-[#ddd] touch-manipulation"
+            <button className="flex-1 h-20 text-xl font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
               onTouchStart={e => { e.preventDefault(); actRef.current?.rotate?.() }}
-              onMouseDown={e => { e.preventDefault(); actRef.current?.rotate?.() }}
             >↻ 旋转</button>
-            <button className="bg-white/90 shadow-lg backdrop-blur text-lg font-bold w-20 h-16 rounded-2xl active:bg-[#ddd] touch-manipulation"
+            <button className="flex-1 h-20 text-xl font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
               onTouchStart={e => { e.preventDefault(); actRef.current?.right?.() }}
-              onMouseDown={e => { e.preventDefault(); actRef.current?.right?.() }}
             >↪ 右</button>
           </div>
-          <div className="flex gap-3">
-            <button className="bg-white/90 shadow-lg backdrop-blur text-lg font-bold w-20 h-16 rounded-2xl active:bg-[#ddd] touch-manipulation"
+          <div className="flex gap-3 mt-3">
+            <button className="flex-1 h-20 text-xl font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
               onTouchStart={e => { e.preventDefault(); actRef.current?.drop?.() }}
-              onMouseDown={e => { e.preventDefault(); actRef.current?.drop?.() }}
             >↓ 下</button>
-            <button className="bg-white/90 shadow-lg backdrop-blur text-lg font-bold w-20 h-16 rounded-2xl active:bg-[#f0e0e0] touch-manipulation"
+            <button className="flex-1 h-20 text-xl font-bold bg-orange-50 border-2 border-[#f0a000] rounded-2xl active:bg-[#ffe0b0] shadow-lg touch-manipulation"
               onTouchStart={e => { e.preventDefault(); actRef.current?.hardDrop?.() }}
-              onMouseDown={e => { e.preventDefault(); actRef.current?.hardDrop?.() }}
             >⏬ 落底</button>
           </div>
         </div>
-      </div>,
-      document.body
-    )}
+      )}
     </>
   )
 }

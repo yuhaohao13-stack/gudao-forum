@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { createPortal } from 'react-dom'
 
 const SIZE = 20, CELL = 18, CANVAS = SIZE * CELL
 const INIT_SNAKE = [{ x: 10, y: 10 }]
@@ -137,33 +136,28 @@ export default function SnakeGame({ onScore }) {
       </div>
       <canvas ref={canvasRef} width={CANVAS} height={CANVAS}
         className="rounded-xl border-2 border-[#1a1a2e] shadow-lg touch-none" />
-    </div>
 
-    {state === 'playing' && typeof document !== 'undefined' && createPortal(
-      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 sm:hidden select-none">
-        <div className="grid grid-cols-3 gap-3">
-          <div></div>
-          <button className="bg-white/90 shadow-lg backdrop-blur text-3xl w-16 h-16 rounded-2xl active:bg-[#ddd] touch-manipulation flex items-center justify-center"
-            onTouchStart={e => { e.preventDefault(); setDirRef.current?.(DIRS.ArrowUp) }}
-            onMouseDown={e => { e.preventDefault(); setDirRef.current?.(DIRS.ArrowUp) }}
-          >↑</button>
-          <div></div>
-          <button className="bg-white/90 shadow-lg backdrop-blur text-3xl w-16 h-16 rounded-2xl active:bg-[#ddd] touch-manipulation flex items-center justify-center"
-            onTouchStart={e => { e.preventDefault(); setDirRef.current?.(DIRS.ArrowLeft) }}
-            onMouseDown={e => { e.preventDefault(); setDirRef.current?.(DIRS.ArrowLeft) }}
-          >←</button>
-          <button className="bg-white/90 shadow-lg backdrop-blur text-3xl w-16 h-16 rounded-2xl active:bg-[#ddd] touch-manipulation flex items-center justify-center"
-            onTouchStart={e => { e.preventDefault(); setDirRef.current?.(DIRS.ArrowDown) }}
-            onMouseDown={e => { e.preventDefault(); setDirRef.current?.(DIRS.ArrowDown) }}
-          >↓</button>
-          <button className="bg-white/90 shadow-lg backdrop-blur text-3xl w-16 h-16 rounded-2xl active:bg-[#ddd] touch-manipulation flex items-center justify-center"
-            onTouchStart={e => { e.preventDefault(); setDirRef.current?.(DIRS.ArrowRight) }}
-            onMouseDown={e => { e.preventDefault(); setDirRef.current?.(DIRS.ArrowRight) }}
-          >→</button>
+      {state === 'playing' && (
+        <div className="sm:hidden w-full max-w-md mx-auto mt-2 select-none">
+          <div className="flex justify-center mb-2">
+            <button className="flex-1 max-w-[30%] h-20 text-4xl font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
+              onTouchStart={e => { e.preventDefault(); setDirRef.current?.(DIRS.ArrowUp) }}
+            >↑</button>
+          </div>
+          <div className="flex gap-4">
+            <button className="flex-1 h-20 text-4xl font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
+              onTouchStart={e => { e.preventDefault(); setDirRef.current?.(DIRS.ArrowLeft) }}
+            >←</button>
+            <button className="flex-1 h-20 text-4xl font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
+              onTouchStart={e => { e.preventDefault(); setDirRef.current?.(DIRS.ArrowDown) }}
+            >↓</button>
+            <button className="flex-1 h-20 text-4xl font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
+              onTouchStart={e => { e.preventDefault(); setDirRef.current?.(DIRS.ArrowRight) }}
+            >→</button>
+          </div>
         </div>
-      </div>,
-      document.body
-    )}
+      )}
+    </div>
     </>
   )
 }
