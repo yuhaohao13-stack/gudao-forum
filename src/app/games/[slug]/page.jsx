@@ -3,7 +3,7 @@
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { ChevronLeft, Gamepad2, Trophy, LogIn, UserPlus, Volume2, VolumeX } from 'lucide-react'
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState } from 'react'
 import { useAuth } from '@/components/AuthProvider'
 import { submitScore, getLeaderboard } from '@/lib/submitScore'
 import useGameSound from '@/components/games/useGameSound'
@@ -47,25 +47,41 @@ const GAMES = [
     tips: { pc: '空格键 或 ↑ 上箭头 跳跃', mobile: '点击画布跳跃' } },
   { slug: 'flappy', name: '🐦 Flappy Bird', desc: '点击穿越管道，停不下来', Component: FlappyBirdGame,
     tips: { pc: '空格键 或 ↑ 上箭头 飞行', mobile: '点击画布飞行' } },
-  { slug: 'racing', name: '🏎️ 赛车', desc: '3车道躲避迎面来车，越跑越远', Component: RacingGame,
-    tips: { pc: '← → 切换车道躲避来车', mobile: '点击按钮切换车道' } },
-  { slug: 'mario', name: '🍄 超级玛丽', desc: '经典横版过关，跳跃躲避障碍', Component: MarioGame,
-    tips: { pc: '空格/↑跳跃，自动前进', mobile: '点击跳跃' } },
-  { slug: 'target', name: '🎯 打靶', desc: '限时60秒，射击移动靶子得分', Component: TargetGame,
-    tips: { pc: '鼠标点击射击靶子', mobile: '点击射击靶子' } },
+  { slug: 'racing', name: '🏎️ 赛车', desc: '躲避来车，无尽狂飙', Component: RacingGame,
+    tips: { pc: '← → 方向键左右变道', mobile: '← → 按钮控制方向' } },
+  { slug: 'mario', name: '🍄 超级玛丽', desc: '经典平台跳跃，勇闯关卡', Component: MarioGame,
+    tips: { pc: '空格/↑ 跳跃 | 自动向右跑', mobile: '点击跳跃' } },
+  { slug: 'target', name: '🎯 打靶', desc: '限时60秒，射击移动靶', Component: TargetGame,
+    tips: { pc: '鼠标点击瞄准射击', mobile: '手指点击射击' } },
   { slug: 'memory', name: '🧠 记忆翻牌', desc: '翻牌配对，考验记忆力', Component: MemoryGame,
-    tips: { pc: '点击翻牌，配对两张相同的', mobile: '点击翻牌' } },
-  { slug: 'slidingpuzzle', name: '🧩 数字华容道', desc: '滑动方块，还原数字顺序', Component: SlidingPuzzle,
-    tips: { pc: '点击方块滑动到空格', mobile: '点击方块滑动' } },
-  { slug: 'defender', name: '🪐 行星防御', desc: '击落陨石，保卫家园', Component: DefenderGame,
-    tips: { pc: '←→移动 空格射击', mobile: '点击按钮操作' } },
-  { slug: 'bounce', name: '🐱 跳跳乐', desc: '不断弹跳，挑战最高高度', Component: BounceGame,
-    tips: { pc: '←→ 左右移动 踩平台', mobile: '点击按钮左右移动' } },
-  { slug: 'pong', name: '🕹️ 乒乓球', desc: '经典乒乓球对战AI', Component: PongGame,
+    tips: { pc: '点击两张牌，配对成功消除', mobile: '点击翻牌配对' } },
+  { slug: 'puzzle', name: '🧩 数字华容道', desc: '滑动方块，复原顺序', Component: SlidingPuzzle,
+    tips: { pc: '点击空白格相邻的方块滑动', mobile: '点击方块滑动' } },
+  { slug: 'defender', name: '🪐 行星防御', desc: '保卫行星，击碎陨石', Component: DefenderGame,
+    tips: { pc: '← → 移动 空格射击', mobile: '←/→ 按钮移动 + 🔫射击' } },
+  { slug: 'bounce', name: '🐱 跳跳乐', desc: '不断跳跃，越跳越高', Component: BounceGame,
+    tips: { pc: '← → 方向键左右移动', mobile: '← → 按钮控制方向' } },
+  { slug: 'pong', name: '🕹️ 乒乓球', desc: '经典乒乓，挑战AI', Component: PongGame,
     tips: { pc: '鼠标上下移动控制球拍', mobile: '手指滑动控制球拍' } },
 ]
 
 const gameMap = Object.fromEntries(GAMES.map(g => [g.slug, g]))
+
+function SoundButton({ enabled, onToggle }) {
+  const btnClass = enabled
+    ? 'bg-[#e8f5e9] border-[#2e7d32]'
+    : 'bg-[#f5f5f5] border-[#ccc]'
+  return (
+    <button onClick={onToggle}
+      className={'shrink-0 w-[40px] sm:w-[46px] h-[40px] sm:h-[46px] mt-2 flex items-center justify-center rounded-full border-2 shadow-lg transition-all duration-200 active:scale-90 touch-manipulation ' + btnClass}
+      title={enabled ? '关闭声音' : '开启声音'}>
+      {enabled
+        ? React.createElement(Volume2, { size: 22, className: 'text-[#2e7d32]' })
+        : React.createElement(VolumeX, { size: 22, className: 'text-[#888]' })
+      }
+    </button>
+  )
+}
 
 export default function GamePage() {
   const params = useParams()
@@ -90,7 +106,7 @@ export default function GamePage() {
         <div className="text-4xl mb-4">🎮</div>
         <h1 className="text-xl font-bold text-[#1a1a1a] mb-2">游戏未找到</h1>
         <p className="text-sm text-[#888] mb-6">这个游戏不存在或尚未上线</p>
-        <Link href="/" className="btn-primary">返回首页</Link>
+        <Link href="/" className="btn-primary" style={{fontSize:'13px',padding:'8px 20px'}}>返回首页</Link>
       </div>
     )
   }
@@ -104,7 +120,6 @@ export default function GamePage() {
     }
   }
 
-  // 🔒 未登录 → 显示注册/登录提示
   if (!loading && !user) {
     return (
       <div className="space-y-6">
@@ -125,10 +140,10 @@ export default function GamePage() {
             <h2 className="text-lg font-bold text-[#1a1a1a] mb-2">注册后可畅玩</h2>
             <p className="text-sm text-[#888] mb-6">注册登录后即可玩全部游戏，<br />还能冲击高分榜！</p>
             <div className="flex flex-col gap-3">
-              <Link href="/register" className="btn-primary text-base py-3 flex items-center justify-center gap-2">
+              <Link href="/register" className="btn-primary text-base py-3 flex items-center justify-center gap-2" style={{fontSize:'13px',padding:'8px 20px'}}>
                 <UserPlus size={18} /> 免费注册
               </Link>
-              <Link href="/login" className="btn-secondary text-base py-3 flex items-center justify-center gap-2">
+              <Link href="/login" className="btn-secondary text-base py-3 flex items-center justify-center gap-2" style={{fontSize:'13px',padding:'8px 20px'}}>
                 <LogIn size={18} /> 已有账号？登录
               </Link>
             </div>
@@ -138,7 +153,6 @@ export default function GamePage() {
     )
   }
 
-  // ⏳ 加载中
   if (loading) {
     return (
       <div className="text-center py-20">
@@ -151,7 +165,6 @@ export default function GamePage() {
 
   return (
     <div className="space-y-6">
-      {/* 顶部导航 */}
       <div className="flex items-center justify-between">
         <Link href="/" className="flex items-center gap-1.5 text-sm text-[#888] hover:text-[#1a1a1a] transition-colors">
           <ChevronLeft size={18} /> 返回首页
@@ -161,30 +174,18 @@ export default function GamePage() {
         </div>
       </div>
 
-      {/* 游戏标题 */}
       <div className="text-center">
         <h1 className="text-2xl font-bold text-[#1a1a1a]">{game.name}</h1>
         <p className="text-sm text-[#888] mt-1">{game.desc}</p>
       </div>
 
-      {/* 游戏画布 */}
-      <div className="flex justify-center relative">
-        <GameComponent onScore={handleScore} />
-        <button onClick={toggleSound}
-          className={`absolute -right-12 sm:-right-14 top-2 w-[40px] h-[40px] sm:w-[46px] sm:h-[46px] flex items-center justify-center rounded-full border-2 shadow-lg transition-all duration-200 active:scale-90 touch-manipulation z-10 ${
-            soundEnabled
-              ? 'bg-[#e8f5e9] border-[#2e7d32]'
-              : 'bg-[#f5f5f5] border-[#ccc]'
-          }`}
-          title={soundEnabled ? '关闭声音' : '开启声音'}
-        >
-          {soundEnabled
-            ? <Volume2 size={22} className="text-[#2e7d32]" />
-            : <VolumeX size={22} className="text-[#888]" />
-          }
-        </button>
+      <div className="flex justify-center items-start gap-3">
+        <div>
+          <GameComponent onScore={handleScore} />
+        </div>
+        <SoundButton enabled={soundEnabled} onToggle={toggleSound} />
+      </div>
 
-      {/* 💡 操作说明 */}
       <div className="max-w-md mx-auto w-full">
         <div className="bg-[#fafaf8] border border-[#ece8e0] rounded-xl px-5 py-4">
           <div className="text-xs font-semibold text-[#999] mb-2">💡 操作说明</div>
@@ -201,7 +202,6 @@ export default function GamePage() {
         </div>
       </div>
 
-      {/* 🏆 高分榜 */}
       <section>
         <h2 className="flex items-center gap-1.5 text-xs font-semibold text-[#bbb] uppercase tracking-widest mb-2">
           <Trophy size={14} /> {game.name} 高分榜
