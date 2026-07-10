@@ -191,9 +191,8 @@ export default function PacmanGame({ onScore }) {
   useEffect(() => { return () => gameRef.current?.() }, [])
 
   return (
-    <>
-    <div className="flex flex-col items-center gap-4">
-      <div className="flex items-center gap-6 flex-wrap justify-center">
+    <div className="flex flex-col items-center gap-5">
+      <div className="flex items-center gap-4 flex-wrap justify-center">
         <div className="text-sm text-[#888]">得分: <span className="text-[#c23531] font-bold text-lg">{score}</span></div>
         {state === 'idle' && <button onClick={start} className="btn-primary">开始游戏</button>}
         {state === 'over' && (
@@ -208,26 +207,25 @@ export default function PacmanGame({ onScore }) {
         className="rounded-xl border-2 border-[#2121de] shadow-lg touch-none" />
 
       {state === 'playing' && (
-        <div className="sm:hidden mt-2 select-none w-full" style={{maxWidth:W+"px"}}>
-          <div className="flex justify-center mb-1">
-            <button className="flex-1 max-w-[30%] h-14 text-2xl font-bold bg-white border border-[#ddd] rounded-xl active:bg-[#eee] shadow touch-manipulation"
+        <div className="w-full" style={{maxWidth:W+"px"}}>
+          <div className="flex justify-center mb-2">
+            <button className="flex-1 max-w-[30%] h-20 text-4xl font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
               onTouchStart={e => { e.preventDefault(); dirRef.current?.(0, -1) }}
             >↑</button>
           </div>
-          <div className="flex gap-2">
-            <button className="flex-1 h-14 text-2xl font-bold bg-white border border-[#ddd] rounded-xl active:bg-[#eee] shadow touch-manipulation"
+          <div className="flex gap-5">
+            <button className="flex-1 h-20 text-4xl font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
               onTouchStart={e => { e.preventDefault(); dirRef.current?.(-1, 0) }}
             >←</button>
-            <button className="flex-1 h-14 text-2xl font-bold bg-white border border-[#ddd] rounded-xl active:bg-[#eee] shadow touch-manipulation"
+            <button className="flex-1 h-20 text-4xl font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
               onTouchStart={e => { e.preventDefault(); dirRef.current?.(0, 1) }}
             >↓</button>
-            <button className="flex-1 h-14 text-2xl font-bold bg-white border border-[#ddd] rounded-xl active:bg-[#eee] shadow touch-manipulation"
+            <button className="flex-1 h-20 text-4xl font-bold bg-white border-2 border-[#ddd] rounded-2xl active:bg-[#eee] shadow-lg touch-manipulation"
               onTouchStart={e => { e.preventDefault(); dirRef.current?.(1, 0) }}
             >→</button>
           </div>
         </div>
       )}
     </div>
-    </>
   )
 }
