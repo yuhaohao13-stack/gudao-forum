@@ -135,7 +135,7 @@ export async function POST(request) {
       })
 
       // 顺便清理过期记录（防止表膨胀）
-      await sbAdmin.rpc('cleanup_stale_presence').catch(() => {})
+      try { await sbAdmin.rpc('cleanup_stale_presence') } catch (e) { /* 清理非关键 */ }
 
       return Response.json({
         ok: true,
