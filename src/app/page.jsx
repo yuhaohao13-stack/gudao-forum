@@ -15,6 +15,19 @@ const CAT_ICONS = {
   fiction: <BookOpen size={20} className="inline-block" />,
 }
 
+const GAMES = [
+  { slug: 'snake', name: '🐍 贪吃蛇', desc: '吃食物变长，别碰墙' },
+  { slug: 'tetris', name: '🧱 俄罗斯方块', desc: '经典方块堆叠消行' },
+  { slug: 'breakout', name: '🏓 打砖块', desc: '挡板接球打砖块' },
+  { slug: '2048', name: '🔢 2048', desc: '合并数字挑战极限' },
+  { slug: 'whackamole', name: '🔨 打地鼠', desc: '限时30秒打地鼠' },
+  { slug: 'invaders', name: '👾 太空侵略者', desc: '射击入侵者' },
+  { slug: 'pacman', name: '🟡 吃豆人', desc: '迷宫吃豆躲鬼怪' },
+  { slug: 'minesweeper', name: '💣 扫雷', desc: '推理排雷步步营' },
+  { slug: 'dino', name: '🏃 恐龙跑酷', desc: '无尽跑酷跳障碍' },
+  { slug: 'flappy', name: '🐦 Flappy Bird', desc: '点击穿越管道' },
+]
+
 export default function Home() {
   const { t } = useLanguage()
   const [categories, setCategories] = useState([])
@@ -125,17 +138,16 @@ export default function Home() {
           游戏娱乐
           <span className="font-normal lowercase text-[10px] text-[#ccc]">（游戏加载后可离线畅玩）</span>
         </h2>
-        <Link href="/games"
-          className="block bg-white border border-[#ece8e0] rounded-xl p-5 transition-all hover:border-[#c23531] hover:shadow-md hover:-translate-y-0.5 group">
-          <div className="flex items-center gap-4">
-            <div className="text-4xl">🎮</div>
-            <div className="flex-1">
-              <div className="font-bold text-base text-[#1a1a1a] group-hover:text-[#c23531] transition-colors">游戏娱乐厅</div>
-              <div className="text-xs text-[#888] mt-1">10款经典小游戏 · 离线畅玩 · 高分排行</div>
-            </div>
-            <div className="text-xl text-[#ccc] group-hover:text-[#c23531] transition-colors">→</div>
-          </div>
-        </Link>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
+          {GAMES.map((g, i) => (
+            <Link key={g.slug} href={`/games/${g.slug}`}
+              className="block bg-white border border-[#ece8e0] rounded-xl px-3 py-2.5 transition-all hover:border-[#c23531] hover:shadow-sm hover:-translate-y-0.5">
+              <div className="text-lg mb-0.5">{g.name.split(' ')[0]}</div>
+              <div className="font-semibold text-xs text-[#1a1a1a]">{g.name.split(' ').slice(1).join(' ')}</div>
+              <div className="text-[10px] text-[#aaa] mt-0.5">{g.desc}</div>
+            </Link>
+          ))}
+        </div>
       </section>
 
       {/* ===== 帖子列表 ===== */}
