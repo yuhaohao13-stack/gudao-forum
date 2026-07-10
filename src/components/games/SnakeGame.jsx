@@ -86,7 +86,7 @@ export default function SnakeGame({ onScore }) {
     }
 
     spawnFood(); draw()
-    const interval = setInterval(tick, 120)
+    const interval = setInterval(tick, 180)
     const keyHandler = (e) => {
       const d = DIRS[e.key]; if (!d) return; e.preventDefault(); setDirection(d)
     }
