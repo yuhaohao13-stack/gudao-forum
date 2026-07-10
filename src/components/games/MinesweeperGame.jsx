@@ -13,14 +13,8 @@ export default function MinesweeperGame({ onScore }) {
   const gameRef = useRef(null)
   const [state, setState] = useState('idle')
   const [score, setScore] = useState(0)
-  const [mode, setMode] = useState('dig') // 'dig' | 'flag'
-  const modeRef = useRef('dig')
 
-  // Keep ref in sync with state so game loop always reads latest mode
-  useEffect(() => { modeRef.current = mode }, [mode])
-
-  const start = useCallback(() => { setState('playing'); setScore(0); setMode('dig') }, [])
-  const toggleMode = useCallback(() => setMode(m => m === 'dig' ? 'flag' : 'dig'), [])
+  const start = useCallback(() => { setState('playing'); setScore(0) }, [])
 
   useEffect(() => {
     if (state !== 'playing') return
@@ -36,6 +30,7 @@ export default function MinesweeperGame({ onScore }) {
     let minesPlaced = false
     let gameScore = 0
     let running = true
+    let longPressBlock = false
 
     const placeMines = (ex, ey) => {
       let placed = 0
@@ -81,11 +76,9 @@ export default function MinesweeperGame({ onScore }) {
 
     const draw = () => {
       ctx.fillStyle = '#f5f5dc'; ctx.fillRect(0, 0, W, H)
-      // header
       ctx.fillStyle = '#888'; ctx.font = '16px Inter, sans-serif'
       ctx.textAlign = 'left'; ctx.fillText(`💣 ${MINES}`, 15, 30)
       ctx.textAlign = 'right'; ctx.fillText(`🎯 ${gameScore}`, W - 15, 30)
-      // cells
       for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) {
         const x = 20 + c * CELL, y = 50 + r * CELL
         if (revealed[r][c]) {
@@ -103,7 +96,6 @@ export default function MinesweeperGame({ onScore }) {
         } else {
           ctx.fillStyle = '#c0b8a8'; ctx.fillRect(x, y, CELL, CELL)
           ctx.strokeStyle = '#e0d8c8'; ctx.strokeRect(x, y, CELL, CELL)
-          // 3D effect
           ctx.beginPath(); ctx.moveTo(x, y + CELL); ctx.lineTo(x, y); ctx.lineTo(x + CELL, y)
           ctx.strokeStyle = '#f0e8d8'; ctx.lineWidth = 2; ctx.stroke()
           ctx.beginPath(); ctx.moveTo(x + CELL, y); ctx.lineTo(x + CELL, y + CELL); ctx.lineTo(x, y + CELL)
@@ -128,24 +120,14 @@ export default function MinesweeperGame({ onScore }) {
     }
 
     const clickHandler = (e) => {
-      if (gameOver || !running) return
+      if (gameOver || !running || longPressBlock) { longPressBlock = false; return }
       const { c, r } = cellFromCoords(e.clientX, e.clientY)
       if (c < 0 || c >= COLS || r < 0 || r >= ROWS) return
-
-      if (modeRef.current === 'flag') {
-        // Flag mode: toggle flag
-        if (!revealed[r][c]) { flagged[r][c] = !flagged[r][c]; draw() }
-        return
-      }
-
-      // Dig mode
       if (!minesPlaced) placeMines(c, r)
-
       if (!revealed[r][c] && !flagged[r][c]) {
         if (board[r][c] === -1) {
-          // boom
           revealed[r][c] = true; gameOver = true
-            play('explode'); setState('over'); if (onScore) onScore(0)
+          play('explode'); setState('over'); if (onScore) onScore(0)
           draw(); return
         }
         floodFill(c, r)
@@ -157,29 +139,52 @@ export default function MinesweeperGame({ onScore }) {
     const rightClick = (e) => {
       e.preventDefault()
       if (gameOver || !running) return
-      const rect = canvas.getBoundingClientRect()
-      const scaleX = W / rect.width, scaleY = H / rect.height
-      const mx = (e.clientX - rect.left) * scaleX - 20
-      const my = (e.clientY - rect.top) * scaleY - 50
-      const c = Math.floor(mx / CELL), r = Math.floor(my / CELL)
+      const { c, r } = cellFromCoords(e.clientX, e.clientY)
       if (c < 0 || c >= COLS || r < 0 || r >= ROWS) return
       if (!revealed[r][c]) { flagged[r][c] = !flagged[r][c]; draw() }
     }
 
+    // === Mobile long press to flag ===
+    let longPressTimer = null, touchOrigin = null
+    const onTouchStart = (e) => {
+      longPressBlock = false
+      touchOrigin = { x: e.touches[0].clientX, y: e.touches[0].clientY }
+      e.preventDefault()
+      longPressTimer = setTimeout(() => {
+        longPressTimer = null
+        const { c, r } = cellFromCoords(touchOrigin.x, touchOrigin.y)
+        if (c >= 0 && c < COLS && r >= 0 && r < ROWS && !revealed[r][c]) {
+          flagged[r][c] = !flagged[r][c]; draw()
+        }
+        longPressBlock = true
+      }, 400)
+    }
+    const onTouchEnd = () => {
+      if (longPressTimer) { clearTimeout(longPressTimer); longPressTimer = null }
+    }
+    canvas.addEventListener('touchstart', onTouchStart, { passive: false })
+    canvas.addEventListener('touchend', onTouchEnd)
+    canvas.addEventListener('touchmove', onTouchEnd)
+    canvas.addEventListener('contextmenu', (e) => e.preventDefault())
+
     canvas.addEventListener('click', clickHandler)
     canvas.addEventListener('contextmenu', rightClick)
-
-    canvas.addEventListener('contextmenu', (e) => e.preventDefault())
 
     gameRef.current = () => {
       running = false
       canvas.removeEventListener('click', clickHandler)
       canvas.removeEventListener('contextmenu', rightClick)
+      canvas.removeEventListener('touchstart', onTouchStart)
+      canvas.removeEventListener('touchend', onTouchEnd)
+      canvas.removeEventListener('touchmove', onTouchEnd)
     }
     return () => {
       running = false
       canvas.removeEventListener('click', clickHandler)
       canvas.removeEventListener('contextmenu', rightClick)
+      canvas.removeEventListener('touchstart', onTouchStart)
+      canvas.removeEventListener('touchend', onTouchEnd)
+      canvas.removeEventListener('touchmove', onTouchEnd)
     }
   }, [state, onScore])
 
@@ -196,22 +201,11 @@ export default function MinesweeperGame({ onScore }) {
             <button onClick={start} className="btn-primary">再来一局</button>
           </div>
         )}
-        {state === 'playing' && <span className="text-xs text-[#999]">点击翻开 右键/插旗按钮🚩</span>}
+        {state === 'playing' && <span className="text-xs text-[#999]">点击翻开 | 长按插旗🚩 | 右键插旗🚩</span>}
       </div>
       <canvas ref={canvasRef} width={W} height={H}
         className="rounded-xl border-2 border-[#aaa] shadow-lg touch-none"
         style={{userSelect:'none',WebkitUserSelect:'none',WebkitTouchCallout:'none'}} />
-      {state === 'playing' && (
-        <button onClick={toggleMode}
-          className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${
-            mode === 'flag'
-              ? 'bg-[#ffd700] text-[#1a1a1a] ring-2 ring-[#ffd700]'
-              : 'bg-[#f5f5f5] text-[#888] hover:bg-[#eee]'
-          }`}
-          title={mode === 'flag' ? '当前：插旗模式' : '切换为插旗模式'}>
-          {mode === 'flag' ? '🚩 插旗中' : '⛏️ 挖掘中'} — 点击切换
-        </button>
-      )}
     </div>
   )
 }
