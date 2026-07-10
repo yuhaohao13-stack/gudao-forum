@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
+import { createPortal } from 'react-dom'
 
 const W = 400, H = 500
 const PLAYER_W = 36, PLAYER_H = 20
@@ -167,7 +168,7 @@ export default function InvadersGame({ onScore }) {
 
   useEffect(() => { return () => gameRef.current?.() }, [])
 
-  return (
+  return (<>(
     <div className="flex flex-col items-center gap-4">
       <div className="flex items-center gap-6 flex-wrap justify-center">
         <div className="text-sm text-[#888]">得分: <span className="text-[#c23531] font-bold text-lg">{score}</span></div>
@@ -182,20 +183,26 @@ export default function InvadersGame({ onScore }) {
       </div>
       <canvas ref={canvasRef} width={W} height={H}
         className="rounded-xl border-2 border-[#0a0a1a] shadow-lg touch-none" />
-      <div className="flex gap-4 sm:hidden select-none">
-        <button className="bg-[#f0f0f0] text-xl px-8 py-5 rounded-xl active:bg-[#ddd] touch-manipulation"
-          onTouchStart={e => { e.preventDefault(); const ev = new KeyboardEvent('keydown', { key: 'ArrowLeft' }); window.dispatchEvent(ev) }}
-          onTouchEnd={e => { e.preventDefault(); const ev = new KeyboardEvent('keyup', { key: 'ArrowLeft' }); window.dispatchEvent(ev) }}
-        >◀ 左</button>
-        <button className="bg-[#f0e0e0] text-xl px-8 py-5 rounded-xl active:bg-[#ddd] touch-manipulation"
-          onTouchStart={e => { e.preventDefault(); const ev = new KeyboardEvent('keydown', { key: ' ' }); window.dispatchEvent(ev) }}
-          onTouchEnd={e => { e.preventDefault(); const ev = new KeyboardEvent('keyup', { key: ' ' }); window.dispatchEvent(ev) }}
-        >🔫 射击</button>
-        <button className="bg-[#f0f0f0] text-xl px-8 py-5 rounded-xl active:bg-[#ddd] touch-manipulation"
-          onTouchStart={e => { e.preventDefault(); const ev = new KeyboardEvent('keydown', { key: 'ArrowRight' }); window.dispatchEvent(ev) }}
-          onTouchEnd={e => { e.preventDefault(); const ev = new KeyboardEvent('keyup', { key: 'ArrowRight' }); window.dispatchEvent(ev) }}
-        >▶ 右</button>
-      </div>
     </div>
+{state === 'playing' && typeof document !== 'undefined' && createPortal(
+      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 sm:hidden select-none">
+        <div className="flex gap-4">
+          <button className="bg-white/90 shadow-lg backdrop-blur text-xl font-bold w-24 h-16 rounded-2xl active:bg-[#ddd] touch-manipulation"
+            onTouchStart={e => { e.preventDefault(); window.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft' })) }}
+            onTouchEnd={e => { e.preventDefault(); window.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowLeft' })) }}
+          >◀ 左</button>
+          <button className="bg-[#f0e0e0]/90 shadow-lg backdrop-blur text-xl font-bold w-24 h-16 rounded-2xl active:bg-[#ddd] touch-manipulation"
+            onTouchStart={e => { e.preventDefault(); window.dispatchEvent(new KeyboardEvent('keydown', { key: ' ' })) }}
+            onTouchEnd={e => { e.preventDefault(); window.dispatchEvent(new KeyboardEvent('keyup', { key: ' ' })) }}
+          >🔫 射击</button>
+          <button className="bg-white/90 shadow-lg backdrop-blur text-xl font-bold w-24 h-16 rounded-2xl active:bg-[#ddd] touch-manipulation"
+            onTouchStart={e => { e.preventDefault(); window.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight' })) }}
+            onTouchEnd={e => { e.preventDefault(); window.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowRight' })) }}
+          >▶ 右</button>
+        </div>
+      </div>,
+      document.body
+    )}
+    </>
   )
 }

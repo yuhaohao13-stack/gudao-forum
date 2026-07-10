@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
+import { createPortal } from 'react-dom'
 
 const COLS = 10, ROWS = 20, CELL = 24
 const BOARD_W = COLS * CELL, BOARD_H = ROWS * CELL
@@ -127,14 +128,7 @@ export default function TetrisGame({ onScore }) {
     return () => { running = false; clearInterval(interval); window.removeEventListener('keydown', keyHandler) }
   }, [state, onScore])
 
-  const tBtn = (label, action, cls = '') => (
-    <button className={`bg-[#f0f0f0] text-lg p-4 rounded-xl active:bg-[#ddd] select-none touch-manipulation ${cls}`}
-      onTouchStart={e => { e.preventDefault(); actRef.current?.[action]?.() }}
-      onMouseDown={e => { e.preventDefault(); actRef.current?.[action]?.() }}
-    >{label}</button>
-  )
-
-  return (
+  return (<>(
     <div className="flex flex-col items-center gap-4">
       <div className="flex items-center gap-4 flex-wrap justify-center">
         <div className="text-sm text-[#888]">得分: <span className="text-[#c23531] font-bold text-lg">{score}</span></div>
@@ -150,18 +144,39 @@ export default function TetrisGame({ onScore }) {
       </div>
       <canvas ref={canvasRef} width={BOARD_W} height={BOARD_H}
         className="rounded-xl border-2 border-[#1a1a3e] shadow-lg touch-none" />
-      {/* 手机控制按钮 */}
-      <div className="flex flex-col items-center gap-2.5 sm:hidden select-none">
-        <div className="flex gap-3">
-          {tBtn('↩ 左', 'left', 'px-4')}
-          {tBtn('↻ 旋转', 'rotate', 'px-3')}
-          {tBtn('↪ 右', 'right', 'px-4')}
-        </div>
-        <div className="flex gap-3">
-          {tBtn('↓ 下', 'drop', 'px-4')}
-          {tBtn('⏬ 落底', 'hardDrop', 'px-3 bg-[#f0e0e0]')}
-        </div>
-      </div>
     </div>
+
+    {state === 'playing' && typeof document !== 'undefined' && createPortal(
+      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 sm:hidden select-none">
+        <div className="flex flex-col items-center gap-3">
+          <div className="flex gap-3">
+            <button className="bg-white/90 shadow-lg backdrop-blur text-lg font-bold w-20 h-16 rounded-2xl active:bg-[#ddd] touch-manipulation"
+              onTouchStart={e => { e.preventDefault(); actRef.current?.left?.() }}
+              onMouseDown={e => { e.preventDefault(); actRef.current?.left?.() }}
+            >↩ 左</button>
+            <button className="bg-white/90 shadow-lg backdrop-blur text-lg font-bold w-20 h-16 rounded-2xl active:bg-[#ddd] touch-manipulation"
+              onTouchStart={e => { e.preventDefault(); actRef.current?.rotate?.() }}
+              onMouseDown={e => { e.preventDefault(); actRef.current?.rotate?.() }}
+            >↻ 旋转</button>
+            <button className="bg-white/90 shadow-lg backdrop-blur text-lg font-bold w-20 h-16 rounded-2xl active:bg-[#ddd] touch-manipulation"
+              onTouchStart={e => { e.preventDefault(); actRef.current?.right?.() }}
+              onMouseDown={e => { e.preventDefault(); actRef.current?.right?.() }}
+            >↪ 右</button>
+          </div>
+          <div className="flex gap-3">
+            <button className="bg-white/90 shadow-lg backdrop-blur text-lg font-bold w-20 h-16 rounded-2xl active:bg-[#ddd] touch-manipulation"
+              onTouchStart={e => { e.preventDefault(); actRef.current?.drop?.() }}
+              onMouseDown={e => { e.preventDefault(); actRef.current?.drop?.() }}
+            >↓ 下</button>
+            <button className="bg-white/90 shadow-lg backdrop-blur text-lg font-bold w-20 h-16 rounded-2xl active:bg-[#f0e0e0] touch-manipulation"
+              onTouchStart={e => { e.preventDefault(); actRef.current?.hardDrop?.() }}
+              onMouseDown={e => { e.preventDefault(); actRef.current?.hardDrop?.() }}
+            >⏬ 落底</button>
+          </div>
+        </div>
+      </div>,
+      document.body
+    )}
+    </>
   )
 }

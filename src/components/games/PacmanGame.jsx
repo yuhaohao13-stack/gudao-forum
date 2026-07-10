@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
+import { createPortal } from 'react-dom'
 
 const CELL = 30, COLS = 15, ROWS = 13
 const W = COLS * CELL, H = ROWS * CELL
@@ -190,7 +191,7 @@ export default function PacmanGame({ onScore }) {
 
   useEffect(() => { return () => gameRef.current?.() }, [])
 
-  return (
+  return (<>(
     <div className="flex flex-col items-center gap-4">
       <div className="flex items-center gap-6 flex-wrap justify-center">
         <div className="text-sm text-[#888]">得分: <span className="text-[#c23531] font-bold text-lg">{score}</span></div>
@@ -205,18 +206,24 @@ export default function PacmanGame({ onScore }) {
       </div>
       <canvas ref={canvasRef} width={W} height={H}
         className="rounded-xl border-2 border-[#2121de] shadow-lg touch-none" />
-      <div className="grid grid-cols-3 gap-2 mt-2 select-none sm:hidden">
-        <div></div>
-        <button className="bg-[#f0f0f0] text-2xl p-5 rounded-xl active:bg-[#ddd] touch-manipulation"
-          onTouchStart={e => { e.preventDefault(); dirRef.current?.(0, -1) }}>↑</button>
-        <div></div>
-        <button className="bg-[#f0f0f0] text-2xl p-5 rounded-xl active:bg-[#ddd] touch-manipulation"
-          onTouchStart={e => { e.preventDefault(); dirRef.current?.(-1, 0) }}>←</button>
-        <button className="bg-[#f0f0f0] text-2xl p-5 rounded-xl active:bg-[#ddd] touch-manipulation"
-          onTouchStart={e => { e.preventDefault(); dirRef.current?.(0, 1) }}>↓</button>
-        <button className="bg-[#f0f0f0] text-2xl p-5 rounded-xl active:bg-[#ddd] touch-manipulation"
-          onTouchStart={e => { e.preventDefault(); dirRef.current?.(1, 0) }}>→</button>
-      </div>
     </div>
+    {state === 'playing' && typeof document !== 'undefined' && createPortal(
+      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 sm:hidden select-none">
+        <div className="grid grid-cols-3 gap-3">
+          <div></div>
+          <button className="bg-white/90 shadow-lg backdrop-blur text-3xl w-16 h-16 rounded-2xl active:bg-[#ddd] touch-manipulation flex items-center justify-center"
+            onTouchStart={e => { e.preventDefault(); dirRef.current?.(0, -1) }}>↑</button>
+          <div></div>
+          <button className="bg-white/90 shadow-lg backdrop-blur text-3xl w-16 h-16 rounded-2xl active:bg-[#ddd] touch-manipulation flex items-center justify-center"
+            onTouchStart={e => { e.preventDefault(); dirRef.current?.(-1, 0) }}>←</button>
+          <button className="bg-white/90 shadow-lg backdrop-blur text-3xl w-16 h-16 rounded-2xl active:bg-[#ddd] touch-manipulation flex items-center justify-center"
+            onTouchStart={e => { e.preventDefault(); dirRef.current?.(0, 1) }}>↓</button>
+          <button className="bg-white/90 shadow-lg backdrop-blur text-3xl w-16 h-16 rounded-2xl active:bg-[#ddd] touch-manipulation flex items-center justify-center"
+            onTouchStart={e => { e.preventDefault(); dirRef.current?.(1, 0) }}>→</button>
+        </div>
+      </div>,
+      document.body
+    )}
+    </>
   )
 }
