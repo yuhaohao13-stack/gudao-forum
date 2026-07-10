@@ -68,19 +68,15 @@ const GAMES = [
 const gameMap = Object.fromEntries(GAMES.map(g => [g.slug, g]))
 
 function SoundButton({ enabled, onToggle }) {
-  const btnClass = enabled
-    ? 'bg-[#e8f5e9] border-[#2e7d32]'
-    : 'bg-[#f5f5f5] border-[#ccc]'
-  return (
-    <button onClick={onToggle}
-      className={'shrink-0 w-[40px] sm:w-[46px] h-[40px] sm:h-[46px] mt-2 flex items-center justify-center rounded-full border-2 shadow-lg transition-all duration-200 active:scale-90 touch-manipulation ' + btnClass}
-      title={enabled ? '关闭声音' : '开启声音'}>
-      {enabled
-        ? React.createElement(Volume2, { size: 22, className: 'text-[#2e7d32]' })
-        : React.createElement(VolumeX, { size: 22, className: 'text-[#888]' })
-      }
-    </button>
-  )
+  const inner = enabled
+    ? React.createElement(Volume2, { size: 22, className: 'text-[#2e7d32]' })
+    : React.createElement(VolumeX, { size: 22, className: 'text-[#888]' })
+  const btnClass = 'shrink-0 w-[40px] sm:w-[46px] h-[40px] sm:h-[46px] mt-2 flex items-center justify-center rounded-full border-2 shadow-lg transition-all duration-200 active:scale-90 touch-manipulation'
+  return React.createElement('button', {
+    onClick: onToggle,
+    className: btnClass + ' ' + (enabled ? 'bg-[#e8f5e9] border-[#2e7d32]' : 'bg-[#f5f5f5] border-[#ccc]'),
+    title: enabled ? '关闭声音' : '开启声音'
+  }, inner)
 }
 
 export default function GamePage() {
@@ -101,13 +97,11 @@ export default function GamePage() {
   }, [slug, game])
 
   if (!game) {
-    return (
-      <div className="text-center py-20">
-        <div className="text-4xl mb-4">🎮</div>
-        <h1 className="text-xl font-bold text-[#1a1a1a] mb-2">游戏未找到</h1>
-        <p className="text-sm text-[#888] mb-6">这个游戏不存在或尚未上线</p>
-        <Link href="/" className="btn-primary" style={{fontSize:'13px',padding:'8px 20px'}}>返回首页</Link>
-      </div>
+    return React.createElement('div', { className: 'text-center py-20' },
+      React.createElement('div', { className: 'text-4xl mb-4' }, '🎮'),
+      React.createElement('h1', { className: 'text-xl font-bold text-[#1a1a1a] mb-2' }, '游戏未找到'),
+      React.createElement('p', { className: 'text-sm text-[#888] mb-6' }, '这个游戏不存在或尚未上线'),
+      React.createElement(Link, { href: '/', className: 'btn-primary', style: {fontSize:'13px',padding:'8px 20px'} }, '返回首页')
     )
   }
 
@@ -132,7 +126,7 @@ export default function GamePage() {
           </div>
         </div>
         <div className="text-center py-16">
-          <div className="text-6xl mb-6">🎮</div>
+          <div className="text-6xl mb-6">{'🎮'}</div>
           <h1 className="text-2xl font-bold text-[#1a1a1a] mb-2">{game.name}</h1>
           <p className="text-sm text-[#888] mb-2">{game.desc}</p>
           <div className="max-w-sm mx-auto mt-8 bg-white border border-[#ece8e0] rounded-2xl p-8 shadow-sm">
@@ -140,10 +134,10 @@ export default function GamePage() {
             <h2 className="text-lg font-bold text-[#1a1a1a] mb-2">注册后可畅玩</h2>
             <p className="text-sm text-[#888] mb-6">注册登录后即可玩全部游戏，<br />还能冲击高分榜！</p>
             <div className="flex flex-col gap-3">
-              <Link href="/register" className="btn-primary text-base py-3 flex items-center justify-center gap-2" style={{fontSize:'13px',padding:'8px 20px'}}>
+              <Link href="/register" className="btn-primary" style={{fontSize:'13px',padding:'8px 20px'}}>
                 <UserPlus size={18} /> 免费注册
               </Link>
-              <Link href="/login" className="btn-secondary text-base py-3 flex items-center justify-center gap-2" style={{fontSize:'13px',padding:'8px 20px'}}>
+              <Link href="/login" className="btn-secondary" style={{fontSize:'13px',padding:'8px 20px'}}>
                 <LogIn size={18} /> 已有账号？登录
               </Link>
             </div>
@@ -188,14 +182,14 @@ export default function GamePage() {
 
       <div className="max-w-md mx-auto w-full">
         <div className="bg-[#fafaf8] border border-[#ece8e0] rounded-xl px-5 py-4">
-          <div className="text-xs font-semibold text-[#999] mb-2">💡 操作说明</div>
+          <div className="text-xs font-semibold text-[#999] mb-2">{'💡 操作说明'}</div>
           <div className="space-y-1.5">
             <div className="flex items-center gap-2 text-sm text-[#666]">
-              <span className="text-base">🖥️</span>
+              <span className="text-base">{'🖥️'}</span>
               <span>{game.tips.pc}</span>
             </div>
             <div className="flex items-center gap-2 text-sm text-[#666]">
-              <span className="text-base">📱</span>
+              <span className="text-base">{'📱'}</span>
               <span>{game.tips.mobile}</span>
             </div>
           </div>
@@ -217,12 +211,7 @@ export default function GamePage() {
             ) : (
               leaderboard.map((entry, i) => (
                 <div key={i} className="flex items-center gap-3 px-4 py-2.5">
-                  <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
-                    i === 0 ? 'bg-[#ffd700] text-[#1a1a1a]' :
-                    i === 1 ? 'bg-[#c0c0c0] text-[#1a1a1a]' :
-                    i === 2 ? 'bg-[#cd7f32] text-white' :
-                    'bg-[#f5f5f5] text-[#888]'
-                  }`}>{i + 1}</span>
+                  <span className={'w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ' + (i === 0 ? 'bg-[#ffd700] text-[#1a1a1a]' : i === 1 ? 'bg-[#c0c0c0] text-[#1a1a1a]' : i === 2 ? 'bg-[#cd7f32] text-white' : 'bg-[#f5f5f5] text-[#888]')}>{i + 1}</span>
                   <span className="text-sm font-medium text-[#1a1a1a] flex-1 truncate">{entry.username}</span>
                   <span className="text-sm font-bold text-[#c23531]">{entry.score.toLocaleString()}</span>
                 </div>
