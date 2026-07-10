@@ -50,8 +50,19 @@ export async function GET(request) {
       return Response.json({ users: [] })
     }
 
+    // 同用户多设备去重：每个注册用户只保留最近一次心跳
+    const seenUserIds = new Set()
+    const deduped = []
+    for (const p of presences) {
+      if (p.user_id) {
+        if (seenUserIds.has(p.user_id)) continue
+        seenUserIds.add(p.user_id)
+      }
+      deduped.push(p)
+    }
+
     // 对注册用户，获取角色信息
-    const registeredUserIds = presences
+    const registeredUserIds = deduped
       .filter(p => p.user_id)
       .map(p => p.user_id)
 
@@ -68,7 +79,7 @@ export async function GET(request) {
       }
     }
 
-    const users = presences.map(p => ({
+    const users = deduped.map(p => ({
       user_id: p.user_id,
       display_name: p.display_name,
       guest_label: p.guest_label,
