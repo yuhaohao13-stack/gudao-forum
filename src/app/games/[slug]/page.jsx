@@ -174,9 +174,11 @@ export default function GamePage() {
       </div>
 
       <div className="flex justify-center relative" style={{minHeight:'200px'}}>
-        <GameComponent onScore={handleScore} />
-        <div className="absolute top-2 right-2" style={{zIndex:10}}>
-          <SoundButton enabled={soundEnabled} onToggle={toggleSound} />
+        <div className="relative" style={{display:'inline-block'}}>
+          <GameComponent onScore={handleScore} />
+          <div style={{position:'absolute',top:'8px',right:'8px',zIndex:10}}>
+            <SoundButton enabled={soundEnabled} onToggle={toggleSound} />
+          </div>
         </div>
       </div>
 
