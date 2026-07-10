@@ -6,6 +6,7 @@ export const SoundContext = createContext(null)
 
 export default function SoundProvider({ children }) {
   const [enabled, setEnabled] = useState(false)
+  const enabledRef = useRef(false)
   const audioCtxRef = useRef(null)
 
   const getCtx = useCallback(() => {
@@ -21,31 +22,30 @@ export default function SoundProvider({ children }) {
   }, [])
 
   const toggleSound = useCallback(() => {
-    setEnabled(prev => {
-      const next = !prev
-      if (next) {
-        const ctx = getCtx()
-        if (ctx) {
-          try {
-            const osc = ctx.createOscillator()
-            const gain = ctx.createGain()
-            osc.connect(gain)
-            gain.connect(ctx.destination)
-            osc.type = 'sine'
-            osc.frequency.value = 660
-            gain.gain.setValueAtTime(0.08, ctx.currentTime)
-            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1)
-            osc.start(ctx.currentTime)
-            osc.stop(ctx.currentTime + 0.1)
-          } catch {}
-        }
+    const next = !enabledRef.current
+    enabledRef.current = next
+    setEnabled(next)
+    if (next) {
+      const ctx = getCtx()
+      if (ctx) {
+        try {
+          const osc = ctx.createOscillator()
+          const gain = ctx.createGain()
+          osc.connect(gain)
+          gain.connect(ctx.destination)
+          osc.type = 'sine'
+          osc.frequency.value = 660
+          gain.gain.setValueAtTime(0.08, ctx.currentTime)
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1)
+          osc.start(ctx.currentTime)
+          osc.stop(ctx.currentTime + 0.1)
+        } catch {}
       }
-      return next
-    })
+    }
   }, [getCtx])
 
   const play = useCallback((type) => {
-    if (!enabled) return
+    if (!enabledRef.current) return
     const ctx = getCtx()
     if (!ctx) return
 
@@ -88,7 +88,7 @@ export default function SoundProvider({ children }) {
       case 'alert':   beep(200, 0.2, 0.08); setTimeout(() => beep(200, 0.2, 0.08), 250); break
       default:        beep(500, 0.08, 0.06); break
     }
-  }, [enabled, getCtx])
+  }, [getCtx])
 
   return (
     <SoundContext.Provider value={{ play, toggleSound, enabled }}>
