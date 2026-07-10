@@ -262,10 +262,8 @@ export default function ChatRoomPage() {
   }
 
   return (
-    <div className="anim-fade-in flex gap-4 h-[calc(100vh-8rem)] max-h-[800px]">
-      {/* 主聊天区 */}
-      <div className="flex-1 flex flex-col min-w-0">
-      {/* 头部 */}
+    <div className="anim-fade-in flex flex-col h-[calc(100vh-8rem)] max-h-[800px]">
+      {/* 头部 — 独立在外 */}
       <div className="flex items-center justify-between mb-3 shrink-0">
         <div className="flex items-center gap-2 min-w-0">
           <Link href="/chat" className="text-sm text-[#c23531]/70 hover:text-[#c23531] transition-colors shrink-0">&larr;</Link>
@@ -281,125 +279,130 @@ export default function ChatRoomPage() {
         </div>
       </div>
 
-      {/* 消息列表 */}
-      <div
-        ref={messagesContainerRef}
-        className="flex-1 overflow-y-auto rounded-xl border border-[#eee8dc] bg-white p-4 space-y-1 scroll-smooth"
-      >
-        {hasMore && (
-          <div className="text-center py-2">
-            <button
-              onClick={loadMore}
-              disabled={loadingMore}
-              className="text-xs text-[#b0a898] hover:text-[#c23531] transition-colors disabled:opacity-50"
-            >
-              {loadingMore ? '加载中...' : '加载更多消息 ↑'}
-            </button>
-          </div>
-        )}
-
-        {messages.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-full text-center py-10">
-            <div className="text-3xl mb-3">{room.icon}</div>
-            <p className="text-[#999] text-sm">暂无消息</p>
-            <p className="text-[#ccc] text-xs mt-1">
-              {user ? '发送第一条消息吧' : '登录后可参与聊天'}
-            </p>
-          </div>
-        ) : (
-          messages.map((msg) => {
-            const userInfo = getUserDisplay(msg)
-            const isAdmin = userInfo?.role === 'admin'
-            const isMod = userInfo?.role === 'moderator'
-            const isSelf = user?.id === msg.user_id
-            const avatarLetter = (userInfo?.display_name || userInfo?.username || '?')[0]
-            const displayName = userInfo?.display_name || userInfo?.username || '用户'
-
-            return (
-              <div
-                key={msg.id}
-                className={`flex items-start gap-2.5 py-1.5 px-2 rounded-lg transition-colors ${
-                  isSelf ? 'bg-[#c23531]/5' : 'hover:bg-[#faf8f4]'
-                }`}
-              >
-                <Link href={isSelf ? '#' : `/profile/${msg.user_id}`}
-                  className={`w-7 h-7 rounded-full shrink-0 flex items-center justify-center text-xs font-bold text-white ${
-                    isAdmin ? 'bg-[#c23531]' : isMod ? 'bg-[#8b6914]' : 'bg-[#b0a898]'
-                  }`}
-                  title={displayName}
+      {/* 消息 + 在线面板 — 同框展示 */}
+      <div className="flex-1 flex min-h-0 rounded-xl border border-[#eee8dc] bg-white overflow-hidden">
+        {/* 左：消息列表 + 输入框 (3/4) */}
+        <div className="flex-1 flex flex-col min-w-0">
+          {/* 消息列表 */}
+          <div
+            ref={messagesContainerRef}
+            className="flex-1 overflow-y-auto p-4 space-y-1 scroll-smooth"
+          >
+            {hasMore && (
+              <div className="text-center py-2">
+                <button
+                  onClick={loadMore}
+                  disabled={loadingMore}
+                  className="text-xs text-[#b0a898] hover:text-[#c23531] transition-colors disabled:opacity-50"
                 >
-                  {avatarLetter}
-                </Link>
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-2">
-                    <Link href={isSelf ? '#' : `/profile/${msg.user_id}`}
-                      className={`text-xs font-medium hover:underline ${
-                        isAdmin ? 'text-[#c23531]' : isMod ? 'text-[#8b6914]' : 'text-[#666]'
-                      }`}>
-                      {displayName}
-                      {isAdmin && <Crown size={10} className="ml-1 inline-block opacity-60" />}
-                    </Link>
-                    <span className="text-[10px] text-[#ccc]">
-                      {new Date(msg.created_at).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })}
-                    </span>
-                  </div>
-                  <p className="text-sm text-[#333] leading-relaxed whitespace-pre-wrap break-words">
-                    {msg.content}
-                  </p>
-                </div>
+                  {loadingMore ? '加载中...' : '加载更多消息 ↑'}
+                </button>
               </div>
-            )
-          })
-        )}
-        <div ref={messagesEndRef} />
-      </div>
-
-      {/* 输入框 */}
-      <div className="mt-3 shrink-0">
-        {user ? (
-          <form onSubmit={handleSend} className="flex flex-col gap-2">
-            <div className="flex gap-2">
-              <input
-                ref={inputRef}
-                type="text"
-                value={input}
-                onChange={e => setInput(e.target.value)}
-                placeholder={`在 #${room.name} 中发言...`}
-                maxLength={500}
-                className="input flex-1"
-                disabled={sending}
-                autoFocus
-              />
-              <button
-                type="submit"
-                disabled={sending || !input.trim()}
-                className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed !px-5"
-              >
-                {sending ? '发送中...' : '发送'}
-              </button>
-            </div>
-            {sendError && (
-              <p className="text-xs text-[#c23531] bg-[#c23531]/8 border border-[#c23531]/15 rounded-lg px-3 py-2">{sendError}</p>
             )}
-          </form>
-        ) : (
-          <div className="card p-3 text-center border-dashed border-[#ddd6c8]">
-            <p className="text-sm text-[#999]">
-              <Eye size={14} className="inline-block align-text-bottom" /> <Link href="/login" className="text-[#c23531] font-medium hover:underline">登录</Link> 后可参与聊天，当前为只读模式
-            </p>
-          </div>
-        )}
-        <div className="flex items-center justify-between mt-1.5">
-          <span className="text-[10px] text-[#ccc]">友善交流，以文会友</span>
-          <span className="text-[10px] text-[#999]"><Lightbulb size={12} className="inline-block align-text-bottom" /> 聊天记录保留 48 小时</span>
-          <span className="text-[10px] text-[#ccc]">{messages.length} 条消息</span>
-        </div>
-      </div>
-    </div>
 
-      {/* 在线用户侧边栏 — 移动端隐藏 */}
-      <div className="hidden md:block shrink-0">
-        <OnlineUsersPanel roomSlug={slug} currentUserId={user?.id || null} />
+            {messages.length === 0 ? (
+              <div className="flex flex-col items-center justify-center h-full text-center py-10">
+                <div className="text-3xl mb-3">{room.icon}</div>
+                <p className="text-[#999] text-sm">暂无消息</p>
+                <p className="text-[#ccc] text-xs mt-1">
+                  {user ? '发送第一条消息吧' : '登录后可参与聊天'}
+                </p>
+              </div>
+            ) : (
+              messages.map((msg) => {
+                const userInfo = getUserDisplay(msg)
+                const isAdmin = userInfo?.role === 'admin'
+                const isMod = userInfo?.role === 'moderator'
+                const isSelf = user?.id === msg.user_id
+                const avatarLetter = (userInfo?.display_name || userInfo?.username || '?')[0]
+                const displayName = userInfo?.display_name || userInfo?.username || '用户'
+
+                return (
+                  <div
+                    key={msg.id}
+                    className={`flex items-start gap-2.5 py-1.5 px-2 rounded-lg transition-colors ${
+                      isSelf ? 'bg-[#c23531]/5' : 'hover:bg-[#faf8f4]'
+                    }`}
+                  >
+                    <Link href={isSelf ? '#' : `/profile/${msg.user_id}`}
+                      className={`w-7 h-7 rounded-full shrink-0 flex items-center justify-center text-xs font-bold text-white ${
+                        isAdmin ? 'bg-[#c23531]' : isMod ? 'bg-[#8b6914]' : 'bg-[#b0a898]'
+                      }`}
+                      title={displayName}
+                    >
+                      {avatarLetter}
+                    </Link>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2">
+                        <Link href={isSelf ? '#' : `/profile/${msg.user_id}`}
+                          className={`text-xs font-medium hover:underline ${
+                            isAdmin ? 'text-[#c23531]' : isMod ? 'text-[#8b6914]' : 'text-[#666]'
+                          }`}>
+                          {displayName}
+                          {isAdmin && <Crown size={10} className="ml-1 inline-block opacity-60" />}
+                        </Link>
+                        <span className="text-[10px] text-[#ccc]">
+                          {new Date(msg.created_at).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })}
+                        </span>
+                      </div>
+                      <p className="text-sm text-[#333] leading-relaxed whitespace-pre-wrap break-words">
+                        {msg.content}
+                      </p>
+                    </div>
+                  </div>
+                )
+              })
+            )}
+            <div ref={messagesEndRef} />
+          </div>
+
+          {/* 输入框 */}
+          <div className="shrink-0 border-t border-[#eee8dc] px-4 py-3">
+            {user ? (
+              <form onSubmit={handleSend} className="flex flex-col gap-2">
+                <div className="flex gap-2">
+                  <input
+                    ref={inputRef}
+                    type="text"
+                    value={input}
+                    onChange={e => setInput(e.target.value)}
+                    placeholder={`在 #${room.name} 中发言...`}
+                    maxLength={500}
+                    className="input flex-1"
+                    disabled={sending}
+                    autoFocus
+                  />
+                  <button
+                    type="submit"
+                    disabled={sending || !input.trim()}
+                    className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed !px-5"
+                  >
+                    {sending ? '发送中...' : '发送'}
+                  </button>
+                </div>
+                {sendError && (
+                  <p className="text-xs text-[#c23531] bg-[#c23531]/8 border border-[#c23531]/15 rounded-lg px-3 py-2">{sendError}</p>
+                )}
+              </form>
+            ) : (
+              <div className="text-center border border-dashed border-[#ddd6c8] rounded-lg p-3">
+                <p className="text-sm text-[#999]">
+                  <Eye size={14} className="inline-block align-text-bottom" /> <Link href="/login" className="text-[#c23531] font-medium hover:underline">登录</Link> 后可参与聊天，当前为只读模式
+                </p>
+              </div>
+            )}
+            <div className="flex items-center justify-between mt-1.5">
+              <span className="text-[10px] text-[#ccc]">友善交流，以文会友</span>
+              <span className="text-[10px] text-[#999]"><Lightbulb size={12} className="inline-block align-text-bottom" /> 聊天记录保留 48 小时</span>
+              <span className="text-[10px] text-[#ccc]">{messages.length} 条消息</span>
+            </div>
+          </div>
+        </div>
+
+        {/* 分割线 + 右：在线面板 (1/4) — 不自滚动 */}
+        <div className="hidden md:block border-l border-[#eee8dc] w-1/4 min-w-[140px] max-w-[220px]">
+          <OnlineUsersPanel roomSlug={slug} currentUserId={user?.id || null} />
+        </div>
       </div>
 
       {/* 移动端在线用户入口 */}
@@ -415,12 +418,14 @@ export default function ChatRoomPage() {
           e.currentTarget.classList.add('hidden')
         }
       }}>
-        <div className="absolute right-0 top-0 bottom-0 w-56 bg-white shadow-xl overflow-y-auto">
+        <div className="absolute right-0 top-0 bottom-0 w-56 bg-white shadow-xl overflow-y-auto flex flex-col">
           <div className="flex items-center justify-between px-3 py-2.5 border-b border-[#eee8dc]">
             <h3 className="text-sm font-bold text-[#1a1a1a]">在线用户</h3>
             <button onClick={() => document.getElementById('mobile-online-users')?.classList.add('hidden')} className="text-[#999] hover:text-[#c23531] text-lg">&times;</button>
           </div>
-          <OnlineUsersPanel roomSlug={slug} currentUserId={user?.id || null} />
+          <div className="flex-1">
+            <OnlineUsersPanel roomSlug={slug} currentUserId={user?.id || null} />
+          </div>
         </div>
       </div>
     </div>
