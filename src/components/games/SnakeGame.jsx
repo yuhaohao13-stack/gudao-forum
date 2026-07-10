@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 
-import useGameSound from '@/components/games/useGameSound'
+import { useGameSound } from '@/components/games/SoundProvider'
 const SIZE = 20, CELL = 18, CANVAS = SIZE * CELL
 const INIT_SNAKE = [{ x: 10, y: 10 }]
 const DIRS = { ArrowUp: { x: 0, y: -1 }, ArrowDown: { x: 0, y: 1 }, ArrowLeft: { x: -1, y: 0 }, ArrowRight: { x: 1, y: 0 } }

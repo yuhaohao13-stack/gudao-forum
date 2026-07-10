@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 
-import useGameSound from '@/components/games/useGameSound'
+import { useGameSound } from '@/components/games/SoundProvider'
 const CELL = 30, COLS = 15, ROWS = 13
 const W = COLS * CELL, H = ROWS * CELL
 

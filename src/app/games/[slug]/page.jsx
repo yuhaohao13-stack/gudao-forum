@@ -6,7 +6,7 @@ import { ChevronLeft, Gamepad2, Trophy, LogIn, UserPlus, Volume2, VolumeX } from
 import React, { useEffect, useState } from 'react'
 import { useAuth } from '@/components/AuthProvider'
 import { submitScore, getLeaderboard } from '@/lib/submitScore'
-import useGameSound from '@/components/games/useGameSound'
+import SoundProvider, { useGameSound } from '@/components/games/SoundProvider'
 import SnakeGame from '@/components/games/SnakeGame'
 import TetrisGame from '@/components/games/TetrisGame'
 import BreakoutGame from '@/components/games/BreakoutGame'
@@ -99,7 +99,6 @@ export default function GamePage() {
   const { user, loading } = useAuth()
   const game = gameMap[slug]
   const [leaderboard, setLeaderboard] = useState([])
-  const sound = useGameSound()
 
   useEffect(() => {
     const load = async () => {

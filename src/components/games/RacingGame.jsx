@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 
-import useGameSound from '@/components/games/useGameSound'
+import { useGameSound } from '@/components/games/SoundProvider'
 const W = 300, H = 500
 const LANE_COUNT = 3
 const LANE_W = W / LANE_COUNT // 100

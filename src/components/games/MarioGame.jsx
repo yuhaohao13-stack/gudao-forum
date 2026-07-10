@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 
-import useGameSound from '@/components/games/useGameSound'
+import { useGameSound } from '@/components/games/SoundProvider'
 const W = 600, H = 300
 const PLAYER_W = 24, PLAYER_H = 32
 const PLAYER_X = 80
