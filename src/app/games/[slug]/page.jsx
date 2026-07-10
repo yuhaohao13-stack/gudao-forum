@@ -11,6 +11,11 @@ import TetrisGame from '@/components/games/TetrisGame'
 import BreakoutGame from '@/components/games/BreakoutGame'
 import Game2048 from '@/components/games/Game2048'
 import WhackAMoleGame from '@/components/games/WhackAMoleGame'
+import InvadersGame from '@/components/games/InvadersGame'
+import PacmanGame from '@/components/games/PacmanGame'
+import MinesweeperGame from '@/components/games/MinesweeperGame'
+import DinoRunGame from '@/components/games/DinoRunGame'
+import FlappyBirdGame from '@/components/games/FlappyBirdGame'
 
 const GAMES = [
   { slug: 'snake', name: '🐍 贪吃蛇', desc: '经典贪吃蛇，吃食物变长，别撞墙别咬自己', Component: SnakeGame },
@@ -18,6 +23,11 @@ const GAMES = [
   { slug: 'breakout', name: '🏓 打砖块', desc: '挡板接球打砖块，全消即胜', Component: BreakoutGame },
   { slug: '2048', name: '🔢 2048', desc: '合并数字方块，挑战2048', Component: Game2048 },
   { slug: 'whackamole', name: '🔨 打地鼠', desc: '限时30秒，打中地鼠得分', Component: WhackAMoleGame },
+  { slug: 'invaders', name: '👾 太空侵略者', desc: '射击入侵者，保卫地球', Component: InvadersGame },
+  { slug: 'pacman', name: '🟡 吃豆人', desc: '迷宫吃豆，躲避鬼怪', Component: PacmanGame },
+  { slug: 'minesweeper', name: '💣 扫雷', desc: '推理排雷，步步为营', Component: MinesweeperGame },
+  { slug: 'dino', name: '🏃 恐龙跑酷', desc: '无尽跑酷，跳跃躲避障碍', Component: DinoRunGame },
+  { slug: 'flappy', name: '🐦 Flappy Bird', desc: '点击穿越管道，停不下来', Component: FlappyBirdGame },
 ]
 
 const gameMap = Object.fromEntries(GAMES.map(g => [g.slug, g]))

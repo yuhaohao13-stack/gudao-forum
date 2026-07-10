@@ -21,11 +21,11 @@ const GAMES = [
   { slug: 'breakout', name: '🏓 打砖块', desc: '挡板接球打砖块', color: '#00f000' },
   { slug: '2048', name: '🔢 2048', desc: '合并数字挑战极限', color: '#edc22e' },
   { slug: 'whackamole', name: '🔨 打地鼠', desc: '限时30秒打地鼠', color: '#8B4513' },
-  { slug: 'invaders', name: '👾 太空侵略者', desc: '射击入侵者（即将上线）', color: '#888', soon: true },
-  { slug: 'pacman', name: '🟡 吃豆人', desc: '迷宫吃豆躲鬼（即将上线）', color: '#888', soon: true },
-  { slug: 'minesweeper', name: '💣 扫雷', desc: '推理排雷（即将上线）', color: '#888', soon: true },
-  { slug: 'dino', name: '🏃 恐龙跑酷', desc: '无尽跑酷跳障碍（即将上线）', color: '#888', soon: true },
-  { slug: 'flappy', name: '🐦 Flappy Bird', desc: '点击穿越管道（即将上线）', color: '#888', soon: true },
+  { slug: 'invaders', name: '👾 太空侵略者', desc: '射击入侵者，保卫地球', color: '#ff4444' },
+  { slug: 'pacman', name: '🟡 吃豆人', desc: '迷宫吃豆，躲避鬼怪', color: '#ffd700' },
+  { slug: 'minesweeper', name: '💣 扫雷', desc: '推理排雷，步步为营', color: '#8B4513' },
+  { slug: 'dino', name: '🏃 恐龙跑酷', desc: '无尽跑酷，跳跃躲避障碍', color: '#535353' },
+  { slug: 'flappy', name: '🐦 Flappy Bird', desc: '点击穿越管道，停不下来', color: '#87ceeb' },
 ]
 
 export default function Home() {
@@ -140,21 +140,12 @@ export default function Home() {
         </h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
           {GAMES.map((g, i) => (
-            g.soon ? (
-              <div key={g.slug}
-                className="block bg-white border border-[#ece8e0] rounded-xl px-3 py-2.5 opacity-60 cursor-not-allowed">
-                <div className="text-lg mb-0.5">{g.name.split(' ')[0]}</div>
-                <div className="font-semibold text-xs text-[#1a1a1a]">{g.name.split(' ').slice(1).join(' ')}</div>
-                <div className="text-[10px] text-[#aaa] mt-0.5">{g.desc}</div>
-              </div>
-            ) : (
-              <Link key={g.slug} href={`/games/${g.slug}`}
-                className="block bg-white border border-[#ece8e0] rounded-xl px-3 py-2.5 transition-all hover:border-[#c23531] hover:shadow-sm hover:-translate-y-0.5">
-                <div className="text-lg mb-0.5">{g.name.split(' ')[0]}</div>
-                <div className="font-semibold text-xs text-[#1a1a1a]">{g.name.split(' ').slice(1).join(' ')}</div>
-                <div className="text-[10px] text-[#aaa] mt-0.5">{g.desc}</div>
-              </Link>
-            )
+            <Link key={g.slug} href={`/games/${g.slug}`}
+              className="block bg-white border border-[#ece8e0] rounded-xl px-3 py-2.5 transition-all hover:border-[#c23531] hover:shadow-sm hover:-translate-y-0.5">
+              <div className="text-lg mb-0.5">{g.name.split(' ')[0]}</div>
+              <div className="font-semibold text-xs text-[#1a1a1a]">{g.name.split(' ').slice(1).join(' ')}</div>
+              <div className="text-[10px] text-[#aaa] mt-0.5">{g.desc}</div>
+            </Link>
           ))}
         </div>
       </section>
