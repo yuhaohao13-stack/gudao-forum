@@ -38,7 +38,7 @@ export async function GET(request) {
       .delete()
       .lt('last_seen', cutoff)
 
-    // 获取在线用户
+    // 获取在线用户（允许同一用户多设备，靠 display_name 中嵌入的设备标签区分）
     const { data: presences } = await sbAdmin
       .from('chat_presence')
       .select('user_id, guest_label, display_name, status, last_seen')
@@ -50,21 +50,10 @@ export async function GET(request) {
       return Response.json({ users: [] })
     }
 
-    // 同用户多设备去重：每个注册用户只保留最近一次心跳
-    const seenUserIds = new Set()
-    const deduped = []
-    for (const p of presences) {
-      if (p.user_id) {
-        if (seenUserIds.has(p.user_id)) continue
-        seenUserIds.add(p.user_id)
-      }
-      deduped.push(p)
-    }
-
     // 对注册用户，获取角色信息
-    const registeredUserIds = deduped
-      .filter(p => p.user_id)
-      .map(p => p.user_id)
+    const registeredUserIds = [...new Set(
+      presences.filter(p => p.user_id).map(p => p.user_id)
+    )]
 
     let rolesMap = {}
     if (registeredUserIds.length > 0) {
@@ -79,15 +68,26 @@ export async function GET(request) {
       }
     }
 
-    const users = deduped.map(p => ({
-      user_id: p.user_id,
-      display_name: p.display_name,
-      guest_label: p.guest_label,
-      // device_label: p.device_label || '',  // 列不存在，暂时注释
-      is_guest: !p.user_id,
-      role: p.user_id ? (rolesMap[p.user_id] || 'user') : null,
-      status: p.status,
-    }))
+    const users = presences.map(p => {
+      // 从 display_name 解析设备标签（格式：display_name ∈ "浩哥 ‖ iPhone" 或 "浩哥"）
+      const pipeIdx = p.display_name?.lastIndexOf(' ‖ ')
+      let displayName = p.display_name || ''
+      let deviceLabel = ''
+      if (pipeIdx !== -1 && pipeIdx > 0) {
+        displayName = p.display_name.slice(0, pipeIdx)
+        deviceLabel = p.display_name.slice(pipeIdx + 3)
+      }
+
+      return {
+        user_id: p.user_id,
+        display_name: displayName,
+        guest_label: p.guest_label,
+        device_label: deviceLabel,
+        is_guest: !p.user_id,
+        role: p.user_id ? (rolesMap[p.user_id] || 'user') : null,
+        status: p.status,
+      }
+    })
 
     return Response.json({ users })
   } catch (err) {
