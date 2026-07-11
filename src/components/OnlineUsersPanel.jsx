@@ -12,7 +12,7 @@ function DeviceIcon({ label }) {
   return <Monitor size={8} className="inline -mt-0.5" />
 }
 
-export default function OnlineUsersPanel({ roomSlug, currentUserId }) {
+export default function OnlineUsersPanel({ roomSlug, currentUserId, onUserDevices }) {
   const [users, setUsers] = useState([])
   const [loading, setLoading] = useState(true)
   const [friendStatuses, setFriendStatuses] = useState({})
@@ -25,9 +25,23 @@ export default function OnlineUsersPanel({ roomSlug, currentUserId }) {
       const res = await fetch(`/api/chat/online-users?room_slug=${roomSlug}`)
       if (!res.ok) return
       const data = await res.json()
-      setUsers(data.users || [])
+      const rawUsers = data.users || []
+      setUsers(rawUsers)
 
-      const otherUsers = (data.users || []).filter(u => !u.is_guest && u.user_id !== currentUserId)
+      // 同步设备映射给父组件
+      if (onUserDevices) {
+        const deviceMap = {}
+        for (const u of rawUsers) {
+          if (u.is_guest || !u.user_id) continue
+          if (!deviceMap[u.user_id]) deviceMap[u.user_id] = []
+          if (u.device_label && !deviceMap[u.user_id].includes(u.device_label)) {
+            deviceMap[u.user_id].push(u.device_label)
+          }
+        }
+        onUserDevices(deviceMap)
+      }
+
+      const otherUsers = rawUsers.filter(u => !u.is_guest && u.user_id !== currentUserId)
       if (otherUsers.length > 0) {
         for (const u of otherUsers) {
           fetchFriendStatus(u.user_id)
@@ -37,7 +51,7 @@ export default function OnlineUsersPanel({ roomSlug, currentUserId }) {
     } finally {
       setLoading(false)
     }
-  }, [roomSlug, currentUserId])
+  }, [roomSlug, currentUserId, onUserDevices])
 
   const fetchFriendStatus = async (targetUserId) => {
     try {

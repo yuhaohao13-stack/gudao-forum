@@ -26,6 +26,9 @@ export default function ChatRoomPage() {
   const [hasMore, setHasMore] = useState(true)
   const [sendError, setSendError] = useState('')
 
+  const [myDeviceLabel, setMyDeviceLabel] = useState('')
+  const [onlineUserDevices, setOnlineUserDevices] = useState({}) // user_id → [device_label]
+
   const [sessionId] = useState(() => {
     if (typeof window !== 'undefined') {
       let sid = localStorage.getItem('chat_session_id')
@@ -146,12 +149,14 @@ export default function ChatRoomPage() {
     if (!slug || !sessionId) return
     const sendHeartbeat = async () => {
       try {
-        await fetch('/api/chat/heartbeat', {
+        const res = await fetch('/api/chat/heartbeat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
           body: JSON.stringify({ room_slug: slug, session_id: sessionId, user_agent: navigator.userAgent }),
         })
+        const data = await res.json()
+        if (data.device_label) setMyDeviceLabel(data.device_label)
       } catch (e) {
         // 心跳失败静默处理
       }
@@ -293,6 +298,8 @@ export default function ChatRoomPage() {
                 const isSelf = user?.id === msg.user_id
                 const avatarLetter = (userInfo?.display_name || userInfo?.username || '?')[0]
                 const displayName = userInfo?.display_name || userInfo?.username || '用户'
+                // 当前消息发送者使用的设备
+                const msgDevice = isSelf ? myDeviceLabel : (onlineUserDevices[msg.user_id]?.[0] || '')
 
                 return (
                   <div
@@ -321,6 +328,11 @@ export default function ChatRoomPage() {
                         <span className="text-[10px] text-[#ccc]">
                           {new Date(msg.created_at).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })}
                         </span>
+                        {msgDevice && (
+                          <span className="inline-flex items-center gap-0.5 px-1.5 py-[1px] rounded-full bg-[#f0ede8] text-[#8a8070] text-[8px] leading-tight font-medium ml-auto">
+                            {/iPhone|iPad|Android|手机/i.test(msgDevice) ? '📱' : '💻'}{msgDevice}
+                          </span>
+                        )}
                       </div>
                       <p className="text-sm text-[#333] leading-relaxed whitespace-pre-wrap break-words">
                         {msg.content}
@@ -378,7 +390,11 @@ export default function ChatRoomPage() {
 
         {/* 分割线 + 右：在线面板 (1/4) — 不自滚动 */}
         <div className="max-md:hidden border-l border-[#eee8dc] w-1/4 min-w-[140px] max-w-[220px]">
-          <OnlineUsersPanel roomSlug={slug} currentUserId={user?.id || null} />
+          <OnlineUsersPanel
+            roomSlug={slug}
+            currentUserId={user?.id || null}
+            onUserDevices={setOnlineUserDevices}
+          />
         </div>
       </div>
 
