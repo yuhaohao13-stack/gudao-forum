@@ -120,6 +120,20 @@ export default function Home() {
         </section>
       )}
 
+      {/* ===== 在线聊天室入口 ===== */}
+      <Link href="/chat" className="block anim-up">
+        <div className="bg-gradient-to-r from-[#fdf8f4] to-[#f8f0e8] border border-[#eee8dc] rounded-xl px-4 py-3 transition-all hover:border-[#c23531] hover:shadow-sm hover:-translate-y-0.5">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-[#c23531] bg-opacity-10 flex items-center justify-center text-base shrink-0">💬</div>
+            <div className="min-w-0 flex-1">
+              <div className="text-sm font-semibold text-[#1a1a1a]">在线聊天室</div>
+              <div className="text-xs text-[#999]">非会员可查看聊天记录，会员可参与聊天</div>
+            </div>
+            <div className="text-xs text-[#c23531] font-medium shrink-0">进入 ›</div>
+          </div>
+        </div>
+      </Link>
+
       {/* ===== 版块（缩小紧凑版） ===== */}
       <section className="anim-up">
         <h2 className="text-xs font-semibold text-[#bbb] uppercase tracking-widest mb-2">{t('board.title')}</h2>
