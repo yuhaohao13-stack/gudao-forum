@@ -204,10 +204,12 @@ export default function ChatRoomPage() {
     const content = input.trim()
     setInput('')
 
+    // 把设备标签嵌入消息内容（解决历史消息显示当前设备的问题）
+    const deviceTag = myDeviceLabel ? `‖d:${myDeviceLabel}‖` : ''
     const { error, data } = await supabase.from('chat_messages').insert({
       room_id: room.id,
       user_id: user.id,
-      content,
+      content: deviceTag + content,
     }).select()
 
     if (error) {
@@ -298,8 +300,16 @@ export default function ChatRoomPage() {
                 const isSelf = user?.id === msg.user_id
                 const avatarLetter = (userInfo?.display_name || userInfo?.username || '?')[0]
                 const displayName = userInfo?.display_name || userInfo?.username || '用户'
-                // 当前消息发送者使用的设备
-                const msgDevice = isSelf ? myDeviceLabel : (onlineUserDevices[msg.user_id]?.[0] || '')
+                // 从消息内容中提取设备标签（优先使用嵌入的标记，兜底用当前在线数据）
+                let msgContent = msg.content
+                let msgDevice = ''
+                const deviceMatch = msgContent.match(/^‖d:(.+?)‖/)
+                if (deviceMatch) {
+                  msgDevice = deviceMatch[1]
+                  msgContent = msgContent.slice(deviceMatch[0].length)
+                } else {
+                  msgDevice = isSelf ? myDeviceLabel : (onlineUserDevices[msg.user_id]?.[0] || '')
+                }
 
                 return (
                   <div
@@ -335,7 +345,7 @@ export default function ChatRoomPage() {
                         )}
                       </div>
                       <p className="text-sm text-[#333] leading-relaxed whitespace-pre-wrap break-words">
-                        {msg.content}
+                        {msgContent}
                       </p>
                     </div>
                   </div>
