@@ -41,7 +41,7 @@ export async function GET(request) {
     // 获取在线用户
     const { data: presences } = await sbAdmin
       .from('chat_presence')
-      .select('user_id, guest_label, display_name, device_label, status, last_seen')
+      .select('user_id, guest_label, display_name, status, last_seen')
       .eq('room_id', room.id)
       .gte('last_seen', cutoff)
       .order('last_seen', { ascending: false })
@@ -83,7 +83,7 @@ export async function GET(request) {
       user_id: p.user_id,
       display_name: p.display_name,
       guest_label: p.guest_label,
-      device_label: p.device_label || '',
+      // device_label: p.device_label || '',  // 列不存在，暂时注释
       is_guest: !p.user_id,
       role: p.user_id ? (rolesMap[p.user_id] || 'user') : null,
       status: p.status,
