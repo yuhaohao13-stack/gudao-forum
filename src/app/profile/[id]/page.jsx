@@ -149,7 +149,7 @@ export default function ProfilePage() {
           </div>
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-1.5 flex-wrap">
-              <h1 className="text-base font-bold text-[#1a1a1a]">{profileUser.display_name || profileUser.username}</h1>
+              <h1 className="text-[14px] font-bold text-[#1a1a1a]">{profileUser.display_name || profileUser.username}</h1>
               {profileUser.member_no && <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-[#f5f0e8] border border-[#e8e0d0] text-[#8b6914] font-mono">#{profileUser.member_no}</span>}
               {isAdmin && <Crown size={14} className="text-[#c23531]" />}
               {isMod && <span className="text-[10px] text-[#8b6914] font-medium bg-[#8b6914]/10 px-1.5 py-0.5 rounded">版主</span>}
@@ -176,7 +176,7 @@ export default function ProfilePage() {
 
         {/* ===== 详细信息（紧凑单列，统一字号） ===== */}
         {!editing && (
-          <div className="mt-2 pt-2 border-t border-[#f5f0e8] text-[6px] space-y-0.5">
+          <div className="mt-2 pt-2 border-t border-[#f5f0e8] text-[14px] space-y-0.5">
             <div><span className="text-[#999]">用户名：</span><span className="text-[#666]">@{profileUser.username}</span></div>
             {profileUser.phone && <div><span className="text-[#999]">手机号：</span><span className="text-[#666]">{profileUser.phone.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2')}</span></div>}
             {profileUser.gender && <div><span className="text-[#999]">性别：</span><span className="text-[#666]">{genderLabel(profileUser.gender)}</span></div>}
