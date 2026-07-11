@@ -240,7 +240,7 @@ export default function ProfilePage() {
       )}
 
       {/* ============ 两栏：帖子 | 好友（正常大小） ============ */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-4">
         {/* 左：帖子 */}
         <div>
           <h2 className="font-semibold text-sm text-[#666] mb-2 flex items-center gap-1.5">
