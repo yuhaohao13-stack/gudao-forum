@@ -259,13 +259,13 @@ export default function ProfilePage() {
                   className="block bg-white border border-[#ece8e0] rounded-lg px-4 py-3 hover:border-[#c23531]/30 transition-all hover:shadow-sm">
                   <div className="text-sm font-medium text-[#1a1a1a] truncate">{t.title}</div>
                   <div className="flex items-center justify-between mt-1">
-                    <div className="text-xs text-[#999] truncate">
+                    <div className="text-sm text-[#999] truncate">
                       {t.categories?.name} <span className="text-[#ddd6c8] mx-1">·</span>
                       {new Date(t.created_at).toLocaleDateString('zh-CN')}
                     </div>
-                    <div className="text-xs text-[#bbb] shrink-0 ml-2">
-                      <MessageCircle size={13} className="inline align-text-bottom" /> {t.reply_count || 0}
-                      <Eye size={13} className="inline align-text-bottom ml-1.5" /> {t.view_count || 0}
+                    <div className="text-sm text-[#bbb] shrink-0 ml-2">
+                      <MessageCircle size={14} className="inline align-text-bottom" /> {t.reply_count || 0}
+                      <Eye size={14} className="inline align-text-bottom ml-1.5" /> {t.view_count || 0}
                     </div>
                   </div>
                 </Link>
@@ -286,21 +286,21 @@ export default function ProfilePage() {
                 <div className="card p-6 text-center">
                   <Users size={24} className="inline-block text-[#ccc] mb-1" />
                   <p className="text-[#999] text-sm">暂无好友</p>
-                  <p className="text-[#ccc] text-xs mt-1">去帖子页面找人加好友吧</p>
+                  <p className="text-[#ccc] text-sm mt-1">去帖子页面找人加好友吧</p>
                 </div>
               ) : (
                 friends.map(f => (
                   <div key={f.id} className="bg-white border border-[#ece8e0] rounded-lg px-4 py-3 flex items-center justify-between hover:border-[#c23531]/30 transition-all hover:shadow-sm">
                     <Link href={`/profile/${f.id}`} className="flex items-center gap-2 min-w-0 flex-1">
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white shrink-0 ${f.role === 'admin' ? 'bg-[#c23531]' : 'bg-[#b0a898]'}`}>
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold text-white shrink-0 ${f.role === 'admin' ? 'bg-[#c23531]' : 'bg-[#b0a898]'}`}>
                         {(f.display_name || f.username || '?')[0]}
                       </div>
                       <span className="text-sm font-medium text-[#1a1a1a] truncate">{f.display_name || f.username}</span>
                       {f.role === 'admin' && <Crown size={10} className="text-[#c23531] shrink-0" />}
                     </Link>
                     <Link href={`/messages/${f.id}`}
-                      className="text-xs px-2.5 py-1.5 rounded-md bg-[#f5f5f5] text-[#666] hover:bg-[#eee] hover:text-[#c23531] transition-colors shrink-0 ml-2">
-                      <MessageCircle size={13} className="inline align-text-bottom" /> 私信
+                      className="text-sm px-3 py-1.5 rounded-md bg-[#f5f5f5] text-[#666] hover:bg-[#eee] hover:text-[#c23531] transition-colors shrink-0 ml-2">
+                      <MessageCircle size={14} className="inline align-text-bottom" /> 私信
                     </Link>
                   </div>
                 ))
