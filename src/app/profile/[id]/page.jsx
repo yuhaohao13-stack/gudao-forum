@@ -100,6 +100,7 @@ export default function ProfilePage() {
       hobbies: form.hobbies.trim(),
       bio: form.bio.trim(),
       resume: form.resume.trim(),
+      birth_place: form.birth_place,
     }).eq('id', id)
     if (error) setMessage('保存失败: ' + error.message)
     else {
