@@ -61,7 +61,7 @@ export default function ChatPage() {
         <p className="tagline">
           非会员可查看聊天记录，会员可参与聊天
           {totalOnline > 0 && (
-            <span className="ml-3 inline-flex items-center gap-1 text-xs text-green-700 bg-green-50 border border-green-200 rounded-full px-2.5 py-0.5">
+            <span className="ml-3 inline-flex items-center gap-1 text-xs text-green-700">
               <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
               <Users size={10} className="inline-block" />
               {' '}{totalOnline} 人在线
@@ -88,9 +88,8 @@ export default function ChatPage() {
                     <h3 className="font-semibold text-[#1a1a1a]">{room.name}</h3>
                     {/* 该聊天室在线人数 */}
                     {roomOnline > 0 && (
-                      <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full bg-green-50 text-green-700 border border-green-200 text-[10px] font-medium leading-tight shrink-0">
-                        <span className="w-1 h-1 rounded-full bg-green-500" />
-                        {roomOnline} 人
+                      <span className="text-[11px] text-green-700 font-medium shrink-0">
+                        {roomOnline} 人在线
                       </span>
                     )}
                   </div>
