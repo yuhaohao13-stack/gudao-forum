@@ -94,7 +94,7 @@ export default function Home() {
             <span className="text-[#ddd]">|</span>
             <span><strong className="text-sm font-semibold text-[#1a1a1a]">{totalViews.toLocaleString()}</strong> {t('home.views')}</span>
             <span className="text-[#ddd]">|</span>
-            <span><strong className="text-sm font-semibold text-[#1a1a1a]">{totalUsers}</strong> {t('home.members')}</span>
+            <Link href="/members" className="hover:text-[#c23531] transition-colors"><strong className="text-sm font-semibold text-[#1a1a1a]">{totalUsers}</strong> {t('home.members')}</Link>
           </div>
         </div>
         <Link href="/chat" className="btn-secondary text-xs whitespace-nowrap"><MessageCircle size={14} className="inline-block align-text-bottom" /> {t('home.chatroom')}</Link>
