@@ -10,28 +10,35 @@ import { createClient } from '@supabase/supabase-js'
  */
 
 // 从 user-agent 解析设备标签
+// 注意：iOS Safari UA 同时包含 'iPhone' 和 'Mac OS X'，iPhone 检查必须优先
 function getDeviceLabel(ua) {
   if (!ua) return ''
-  const isMobile = /Mobile|Android|iPhone|iPad|iPod/i.test(ua)
-  // iPhone 机型
-  const iPhoneMatch = ua.match(/iPhone\d+|iPhone\s*\d+([,_]\d+)?/i)
-  if (iPhoneMatch) {
-    const raw = iPhoneMatch[0].replace(/[^\d,]/g, '')
-    const parts = raw.split(/[,_]/).filter(Boolean)
-    if (parts.length >= 2) return `iPhone${parts[0]},${parts[1]}`
-    return `iPhone${raw}`
-  }
+
+  // iPhone 带具体型号（如 iPhone17,3）
+  const iPhoneModelMatch = ua.match(/iPhone(\d+)[,_](\d+)/i)
+  if (iPhoneModelMatch) return `iPhone${iPhoneModelMatch[1]},${iPhoneModelMatch[2]}`
+
+  // iPhone（无具体型号，iOS Safari UA 只有 "iPhone;" 无数字）
+  // 必须早于 Mac 检查，因为 iOS UA 也包含 'Mac OS X'
+  if (/iPhone/i.test(ua)) return 'iPhone'
+
   // iPad
   if (/iPad/i.test(ua)) return 'iPad'
-  // Android 机型
+
+  // Android 带具体机型（如 Pixel 9）
   const androidMatch = ua.match(/;\s*([^;]+?)\s+Build\//i)
   if (androidMatch) return androidMatch[1].trim()
-  // Mac
+
+  // Android（无具体机型）
+  if (/Android/i.test(ua)) return 'Android'
+
+  // Mac（iOS 已被排除，安全检测 Mac OS X）
   if (/Macintosh|Mac OS X/i.test(ua)) {
-    if (/Intel Mac/i.test(ua)) return 'Mac'
-    if (/ARM64|AppleWebKit.*Mac/i.test(ua)) return 'Mac (Apple Silicon)'
+    if (/Intel Mac/i.test(ua)) return 'Mac (Intel)'
+    if (/ARM64/i.test(ua)) return 'Mac (M芯片)'
     return 'Mac'
   }
+
   // Windows
   if (/Windows/i.test(ua)) {
     const winMatch = ua.match(/Windows NT (\d+\.?\d*)/i)
@@ -44,13 +51,13 @@ function getDeviceLabel(ua) {
     }
     return 'Windows'
   }
+
   // Linux
   if (/Linux/i.test(ua)) return 'Linux'
+
   // 兜底
-  if (isMobile) {
-    if (/Android/i.test(ua)) return 'Android'
-    return '手机'
-  }
+  const isMobile = /Mobile|Android|iPhone|iPad|iPod/i.test(ua)
+  if (isMobile) return '手机'
   return '电脑'
 }
 
