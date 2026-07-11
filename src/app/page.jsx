@@ -199,20 +199,20 @@ export default function Home() {
             (activeTab === 'recent' ? recentThreads : hotThreads).map((t, i) => (
               <Link key={t.id} href={`/t/${t.id}`}
                 className={`thread-item px-3 first:pt-2.5 last:pb-2.5 ${i > 0 ? `anim-delay-${Math.min(i, 5)}` : ''}`}>
-                <div className="flex items-start justify-between gap-3">
+                <div className="flex items-start justify-between gap-2">
                   <div className="min-w-0 flex-1">
                     <h3 className="font-medium text-sm text-[#1a1a1a] truncate leading-snug">{t.title}</h3>
-                    <div className="flex items-center gap-2 mt-0.5 text-xs text-[#bbb]">
+                    <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 mt-0.5 text-[11px] text-[#bbb]">
                       <span className="text-[#888]">{t.profiles?.display_name || t.profiles?.username}</span>
                       <span>·</span>
                       <span>{t.categories?.name}</span>
                       <span>·</span>
                       <span>{new Date(t.created_at).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })}</span>
+                      <span className="flex items-center gap-1.5 ml-auto">
+                        <span className="inline-flex items-center gap-0.5"><MessageCircle size={11} className="inline-block" /> {t.reply_count || 0}</span>
+                        <span className="inline-flex items-center gap-0.5"><Eye size={11} className="inline-block" /> {t.view_count || 0}</span>
+                      </span>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-2 text-xs text-[#bbb] shrink-0 mt-0.5">
-                    <span><MessageCircle size={14} className="inline-block align-text-bottom" /> {t.reply_count || 0}</span>
-                    <span><Eye size={14} className="inline-block align-text-bottom" /> {t.view_count || 0}</span>
                   </div>
                 </div>
               </Link>
