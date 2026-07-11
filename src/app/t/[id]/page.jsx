@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { useAuth } from '@/components/AuthProvider'
 import { Crown, MessageCircle, Eye, Heart, Lock } from 'lucide-react'
+import Breadcrumb from '@/components/Breadcrumb'
 import { checkContent } from '@/lib/moderation'
 
 export default function ThreadPage() {
@@ -65,9 +66,11 @@ export default function ThreadPage() {
 
   return (
     <div className="anim-fade-in max-w-3xl mx-auto">
-      <Link href={`/c/${thread.categories?.slug}`} className="text-xs text-[#bbb] hover:text-[#888] transition-colors">
-        &larr; {thread.categories?.name}
-      </Link>
+      <Breadcrumb crumbs={[
+        { label: '首页', href: '/' },
+        { label: thread.categories?.name || '板块', href: `/c/${thread.categories?.slug}` },
+        { label: thread.title },
+      ]} />
 
       <article className="mt-4 card p-6 sm:p-8 anim-up">
         {(thread.profiles?.role === 'admin' || thread.profiles?.role === 'moderator') && (

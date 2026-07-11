@@ -2,7 +2,8 @@
 
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
-import { ChevronLeft, Gamepad2, Trophy, LogIn, UserPlus, Volume2, VolumeX } from 'lucide-react'
+import { Gamepad2, Trophy, LogIn, UserPlus, Volume2, VolumeX } from 'lucide-react'
+import Breadcrumb from '@/components/Breadcrumb'
 import React, { useEffect, useState } from 'react'
 import { useAuth } from '@/components/AuthProvider'
 import { submitScore, getLeaderboard } from '@/lib/submitScore'
@@ -130,14 +131,11 @@ export default function GamePage() {
   if (!loading && !user) {
     return (
       <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-1.5 text-sm text-[#888] hover:text-[#1a1a1a] transition-colors">
-            <ChevronLeft size={18} /> 返回首页
-          </Link>
-          <div className="flex items-center gap-2 text-sm text-[#888]">
-            <Gamepad2 size={16} /> 游戏娱乐
-          </div>
-        </div>
+        <Breadcrumb crumbs={[
+          { label: '首页', href: '/' },
+          { label: '游戏娱乐', href: '/games' },
+          { label: game.name },
+        ]} />
         <div className="text-center py-16">
           <div className="text-6xl mb-6">{'🎮'}</div>
           <h1 className="text-2xl font-bold text-[#1a1a1a] mb-2">{game.name}</h1>
@@ -172,16 +170,13 @@ export default function GamePage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-1.5 text-sm text-[#888] hover:text-[#1a1a1a] transition-colors">
-          <ChevronLeft size={18} /> 返回首页
-        </Link>
-        <div className="flex items-center gap-2 text-sm text-[#888]">
-          <Gamepad2 size={16} /> 游戏娱乐
-        </div>
-      </div>
+      <Breadcrumb crumbs={[
+        { label: '首页', href: '/' },
+        { label: '游戏娱乐', href: '/games' },
+        { label: game.name },
+      ]} />
 
-      <div className="text-center">
+      <div className="text-center mt-4">
         <h1 className="text-2xl font-bold text-[#1a1a1a]">{game.name}</h1>
         <p className="text-sm text-[#888] mt-1">{game.desc}</p>
       </div>

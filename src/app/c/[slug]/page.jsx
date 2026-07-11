@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Clock, Flame, Pencil, Lock, Pin, Crown, MessageCircle } from 'lucide-react'
 import { useAuth } from '@/components/AuthProvider'
+import Breadcrumb from '@/components/Breadcrumb'
 
 export default function CategoryPage() {
   const { profile } = useAuth()
@@ -50,7 +51,10 @@ export default function CategoryPage() {
   return (
     <div className="anim-fade-in">
       <div className="mb-5">
-        <Link href="/" className="text-xs text-[#bbb] hover:text-[#888] transition-colors">&larr; 首页</Link>
+        <Breadcrumb crumbs={[
+          { label: '首页', href: '/' },
+          { label: `${category.icon} ${category.name}` },
+        ]} />
         <h1 className="text-xl font-bold text-[#1a1a1a] mt-1">{category.icon} {category.name}</h1>
         <p className="text-[#aaa] text-xs mt-0.5">{category.description}</p>
       </div>

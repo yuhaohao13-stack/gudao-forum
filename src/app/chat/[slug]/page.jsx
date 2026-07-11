@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { useAuth } from '@/components/AuthProvider'
 import OnlineUsersPanel from '@/components/OnlineUsersPanel'
+import Breadcrumb from '@/components/Breadcrumb'
 import { Search, Crown, Lightbulb, Eye } from 'lucide-react'
 import { checkContent, validateInput } from '@/lib/moderation'
 
@@ -252,14 +253,17 @@ export default function ChatRoomPage() {
 
   return (
     <div className="anim-fade-in flex flex-col h-[calc(100vh-8rem)] max-h-[800px]">
-      {/* 头部 — 独立在外 */}
-      <div className="flex items-center justify-between mb-3 shrink-0">
-        <div className="flex items-center gap-2 min-w-0">
-          <Link href="/chat" className="text-sm text-[#c23531]/70 hover:text-[#c23531] transition-colors shrink-0">&larr;</Link>
+      {/* 面包屑导航 */}
+      <div className="mb-2 shrink-0">
+        <Breadcrumb crumbs={[
+          { label: '首页', href: '/' },
+          { label: '聊天室', href: '/chat' },
+          { label: room.name },
+        ]} />
+        <div className="flex items-center gap-2 mt-1">
           <span className="text-xl shrink-0">{room.icon}</span>
           <h1 className="text-lg font-bold text-[#1a1a1a] truncate">{room.name}</h1>
           <span className="hidden sm:inline text-[10px] text-[#b0a898] bg-[#f5f0e8] rounded-full px-2 py-0.5 truncate max-w-[150px]">{room.description}</span>
-
         </div>
       </div>
 
