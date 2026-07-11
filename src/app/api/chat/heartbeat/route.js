@@ -15,52 +15,9 @@ export async function POST(request) {
       return Response.json({ error: '缺少参数' }, { status: 400 })
     }
 
-    // 解析设备标签
-    function getDeviceLabel(ua) {
-      if (!ua) return ''
-      const isMobile = /Mobile|Android|iPhone|iPad|iPod/i.test(ua)
-      // iPhone 机型
-      const iPhoneMatch = ua.match(/iPhone\d+|iPhone\s*\d+([,_]\d+)?/i)
-      if (iPhoneMatch) {
-        const raw = iPhoneMatch[0].replace(/[^\d,]/g, '')
-        const parts = raw.split(/[,_]/).filter(Boolean)
-        if (parts.length >= 2) return `iPhone${parts[0]},${parts[1]}`
-        return `iPhone${raw}`
-      }
-      // iPad
-      if (/iPad/i.test(ua)) return 'iPad'
-      // Android 机型
-      const androidMatch = ua.match(/;\s*([^;]+?)\s+Build\//i)
-      if (androidMatch) return androidMatch[1].trim()
-      // Mac
-      if (/Macintosh|Mac OS X/i.test(ua)) {
-        if (/Intel Mac/i.test(ua)) return 'Mac'
-        if (/ARM64|AppleWebKit.*Mac/i.test(ua)) return 'Mac (Apple Silicon)'
-        return 'Mac'
-      }
-      // Windows
-      if (/Windows/i.test(ua)) {
-        const winMatch = ua.match(/Windows NT (\d+\.?\d*)/i)
-        if (winMatch) {
-          const v = parseFloat(winMatch[1])
-          if (v >= 10) return 'Win 10/11'
-          if (v >= 6.2) return 'Win 8/8.1'
-          if (v >= 6.1) return 'Win 7'
-          return `Win NT ${winMatch[1]}`
-        }
-        return 'Windows'
-      }
-      // Linux
-      if (/Linux/i.test(ua)) return 'Linux'
-      // 兜底
-      if (isMobile) {
-        if (/Android/i.test(ua)) return 'Android'
-        return '手机'
-      }
-      return '电脑'
-    }
-
-    const deviceLabel = getDeviceLabel(user_agent || '')
+    // 设备标签解析（保留注释供后续启用）
+    // 注：device_label 列尚未在数据库中创建，暂时忽略该字段避免心跳失败
+    const deviceLabel = '' // 由 getDeviceLabel(user_agent) 生成
 
     // 1. 检测客户端 IP
     const forwarded = request.headers.get('x-forwarded-for')
@@ -129,7 +86,7 @@ export async function POST(request) {
         ip_last3: ipLast3,
         guest_label: null,
         display_name: displayName,
-        device_label: deviceLabel,
+        // device_label: deviceLabel,  // 列不存在，暂时注释
         status: 'online',
         last_seen: new Date().toISOString(),
       }, {
@@ -140,7 +97,7 @@ export async function POST(request) {
         ok: true,
         is_guest: false,
         display_name: displayName,
-        device_label: deviceLabel,
+        // device_label: deviceLabel,
       })
     } else {
       // === 访客 ===
@@ -177,7 +134,7 @@ export async function POST(request) {
         ip_last3: ipLast3,
         guest_label: guestLabel,
         display_name: `访客 ${guestLabel}`,
-        device_label: '',
+        // device_label: '',          // 列不存在，暂时注释
         status: 'online',
         last_seen: new Date().toISOString(),
       }, {
