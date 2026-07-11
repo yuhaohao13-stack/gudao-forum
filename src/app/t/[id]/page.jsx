@@ -65,7 +65,7 @@ export default function ThreadPage() {
   if (!thread) return <div className="text-center py-20 anim-fade-in"><p className="text-[#bbb]">帖子不存在</p><Link href="/" className="text-[#888] hover:text-[#1a1a1a] mt-2 inline-block transition-colors">返回首页</Link></div>
 
   return (
-    <div className="anim-fade-in max-w-3xl mx-auto">
+    <div className="anim-fade-in w-full sm:max-w-3xl sm:mx-auto">
       <Breadcrumb crumbs={[
         { label: '首页', href: '/' },
         { label: thread.categories?.name || '板块', href: `/c/${thread.categories?.slug}` },

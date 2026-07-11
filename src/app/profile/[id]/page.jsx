@@ -169,7 +169,7 @@ export default function ProfilePage() {
 }
 
   return (
-    <div className="anim-fade-in max-w-2xl mx-auto">
+    <div className="anim-fade-in w-full sm:max-w-2xl sm:mx-auto">
       {/* 头像 & 基本信息 */}
       <div className="card p-6 sm:p-8 text-center">
         <div className="w-20 h-20 mx-auto rounded-full bg-[#c23531] flex items-center justify-center text-3xl font-bold text-white">

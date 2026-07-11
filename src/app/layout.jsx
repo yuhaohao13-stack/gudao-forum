@@ -126,7 +126,7 @@ export default function RootLayout({ children }) {
           <LanguageProvider>
           <AuthProvider>
             <Header />
-            <main className="flex-1 max-w-4xl mx-auto w-full px-4 py-5 sm:py-6">
+            <main className="flex-1 w-full px-4 py-5 sm:py-6 sm:max-w-4xl sm:mx-auto">
               {children}
             </main>
             <Footer />

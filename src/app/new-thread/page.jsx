@@ -64,7 +64,7 @@ export default function NewThreadPage() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto anim-fade-in">
+    <div className="w-full sm:max-w-2xl sm:mx-auto anim-fade-in">
       <h1 className="text-xl font-bold text-[#1a1a1a] mb-6"><Pencil size={20} className="inline-block align-text-bottom" /> 发新帖</h1>
       <form onSubmit={handleSubmit} className="space-y-5">
         <div className="border border-[#f0f0f0] rounded-xl p-5 sm:p-6 space-y-5">
