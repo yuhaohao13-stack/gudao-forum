@@ -1,8 +1,6 @@
 'use client'
 
-/* __BUILD_V3__ */
-
-/* __BUILD_V2__ */
+/* BUILD_TAG_20260712_v3 */
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -36,7 +34,6 @@ export default function MembersPage() {
     supabase.from('profiles').select('*').order('created_at', { ascending: false }).then(async ({ data }) => {
       setUsers(data || [])
       setFilteredUsers(data || [])
-      // 加载管理员的好友关系
       const { data: myFriends } = await supabase
         .from('friends')
         .select('requester_id, addressee_id')
@@ -167,7 +164,6 @@ export default function MembersPage() {
         </div>
       </div>
 
-      {/* 会员卡片列表 */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
         {paginatedUsers.map(u => (
           <div key={u.id}
@@ -234,7 +230,6 @@ export default function MembersPage() {
         ))}
       </div>
 
-      {/* 空状态 */}
       {paginatedUsers.length === 0 && (
         <div className="card p-12 text-center">
           <div className="mb-3"><Users size={36} className="inline-block text-[#ccc]" /></div>
@@ -242,7 +237,6 @@ export default function MembersPage() {
         </div>
       )}
 
-      {/* 分页 */}
       {totalPages > 1 && (
         <div className="flex items-center justify-center gap-2 mt-6">
           <button
