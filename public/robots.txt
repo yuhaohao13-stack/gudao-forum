@@ -1,6 +1,19 @@
 # 古道论坛 - 爬虫规则
 # 允许搜索引擎索引公开内容，禁止敏感路径
 
+# === 百度 ===
+User-agent: Baiduspider
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+
+# === 头条 / 字节跳动 ===
+User-agent: Bytespider
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+
+# === 通用规则 ===
 User-agent: *
 Allow: /
 Disallow: /admin/
@@ -37,13 +50,13 @@ Disallow: /
 User-agent: AspiegelBot
 Disallow: /
 
+# AI 爬虫屏蔽（学习训练用爬虫）
 User-agent: GPTBot
 Disallow: /
 
 User-agent: CCBot
 Disallow: /
 
-# AI 爬虫屏蔽（学习训练用爬虫）
 User-agent: Claude-Web
 Disallow: /
 
@@ -51,9 +64,6 @@ User-agent: ClaudeBot
 Disallow: /
 
 User-agent: cohere-ai
-Disallow: /
-
-User-agent: Bytespider
 Disallow: /
 
 User-agent: PerplexityBot
