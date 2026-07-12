@@ -113,7 +113,7 @@ export default function DatePicker({ value, onChange, lang, max, required }) {
             <span className="text-gray-300 text-xs">▾</span>
           </button>
           {showYear && (
-            <div className="absolute top-full left-0 mt-1 w-full bg-white border border-gray-200 rounded-xl shadow-xl z-50 max-h-48 overflow-y-auto">
+            <div className="absolute top-full left-0 mt-1 w-full bg-white border border-gray-200 rounded-xl shadow-xl z-50 max-h-72 overflow-y-auto">
               {Array.from({length: maxYear - minYear + 1}, (_, i) => maxYear - i).map(y => (
                 <button key={y} type="button" data-year={y}
                   onClick={() => handleYearSelect(y)}
@@ -135,7 +135,7 @@ export default function DatePicker({ value, onChange, lang, max, required }) {
             <span className="text-gray-300 text-xs">▾</span>
           </button>
           {showMonth && (
-            <div className="absolute top-full left-0 mt-1 w-full bg-white border border-gray-200 rounded-xl shadow-xl z-50 max-h-48 overflow-y-auto">
+            <div className="absolute top-full left-0 mt-1 w-full bg-white border border-gray-200 rounded-xl shadow-xl z-50 max-h-64 overflow-y-auto">
               {months.map((m, i) => (
                 <button key={i + 1} type="button" data-month={i + 1}
                   onClick={() => handleMonthSelect(i + 1)}
@@ -157,7 +157,7 @@ export default function DatePicker({ value, onChange, lang, max, required }) {
             <span className="text-gray-300 text-xs">▾</span>
           </button>
           {showDay && (
-            <div className="absolute top-full left-0 mt-1 w-full bg-white border border-gray-200 rounded-xl shadow-xl z-50 max-h-48 overflow-y-auto">
+            <div className="absolute top-full left-0 mt-1 w-full bg-white border border-gray-200 rounded-xl shadow-xl z-50 max-h-64 overflow-y-auto">
               {Array.from({length: daysInMonth}, (_, i) => i + 1).map(d => (
                 <button key={d} type="button" data-day={d}
                   onClick={() => handleDaySelect(d)}
