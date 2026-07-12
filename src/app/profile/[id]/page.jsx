@@ -1,6 +1,6 @@
 'use client'
 
-/* __BUILD_V2__ */
+/* __BUILD_V3__ */
 
 import { useEffect, useState, useCallback } from 'react'
 import { useParams, useRouter } from 'next/navigation'
@@ -54,29 +54,29 @@ export default function ProfilePage() {
     setThreads(t || [])
 
     const { data: f1 } = await supabase.from('friends')
-      .select('*, friend:friend_id(id, username, display_name, role)')
-      .eq('user_id', id).eq('status', 'accepted')
+      .select('*, addressee:addressee_id(id, username, display_name, role)')
+      .eq('requester_id', id).eq('status', 'accepted')
     const { data: f2 } = await supabase.from('friends')
-      .select('*, user:user_id(id, username, display_name, role)')
-      .eq('friend_id', id).eq('status', 'accepted')
-    setFriends([...(f1 || []).map(f => f.friend), ...(f2 || []).map(f => f.user)])
+      .select('*, requester:requester_id(id, username, display_name, role)')
+      .eq('addressee_id', id).eq('status', 'accepted')
+    setFriends([...(f1 || []).map(f => f.addressee), ...(f2 || []).map(f => f.requester)])
 
     if (isSelf) {
       const { data: pr } = await supabase.from('friends')
-        .select('*, user:user_id(id, username, display_name, role)')
-        .eq('friend_id', id).eq('status', 'pending')
+        .select('*, requester:requester_id(id, username, display_name, role)')
+        .eq('addressee_id', id).eq('status', 'pending')
       setPendingRequests(pr || [])
     }
 
     if (user && !isSelf) {
       const { data: fs } = await supabase.from('friends')
         .select('*')
-        .or(`and(user_id.eq.${user.id},friend_id.eq.${id}),and(user_id.eq.${id},friend_id.eq.${user.id})`)
+        .or(`and(requester_id.eq.${user.id},addressee_id.eq.${id}),and(requester_id.eq.${id},addressee_id.eq.${user.id})`)
         .maybeSingle()
       if (fs) {
         if (fs.status === 'accepted') setFriendStatus('friends')
-        else if (fs.status === 'pending' && fs.user_id === user.id) setFriendStatus('pending_sent')
-        else if (fs.status === 'pending' && fs.friend_id === user.id) setFriendStatus('pending_received')
+        else if (fs.status === 'pending' && fs.requester_id === user.id) setFriendStatus('pending_sent')
+        else if (fs.status === 'pending' && fs.addressee_id === user.id) setFriendStatus('pending_received')
       }
     }
 
@@ -110,14 +110,14 @@ export default function ProfilePage() {
   }
 
   const handleAccept = async (rid) => {
-    await supabase.from('friends').update({ status: 'accepted' }).eq('user_id', rid).eq('friend_id', id)
-    setPendingRequests(prev => prev.filter(r => r.user_id !== rid))
+    await supabase.from('friends').update({ status: 'accepted' }).eq('requester_id', rid).eq('addressee_id', id)
+    setPendingRequests(prev => prev.filter(r => r.requester_id !== rid))
     setFriendUpdate(prev => prev + 1)
   }
 
   const handleReject = async (rid) => {
-    await supabase.from('friends').delete().eq('user_id', rid).eq('friend_id', id)
-    setPendingRequests(prev => prev.filter(r => r.user_id !== rid))
+    await supabase.from('friends').delete().eq('requester_id', rid).eq('addressee_id', id)
+    setPendingRequests(prev => prev.filter(r => r.requester_id !== rid))
   }
 
   const handleLogout = async () => {
@@ -233,15 +233,15 @@ export default function ProfilePage() {
             <span className="text-sm font-semibold text-amber-700">待处理的好友请求 ({pendingRequests.length})</span>
           </div>
           {pendingRequests.map(req => (
-            <div key={req.user_id} className="flex items-center justify-between py-1.5">
+            <div key={req.requester_id} className="flex items-center justify-between py-1.5">
               <div className="flex items-center gap-2">
-                <div className="w-6 h-6 rounded-full bg-[#b0a898] flex items-center justify-center text-[8px] text-white font-bold">{(req.user?.display_name || req.user?.username || '?')[0]}</div>
-                <Link href={`/profile/${req.user_id}`} className="text-sm text-[#666] hover:text-[#c23531]">{req.user?.display_name || req.user?.username}</Link>
+                <div className="w-6 h-6 rounded-full bg-[#b0a898] flex items-center justify-center text-[8px] text-white font-bold">{(req.requester?.display_name || req.requester?.username || '?')[0]}</div>
+                <Link href={`/profile/${req.requester_id}`} className="text-sm text-[#666] hover:text-[#c23531]">{req.requester?.display_name || req.requester?.username}</Link>
                 <span className="text-xs text-[#999]">请求加你为好友</span>
               </div>
               <div className="flex gap-1">
-                <button onClick={() => handleAccept(req.user_id)} className="text-xs px-2.5 py-1 rounded bg-green-100 text-green-700 hover:bg-green-200 font-medium">同意</button>
-                <button onClick={() => handleReject(req.user_id)} className="text-xs px-2.5 py-1 rounded bg-gray-100 text-gray-500 hover:bg-gray-200"><X size={12} className="inline" /></button>
+                <button onClick={() => handleAccept(req.requester_id)} className="text-xs px-2.5 py-1 rounded bg-green-100 text-green-700 hover:bg-green-200 font-medium">同意</button>
+                <button onClick={() => handleReject(req.requester_id)} className="text-xs px-2.5 py-1 rounded bg-gray-100 text-gray-500 hover:bg-gray-200"><X size={12} className="inline" /></button>
               </div>
             </div>
           ))}
