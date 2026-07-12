@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Users, Trash2, Crown, Shield, User as UserIcon, Search, X, ChevronLeft, ChevronRight, Eye } from 'lucide-react'
+import { Users, Trash2, Crown, Shield, User as UserIcon, Search, X, ChevronLeft, ChevronRight, Eye, UserPlus, Download, UserCheck } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useAuth } from '@/components/AuthProvider'
 import Breadcrumb from '@/components/Breadcrumb'
@@ -15,6 +15,8 @@ export default function MembersPage() {
   const [searchQuery, setSearchQuery] = useState('')
   const [page, setPage] = useState(1)
   const [deleting, setDeleting] = useState(null)
+  const [friendStatus, setFriendStatus] = useState({})
+  const [addingFriend, setAddingFriend] = useState({})
   const supabase = createClient()
   const router = useRouter()
   const PER_PAGE = 20
@@ -27,11 +29,26 @@ export default function MembersPage() {
 
   useEffect(() => {
     if (profile?.role !== 'admin') return
-    supabase.from('profiles').select('*').order('created_at', { ascending: false }).then(({ data }) => {
+    supabase.from('profiles').select('*').order('created_at', { ascending: false }).then(async ({ data }) => {
       setUsers(data || [])
       setFilteredUsers(data || [])
+      // 加载管理员的好友关系
+      const { data: myFriends } = await supabase
+        .from('friends')
+        .select('requester_id, addressee_id')
+        .or(
+          user.id ? `and(requester_id.eq.${user.id},status.eq.accepted),and(addressee_id.eq.${user.id},status.eq.accepted)` : 'false'
+        )
+      const friendSet = {}
+      if (myFriends) {
+        myFriends.forEach(f => {
+          if (f.requester_id === user.id) friendSet[f.addressee_id] = true
+          if (f.addressee_id === user.id) friendSet[f.requester_id] = true
+        })
+      }
+      setFriendStatus(friendSet)
     })
-  }, [profile])
+  }, [profile, user])
 
   useEffect(() => {
     if (!searchQuery.trim()) {
@@ -69,6 +86,41 @@ export default function MembersPage() {
     setDeleting(null)
   }
 
+  const addFriend = async (userId) => {
+    setAddingFriend(prev => ({ ...prev, [userId]: true }))
+    try {
+      const res = await fetch('/api/friend/add', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ to_user_id: userId }),
+      })
+      const data = await res.json()
+      if (data.success) {
+        setFriendStatus(prev => ({ ...prev, [userId]: true }))
+      } else {
+        alert(data.error || '添加失败')
+      }
+    } catch (e) {
+      alert('网络错误: ' + e.message)
+    }
+    setAddingFriend(prev => ({ ...prev, [userId]: false }))
+  }
+
+  const exportCSV = () => {
+    const header = 'ID,用户名,昵称,角色,性别,手机号,出生年月,出生地,兴趣爱好,个人简介,注册时间'
+    const rows = users.map(u =>
+      `"${u.id}","${u.username || ''}","${(u.display_name || '').replace(/"/g, '""')}","${u.role || 'user'}","${u.gender || ''}","${u.phone || ''}","${u.date_of_birth || ''}","${(u.birth_place || '').replace(/"/g, '""')}","${(u.hobbies || '').replace(/"/g, '""')}","${(u.bio || '').replace(/"/g, '""')}","${new Date(u.created_at).toLocaleDateString('zh-CN')}"`
+    )
+    const csv = header + '\n' + rows.join('\n')
+    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = '会员列表.csv'
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
   if (authLoading || profile?.role !== 'admin') {
     return <div className="flex justify-center py-20">
       <div className="w-5 h-5 border-2 border-[#c23531]/30 border-t-[#c23531] rounded-full animate-spin" />
@@ -87,20 +139,27 @@ export default function MembersPage() {
           </h1>
           <p className="text-xs text-[#aaa] mt-1">共 {users.length} 位注册会员</p>
         </div>
-        <div className="relative">
-          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#bbb]" />
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={e => setSearchQuery(e.target.value)}
-            placeholder="搜索用户名..."
-            className="pl-8 pr-8 py-2 border border-[#ece8e0] rounded-xl text-sm bg-white text-[#1a1a1a] placeholder:text-[#ccc] outline-none focus:border-[#c23531] transition-colors w-48"
-          />
-          {searchQuery && (
-            <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#bbb] hover:text-[#666]">
-              <X size={14} />
-            </button>
-          )}
+        <div className="flex items-center gap-2">
+          <button onClick={exportCSV}
+            className="text-xs px-3 py-2 rounded-lg bg-[#1a1a1a] text-white hover:bg-[#333] transition-colors flex items-center gap-1.5">
+            <Download size={14} />
+            导出CSV
+          </button>
+          <div className="relative">
+            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#bbb]" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
+              placeholder="搜索用户名..."
+              className="pl-8 pr-8 py-2 border border-[#ece8e0] rounded-xl text-sm bg-white text-[#1a1a1a] placeholder:text-[#ccc] outline-none focus:border-[#c23531] transition-colors w-48"
+            />
+            {searchQuery && (
+              <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#bbb] hover:text-[#666]">
+                <X size={14} />
+              </button>
+            )}
+          </div>
         </div>
       </div>
 
@@ -115,9 +174,9 @@ export default function MembersPage() {
               </div>
               <div className="min-w-0">
                 <div className="flex items-center gap-1.5">
-                  <span className="font-semibold text-sm text-[#1a1a1a] truncate">
+                  <Link href={`/profile/${u.id}`} className="font-semibold text-sm text-[#1a1a1a] truncate hover:text-[#c23531] transition-colors">
                     {u.display_name || u.username}
-                  </span>
+                  </Link>
                   <span className={`shrink-0 text-[10px] px-1.5 py-0.5 rounded font-medium ${
                     u.role === 'admin' ? 'bg-[#c23531]/10 text-[#c23531]' :
                     u.role === 'moderator' ? 'bg-[#8b6914]/10 text-[#8b6914]' :
@@ -141,6 +200,23 @@ export default function MembersPage() {
                 title="查看详情">
                 <Eye size={14} />
               </Link>
+              {u.id !== user.id && !friendStatus[u.id] && (
+                <button onClick={() => addFriend(u.id)}
+                  disabled={addingFriend[u.id]}
+                  className={`text-xs px-2.5 py-1.5 rounded-lg transition-colors ${
+                    addingFriend[u.id]
+                      ? 'bg-gray-100 text-gray-400'
+                      : 'bg-[#e8f5e9] text-[#2e7d32] hover:bg-[#c8e6c9]'
+                  }`}
+                  title="添加好友">
+                  <UserPlus size={14} />
+                </button>
+              )}
+              {friendStatus[u.id] && (
+                <span className="text-xs px-2 py-1.5 rounded-lg bg-green-50 text-green-700 border border-green-200" title="已是好友">
+                  <UserCheck size={14} />
+                </span>
+              )}
               {u.role !== 'admin' && (
                 <button onClick={() => deleteUser(u.id, u.display_name || u.username)}
                   disabled={deleting === u.id}
