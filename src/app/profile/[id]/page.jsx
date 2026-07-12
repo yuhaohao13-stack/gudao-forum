@@ -9,6 +9,8 @@ import { createClient } from '@/lib/supabase/client'
 import { useAuth } from '@/components/AuthProvider'
 import Breadcrumb from '@/components/Breadcrumb'
 import { Crown, Shield, Pencil, MessageCircle, Users, Clock, CheckCircle, X, FileText, Inbox, Mars, Venus, Sparkles, Eye, Loader2, UserPlus, UserCheck, Inbox as InboxIcon } from 'lucide-react'
+import DatePicker from '@/components/DatePicker'
+import BirthPlaceSelector, { bpStr, parseBp } from '@/components/BirthPlaceSelector'
 
 export default function ProfilePage() {
   const { id } = useParams()
@@ -202,8 +204,8 @@ export default function ProfilePage() {
             <div className="grid grid-cols-2 gap-2">
               <div><label className="block text-[10px] text-[#888] mb-0.5">昵称</label><input type="text" value={form.display_name} onChange={e => update('display_name', e.target.value)} className="input text-xs py-1" maxLength={10} /></div>
               <div><label className="block text-[10px] text-[#888] mb-0.5">手机号</label><input type="tel" value={form.phone} onChange={e => update('phone', e.target.value)} className="input text-xs py-1" maxLength={11} placeholder="13812345678" /></div>
-              <div><label className="block text-[10px] text-[#888] mb-0.5">出生年月</label><input type="date" value={form.date_of_birth} onChange={e => update('date_of_birth', e.target.value)} className="input text-xs py-1" /></div>
-              <div><label className="block text-[10px] text-[#888] mb-0.5">出生地</label><input type="text" value={form.birth_place} onChange={e => update('birth_place', e.target.value)} className="input text-xs py-1" placeholder="山东/威海" /></div>
+              <div><label className="block text-[10px] text-[#888] mb-0.5">出生年月</label><DatePicker value={form.date_of_birth} onChange={(d) => update('date_of_birth', d)} lang="zh" max={new Date().toISOString().split('T')[0]} /></div>
+              <div><label className="block text-[10px] text-[#888] mb-0.5">出生地</label><BirthPlaceSelector value={parseBp(form.birth_place)} onChange={(v) => update('birth_place', bpStr(v))} lang="zh" /></div>
             </div>
             <div className="flex gap-2">{[{ v:'male',l:'♂ 男'},{v:'female',l:'♀ 女'},{v:'other',l:'⚧ 其他'}].map(o => (
               <label key={o.v} className={`text-xs flex-1 flex items-center justify-center gap-1 py-1.5 rounded-lg border cursor-pointer ${form.gender === o.v ? 'border-[#c23531] bg-[#c23531]/5 text-[#c23531]' : 'border-[#eee8dc] text-[#888]'}`}>
