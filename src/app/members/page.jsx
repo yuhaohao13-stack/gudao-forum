@@ -1,6 +1,6 @@
 'use client'
 
-/* BUILD_TAG_20260712_v3 */
+/* BUILD_TAG_20260712_v4 */
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -194,35 +194,35 @@ export default function MembersPage() {
                 </div>
               </div>
             </div>
-            <div className="flex items-center gap-3 shrink-0">
+            <div className="flex items-center gap-6 shrink-0">
               <Link href={`/profile/${u.id}`}
-                className="text-xs px-4 py-2 rounded-lg bg-[#f5f5f5] text-[#666] hover:bg-[#eee] hover:text-[#1a1a1a] transition-colors"
+                className="text-sm px-6 py-3 rounded-lg bg-[#f5f5f5] text-[#666] hover:bg-[#eee] hover:text-[#1a1a1a] transition-colors"
                 title="查看详情">
-                <Eye size={14} />
+                <Eye size={22} />
               </Link>
               {u.id !== user.id && !friendStatus[u.id] && (
                 <button onClick={() => addFriend(u.id)}
                   disabled={addingFriend[u.id]}
-                  className={`text-xs px-4 py-2 rounded-lg transition-colors ${
+                  className={`text-sm px-6 py-3 rounded-lg transition-colors ${
                     addingFriend[u.id]
                       ? 'bg-gray-100 text-gray-400'
                       : 'bg-[#e8f5e9] text-[#2e7d32] hover:bg-[#c8e6c9]'
                   }`}
                   title="添加好友">
-                  <UserPlus size={14} />
+                  <UserPlus size={22} />
                 </button>
               )}
               {friendStatus[u.id] && (
-                <span className="text-xs px-4 py-2 rounded-lg bg-green-50 text-green-700 border border-green-200" title="已是好友">
-                  <UserCheck size={14} />
+                <span className="text-sm px-6 py-3 rounded-lg bg-green-50 text-green-700 border border-green-200" title="已是好友">
+                  <UserCheck size={22} />
                 </span>
               )}
               {u.role !== 'admin' && (
                 <button onClick={() => deleteUser(u.id, u.display_name || u.username)}
                   disabled={deleting === u.id}
-                  className="text-xs px-4 py-2 rounded-lg bg-[#fef2f0] text-[#c23531] hover:bg-[#fde0db] transition-colors disabled:opacity-50"
+                  className="text-sm px-6 py-3 rounded-lg bg-[#fef2f0] text-[#c23531] hover:bg-[#fde0db] transition-colors disabled:opacity-50"
                   title="删除用户">
-                  <Trash2 size={14} />
+                  <Trash2 size={22} />
                 </button>
               )}
             </div>
