@@ -9,7 +9,6 @@ Disallow: /login
 Disallow: /register
 Disallow: /profile/
 Disallow: /messages/
-Disallow: /chat/
 Disallow: /auth/
 
 # 禁止特定爬虫（已知垃圾爬虫）
