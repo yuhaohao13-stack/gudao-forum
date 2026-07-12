@@ -1,6 +1,6 @@
 'use client'
 
-/* __BUILD_V4__ */
+/* __BUILD_V5__ */
 
 import { useEffect, useState, useCallback } from 'react'
 import { useParams, useRouter } from 'next/navigation'
@@ -184,7 +184,7 @@ export default function ProfilePage() {
             </div>
             <div className="text-[10px] text-[#999] mt-0.5">加入于 {new Date(profileUser.created_at).toLocaleDateString('zh-CN')}</div>
           </div>
-          <div className="shrink-0 flex items-center gap-2 flex-wrap">
+          <div className="shrink-0 flex items-center gap-4 flex-wrap">
             {user && !isSelf ? (
               friendStatus === 'friends' ? (
                 <span className="text-xs text-green-700 font-medium px-3 py-1.5 rounded-full bg-green-50 border border-green-200"><UserCheck size={12} className="inline" /> 好友</span>
