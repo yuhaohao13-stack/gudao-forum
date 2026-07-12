@@ -88,7 +88,7 @@ export default function ProfilePage() {
     const { error } = await supabase.from('profiles').update({
       display_name: form.display_name.trim(), phone: form.phone,
       date_of_birth: form.date_of_birth, gender: form.gender,
-      hobbies: form.hobbies.trim(), bio: form.bio.trim(),
+      birth_place: form.birth_place.trim(), hobbies: form.hobbies.trim(), bio: form.bio.trim(),
       resume: form.resume.trim(),
     }).eq('id', id)
     if (error) setMessage('保存失败: ' + error.message)
@@ -174,17 +174,17 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        {/* ===== 详细信息（紧凑单列，统一字号） ===== */}
+        {/* ===== 详细信息（紧凑单列，统一字号，空值显示-） ===== */}
         {!editing && (
           <div className="mt-2 pt-2 border-t border-[#f5f0e8] text-[14px] space-y-0.5">
             <div><span className="text-[#999]">用户名：</span><span className="text-[#666]">@{profileUser.username}</span></div>
-            {profileUser.phone && <div><span className="text-[#999]">手机号：</span><span className="text-[#666]">{profileUser.phone.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2')}</span></div>}
-            {profileUser.gender && <div><span className="text-[#999]">性别：</span><span className="text-[#666]">{genderLabel(profileUser.gender)}</span></div>}
-            {profileUser.birth_place && <div><span className="text-[#999]">出生地：</span><span className="text-[#666]">{profileUser.birth_place}</span></div>}
-            {profileUser.date_of_birth && <div><span className="text-[#999]">出生年月：</span><span className="text-[#666]">{new Date(profileUser.date_of_birth).toLocaleDateString('zh-CN')}（{new Date().getFullYear() - new Date(profileUser.date_of_birth).getFullYear()}岁）</span></div>}
-            {profileUser.hobbies && <div><span className="text-[#999]">兴趣爱好：</span><span className="text-[#666]">{profileUser.hobbies}</span></div>}
-            {profileUser.bio && <div><span className="text-[#999]">个人简介：</span><span className="text-[#666]">{profileUser.bio}</span></div>}
-            {profileUser.resume && <div className="whitespace-pre-wrap"><span className="text-[#999]">简历：</span><span className="text-[#666]">{profileUser.resume}</span></div>}
+            <div><span className="text-[#999]">手机号：</span><span className="text-[#666]">{profileUser.phone ? profileUser.phone.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2') : '-'}</span></div>
+            <div><span className="text-[#999]">性别：</span><span className="text-[#666]">{profileUser.gender ? genderLabel(profileUser.gender) : '-'}</span></div>
+            <div><span className="text-[#999]">出生地：</span><span className="text-[#666]">{profileUser.birth_place || '-'}</span></div>
+            <div><span className="text-[#999]">出生年月：</span><span className="text-[#666]">{profileUser.date_of_birth ? new Date(profileUser.date_of_birth).toLocaleDateString('zh-CN') + '（' + (new Date().getFullYear() - new Date(profileUser.date_of_birth).getFullYear()) + '岁）' : '-'}</span></div>
+            <div><span className="text-[#999]">兴趣爱好：</span><span className="text-[#666]">{profileUser.hobbies || '-'}</span></div>
+            <div><span className="text-[#999]">个人简介：</span><span className="text-[#666]">{profileUser.bio || '-'}</span></div>
+            <div className="whitespace-pre-wrap"><span className="text-[#999]">简历：</span><span className="text-[#666]">{profileUser.resume || '-'}</span></div>
           </div>
         )}
 

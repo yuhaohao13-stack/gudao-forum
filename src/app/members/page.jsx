@@ -141,7 +141,7 @@ export default function MembersPage() {
         </div>
         <div className="flex items-center gap-2">
           <button onClick={exportCSV}
-            className="text-xs px-3 py-2 rounded-lg bg-[#1a1a1a] text-white hover:bg-[#333] transition-colors flex items-center gap-1.5">
+            className="text-xs px-4 py-2 rounded-lg bg-[#b45309] text-white hover:bg-[#92400e] transition-colors flex items-center gap-1.5 font-medium shadow-sm">
             <Download size={14} />
             导出CSV
           </button>
@@ -194,16 +194,16 @@ export default function MembersPage() {
                 </div>
               </div>
             </div>
-            <div className="flex items-center gap-1.5 shrink-0">
+            <div className="flex items-center gap-3 shrink-0">
               <Link href={`/profile/${u.id}`}
-                className="text-xs px-2.5 py-1.5 rounded-lg bg-[#f5f5f5] text-[#666] hover:bg-[#eee] hover:text-[#1a1a1a] transition-colors"
+                className="text-xs px-4 py-2 rounded-lg bg-[#f5f5f5] text-[#666] hover:bg-[#eee] hover:text-[#1a1a1a] transition-colors"
                 title="查看详情">
                 <Eye size={14} />
               </Link>
               {u.id !== user.id && !friendStatus[u.id] && (
                 <button onClick={() => addFriend(u.id)}
                   disabled={addingFriend[u.id]}
-                  className={`text-xs px-2.5 py-1.5 rounded-lg transition-colors ${
+                  className={`text-xs px-4 py-2 rounded-lg transition-colors ${
                     addingFriend[u.id]
                       ? 'bg-gray-100 text-gray-400'
                       : 'bg-[#e8f5e9] text-[#2e7d32] hover:bg-[#c8e6c9]'
@@ -213,14 +213,14 @@ export default function MembersPage() {
                 </button>
               )}
               {friendStatus[u.id] && (
-                <span className="text-xs px-2 py-1.5 rounded-lg bg-green-50 text-green-700 border border-green-200" title="已是好友">
+                <span className="text-xs px-4 py-2 rounded-lg bg-green-50 text-green-700 border border-green-200" title="已是好友">
                   <UserCheck size={14} />
                 </span>
               )}
               {u.role !== 'admin' && (
                 <button onClick={() => deleteUser(u.id, u.display_name || u.username)}
                   disabled={deleting === u.id}
-                  className="text-xs px-2.5 py-1.5 rounded-lg bg-[#fef2f0] text-[#c23531] hover:bg-[#fde0db] transition-colors disabled:opacity-50"
+                  className="text-xs px-4 py-2 rounded-lg bg-[#fef2f0] text-[#c23531] hover:bg-[#fde0db] transition-colors disabled:opacity-50"
                   title="删除用户">
                   <Trash2 size={14} />
                 </button>
