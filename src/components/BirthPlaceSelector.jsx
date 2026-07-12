@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 
 const CHINA_REGIONS = [
   { n: '北京', c: [] },
@@ -38,10 +38,54 @@ const CHINA_REGIONS = [
   { n: '澳门', c: [] },
 ]
 
+function DropdownSelect({ options, value, placeholder, onChange, lang }) {
+  const [open, setOpen] = useState(false)
+  const ref = useRef(null)
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false)
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [])
+
+  const selected = options.find(o => o.value === value)
+
+  return (
+    <div className="relative" ref={ref}>
+      <button type="button" onClick={() => setOpen(!open)}
+        className="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-sm text-left bg-white hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors flex items-center justify-between">
+        <span className={selected ? 'text-gray-900' : 'text-gray-400'}>{selected ? selected.label : placeholder}</span>
+        <span className="text-gray-300 text-xs transition-transform" style={{ transform: open ? 'rotate(180deg)' : '' }}>▾</span>
+      </button>
+      {open && (
+        <div className="absolute top-full left-0 mt-1 w-full bg-white border border-gray-200 rounded-xl shadow-xl z-50 max-h-[70vh] overflow-y-auto">
+          <button type="button"
+            onClick={() => { onChange(''); setOpen(false) }}
+            className={`w-full px-3 py-1.5 text-sm text-left hover:bg-blue-50 transition-colors ${!value ? 'bg-blue-50 text-blue-600 font-medium' : 'text-gray-400'}`}>
+            {placeholder}
+          </button>
+          {options.map(o => (
+            <button key={o.value} type="button"
+              onClick={() => { onChange(o.value); setOpen(false) }}
+              className={`w-full px-3 py-1.5 text-sm text-left hover:bg-blue-50 transition-colors ${value === o.value ? 'bg-blue-50 text-blue-600 font-medium' : 'text-gray-900'}`}>
+              {o.label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
 export default function BirthPlaceSelector({ value, onChange, lang }) {
   const t = (zh, en) => lang === 'en' ? en : zh
   const isOverseas = value?.overseas === true
   const sel = isOverseas ? null : CHINA_REGIONS.find(r => r.n === value?.province)
+
+  const provinceOptions = CHINA_REGIONS.map(r => ({ value: r.n, label: r.n }))
+  const cityOptions = (sel?.c || []).map(c => ({ value: c, label: c }))
 
   return (
     <div className="space-y-2">
@@ -64,20 +108,22 @@ export default function BirthPlaceSelector({ value, onChange, lang }) {
         </div>
       ) : (
         <>
-          <select value={value?.province || ''}
-            onChange={e => onChange({ province: e.target.value, city: '' })}
-            className="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
-            <option value="">{t('请选择省份', 'Select province')}</option>
-            {CHINA_REGIONS.map(r => <option key={r.n} value={r.n}>{r.n}</option>)}
-          </select>
+          <DropdownSelect
+            options={provinceOptions}
+            value={value?.province || ''}
+            placeholder={t('请选择省份', 'Select province')}
+            onChange={(v) => onChange({ province: v, city: '' })}
+            lang={lang}
+          />
 
           {value?.province && sel?.c?.length > 0 && (
-            <select value={value?.city || ''}
-              onChange={e => onChange({ province: value.province, city: e.target.value })}
-              className="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
-              <option value="">{t('请选择城市', 'Select city')}</option>
-              {sel.c.map(c => <option key={c} value={c}>{c}</option>)}
-            </select>
+            <DropdownSelect
+              options={cityOptions}
+              value={value?.city || ''}
+              placeholder={t('请选择城市', 'Select city')}
+              onChange={(v) => onChange({ province: value.province, city: v })}
+              lang={lang}
+            />
           )}
 
           {value?.province && sel?.c?.length === 0 && (
