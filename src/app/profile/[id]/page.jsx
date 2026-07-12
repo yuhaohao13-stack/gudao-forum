@@ -53,19 +53,42 @@ export default function ProfilePage() {
       .order('created_at', { ascending: false }).limit(50)
     setThreads(t || [])
 
+    // 查好友列表：分两步，先查 friends 表拿ID，再查 profiles 表拿资料
+    // friends.addressee_id 的外键是 auth.users，不能用 Supabase join 查 profiles
     const { data: f1 } = await supabase.from('friends')
-      .select('*, addressee:addressee_id(id, username, display_name, role)')
+      .select('addressee_id')
       .eq('requester_id', id).eq('status', 'accepted')
     const { data: f2 } = await supabase.from('friends')
-      .select('*, requester:requester_id(id, username, display_name, role)')
+      .select('requester_id')
       .eq('addressee_id', id).eq('status', 'accepted')
-    setFriends([...(f1 || []).map(f => f.addressee), ...(f2 || []).map(f => f.requester)])
+    const friendIds = [...new Set([
+      ...(f1 || []).map(f => f.addressee_id),
+      ...(f2 || []).map(f => f.requester_id),
+    ])]
+    if (friendIds.length > 0) {
+      const { data: friendProfiles } = await supabase
+        .from('profiles')
+        .select('id, username, display_name, role')
+        .in('id', friendIds)
+      setFriends(friendProfiles || [])
+    } else {
+      setFriends([])
+    }
 
     if (isSelf) {
       const { data: pr } = await supabase.from('friends')
-        .select('*, requester:requester_id(id, username, display_name, role)')
+        .select('requester_id')
         .eq('addressee_id', id).eq('status', 'pending')
-      setPendingRequests(pr || [])
+      if (pr && pr.length > 0) {
+        const requesterIds = pr.map(r => r.requester_id)
+        const { data: requesterProfiles } = await supabase
+          .from('profiles')
+          .select('id, username, display_name, role')
+          .in('id', requesterIds)
+        setPendingRequests(requesterProfiles.map(p => ({ requester_id: p.id, requester: p })) || [])
+      } else {
+        setPendingRequests([])
+      }
     }
 
     if (user && !isSelf) {
