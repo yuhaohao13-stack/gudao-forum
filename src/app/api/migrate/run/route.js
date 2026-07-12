@@ -38,6 +38,8 @@ export async function POST(request) {
 
       // 执行迁移 SQL
       const sqls = [
+        `ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS birth_place TEXT;`,
+        `ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS address TEXT;`, 
         `ALTER TABLE chat_messages ADD COLUMN IF NOT EXISTS device_label TEXT DEFAULT '';`,
         `ALTER TABLE chat_presence ADD COLUMN IF NOT EXISTS device_label TEXT DEFAULT '';`,
       ]
