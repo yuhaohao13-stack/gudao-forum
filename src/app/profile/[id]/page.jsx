@@ -197,10 +197,10 @@ export default function ProfilePage() {
               )
             ) : isSelf && !editing ? (
               <>
-                <button onClick={() => setEditing(true)} className="text-xs text-[#c23531] font-medium px-3 py-1.5 rounded-full border border-[#c23531]/20 hover:bg-[#c23531]/5 leading-none"><Pencil size={12} className="inline align-middle" /> 编辑</button>
-                {amAdmin && <Link href="/members" className="text-xs text-[#c23531] font-medium px-3 py-1.5 rounded-full border border-[#c23531]/20 hover:bg-[#c23531]/5 leading-none inline-block"><Users size={12} className="inline align-middle" /> 会员管理</Link>}
-                <button onClick={handleLogout} className="text-xs text-[#666] font-medium px-3 py-1.5 rounded-full border border-[#ddd] hover:bg-gray-50 leading-none">退出</button>
-                <Link href="/login" className="text-xs text-[#666] font-medium px-3 py-1.5 rounded-full border border-[#ddd] hover:bg-gray-50 leading-none inline-block">切换</Link>
+                <button onClick={() => setEditing(true)} className="text-xs text-[#c23531] font-medium px-3 py-1.5 rounded-full border border-[#c23531]/20 hover:bg-[#c23531]/5"><Pencil size={12} className="inline-block align-middle" /> 编辑</button>
+                {amAdmin && <button onClick={() => router.push('/members')} className="text-xs text-[#c23531] font-medium px-3 py-1.5 rounded-full border border-[#c23531]/20 hover:bg-[#c23531]/5"><Users size={12} className="inline-block align-middle" /> 会员管理</button>}
+                <button onClick={handleLogout} className="text-xs text-[#666] font-medium px-3 py-1.5 rounded-full border border-[#ddd] hover:bg-gray-50">退出</button>
+                <button onClick={() => router.push('/login')} className="text-xs text-[#666] font-medium px-3 py-1.5 rounded-full border border-[#ddd] hover:bg-gray-50">切换</button>
               </>
             ) : null}
           </div>
