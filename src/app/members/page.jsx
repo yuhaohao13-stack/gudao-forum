@@ -1,5 +1,7 @@
 'use client'
 
+/* __BUILD_V2__ */
+
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
