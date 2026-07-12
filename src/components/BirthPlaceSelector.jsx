@@ -60,7 +60,7 @@ function DropdownSelect({ options, value, placeholder, onChange, lang }) {
         <span className="text-gray-300 text-xs transition-transform" style={{ transform: open ? 'rotate(180deg)' : '' }}>▾</span>
       </button>
       {open && (
-        <div className="absolute top-full left-0 mt-1 w-full bg-white border border-gray-200 rounded-xl shadow-xl z-50 max-h-64 overflow-y-auto">
+        <div className="absolute top-full left-0 mt-1 w-full bg-white border border-gray-200 rounded-xl shadow-xl z-50 max-h-52 overflow-y-auto">
           <button type="button"
             onClick={() => { onChange(''); setOpen(false) }}
             className={`w-full px-3 py-1.5 text-sm text-left hover:bg-blue-50 transition-colors ${!value ? 'bg-blue-50 text-blue-600 font-medium' : 'text-gray-400'}`}>
