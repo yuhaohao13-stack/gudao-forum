@@ -159,19 +159,24 @@ export default function ProfilePage() {
             </div>
             <div className="text-[10px] text-[#999] mt-0.5">加入于 {new Date(profileUser.created_at).toLocaleDateString('zh-CN')}</div>
           </div>
-          <div className="shrink-0">
+          <div className="shrink-0 flex items-center gap-2 flex-wrap">
             {user && !isSelf ? (
               friendStatus === 'friends' ? (
-                <span className="text-xs text-green-700 font-medium px-2.5 py-1 rounded-full bg-green-50 border border-green-200"><UserCheck size={12} className="inline" /> 好友</span>
+                <span className="text-xs text-green-700 font-medium px-3 py-1.5 rounded-full bg-green-50 border border-green-200"><UserCheck size={12} className="inline" /> 好友</span>
               ) : friendStatus === 'pending_sent' ? (
-                <span className="text-xs text-amber-700 font-medium px-2.5 py-1 rounded-full bg-amber-50 border border-amber-200"><Clock size={12} className="inline" /> 待同意</span>
+                <span className="text-xs text-amber-700 font-medium px-3 py-1.5 rounded-full bg-amber-50 border border-amber-200"><Clock size={12} className="inline" /> 待同意</span>
               ) : friendStatus === 'pending_received' ? (
-                <button onClick={() => handleAccept(user.id)} className="text-xs text-blue-700 font-medium px-2.5 py-1 rounded-full bg-blue-50 border border-blue-200 hover:bg-blue-100"><UserCheck size={12} className="inline" /> 接受</button>
+                <button onClick={() => handleAccept(user.id)} className="text-xs text-blue-700 font-medium px-3 py-1.5 rounded-full bg-blue-50 border border-blue-200 hover:bg-blue-100"><UserCheck size={12} className="inline" /> 接受</button>
               ) : (
-                <button onClick={handleAddFriend} className="text-xs text-[#c23531] font-medium px-2.5 py-1 rounded-full border border-[#c23531]/20 hover:bg-[#c23531]/5"><UserPlus size={12} className="inline" /> 加好友</button>
+                <button onClick={handleAddFriend} className="text-xs text-[#c23531] font-medium px-3 py-1.5 rounded-full border border-[#c23531]/20 hover:bg-[#c23531]/5"><UserPlus size={12} className="inline" /> 加好友</button>
               )
             ) : isSelf && !editing ? (
-              <button onClick={() => setEditing(true)} className="text-xs text-[#c23531] font-medium px-2.5 py-1 rounded-full border border-[#c23531]/20 hover:bg-[#c23531]/5"><Pencil size={12} className="inline" /> 编辑</button>
+              <>
+                <button onClick={() => setEditing(true)} className="text-xs text-[#c23531] font-medium px-3 py-1.5 rounded-full border border-[#c23531]/20 hover:bg-[#c23531]/5"><Pencil size={12} className="inline" /> 编辑</button>
+                {amAdmin && <Link href="/members" className="text-xs text-[#c23531] font-medium px-3 py-1.5 rounded-full border border-[#c23531]/20 hover:bg-[#c23531]/5"><Users size={12} className="inline" /> 会员管理</Link>}
+                <button onClick={handleLogout} className="text-xs text-[#666] font-medium px-3 py-1.5 rounded-full border border-[#ddd] hover:bg-gray-50">退出</button>
+                <Link href="/login" className="text-xs text-[#666] font-medium px-3 py-1.5 rounded-full border border-[#ddd] hover:bg-gray-50">切换</Link>
+              </>
             ) : null}
           </div>
         </div>
@@ -320,13 +325,7 @@ export default function ProfilePage() {
         </div>
       </div>
 
-      {/* 退出登录 + 会员管理 */}
-      {isSelf && (
-        <div className="mt-4 pt-3 border-t border-[#f0f0f0] flex items-center justify-center gap-4">
-          <button onClick={handleLogout} className="text-xs text-[#c23531] opacity-60 hover:opacity-100">退出登录</button>
-          {amAdmin && <Link href="/members" className="text-xs text-[#999] hover:text-[#c23531]">会员管理</Link>}
-        </div>
-      )}
+
     </div>
   )
 }
