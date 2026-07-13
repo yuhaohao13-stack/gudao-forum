@@ -3,13 +3,15 @@
 import { useParams, useRouter } from 'next/navigation'
 import { useRef, useState, useEffect } from 'react'
 import Link from 'next/link'
-import { ArrowLeft, Play, Pause, SkipBack, SkipForward, Music, ListMusic } from 'lucide-react'
+import { ArrowLeft, Play, Pause, SkipBack, SkipForward, Music, ListMusic, Lock } from 'lucide-react'
 import Breadcrumb from '@/components/Breadcrumb'
 import musicData from '@/data/music'
+import { useAuth } from '@/components/AuthProvider'
 
 export default function MusicCategoryPage() {
   const { slug } = useParams()
   const router = useRouter()
+  const { user, loading: authLoading } = useAuth()
   const category = musicData.find(c => c.id === slug)
   const audioRef = useRef(null)
   // Track if user has ever pressed play to avoid showing errors on initial mount
@@ -225,22 +227,29 @@ export default function MusicCategoryPage() {
           <h1 className="text-sm font-bold text-[#1a1a1a]">{category.name}</h1>
           <p className="text-[10px] text-[#aaa]">{category.description}</p>
         </div>
-        {currentSong && (
-          <button onClick={togglePlay}
-            disabled={loading}
-            className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 transition-all shadow-sm ${
-              isPlaying
-                ? 'bg-[#b45309] text-white hover:bg-[#92400e]'
-                : 'bg-[#f5f0e8] text-[#888] hover:bg-[#b45309] hover:text-white'
-            } ${loading ? 'opacity-50 cursor-wait' : ''}`}>
-            {loading ? (
-              <span className="w-3.5 h-3.5 border-2 border-current border-t-transparent rounded-full animate-spin" />
-            ) : isPlaying ? (
-              <Pause size={15} />
-            ) : (
-              <Play size={15} className="ml-0.5" />
-            )}
-          </button>
+        {currentSong && !authLoading && (
+          user ? (
+            <button onClick={togglePlay}
+              disabled={loading}
+              className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 transition-all shadow-sm ${
+                isPlaying
+                  ? 'bg-[#b45309] text-white hover:bg-[#92400e]'
+                  : 'bg-[#f5f0e8] text-[#888] hover:bg-[#b45309] hover:text-white'
+              } ${loading ? 'opacity-50 cursor-wait' : ''}`}>
+              {loading ? (
+                <span className="w-3.5 h-3.5 border-2 border-current border-t-transparent rounded-full animate-spin" />
+              ) : isPlaying ? (
+                <Pause size={15} />
+              ) : (
+                <Play size={15} className="ml-0.5" />
+              )}
+            </button>
+          ) : (
+            <Link href="/login"
+              className="flex items-center gap-1.5 text-[10px] text-white bg-[#b45309] hover:bg-[#92400e] rounded-full px-3.5 py-1.5 transition-colors shrink-0">
+              <Lock size={11} /> 登录播放
+            </Link>
+          )
         )}
       </div>
 
@@ -295,7 +304,7 @@ export default function MusicCategoryPage() {
       </div>
 
       {/* Mini Player Bar */}
-      {currentSong && (
+      {currentSong && user && (
         <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-[#ece8e0] shadow-lg animate-slide-up">
           <div className="max-w-3xl mx-auto px-4 py-2">
             <div className="h-1 bg-[#f0ede8] rounded-full cursor-pointer mb-2" onClick={handleSeek}>

@@ -3,9 +3,10 @@
 import { useParams } from 'next/navigation'
 import { useRef, useState, useEffect } from 'react'
 import Link from 'next/link'
-import { ArrowLeft, Play, Pause, SkipBack, Forward, Music, Volume2, List } from 'lucide-react'
+import { ArrowLeft, Play, Pause, SkipBack, Forward, Music, Volume2, List, Lock } from 'lucide-react'
 import Breadcrumb from '@/components/Breadcrumb'
 import musicData from '@/data/music'
+import { useAuth } from '@/components/AuthProvider'
 
 // Sleep music descriptions
 const sleepLyrics = {
@@ -86,10 +87,92 @@ const songLyrics = {
     [80, 'Sometimes it lasts in love'],
     [86, 'But sometimes it hurts instead'],
   ],
+  'c02': [
+    [0, '钟声响起归家的讯号'],
+    [6, '在他生命里 仿佛带点唏嘘'],
+    [14, '黑色肌肤给他的意义'],
+    [22, '是一生奉献 肤色斗争中'],
+    [30, '年月把拥有变做失去'],
+    [38, '疲倦的双眼带着期望'],
+    [46, '今天只有残留的躯壳'],
+    [54, '迎接光辉岁月'],
+    [62, '风雨中抱紧自由'],
+    [70, '一生经过彷徨的挣扎'],
+    [78, '自信可改变未来'],
+    [86, '问谁又能做到'],
+  ],
+  'c03': [
+    [0, '前奏'],
+    [12, '前尘往事成云烟 消散在彼此眼前'],
+    [20, '就连说过了再见 也看不见你有些哀怨'],
+    [28, '给我的一切 你不过是在敷衍'],
+    [36, '你笑得越无邪 我就会爱你爱得更狂野'],
+    [46, '总在刹那间 有一些了解'],
+    [54, '说过的话不可能曾实现'],
+    [62, '就在一转眼 发现你的脸'],
+    [70, '已经陌生不会再像从前'],
+    [78, '我的世界开始下雪'],
+    [86, '冷得让我无法多爱一天'],
+    [94, '冷得连隐藏的遗憾 都那么的明显'],
+    [104, '我和你吻别 在无人的街'],
+    [112, '让风痴笑我不能拒绝'],
+    [120, '我和你吻别 在狂乱的夜'],
+    [128, '我的心 等着迎接伤悲'],
+  ],
+  'c04': [
+    [0, '你问我爱你有多深'],
+    [8, '我爱你有几分'],
+    [16, '我的情也真 我的爱也真'],
+    [24, '月亮代表我的心'],
+    [32, '你问我爱你有多深'],
+    [40, '我爱你有几分'],
+    [48, '我的情不移 我的爱不变'],
+    [56, '月亮代表我的心'],
+    [64, '轻轻的一个吻'],
+    [72, '已经打动我的心'],
+    [80, '深深的一段情'],
+    [88, '教我思念到如今'],
+  ],
+  'z02': [
+    [0, '窗外的麻雀 在电线杆上多嘴'],
+    [7, '你说这一句 很有夏天的感觉'],
+    [14, '手中的铅笔 在纸上来来回回'],
+    [21, '我用几行字形容你是我的谁'],
+    [28, '秋刀鱼的滋味 猫跟你都想了解'],
+    [35, '初恋的香味 就这样被我们寻回'],
+    [42, '那温暖的阳光 像刚摘的鲜艳草莓'],
+    [49, '你说你舍不得吃掉这一种感觉'],
+    [57, '雨下整夜 我的爱溢出就像雨水'],
+    [64, '院子落叶 跟我的思念厚厚一叠'],
+    [71, '几句是非 也无法将我的热情冷却'],
+    [78, '你出现在我诗的每一页'],
+    [85, '雨下整夜 我的爱溢出就像雨水'],
+    [92, '窗台蝴蝶 像诗里纷飞的美丽章节'],
+    [99, '我接着写 把永远爱你写进诗的结尾'],
+    [106, '你是我唯一想要的了解'],
+  ],
+  'z03': [
+    [0, '如果那两个字没有颤抖'],
+    [7, '我不会发现 我难受'],
+    [14, '怎么说出口 也不过是分手'],
+    [22, '如果对于明天没有要求'],
+    [29, '牵牵手就像旅游'],
+    [36, '成千上万个门口 总有一个人要先走'],
+    [44, '怀抱既然不能逗留'],
+    [51, '何不在离开的时候'],
+    [58, '一边享受 一边泪流'],
+    [65, '十年之前 我不认识你 你不属于我'],
+    [72, '我们还是一样 陪在一个陌生人左右'],
+    [80, '走过渐渐熟悉的街头'],
+    [87, '十年之后 我们是朋友 还可以问候'],
+    [94, '只是那种温柔 再也找不到拥抱的理由'],
+    [102, '情人最后难免沦为朋友'],
+  ],
 }
 
 export default function SongPlayerPage() {
   const params = useParams()
+  const { user, loading: authLoading } = useAuth()
   const ids = params?.id || []
   const catId = ids[0] || ''
   const songId = ids[1] || ''
@@ -201,6 +284,17 @@ export default function SongPlayerPage() {
         { label: song.title },
       ]} className="mb-4" />
 
+      {!authLoading && !user ? (
+        <div className="bg-white border border-[#ece8e0] rounded-xl py-12 text-center">
+          <Lock size={32} className="mx-auto text-[#ccc] mb-3" />
+          <p className="text-sm text-[#888] mb-3">登录后即可播放音乐</p>
+          <Link href="/login"
+            className="inline-flex items-center gap-1.5 text-xs text-white bg-[#b45309] hover:bg-[#92400e] rounded-lg px-4 py-2 transition-colors">
+            <Lock size={12} /> 立即登录
+          </Link>
+        </div>
+      ) : (
+        <>
       {/* Player Card */}
       <div className="bg-white border border-[#ece8e0] rounded-xl overflow-hidden">
         {/* Top bar: album art + info */}
@@ -324,6 +418,9 @@ export default function SongPlayerPage() {
           )}
         </div>
       </div>
+
+        </>
+      )}
 
       {/* Nav: Back to list + Prev/Next song */}
       <div className="mt-4 flex items-center justify-between">
