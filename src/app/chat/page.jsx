@@ -85,7 +85,7 @@ export default function ChatPage() {
               <div className="flex items-center gap-2 min-w-0">
                 <span className="text-base shrink-0">{room.icon}</span>
                 <h3 className="font-medium text-sm text-[#1a1a1a] truncate">{room.name}</h3>
-                <span className="text-[10px] text-[#aaa] truncate hidden sm:block">· {room.description}</span>
+                <span className="text-[9px] text-[#999] truncate hidden sm:block">· {room.description}</span>
                 <div className="ml-auto shrink-0 flex items-center gap-1.5">
                   {roomOnline > 0 && (
                     <span className="text-[10px] text-green-700 font-medium">
