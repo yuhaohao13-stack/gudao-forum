@@ -263,7 +263,7 @@ export default function ChatRoomPage() {
         <div className="flex items-center gap-2 mt-1">
           <span className="text-xl shrink-0">{room.icon}</span>
           <h1 className="text-lg font-bold text-[#1a1a1a] truncate">{room.name}</h1>
-          <span className="hidden sm:inline text-[10px] text-[#b0a898] bg-[#f5f0e8] rounded-full px-2 py-0.5 truncate max-w-[150px]">{room.description}</span>
+          <span className="text-[9px] text-[#999] truncate">· {room.description}</span>
         </div>
       </div>
 
