@@ -1,6 +1,6 @@
 'use client'
 
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { useRef, useState, useEffect } from 'react'
 import Link from 'next/link'
 import { ArrowLeft, Play, Pause, SkipBack, SkipForward, Music, ListMusic } from 'lucide-react'
@@ -9,6 +9,7 @@ import musicData from '@/data/music'
 
 export default function MusicCategoryPage() {
   const { slug } = useParams()
+  const router = useRouter()
   const category = musicData.find(c => c.id === slug)
   const audioRef = useRef(null)
   // Track if user has ever pressed play to avoid showing errors on initial mount
@@ -177,13 +178,8 @@ export default function MusicCategoryPage() {
     }
   }
 
-  const selectSong = (idx) => {
-    if (idx === selectedIndex) {
-      togglePlay()
-    } else {
-      setIsPlaying(false)
-      setSelectedIndex(idx)
-    }
+  const goToSong = (song) => {
+    router.push(`/music/song/${category.id}/${song.id}`)
   }
 
   const formatTime = (s) => {
@@ -281,36 +277,18 @@ export default function MusicCategoryPage() {
           const isSelected = i === selectedIndex
           return (
             <div key={song.id}
-              onClick={() => selectSong(i)}
-              className={`flex items-center gap-3 px-3.5 py-2.5 rounded-lg border transition-all duration-150 cursor-pointer group ${
-                isSelected
-                  ? 'bg-[#b45309]/8 border-[#b45309]/40'
-                  : 'bg-white border-[#ece8e0] hover:border-[#b45309]/30 hover:bg-[#fcfaf7]'
-              }`}>
-              <span className={`text-[10px] w-4 text-right shrink-0 font-mono ${
-                isSelected ? 'text-[#b45309] font-bold' : 'text-[#b0a898]'
-              }`}>{i + 1}</span>
+              onClick={() => goToSong(song)}
+              className="flex items-center gap-3 px-3.5 py-2.5 rounded-lg border transition-all duration-150 cursor-pointer group bg-white border-[#ece8e0] hover:border-[#b45309]/30 hover:bg-[#fcfaf7]">
+              <span className="text-[10px] w-4 text-right shrink-0 font-mono text-[#b0a898]">{i + 1}</span>
 
               <div className="flex-1 min-w-0">
-                <p className={`text-xs font-medium truncate ${
-                  isSelected ? 'text-[#b45309]' : 'text-[#1a1a1a]'
-                }`}>{song.title}</p>
+                <p className="text-xs font-medium truncate text-[#1a1a1a]">{song.title}</p>
                 <p className="text-[10px] text-[#999]">{song.artist}</p>
               </div>
 
-              {isSelected && isPlaying && (
-                <span className="flex items-center gap-0.5 shrink-0 mr-1">
-                  <span className="w-0.5 h-2.5 bg-[#b45309] rounded-full animate-pulse" style={{animationDelay:'0ms'}} />
-                  <span className="w-0.5 h-1.5 bg-[#b45309]/70 rounded-full animate-pulse" style={{animationDelay:'200ms'}} />
-                  <span className="w-0.5 h-2.5 bg-[#b45309] rounded-full animate-pulse" style={{animationDelay:'400ms'}} />
-                </span>
-              )}
-
-              <Link href={`/music/song/${category.id}/${song.id}`}
-                onClick={e => e.stopPropagation()}
-                className="text-[9px] text-[#b0a898] hover:text-[#b45309] transition-colors shrink-0 opacity-0 group-hover:opacity-100">
-                详情
-              </Link>
+              <span className="text-[9px] text-[#b45309] shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                进入 →
+              </span>
             </div>
           )
         })}
