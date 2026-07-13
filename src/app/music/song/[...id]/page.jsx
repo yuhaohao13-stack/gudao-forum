@@ -1,7 +1,7 @@
 'use client'
 
 import { useParams } from 'next/navigation'
-import { useRef, useState, useEffect, useCallback } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import Link from 'next/link'
 import { ArrowLeft, Play, Pause, SkipBack, Forward, Music, Volume2, List } from 'lucide-react'
 import Breadcrumb from '@/components/Breadcrumb'
@@ -106,13 +106,11 @@ export default function SongPlayerPage() {
   }
 
   const audioRef = useRef(null)
-  const lyricsRef = useRef(null)
   const [playing, setPlaying] = useState(false)
   const [currentTime, setCurrentTime] = useState(0)
   const [duration, setDuration] = useState(0)
   const [volume, setVolume] = useState(0.8)
   const [showLyrics, setShowLyrics] = useState(true)
-  const [activeLine, setActiveLine] = useState(-1)
   const isSleep = category?.id === 'sleep-music'
 
   // Get lyrics for current song
@@ -143,26 +141,7 @@ export default function SongPlayerPage() {
     if (audioRef.current) audioRef.current.volume = volume
   }, [volume])
 
-  // Update active lyric line based on current time
-  useEffect(() => {
-    if (!lyrics) return
-    let line = -1
-    for (let i = lyrics.length - 1; i >= 0; i--) {
-      if (currentTime >= lyrics[i][0]) {
-        line = i
-        break
-      }
-    }
-    setActiveLine(line)
-
-    // Auto-scroll lyrics
-    if (line >= 0 && lyricsRef.current) {
-      const lines = lyricsRef.current.querySelectorAll('[data-lyric-line]')
-      if (lines[line]) {
-        lines[line].scrollIntoView({ behavior: 'smooth', block: 'center' })
-      }
-    }
-  }, [currentTime, lyrics])
+  // Display all lyric text without time sync (timestamps vary by audio version)
 
   const mp3Url = `https://rsndnhdimruisysacujg.supabase.co/storage/v1/object/public/music/${category?.id}/${songId}.mp3`
 
@@ -310,7 +289,7 @@ export default function SongPlayerPage() {
       </div>
 
       {/* Lyrics / Description */}
-      <div ref={lyricsRef} className="mt-4 bg-white border border-[#ece8e0] rounded-xl overflow-hidden">
+      <div className="mt-4 bg-white border border-[#ece8e0] rounded-xl overflow-hidden">
         <div className="px-5 py-3 border-b border-[#f0ede8] flex items-center justify-between">
           <h3 className="text-xs font-semibold text-[#b0a898] uppercase tracking-wider">
             {isSleep ? '🌙 助眠寄语' : '🎵 歌词'}
@@ -330,14 +309,8 @@ export default function SongPlayerPage() {
           ) : lyrics ? (
             <div className="space-y-2 py-2">
               {lyrics.map((line, i) => (
-                <p key={i} data-lyric-line
-                  className={`text-sm leading-relaxed transition-all duration-300 ${
-                    i === activeLine
-                      ? 'text-[#b45309] font-bold scale-105 translate-x-1'
-                      : i < activeLine
-                        ? 'text-[#d0c8b8]'
-                        : 'text-[#888]'
-                  }`}>
+                <p key={i}
+                  className="text-sm leading-relaxed text-[#666]">
                   {line[1]}
                 </p>
               ))}
