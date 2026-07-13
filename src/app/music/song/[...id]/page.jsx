@@ -1,0 +1,203 @@
+'use client'
+
+import { useParams } from 'next/navigation'
+import { useRef, useState, useEffect } from 'react'
+import Link from 'next/link'
+import { ArrowLeft, Play, Pause, SkipBack, SkipForward, Music, Volume2 } from 'lucide-react'
+import Breadcrumb from '@/components/Breadcrumb'
+import musicData from '@/data/music'
+
+// Sleep music descriptions (助眠文案)
+const sleepLyrics = {
+  's01': '🌙 夜深了，星星挂上枝头。\n让这首温柔的钢琴曲，\n带你回到最安心的角落。\n闭上眼，深呼吸——\n世界很大，此刻只需属于自己。',
+  's02': '🌊 月光洒在河面上，波光粼粼。\n想象你坐在溪边，\n水流轻抚过脚踝，\n带走一天的疲惫。\n一切都会好的，慢慢来。',
+  's03': '🌧️ 林间下起了小雨，\n雨滴打在树叶上，滴滴答答。\n空气里有泥土和青草的味道，\n世界变得安静而温柔。\n让这场雨，洗去你心中的嘈杂。',
+  's04': '🌊 潜入深海，万物俱静。\n只有水流的低语，\n和遥远的海浪声。\n像回到了最初的摇篮，\n安全，温暖，无所畏惧。',
+  's05': '☁️ 漂浮在云朵之上，\n软绵绵的，轻飘飘的。\n阳光透过云层洒在脸上，\n暖洋洋的，刚刚好。\n做一个甜甜的梦吧。',
+  's06': '🍂 秋风起，落叶舞。\n踩在金色的地毯上，\n发出沙沙的声音。\n天空很高，云很淡，\n日子很慢，一切都恰到好处。',
+  's07': '🔥 壁炉里的柴火噼啪作响，\n暖橘色的光映在墙上。\n一杯热茶，一条毛毯，\n窗外风雪交加，\n屋内安然如春。',
+  's08': '🏔️ 山间溪流，清冽见底。\n水声潺潺，穿过石头，\n绕过青苔，不急不缓。\n像时间本身，从容流淌。\n放下所有的计划，只是存在。',
+  's09': '⭐ 繁星满天，银河横贯。\n每一颗星星都是一个愿望，\n每一束星光都是一句晚安。\n数着星星，渐渐入眠。\n晚安，好梦。',
+  's10': '🌿 雨后的清晨，一切如新。\n露珠在叶尖闪烁，\n鸟儿开始第一声啼鸣。\n空气清新得像刚从水里捞出来，\n新的一天，新的希望。',
+  's11': '❄️ 大雪无声，棉絮般飘落。\n世界被白色覆盖，\n所有的喧嚣都被掩埋。\n万籁俱寂，只有雪花落地的声音。\n在白色的寂静中，安然入睡。',
+  's12': '🎋 竹林深处，风过叶动。\n沙沙——沙沙——\n像大自然的呼吸，\n一下，又一下。\n跟着这个节奏，慢慢放松。',
+  's13': '🌅 湖边日出，水天一色。\n晨雾如纱，笼罩着远山。\n湖面平静如镜，\n偶尔有鱼跃出水面，\n泛起一圈涟漪，又归于平静。',
+  's14': '🦗 夏日夜晚，蝉鸣蛙叫。\n这是夏天最熟悉的声音，\n像一首永远不会结束的歌。\n躺在凉席上，摇着蒲扇，\n整个童年都在这个声音里。',
+  's15': '🍵 茶室里飘着淡淡的香。\n木质的地板，纸糊的窗。\n热水注入杯中，茶叶舒展。\n一口茶，一个呼吸，\n一切都慢了下来。',
+  's16': '🏔️ 山谷里传来回音，\n一声又一声，渐渐远去。\n空旷，辽远，自由。\n在这里，所有的心事\n都可以大声说出来，然后随风散去。',
+  's17': '🌊 星辰与大海之间，\n有无尽的宁静。\n海浪轻拍沙滩，\n星光洒满海面。\n在这天地之间，\n你是自由的。',
+  's18': '🌧️ 雨打芭蕉，声声入耳。\n不急不缓，不紧不慢。\n像一首古老的催眠曲，\n千百年来，\n就这样伴着人们入睡。',
+  's19': '🌆 夜幕缓缓降临，\n万家灯火次第亮起。\n城市的喧嚣渐渐远去，\n只剩归家的脚步。\n一天的奔波，到此为止。\n晚安。',
+  's20': '🤍 白噪音——最纯粹的声音。\n像母体内的律动，\n像远古的风声。\n不需要任何旋律，\n只需要这样，静静地，\n和自己待在一起。',
+}
+
+export default function SongPlayerPage() {
+  const params = useParams()
+  const ids = params?.id || []
+  const catId = ids[0] || ''
+  const songId = ids[1] || ''
+
+  let category, song
+  for (const cat of musicData) {
+    const found = cat.songs.find(s => s.id === songId)
+    if (found) {
+      category = cat
+      song = found
+      break
+    }
+  }
+
+  const audioRef = useRef(null)
+  const [playing, setPlaying] = useState(false)
+  const [currentTime, setCurrentTime] = useState(0)
+  const [duration, setDuration] = useState(0)
+  const [volume, setVolume] = useState(0.8)
+  const isSleep = category?.id === 'sleep-music'
+
+  useEffect(() => {
+    const audio = audioRef.current
+    if (!audio) return
+    const onTimeUpdate = () => setCurrentTime(audio.currentTime)
+    const onDuration = () => setDuration(audio.duration)
+    const onEnded = () => setPlaying(false)
+    audio.addEventListener('timeupdate', onTimeUpdate)
+    audio.addEventListener('loadedmetadata', onDuration)
+    audio.addEventListener('ended', onEnded)
+    audio.volume = volume
+    return () => {
+      audio.removeEventListener('timeupdate', onTimeUpdate)
+      audio.removeEventListener('loadedmetadata', onDuration)
+      audio.removeEventListener('ended', onEnded)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (audioRef.current) audioRef.current.volume = volume
+  }, [volume])
+
+  const mp3Url = `https://rsndnhdimruisysacujg.supabase.co/storage/v1/object/public/music/${category?.id}/${songId}.mp3`
+
+  const togglePlay = () => {
+    if (!audioRef.current) return
+    if (playing) {
+      audioRef.current.pause()
+    } else {
+      audioRef.current.play().catch(() => setPlaying(false))
+    }
+    setPlaying(!playing)
+  }
+
+  const formatTime = (s) => {
+    if (!s || isNaN(s)) return '0:00'
+    const m = Math.floor(s / 60)
+    const sec = Math.floor(s % 60)
+    return `${m}:${sec.toString().padStart(2, '0')}`
+  }
+
+  const progress = duration > 0 ? (currentTime / duration) * 100 : 0
+
+  const handleSeek = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    const x = (e.clientX - rect.left) / rect.width
+    if (audioRef.current && duration) {
+      audioRef.current.currentTime = x * duration
+    }
+  }
+
+  if (!category || !song) {
+    return (
+      <div className="text-center py-20 anim-fade-in">
+        <div className="mb-3"><Music size={40} className="inline-block text-[#ccc]" /></div>
+        <p className="text-[#999]">歌曲不存在</p>
+        <Link href="/music" className="text-[#b45309] hover:underline mt-2 inline-block">返回音乐频道</Link>
+      </div>
+    )
+  }
+
+  const catName = category.name.replace(/^.\s+/, '')
+
+  return (
+    <div className="anim-fade-in max-w-2xl mx-auto">
+      <Breadcrumb crumbs={[
+        { label: '首页', href: '/' },
+        { label: '音乐频道', href: '/music' },
+        { label: catName, href: `/music/${category.id}` },
+        { label: song.title },
+      ]} className="mb-4" />
+
+      <div className="bg-white border border-[#ece8e0] rounded-xl overflow-hidden">
+        {/* Album Art Placeholder */}
+        <div className="h-44 bg-gradient-to-br from-[#b45309]/15 via-[#d97706]/5 to-[#fef3e7] flex items-center justify-center">
+          <div className={`w-20 h-20 rounded-full bg-[#b45309]/10 flex items-center justify-center ${playing ? 'animate-spin' : ''}`}
+               style={{ animationDuration: '10s', animationTimingFunction: 'linear' }}>
+            <Music size={32} className={`${playing ? 'text-[#b45309]' : 'text-[#b45309]/50'} transition-colors`} />
+          </div>
+        </div>
+
+        <audio ref={audioRef} src={mp3Url} preload="metadata" />
+
+        <div className="px-6 py-4 text-center">
+          <h2 className="text-lg font-bold text-[#1a1a1a]">{song.title}</h2>
+          <p className="text-sm text-[#888]">{song.artist}</p>
+          <p className="text-[10px] text-[#aaa] mt-1">{catName} · MP3</p>
+        </div>
+
+        {/* Progress */}
+        <div className="px-6">
+          <div className="h-1.5 bg-[#f0ede8] rounded-full cursor-pointer relative" onClick={handleSeek}>
+            <div className="h-full bg-[#b45309] rounded-full transition-all duration-200" style={{ width: `${progress}%` }} />
+          </div>
+          <div className="flex justify-between text-[10px] text-[#b0a898] mt-1 px-0.5">
+            <span>{formatTime(currentTime)}</span>
+            <span>{formatTime(duration)}</span>
+          </div>
+        </div>
+
+        {/* Controls */}
+        <div className="flex items-center justify-center gap-6 px-6 py-4">
+          <button className="text-[#b0a898] hover:text-[#666] transition-colors">
+            <SkipBack size={20} />
+          </button>
+          <button onClick={togglePlay}
+            className="w-12 h-12 rounded-full bg-[#b45309] text-white hover:bg-[#92400e] transition-colors flex items-center justify-center shadow-md active:scale-95">
+            {playing ? <Pause size={22} /> : <Play size={22} className="ml-0.5" />}
+          </button>
+          <button className="text-[#b0a898] hover:text-[#666] transition-colors">
+            <SkipForward size={20} />
+          </button>
+        </div>
+
+        {/* Volume */}
+        <div className="px-6 pb-4 flex items-center gap-2 justify-center">
+          <Volume2 size={12} className="text-[#b0a898]" />
+          <input type="range" min="0" max="1" step="0.05" value={volume}
+            onChange={e => setVolume(parseFloat(e.target.value))}
+            className="w-24 h-1 accent-[#b45309]" />
+        </div>
+      </div>
+
+      {/* Lyrics / Description */}
+      <div className="mt-4 bg-white border border-[#ece8e0] rounded-xl p-6">
+        <h3 className="text-xs font-semibold text-[#b0a898] uppercase tracking-wider mb-3">
+          {isSleep ? '🌙 助眠寄语' : '🎵 歌词'}
+        </h3>
+        {isSleep ? (
+          <pre className="text-sm text-[#666] leading-relaxed whitespace-pre-wrap font-sans">
+            {sleepLyrics[songId] || '闭上眼，深呼吸。\n让音乐带你进入梦乡。\n晚安。'}
+          </pre>
+        ) : (
+          <div className="text-sm text-[#888] leading-relaxed text-center py-6">
+            🎵 {song.title} - {song.artist}
+            <br /><span className="text-[#ccc] text-xs mt-2 block">歌词待补充（需要上传LRC文件）</span>
+          </div>
+        )}
+      </div>
+
+      <div className="mt-4 text-center">
+        <Link href={`/music/${category.id}`} className="text-xs text-[#b45309] hover:underline inline-flex items-center gap-1">
+          <ArrowLeft size={12} /> 返回{catName}
+        </Link>
+      </div>
+    </div>
+  )
+}
