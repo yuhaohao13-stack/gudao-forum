@@ -81,28 +81,25 @@ export default function ChatPage() {
           const roomOnline = roomOnlineCounts[room.id] || 0
           return (
             <Link key={room.id} href={`/chat/${room.slug}`}
-              className="bg-white border border-[#ece8e0] rounded-xl px-3 py-2.5 hover:border-[#c23531] hover:shadow-sm hover:-translate-y-0.5 transition-all duration-200">
-              <div className="flex items-center gap-2">
-                <span className="text-lg shrink-0">{room.icon}</span>
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-1.5">
-                    <h3 className="font-medium text-sm text-[#1a1a1a]">{room.name}</h3>
-                    {roomOnline > 0 && (
-                      <span className="text-[10px] text-green-700 font-medium shrink-0">
-                        {roomOnline}人
-                      </span>
-                    )}
-                  </div>
-                  <p className="text-xs text-[#aaa] truncate">{room.description}</p>
-                  <div className="flex items-center gap-1 mt-0.5 text-[10px] text-[#aaa]">
+              className="bg-white border border-[#ece8e0] rounded-xl px-3 py-2 hover:border-[#c23531] hover:shadow-sm hover:-translate-y-0.5 transition-all duration-200">
+              <div className="flex items-center gap-2 min-w-0">
+                <span className="text-base shrink-0">{room.icon}</span>
+                <h3 className="font-medium text-sm text-[#1a1a1a] truncate">{room.name}</h3>
+                <span className="text-[10px] text-[#aaa] truncate hidden sm:block">· {room.description}</span>
+                <div className="ml-auto shrink-0 flex items-center gap-1.5">
+                  {roomOnline > 0 && (
+                    <span className="text-[10px] text-green-700 font-medium">
+                      {roomOnline}人
+                    </span>
+                  )}
+                  <span className="text-[10px] text-green-700">
                     {user ? (
-                      <span className="text-green-700"><CheckCircle size={10} className="inline-block align-text-bottom" /> 可发言</span>
+                      <><CheckCircle size={10} className="inline-block" /> 可发言</>
                     ) : (
-                      <span><Eye size={11} className="inline-block align-text-bottom" /> 可查看</span>
+                      <><Eye size={11} className="inline-block" /> 可查看</>
                     )}
-                    <span>·</span>
-                    <span>进入 →</span>
-                  </div>
+                  </span>
+                  <span className="text-[10px] text-[#aaa]">→</span>
                 </div>
               </div>
             </Link>

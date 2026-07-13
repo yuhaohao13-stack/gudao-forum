@@ -195,7 +195,7 @@ export default function MembersPage() {
                 </div>
               </div>
             </div>
-            <div className="flex items-center gap-8 shrink-0">
+            <div className="flex items-center gap-12 shrink-0">
               <Link href={`/profile/${u.id}`}
                 className="text-sm px-6 py-3 rounded-lg bg-[#f5f5f5] text-[#666] hover:bg-[#eee] hover:text-[#1a1a1a] transition-colors"
                 title="查看详情">
