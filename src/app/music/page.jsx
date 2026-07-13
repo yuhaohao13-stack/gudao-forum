@@ -6,9 +6,6 @@ import Breadcrumb from '@/components/Breadcrumb'
 import musicData from '@/data/music'
 
 export default function MusicPage() {
-  // Emoji icons for each category
-  const icons = ['📼', '🌊', '🎸', '🎤', '🌍', '🌙']
-
   return (
     <div className="anim-fade-in max-w-3xl mx-auto">
       <Breadcrumb crumbs={[
@@ -27,9 +24,8 @@ export default function MusicPage() {
           <Link key={category.id} href={`/music/${category.id}`}
             className="bg-white border border-[#ece8e0] rounded-lg px-3.5 py-3 hover:border-[#b45309]/40 hover:shadow-sm hover:-translate-y-0.5 transition-all duration-200 group">
             <div className="flex items-center gap-2 mb-1.5">
-              <span className="text-base">{icons[i] || '🎵'}</span>
-              <h3 className="text-xs font-semibold text-[#1a1a1a] leading-tight">
-                {category.name.replace(/^.\s+/, '')}
+              <h3 className="text-sm font-semibold text-[#1a1a1a] leading-tight">
+                {category.name}
               </h3>
             </div>
             <p className="text-[10px] text-[#999] leading-relaxed line-clamp-2">{category.description}</p>

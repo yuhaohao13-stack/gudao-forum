@@ -7,16 +7,6 @@ import { ArrowLeft, Play, Pause, SkipBack, SkipForward, Music, ListMusic } from 
 import Breadcrumb from '@/components/Breadcrumb'
 import musicData from '@/data/music'
 
-// Emoji lookup
-const categoryEmoji = {
-  'classic-8090': '📼',
-  'viral-hits': '🌊',
-  'folk': '🎸',
-  'chinese-classics': '🎤',
-  'english-songs': '🌍',
-  'sleep-music': '🌙',
-}
-
 export default function MusicCategoryPage() {
   const { slug } = useParams()
   const category = musicData.find(c => c.id === slug)
@@ -31,7 +21,6 @@ export default function MusicCategoryPage() {
 
   const songs = category?.songs || []
   const currentSong = songs[selectedIndex]
-  const emoji = categoryEmoji[category?.id] || '🎵'
 
   const mp3Url = currentSong
     ? `https://rsndnhdimruisysacujg.supabase.co/storage/v1/object/public/music/${category.id}/${currentSong.id}.mp3`
@@ -197,8 +186,6 @@ export default function MusicCategoryPage() {
     )
   }
 
-  const catName = category.name.replace(/^.\s+/, '')
-
   return (
     <div className="anim-fade-in pb-20">
       <audio ref={audioRef} preload="none" crossOrigin="anonymous" />
@@ -206,7 +193,7 @@ export default function MusicCategoryPage() {
       <Breadcrumb crumbs={[
         { label: '首页', href: '/' },
         { label: '音乐频道', href: '/music' },
-        { label: catName },
+        { label: category.name },}]}
       ]} className="mb-3" />
 
       {/* Category header with unified play button */}
@@ -214,9 +201,8 @@ export default function MusicCategoryPage() {
         <Link href="/music" className="text-[#b45309]/60 hover:text-[#b45309] transition-colors shrink-0">
           <ArrowLeft size={16} />
         </Link>
-        <span className="text-xl">{emoji}</span>
         <div className="min-w-0 flex-1">
-          <h1 className="text-sm font-bold text-[#1a1a1a]">{catName}</h1>
+          <h1 className="text-sm font-bold text-[#1a1a1a]">{category.name}</h1>
           <p className="text-[10px] text-[#aaa]">{category.description}</p>
         </div>
         {/* Unified play/pause button */}
