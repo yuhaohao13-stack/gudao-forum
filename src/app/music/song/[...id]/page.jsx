@@ -1,13 +1,13 @@
 'use client'
 
 import { useParams } from 'next/navigation'
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
-import { ArrowLeft, Play, Pause, SkipBack, SkipForward, Music, Volume2 } from 'lucide-react'
+import { ArrowLeft, Play, Pause, SkipBack, Forward, Music, Volume2, List } from 'lucide-react'
 import Breadcrumb from '@/components/Breadcrumb'
 import musicData from '@/data/music'
 
-// Sleep music descriptions (助眠文案)
+// Sleep music descriptions
 const sleepLyrics = {
   's01': '🌙 夜深了，星星挂上枝头。\n让这首温柔的钢琴曲，\n带你回到最安心的角落。\n闭上眼，深呼吸——\n世界很大，此刻只需属于自己。',
   's02': '🌊 月光洒在河面上，波光粼粼。\n想象你坐在溪边，\n水流轻抚过脚踝，\n带走一天的疲惫。\n一切都会好的，慢慢来。',
@@ -31,28 +31,96 @@ const sleepLyrics = {
   's20': '🤍 白噪音——最纯粹的声音。\n像母体内的律动，\n像远古的风声。\n不需要任何旋律，\n只需要这样，静静地，\n和自己待在一起。',
 }
 
+// Simple sample lyrics for a few classic songs (逐句带时间戳)
+const songLyrics = {
+  'c01': [
+    [0, '今天我 寒夜里看雪飘过'],
+    [8, '怀着冷却了的心窝漂远方'],
+    [16, '风雨里追赶 雾里分不清影踪'],
+    [24, '天空海阔你与我 可会变'],
+    [33, '多少次 迎着冷眼与嘲笑'],
+    [41, '从没有放弃过心中的理想'],
+    [49, '一刹那恍惚 若有所失的感觉'],
+    [57, '不知不觉已变淡 心里爱'],
+    [66, '原谅我这一生不羁放纵爱自由'],
+    [74, '也会怕有一天会跌倒'],
+    [81, '背弃了理想 谁人都可以'],
+    [88, '哪会怕有一天只你共我'],
+    [96, '仍然自由自我 永远高唱我歌'],
+    [103, '走遍千里'],
+    [108, '原谅我这一生不羁放纵爱自由'],
+    [116, '也会怕有一天会跌倒'],
+    [123, '背弃了理想 谁人都可以'],
+    [130, '哪会怕有一天只你共我'],
+  ],
+  'z01': [
+    [0, '素胚勾勒出青花笔锋浓转淡'],
+    [8, '瓶身描绘的牡丹一如你初妆'],
+    [16, '冉冉檀香透过窗心事我了然'],
+    [24, '宣纸上走笔至此搁一半'],
+    [32, '釉色渲染仕女图韵味被私藏'],
+    [39, '而你嫣然的一笑如含苞待放'],
+    [47, '你的美一缕飘散 去到我去不了的地方'],
+    [57, '天青色等烟雨 而我在等你'],
+    [65, '炊烟袅袅升起 隔江千万里'],
+    [72, '在瓶底书汉隶仿前朝的飘逸'],
+    [79, '就当我为遇见你伏笔'],
+    [86, '天青色等烟雨 而我在等你'],
+    [93, '月色被打捞起 晕开了结局'],
+    [100, '如传世的青花瓷自顾自美丽'],
+    [107, '你眼带笑意'],
+  ],
+  'e08': [
+    [0, 'I heard that you\'re settled down'],
+    [7, 'That you found a girl and you\'re married now'],
+    [14, 'I heard that your dreams came true'],
+    [21, 'Guess she gave you things I didn\'t give to you'],
+    [28, 'Old friend, why are you so shy?'],
+    [35, 'It ain\'t like you to hold back or hide from the light'],
+    [43, 'Never mind, I\'ll find someone like you'],
+    [50, 'I wish nothing but the best for you too'],
+    [57, 'Don\'t forget me, I beg'],
+    [63, 'I\'ll remember you said'],
+    [68, 'Sometimes it lasts in love'],
+    [74, 'But sometimes it hurts instead'],
+    [80, 'Sometimes it lasts in love'],
+    [86, 'But sometimes it hurts instead'],
+  ],
+}
+
 export default function SongPlayerPage() {
   const params = useParams()
   const ids = params?.id || []
   const catId = ids[0] || ''
   const songId = ids[1] || ''
 
-  let category, song
+  let category, song, songIndex
   for (const cat of musicData) {
-    const found = cat.songs.find(s => s.id === songId)
-    if (found) {
+    const idx = cat.songs.findIndex(s => s.id === songId)
+    if (idx >= 0) {
       category = cat
-      song = found
+      song = cat.songs[idx]
+      songIndex = idx
       break
     }
   }
 
   const audioRef = useRef(null)
+  const lyricsRef = useRef(null)
   const [playing, setPlaying] = useState(false)
   const [currentTime, setCurrentTime] = useState(0)
   const [duration, setDuration] = useState(0)
   const [volume, setVolume] = useState(0.8)
+  const [showLyrics, setShowLyrics] = useState(true)
+  const [activeLine, setActiveLine] = useState(-1)
   const isSleep = category?.id === 'sleep-music'
+
+  // Get lyrics for current song
+  const lyrics = isSleep ? null : (songLyrics[songId] || null)
+  // Get all songs in category for prev/next
+  const categorySongs = category?.songs || []
+  const prevSong = songIndex > 0 ? categorySongs[songIndex - 1] : null
+  const nextSong = songIndex < categorySongs.length - 1 ? categorySongs[songIndex + 1] : null
 
   useEffect(() => {
     const audio = audioRef.current
@@ -75,6 +143,27 @@ export default function SongPlayerPage() {
     if (audioRef.current) audioRef.current.volume = volume
   }, [volume])
 
+  // Update active lyric line based on current time
+  useEffect(() => {
+    if (!lyrics) return
+    let line = -1
+    for (let i = lyrics.length - 1; i >= 0; i--) {
+      if (currentTime >= lyrics[i][0]) {
+        line = i
+        break
+      }
+    }
+    setActiveLine(line)
+
+    // Auto-scroll lyrics
+    if (line >= 0 && lyricsRef.current) {
+      const lines = lyricsRef.current.querySelectorAll('[data-lyric-line]')
+      if (lines[line]) {
+        lines[line].scrollIntoView({ behavior: 'smooth', block: 'center' })
+      }
+    }
+  }, [currentTime, lyrics])
+
   const mp3Url = `https://rsndnhdimruisysacujg.supabase.co/storage/v1/object/public/music/${category?.id}/${songId}.mp3`
 
   const togglePlay = () => {
@@ -85,6 +174,14 @@ export default function SongPlayerPage() {
       audioRef.current.play().catch(() => setPlaying(false))
     }
     setPlaying(!playing)
+  }
+
+  const skipBack = () => {
+    if (audioRef.current) audioRef.current.currentTime = Math.max(0, audioRef.current.currentTime - 15)
+  }
+
+  const skipForward = () => {
+    if (audioRef.current) audioRef.current.currentTime = Math.min(duration, audioRef.current.currentTime + 15)
   }
 
   const formatTime = (s) => {
@@ -125,78 +222,155 @@ export default function SongPlayerPage() {
         { label: song.title },
       ]} className="mb-4" />
 
+      {/* Player Card */}
       <div className="bg-white border border-[#ece8e0] rounded-xl overflow-hidden">
-        {/* Album Art Placeholder */}
-        <div className="h-44 bg-gradient-to-br from-[#b45309]/15 via-[#d97706]/5 to-[#fef3e7] flex items-center justify-center">
-          <div className={`w-20 h-20 rounded-full bg-[#b45309]/10 flex items-center justify-center ${playing ? 'animate-spin' : ''}`}
-               style={{ animationDuration: '10s', animationTimingFunction: 'linear' }}>
-            <Music size={32} className={`${playing ? 'text-[#b45309]' : 'text-[#b45309]/50'} transition-colors`} />
+        {/* Top bar: album art + info */}
+        <div className="flex items-center gap-4 px-5 py-4 bg-gradient-to-r from-[#b45309]/8 to-[#d97706]/3">
+          <div className={`w-14 h-14 rounded-full bg-[#b45309]/10 flex items-center justify-center shrink-0 ${playing ? 'animate-spin' : ''}`}
+               style={{ animationDuration: '8s', animationTimingFunction: 'linear' }}>
+            <Music size={24} className={`${playing ? 'text-[#b45309]' : 'text-[#b45309]/40'} transition-colors`} />
           </div>
+          <div className="min-w-0 flex-1">
+            <h2 className="text-base font-bold text-[#1a1a1a] truncate">{song.title}</h2>
+            <p className="text-xs text-[#888]">{song.artist}</p>
+          </div>
+          <button onClick={() => setShowLyrics(!showLyrics)}
+            className={`text-xs px-2.5 py-1.5 rounded-lg transition-colors ${
+              showLyrics ? 'bg-[#b45309] text-white' : 'bg-[#f0ede8] text-[#888] hover:text-[#666]'
+            }`}>
+            <List size={14} />
+          </button>
         </div>
 
         <audio ref={audioRef} src={mp3Url} preload="metadata" />
 
-        <div className="px-6 py-4 text-center">
-          <h2 className="text-lg font-bold text-[#1a1a1a]">{song.title}</h2>
-          <p className="text-sm text-[#888]">{song.artist}</p>
-          <p className="text-[10px] text-[#aaa] mt-1">{catName} · MP3</p>
-        </div>
-
-        {/* Progress */}
-        <div className="px-6">
-          <div className="h-1.5 bg-[#f0ede8] rounded-full cursor-pointer relative" onClick={handleSeek}>
-            <div className="h-full bg-[#b45309] rounded-full transition-all duration-200" style={{ width: `${progress}%` }} />
+        {/* Progress Bar */}
+        <div className="px-5 pt-3">
+          <div className="h-2 bg-[#f0ede8] rounded-full cursor-pointer relative group" onClick={handleSeek}>
+            <div className="h-full bg-[#b45309] rounded-full transition-all duration-150" style={{ width: `${progress}%` }} />
+            <div className="absolute top-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full bg-[#b45309] shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
+                 style={{ left: `calc(${progress}% - 7px)` }} />
           </div>
-          <div className="flex justify-between text-[10px] text-[#b0a898] mt-1 px-0.5">
+          <div className="flex justify-between text-[10px] text-[#b0a898] mt-1.5 px-0.5">
             <span>{formatTime(currentTime)}</span>
             <span>{formatTime(duration)}</span>
           </div>
         </div>
 
         {/* Controls */}
-        <div className="flex items-center justify-center gap-6 px-6 py-4">
-          <button className="text-[#b0a898] hover:text-[#666] transition-colors">
-            <SkipBack size={20} />
+        <div className="flex items-center justify-center gap-5 px-5 py-3">
+          {/* Prev song */}
+          {prevSong ? (
+            <Link href={`/music/song/${category.id}/${prevSong.id}`}
+              className="text-[#b0a898] hover:text-[#666] transition-colors p-1" title="上一首">
+              <SkipBack size={18} />
+            </Link>
+          ) : (
+            <span className="text-[#e0ddd8] p-1"><SkipBack size={18} /></span>
+          )}
+
+          {/* Rewind 15s */}
+          <button onClick={skipBack}
+            className="text-[#b0a898] hover:text-[#666] transition-colors p-1 relative" title="后退15秒">
+            <SkipBack size={16} />
+            <span className="absolute -top-0.5 -right-1 text-[7px] font-bold">15</span>
           </button>
+
+          {/* Play/Pause */}
           <button onClick={togglePlay}
-            className="w-12 h-12 rounded-full bg-[#b45309] text-white hover:bg-[#92400e] transition-colors flex items-center justify-center shadow-md active:scale-95">
-            {playing ? <Pause size={22} /> : <Play size={22} className="ml-0.5" />}
+            className="w-11 h-11 rounded-full bg-[#b45309] text-white hover:bg-[#92400e] transition-colors flex items-center justify-center shadow-md active:scale-95">
+            {playing ? <Pause size={20} /> : <Play size={20} className="ml-0.5" />}
           </button>
-          <button className="text-[#b0a898] hover:text-[#666] transition-colors">
-            <SkipForward size={20} />
+
+          {/* Forward 15s */}
+          <button onClick={skipForward}
+            className="text-[#b0a898] hover:text-[#666] transition-colors p-1 relative" title="快进15秒">
+            <Forward size={16} />
+            <span className="absolute -top-0.5 -right-1 text-[7px] font-bold">15</span>
           </button>
+
+          {/* Next song */}
+          {nextSong ? (
+            <Link href={`/music/song/${category.id}/${nextSong.id}`}
+              className="text-[#b0a898] hover:text-[#666] transition-colors p-1" title="下一首">
+              <Forward size={18} />
+            </Link>
+          ) : (
+            <span className="text-[#e0ddd8] p-1"><Forward size={18} /></span>
+          )}
         </div>
 
         {/* Volume */}
-        <div className="px-6 pb-4 flex items-center gap-2 justify-center">
+        <div className="px-5 pb-3 flex items-center gap-2 justify-center">
           <Volume2 size={12} className="text-[#b0a898]" />
           <input type="range" min="0" max="1" step="0.05" value={volume}
             onChange={e => setVolume(parseFloat(e.target.value))}
-            className="w-24 h-1 accent-[#b45309]" />
+            className="w-28 h-1 accent-[#b45309]" />
         </div>
       </div>
 
       {/* Lyrics / Description */}
-      <div className="mt-4 bg-white border border-[#ece8e0] rounded-xl p-6">
-        <h3 className="text-xs font-semibold text-[#b0a898] uppercase tracking-wider mb-3">
-          {isSleep ? '🌙 助眠寄语' : '🎵 歌词'}
-        </h3>
-        {isSleep ? (
-          <pre className="text-sm text-[#666] leading-relaxed whitespace-pre-wrap font-sans">
-            {sleepLyrics[songId] || '闭上眼，深呼吸。\n让音乐带你进入梦乡。\n晚安。'}
-          </pre>
-        ) : (
-          <div className="text-sm text-[#888] leading-relaxed text-center py-6">
-            🎵 {song.title} - {song.artist}
-            <br /><span className="text-[#ccc] text-xs mt-2 block">歌词待补充（需要上传LRC文件）</span>
-          </div>
-        )}
+      <div ref={lyricsRef} className="mt-4 bg-white border border-[#ece8e0] rounded-xl overflow-hidden">
+        <div className="px-5 py-3 border-b border-[#f0ede8] flex items-center justify-between">
+          <h3 className="text-xs font-semibold text-[#b0a898] uppercase tracking-wider">
+            {isSleep ? '🌙 助眠寄语' : '🎵 歌词'}
+          </h3>
+          {lyrics && (
+            <span className="text-[9px] text-[#ccc]">
+              {formatTime(currentTime)} / {formatTime(duration)}
+            </span>
+          )}
+        </div>
+
+        <div className="px-5 py-4" style={{ minHeight: '200px', maxHeight: '400px', overflowY: 'auto' }}>
+          {isSleep ? (
+            <pre className="text-sm text-[#666] leading-relaxed whitespace-pre-wrap font-sans">
+              {sleepLyrics[songId] || '闭上眼，深呼吸。\n让音乐带你进入梦乡。\n晚安。'}
+            </pre>
+          ) : lyrics ? (
+            <div className="space-y-2 py-2">
+              {lyrics.map((line, i) => (
+                <p key={i} data-lyric-line
+                  className={`text-sm leading-relaxed transition-all duration-300 ${
+                    i === activeLine
+                      ? 'text-[#b45309] font-bold scale-105 translate-x-1'
+                      : i < activeLine
+                        ? 'text-[#d0c8b8]'
+                        : 'text-[#888]'
+                  }`}>
+                  {line[1]}
+                </p>
+              ))}
+            </div>
+          ) : (
+            <div className="text-sm text-[#888] leading-relaxed text-center py-8">
+              🎵 {song.title} - {song.artist}
+              <br />
+              <span className="text-[#ccc] text-xs mt-2 block">歌词陆续补充中</span>
+            </div>
+          )}
+        </div>
       </div>
 
-      <div className="mt-4 text-center">
+      {/* Nav: Back to list + Prev/Next song */}
+      <div className="mt-4 flex items-center justify-between">
         <Link href={`/music/${category.id}`} className="text-xs text-[#b45309] hover:underline inline-flex items-center gap-1">
           <ArrowLeft size={12} /> 返回{catName}
         </Link>
+        <div className="flex items-center gap-3">
+          {prevSong && (
+            <Link href={`/music/song/${category.id}/${prevSong.id}`}
+              className="text-xs text-[#b0a898] hover:text-[#666]">
+              ← {prevSong.title}
+            </Link>
+          )}
+          {nextSong && (
+            <Link href={`/music/song/${category.id}/${nextSong.id}`}
+              className="text-xs text-[#b0a898] hover:text-[#666]">
+              {nextSong.title} →
+            </Link>
+          )}
+        </div>
       </div>
     </div>
   )
