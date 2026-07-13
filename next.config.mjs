@@ -46,8 +46,8 @@ const nextConfig = {
               "frame-ancestors 'none'",
               // 表单提交：仅限本站
               "form-action 'self'",
-              // 媒体：仅限自身
-              "media-src 'self'",
+              // 媒体：仅限自身 + Supabase Storage
+              "media-src 'self' https://*.supabase.co",
               // 对象：完全禁止（不允许 plugins）
               "object-src 'none'",
               // base-uri：禁止 base 标签篡改
