@@ -31,10 +31,10 @@ export default function LoginPage() {
     e.preventDefault(); setError('')
     if (cooldown > 0) return
     const rl = checkRateLimit(`login:${email}`, 5, 60000)
-    if (!rl.allowed) { setError(t('登录尝试过于频繁', 'Too many login attempts')); setCooldown(rl.retryAfter); return }
+    if (!rl.allowed) { setError(`登录尝试过于频繁`); setCooldown(rl.retryAfter); return }
     setLoading(true)
     const { error: err } = await supabase.auth.signInWithPassword({ email, password })
-    if (err) setError(err.message === 'Invalid login credentials' ? t('邮箱或密码错误', 'Invalid email or password') : `${t('错误:', 'Error:')} ${err.message}`)
+    if (err) setError(err.message === 'Invalid login credentials' ? '邮箱或密码错误' : `错误: ${err.message}`)
     else { router.push('/'); router.refresh() }
     setLoading(false)
   }
@@ -42,7 +42,7 @@ export default function LoginPage() {
   // ——— 步骤1：验证邮箱是否存在 ———
   const handleStep1 = async (e) => {
     e.preventDefault(); setError('')
-    if (!resetEmail.trim()) { setError(t('请输入邮箱', 'Please enter your email')); return }
+    if (!resetEmail.trim()) { setError('请输入邮箱'); return }
     setLoading(true)
     // 检查邮箱是否注册（试试登录就知道存不存在）
     const { error: err } = await supabase.auth.signInWithPassword({ email: resetEmail.trim(), password: '___check_only___' })
@@ -52,7 +52,7 @@ export default function LoginPage() {
     } else if (err && err.message === 'Email not confirmed') {
       setResetStep(2)
     } else {
-      setError(t('该邮箱未注册，请检查', 'This email is not registered'))
+      setError('该邮箱未注册，请检查')
     }
     setLoading(false)
   }
@@ -63,32 +63,32 @@ export default function LoginPage() {
     setLoading(true)
 
     if (resetMethod === 'name') {
-      if (!resetName.trim() || !resetDob) { setError(t('请填写姓名和出生日期', 'Please enter name and birth date')); setLoading(false); return }
+      if (!resetName.trim() || !resetDob) { setError('请填写姓名和出生日期'); setLoading(false); return }
       const { data } = await supabase.rpc('reset_password_by_profile', {
         target_name: resetName.trim(), target_dob: resetDob,
       })
-      if (!data || data === 'NOT_FOUND') { setError(t('姓名与出生日期不匹配', 'Name and birth date do not match')); setLoading(false); return }
+      if (!data || data === 'NOT_FOUND') { setError('姓名与出生日期不匹配'); setLoading(false); return }
       if (data === resetEmail.trim()) { setResetStep(3); setLoading(false); return }
-      setError(t('信息与账号不匹配', 'Info does not match account')); setLoading(false); return
+      setError('信息与账号不匹配'); setLoading(false); return
     }
 
     if (resetMethod === 'dob') {
-      if (!resetDob) { setError(t('请选择出生日期', 'Please select date of birth')); setLoading(false); return }
+      if (!resetDob) { setError('请选择出生日期'); setLoading(false); return }
       const { data: profiles } = await supabase.from('profiles').select('id').eq('date_of_birth', resetDob)
-      if (!profiles || profiles.length === 0) { setError(t('出生日期不匹配', 'Birth date does not match')); setLoading(false); return }
+      if (!profiles || profiles.length === 0) { setError('出生日期不匹配'); setLoading(false); return }
       // 检查这批用户里是否有当前邮箱
       const ids = profiles.map(p => p.id)
       const { data: fnData } = await supabase.rpc('get_email_by_user_id', { target_id: ids[0] })
       if (fnData === resetEmail.trim()) { setResetStep(3); setLoading(false); return }
-      setError(t('出生日期不匹配', 'Birth date does not match')); setLoading(false)
+      setError('出生日期不匹配'); setLoading(false)
     }
 
     if (resetMethod === 'phone') {
-      if (!resetPhone.trim()) { setError(t('请输入手机号', 'Please enter phone number')); setLoading(false); return }
+      if (!resetPhone.trim()) { setError('请输入手机号'); setLoading(false); return }
       const cleaned = resetPhone.replace(/\s|-/g, '')
-      if (!/^1[3-9]\d{9}$/.test(cleaned)) { setError(t('请输入正确的11位手机号', 'Please enter a valid 11-digit phone number')); setLoading(false); return }
+      if (!/^1[3-9]\d{9}$/.test(cleaned)) { setError('请输入正确的11位手机号'); setLoading(false); return }
       const { data: profiles } = await supabase.from('profiles').select('id').eq('phone', cleaned)
-      if (!profiles || profiles.length === 0) { setError(t('该手机号未注册', 'This phone number is not registered')); setLoading(false); return }
+      if (!profiles || profiles.length === 0) { setError('该手机号未注册'); setLoading(false); return }
       setResetStep(3); setLoading(false)
     }
   }
@@ -96,15 +96,15 @@ export default function LoginPage() {
   // ——— 步骤3：设置新密码 ———
   const handleStep3 = async (e) => {
     e.preventDefault(); setError('')
-    if (newPassword.length < 8) { setError(t('密码至少8位', 'Password must be at least 8 characters')); return }
-    if (newPassword !== confirmPassword) { setError(t('两次密码不一致', 'Passwords do not match')); return }
-    if (!/[A-Za-z]/.test(newPassword) || !/[0-9]/.test(newPassword)) { setError(t('密码需包含字母和数字', 'Password must contain letters and numbers')); return }
+    if (newPassword.length < 8) { setError('密码至少8位'); return }
+    if (newPassword !== confirmPassword) { setError('两次密码不一致'); return }
+    if (!/[A-Za-z]/.test(newPassword) || !/[0-9]/.test(newPassword)) { setError('密码需包含字母和数字'); return }
     setLoading(true)
     const { data, error: rpcErr } = await supabase.rpc('reset_user_password', {
       target_email: resetEmail.trim(),
       new_password: newPassword,
     })
-    if (rpcErr || data !== 'OK') { setError(t('重置失败，请稍后再试', 'Reset failed, please try again')); setLoading(false); return }
+    if (rpcErr || data !== 'OK') { setError('重置失败，请稍后再试'); setLoading(false); return }
     setResetStep(4); setLoading(false)
   }
 
