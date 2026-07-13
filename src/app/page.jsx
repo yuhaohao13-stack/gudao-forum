@@ -113,7 +113,7 @@ export default function Home() {
                 className={`flex items-center gap-2 px-3 py-2.5 hover:bg-[#fafafa] transition-colors ${i > 0 ? `anim-delay-${i}` : ''}`}>
                 <Pin size={14} className="text-[#b8860b] shrink-0 inline-block" />
                 <span className="text-sm font-medium text-[#1a1a1a] truncate">{t.title}</span>
-                <span className="ml-auto text-xs text-[#bbb]">{new Date(t.created_at).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })}</span>
+                <span className="ml-auto text-xs text-[#bbb]">{new Date(t.created_at).toLocaleDateString(lang === 'zh' ? 'zh-CN' : 'en-US', { month: 'short', day: 'numeric' })}</span>
               </Link>
             ))}
           </div>
@@ -221,7 +221,7 @@ export default function Home() {
                       <span>·</span>
                       <span>{t.categories?.name}</span>
                       <span>·</span>
-                      <span>{new Date(t.created_at).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })}</span>
+                      <span>{new Date(t.created_at).toLocaleDateString(lang === 'zh' ? 'zh-CN' : 'en-US', { month: 'short', day: 'numeric' })}</span>
                       <span className="flex items-center gap-1.5 ml-auto">
                         <span className="inline-flex items-center gap-0.5"><MessageCircle size={11} className="inline-block" /> {t.reply_count || 0}</span>
                         <span className="inline-flex items-center gap-0.5"><Eye size={11} className="inline-block" /> {t.view_count || 0}</span>

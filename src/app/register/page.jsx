@@ -52,25 +52,25 @@ export default function RegisterPage() {
     const { username, email, password, phone, gender, date_of_birth, hobbies, bio, resume, _honeypot, _captcha } = form
 
     // 蜜罐检测：隐藏字段被填了说明是机器人
-    if (_honeypot) { setError('提交过快，请稍后再试'); return }
+    if (_honeypot) { setError(t('提交过快，请稍后再试', 'Submitted too fast, please try again')); return }
 
     // 时间检测：注册页面打开不到3秒就提交 → 机器人
-    if (Date.now() - pageLoadTime < 3000) { setError('请稍等几秒再提交'); return }
+    if (Date.now() - pageLoadTime < 3000) { setError(t('请稍等几秒再提交', 'Please wait a few seconds before submitting')); return }
 
     // 验证码校验
-    if (_captcha !== captchaCode) { setError('验证码错误'); setCaptchaCode(generateCaptcha()); return }
+    if (_captcha !== captchaCode) { setError(t('验证码错误', 'Captcha error')); setCaptchaCode(generateCaptcha()); return }
 
     // 昵称校验
-    if (username.trim().length < 2) { setError('昵称至少 2 个字符'); return }
-    if (username.trim().length > 10) { setError('昵称不能超过 10 个字符'); return }
-    if (!/^[\u4e00-\u9fa5a-zA-Z0-9_]+$/.test(username.trim())) { setError('昵称只能包含中文、字母、数字和下划线'); return }
+    if (username.trim().length < 2) { setError(t('昵称至少 2 个字符', 'Display name must be at least 2 characters')); return }
+    if (username.trim().length > 10) { setError(t('昵称不能超过 10 个字符', 'Display name cannot exceed 10 characters')); return }
+    if (!/^[\u4e00-\u9fa5a-zA-Z0-9_]+$/.test(username.trim())) { setError(t('昵称只能包含中文、字母、数字和下划线', 'Only Chinese, letters, numbers and underscores allowed')); return }
 
     // 出生日期校验
-    if (!date_of_birth) { setError('请选择出生日期'); return }
+    if (!date_of_birth) { setError(t('请选择出生日期', 'Please select date of birth')); return }
     const dobDate = new Date(date_of_birth)
     const today = new Date()
     const age = today.getFullYear() - dobDate.getFullYear()
-    if (age < 10 || age > 120) { setError('出生日期不合法，请检查'); return }
+    if (age < 10 || age > 120) { setError(t('出生日期不合法，请检查', 'Invalid birth date')); return }
 
     // 手机号校验
     const fullPhone = '+' + phoneCode + phone
@@ -84,7 +84,7 @@ export default function RegisterPage() {
     // 速率限制
     const rl = checkRateLimit(`register:${email}`, 3, 60000)
     if (!rl.allowed) {
-      setError(`注册过于频繁，请 ${rl.retryAfter} 秒后再试`)
+      setError(`${t('注册过于频繁，请', 'Too many registrations, try again in')} ${rl.retryAfter} ${t('秒后再试', 'seconds')}`)
       setCooldown(rl.retryAfter)
       return
     }
@@ -110,8 +110,8 @@ export default function RegisterPage() {
 
     if (error) {
       setError(
-        error.message.includes('already') ? '该邮箱已注册' :
-        error.message.includes('weak') ? '密码强度不够' :
+        error.message.includes('already') ? t('该邮箱已注册', 'Email already registered') :
+        error.message.includes('weak') ? t('密码强度不够', 'Password is too weak') :
         error.message
       )
     } else {
@@ -145,7 +145,7 @@ export default function RegisterPage() {
                 <label className="block text-xs text-[#888] mb-1.5 font-medium">{t('auth.display_name')} <span className="text-[#c23531]">*</span></label>
                 <input type="text" required value={form.username}
                   onChange={e => update('username', e.target.value)}
-                  className={inputClass} placeholder="例如：张三" maxLength={10} autoComplete="name" />
+                  className={inputClass} placeholder={t('例如：张三', 'e.g. Zhang San')} maxLength={10} autoComplete="name" />
               </div>
               <div>
                 <label className="block text-xs text-[#888] mb-1.5 font-medium">{t('auth.email')} <span className="text-[#c23531]">*</span></label>
@@ -205,7 +205,7 @@ export default function RegisterPage() {
               <input type="password" required value={form.password}
                 onChange={e => update('password', e.target.value)}
                 className={inputClass} placeholder={t('auth.password_placeholder')} autoComplete="new-password" />
-              <p className="text-[10px] text-[#ccc] mt-1">至少 8 位，需包含字母和数字</p>
+              <p className="text-[10px] text-[#ccc] mt-1">{t('至少 8 位，需包含字母和数字', 'At least 8 characters with letters and numbers')}</p>
             </div>
           </div>
 
@@ -217,14 +217,14 @@ export default function RegisterPage() {
               <label className="block text-xs text-[#888] mb-1.5 font-medium">{t('profile.hobbies')}</label>
               <input type="text" value={form.hobbies}
                 onChange={e => update('hobbies', e.target.value)}
-                className={inputClass} placeholder="例如：摄影、编程、读书" />
+                className={inputClass} placeholder={t('例如：摄影、编程、读书', 'e.g. photography, coding, reading')} />
             </div>
 
             <div>
               <label className="block text-xs text-[#888] mb-1.5 font-medium">{t('profile.bio')}</label>
               <textarea value={form.bio}
                 onChange={e => update('bio', e.target.value)}
-                className={`${inputClass} min-h-[80px] resize-none`} placeholder="简单介绍一下自己..." maxLength={500} />
+                className={`${inputClass} min-h-[80px] resize-none`} placeholder={t('简单介绍一下自己...', 'Tell us about yourself...')} maxLength={500} />
               <p className="text-[10px] text-[#ccc] mt-1">{form.bio.length}/500</p>
             </div>
 
@@ -232,7 +232,7 @@ export default function RegisterPage() {
               <label className="block text-xs text-[#888] mb-1.5 font-medium">{t('profile.resume')}</label>
               <textarea value={form.resume}
                 onChange={e => update('resume', e.target.value)}
-                className={`${inputClass} min-h-[100px] resize-none`} placeholder="工作经历、专业技能等..." maxLength={2000} />
+                className={`${inputClass} min-h-[100px] resize-none`} placeholder={t('工作经历、专业技能等...', 'Work experience, skills...')} maxLength={2000} />
               <p className="text-[10px] text-[#ccc] mt-1">{form.resume.length}/2000</p>
             </div>
           </div>
