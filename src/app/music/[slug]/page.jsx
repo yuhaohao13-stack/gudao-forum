@@ -193,7 +193,7 @@ export default function MusicCategoryPage() {
       <Breadcrumb crumbs={[
         { label: '首页', href: '/' },
         { label: '音乐频道', href: '/music' },
-        { label: category.name },}]}
+        { label: category.name },
       ]} className="mb-3" />
 
       {/* Category header with unified play button */}
