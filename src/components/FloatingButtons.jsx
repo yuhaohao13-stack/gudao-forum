@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Heart, MessageCircle, X, Phone, MessageSquare } from 'lucide-react'
+import { MessageCircle, X, Phone, MessageSquare } from 'lucide-react'
 
 // 联系信息
 const WECHAT_ID = 'crazy-repair'
@@ -10,23 +10,11 @@ const PHONE_SG = '+6596146709'
 const QR_URL = '/images/wechat-pay-qr.jpg'
 
 export default function FloatingButtons() {
-  const [showDonateTip, setShowDonateTip] = useState(false)
   const [showContact, setShowContact] = useState(false)
   const [showWechat, setShowWechat] = useState(false)
   const [copied, setCopied] = useState(false)
   const [savingQr, setSavingQr] = useState(false)
   const [qrSaved, setQrSaved] = useState(false)
-
-  useEffect(() => {
-    if (showDonateTip) {
-      const timer = setTimeout(() => setShowDonateTip(false), 3000)
-      return () => clearTimeout(timer)
-    }
-  }, [showDonateTip])
-
-  const handleDonate = () => {
-    window.dispatchEvent(new CustomEvent('open-donate'))
-  }
 
   // 微信：复制 + 弹窗
   const handleWechat = () => {
@@ -134,37 +122,6 @@ export default function FloatingButtons() {
         zIndex: 999, display: 'flex', flexDirection: 'column',
         gap: '0.75rem', alignItems: 'center',
       }}>
-        {/* 打赏 */}
-        <div style={{ position: 'relative' }}>
-          <button onClick={handleDonate} onMouseEnter={() => setShowDonateTip(true)}
-            onMouseLeave={() => setShowDonateTip(false)}
-            style={{
-              width: '3.25rem', height: '3.25rem', borderRadius: '50%',
-              backgroundColor: '#c23531', color: '#fff', border: 'none',
-              cursor: 'pointer', display: 'flex', alignItems: 'center',
-              justifyContent: 'center', transition: 'all 0.2s ease',
-            }} title="打赏支持">
-            <Heart size={22} />
-          </button>
-          {showDonateTip && (
-            <div style={{
-              position: 'absolute', right: '4rem', top: '50%',
-              transform: 'translateY(-50%)', backgroundColor: '#1a1a1a',
-              color: '#fff', fontSize: '0.75rem', padding: '0.375rem 0.75rem',
-              borderRadius: '0.5rem', whiteSpace: 'nowrap',
-            }}>
-              请我喝杯咖啡 ☕
-              <div style={{
-                position: 'absolute', right: '-0.375rem', top: '50%',
-                transform: 'translateY(-50%)', width: 0, height: 0,
-                borderTop: '0.375rem solid transparent',
-                borderBottom: '0.375rem solid transparent',
-                borderLeft: '0.375rem solid #1a1a1a',
-              }} />
-            </div>
-          )}
-        </div>
-
         {/* 联系我 */}
         <button onClick={() => setShowContact(true)}
           style={{

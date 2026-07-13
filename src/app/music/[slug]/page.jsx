@@ -11,6 +11,8 @@ export default function MusicCategoryPage() {
   const { slug } = useParams()
   const category = musicData.find(c => c.id === slug)
   const audioRef = useRef(null)
+  // Track if user has ever pressed play to avoid showing errors on initial mount
+  const hasAttemptedPlay = useRef(false)
 
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
@@ -26,7 +28,7 @@ export default function MusicCategoryPage() {
     ? `https://rsndnhdimruisysacujg.supabase.co/storage/v1/object/public/music/${category.id}/${currentSong.id}.mp3`
     : ''
 
-  // Audio event listeners
+  // Set up audio event listeners once
   useEffect(() => {
     const audio = audioRef.current
     if (!audio) return
@@ -37,7 +39,6 @@ export default function MusicCategoryPage() {
       setLoading(false)
     }
     const onEnd = () => {
-      // Auto-play next
       if (selectedIndex < songs.length - 1) {
         setSelectedIndex(selectedIndex + 1)
       } else {
@@ -46,7 +47,10 @@ export default function MusicCategoryPage() {
       }
     }
     const onError = () => {
-      setError('无法加载音频，请稍后重试')
+      // Only show error if user has actually tried to play
+      if (hasAttemptedPlay.current) {
+        setError('无法加载音频，请稍后重试')
+      }
       setIsPlaying(false)
       setLoading(false)
     }
@@ -68,72 +72,92 @@ export default function MusicCategoryPage() {
       audio.removeEventListener('waiting', onWaiting)
       audio.removeEventListener('canplay', onCanPlay)
     }
-  }, [selectedIndex, songs.length])
+  }, [])
 
-  // When selectedIndex changes, load and auto-play if was playing
+  // Load new song when selectedIndex changes (only when user actively switched)
   useEffect(() => {
     const audio = audioRef.current
     if (!audio || !currentSong) return
 
-    setError('')
     setCurrentTime(0)
     setDuration(0)
     audio.src = mp3Url
     audio.load()
 
-    // If user clicked a new song while playback was on, auto-play
+    // If we were playing, auto-play the new song
     if (isPlaying) {
       setLoading(true)
-      const playIt = () => {
+      hasAttemptedPlay.current = true
+      const tryPlay = () => {
         audio.play().then(() => {
-          setIsPlaying(true)
           setLoading(false)
-        }).catch((e) => {
-          console.warn('Play failed:', e)
-          setIsPlaying(false)
+        }).catch(() => {
           setLoading(false)
-          setError('播放失败，请尝试点击播放按钮')
+          setError('播放失败，请点击播放按钮重试')
         })
       }
-      // Wait a bit for metadata
-      audio.addEventListener('canplay', playIt, { once: true })
-      // Fallback timeout
-      const timeout = setTimeout(() => {
-        audio.removeEventListener('canplay', playIt)
-        playIt()
-      }, 1500)
+      audio.addEventListener('canplay', tryPlay, { once: true })
+      const fallback = setTimeout(tryPlay, 2000)
       return () => {
-        audio.removeEventListener('canplay', playIt)
-        clearTimeout(timeout)
+        audio.removeEventListener('canplay', tryPlay)
+        clearTimeout(fallback)
       }
     }
   }, [selectedIndex])
 
-  const togglePlay = () => {
+  const playSong = () => {
     const audio = audioRef.current
     if (!audio || !currentSong) return
 
+    hasAttemptedPlay.current = true
     setError('')
+    setLoading(true)
 
-    if (isPlaying) {
-      audio.pause()
-      setIsPlaying(false)
-    } else {
-      setLoading(true)
-      // If no src loaded yet, set it
-      if (!audio.src || audio.src === '') {
-        audio.src = mp3Url
-        audio.load()
-      }
+    // Always set src and load fresh when user clicks play
+    audio.src = mp3Url
+    audio.load()
+
+    const tryPlay = () => {
       audio.play().then(() => {
         setIsPlaying(true)
         setLoading(false)
       }).catch((e) => {
-        console.warn('Play toggle failed:', e)
-        setIsPlaying(false)
-        setLoading(false)
-        setError('无法播放，请检查网络或重试')
+        // Retry once after a short delay
+        setTimeout(() => {
+          audio.play().then(() => {
+            setIsPlaying(true)
+            setLoading(false)
+          }).catch(() => {
+            setIsPlaying(false)
+            setLoading(false)
+            setError('暂时无法播放此歌曲，请稍后重试')
+          })
+        }, 500)
       })
+    }
+
+    // Try to play once metadata is loaded, or fallback after timeout
+    audio.addEventListener('canplay', tryPlay, { once: true })
+    const fallback = setTimeout(tryPlay, 2000)
+    audio.addEventListener('error', function cleanup() {
+      clearTimeout(fallback)
+      audio.removeEventListener('canplay', tryPlay)
+      audio.removeEventListener('error', cleanup)
+    }, { once: true })
+  }
+
+  const pauseSong = () => {
+    const audio = audioRef.current
+    if (!audio) return
+    audio.pause()
+    setIsPlaying(false)
+  }
+
+  const togglePlay = () => {
+    if (isPlaying) {
+      pauseSong()
+    } else {
+      playSong()
     }
   }
 
@@ -155,10 +179,9 @@ export default function MusicCategoryPage() {
 
   const selectSong = (idx) => {
     if (idx === selectedIndex) {
-      // Same song: toggle play/pause
       togglePlay()
     } else {
-      // Different song: switch, will auto-play if currently playing
+      setIsPlaying(false)
       setSelectedIndex(idx)
     }
   }
@@ -188,7 +211,8 @@ export default function MusicCategoryPage() {
 
   return (
     <div className="anim-fade-in pb-20">
-      <audio ref={audioRef} preload="none" crossOrigin="anonymous" />
+      {/* Audio element - no crossOrigin, no src set initially */}
+      <audio ref={audioRef} preload="none" />
 
       <Breadcrumb crumbs={[
         { label: '首页', href: '/' },
@@ -205,7 +229,6 @@ export default function MusicCategoryPage() {
           <h1 className="text-sm font-bold text-[#1a1a1a]">{category.name}</h1>
           <p className="text-[10px] text-[#aaa]">{category.description}</p>
         </div>
-        {/* Unified play/pause button */}
         {currentSong && (
           <button onClick={togglePlay}
             disabled={loading}
@@ -225,14 +248,14 @@ export default function MusicCategoryPage() {
         )}
       </div>
 
-      {/* Error message */}
+      {/* Error message - only shown after user attempts playback */}
       {error && (
         <div className="mb-3 px-3.5 py-2 bg-red-50 border border-red-200 rounded-lg text-xs text-red-600">
           {error}
         </div>
       )}
 
-      {/* Progress bar (only when a song is active) */}
+      {/* Progress bar (only when a song is selected AND user has played) */}
       {currentSong && (
         <div className="mb-3">
           <div className="flex items-center gap-2.5">
@@ -244,10 +267,11 @@ export default function MusicCategoryPage() {
             </div>
             <span className="text-[9px] text-[#b0a898] w-8 shrink-0">{formatTime(duration)}</span>
           </div>
-          {/* Now playing label */}
-          <p className="text-[9px] text-[#b45309] mt-1 text-center">
-            {currentSong.title} — {currentSong.artist}
-          </p>
+          {currentSong && (
+            <p className="text-[9px] text-[#b45309] mt-1 text-center">
+              {currentSong.title} — {currentSong.artist}
+            </p>
+          )}
         </div>
       )}
 
@@ -267,7 +291,6 @@ export default function MusicCategoryPage() {
                 isSelected ? 'text-[#b45309] font-bold' : 'text-[#b0a898]'
               }`}>{i + 1}</span>
 
-              {/* Song info */}
               <div className="flex-1 min-w-0">
                 <p className={`text-xs font-medium truncate ${
                   isSelected ? 'text-[#b45309]' : 'text-[#1a1a1a]'
@@ -275,7 +298,6 @@ export default function MusicCategoryPage() {
                 <p className="text-[10px] text-[#999]">{song.artist}</p>
               </div>
 
-              {/* Playing indicator */}
               {isSelected && isPlaying && (
                 <span className="flex items-center gap-0.5 shrink-0 mr-1">
                   <span className="w-0.5 h-2.5 bg-[#b45309] rounded-full animate-pulse" style={{animationDelay:'0ms'}} />
@@ -284,7 +306,6 @@ export default function MusicCategoryPage() {
                 </span>
               )}
 
-              {/* Detail link */}
               <Link href={`/music/song/${category.id}/${song.id}`}
                 onClick={e => e.stopPropagation()}
                 className="text-[9px] text-[#b0a898] hover:text-[#b45309] transition-colors shrink-0 opacity-0 group-hover:opacity-100">
@@ -295,17 +316,15 @@ export default function MusicCategoryPage() {
         })}
       </div>
 
-      {/* Mini Player Bar (fixed bottom) */}
+      {/* Mini Player Bar */}
       {currentSong && (
         <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-[#ece8e0] shadow-lg animate-slide-up">
           <div className="max-w-3xl mx-auto px-4 py-2">
-            {/* Progress mini bar */}
             <div className="h-1 bg-[#f0ede8] rounded-full cursor-pointer mb-2" onClick={handleSeek}>
               <div className="h-full bg-[#b45309] rounded-full transition-all" style={{ width: `${progress}%` }} />
             </div>
 
             <div className="flex items-center gap-3">
-              {/* Now playing */}
               <div className="flex items-center gap-2 min-w-0 flex-1">
                 <div className="w-7 h-7 rounded-full bg-[#b45309]/10 flex items-center justify-center shrink-0">
                   <Music size={12} className={`${isPlaying ? 'text-[#b45309]' : 'text-[#b45309]/40'}`} />
@@ -316,7 +335,6 @@ export default function MusicCategoryPage() {
                 </div>
               </div>
 
-              {/* Controls */}
               <div className="flex items-center gap-2 shrink-0">
                 <button onClick={playPrev} className="text-[#b0a898] hover:text-[#666] transition-colors p-0.5">
                   <SkipBack size={14} />
@@ -336,10 +354,8 @@ export default function MusicCategoryPage() {
                 </button>
               </div>
 
-              {/* Time */}
               <span className="text-[8px] text-[#b0a898] shrink-0 w-12 text-right">{formatTime(currentTime)} / {formatTime(duration)}</span>
 
-              {/* Detail link */}
               <Link href={`/music/song/${category.id}/${currentSong.id}`}
                 onClick={e => e.stopPropagation()}
                 className="text-[8px] text-[#b45309] hover:underline shrink-0">
