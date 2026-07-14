@@ -16,18 +16,24 @@ export async function POST(request) {
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
   const ref = supabaseUrl.replace('https://', '').replace('.supabase.co', '')
-  const region = 'ap-southeast-1'
   const password = process.env.SUPABASE_SERVICE_ROLE_KEY || ''
 
-  // 尝试多种连接方式
-  const configs = [
-    // Direct (from Vercel cloud, may have IPv6)
-    { host: `db.${ref}.supabase.co`, port: 5432, database: 'postgres', user: 'postgres', password },
-    // Pooler session mode
-    { host: `aws-0-${region}.pooler.supabase.com`, port: 5432, database: 'postgres', user: `postgres.${ref}`, password },
-    // Pooler transaction mode
-    { host: `aws-0-${region}.pooler.supabase.com`, port: 6543, database: 'postgres', user: `postgres.${ref}`, password },
-  ]
+  // 尝试多种连接方式（多region，多格式）
+  const regions = ['ap-southeast-1', 'ap-southeast-2', 'us-east-1', 'eu-west-1', 'eu-central-1']
+  const configs = []
+
+  // Direct
+  configs.push({ host: `db.${ref}.supabase.co`, port: 5432, database: 'postgres', user: 'postgres', password })
+
+  // Pooler - 各种region + 各种user格式
+  for (const region of regions) {
+    for (const port of [5432, 6543]) {
+      for (const user of [`postgres.${ref}`, `postgres`]) {
+        configs.push({ host: `aws-0-${region}.pooler.supabase.com`, port, database: 'postgres', user, password })
+        configs.push({ host: `${ref}.pooler.supabase.com`, port, database: 'postgres', user, password })
+      }
+    }
+  }
 
   const results = []
 
