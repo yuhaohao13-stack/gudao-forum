@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { createClient as createAdminClient } from '@supabase/supabase-js'
 
 export async function POST(request) {
   try {
@@ -14,19 +15,25 @@ export async function POST(request) {
     const { user_id, level, draws } = await request.json()
     if (!user_id || !level) return NextResponse.json({ error: '缺少参数' }, { status: 400 })
 
+    // 使用 service_role key 绕过 RLS
+    const adminSupabase = createAdminClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL,
+      process.env.SUPABASE_SERVICE_ROLE_KEY,
+      { auth: { autoRefreshToken: false, persistSession: false } }
+    )
+
     const updates = { membership_level: level }
     if (level === 'gold') updates.gold_draws_remaining = draws || 500
     if (level === 'diamond') updates.gold_draws_remaining = 99999
 
-    // 使用 service_role key 进行更新（绕过 RLS）
-    const { error } = await supabase.from('profiles').update(updates).eq('id', user_id)
+    const { error } = await adminSupabase.from('profiles').update(updates).eq('id', user_id)
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
     // 自动生成打赏记录
-    if (level === 'gold' || level === 'diamond') {
+    if (level !== 'regular') {
       const amount = level === 'diamond' ? 99 : 9.9
-      const { data: target } = await supabase.from('profiles').select('username, display_name').eq('id', user_id).single()
-      await supabase.from('donations').insert({
+      const { data: target } = await adminSupabase.from('profiles').select('username, display_name').eq('id', user_id).single()
+      await adminSupabase.from('donations').insert({
         user_id: user_id,
         username: target?.display_name || target?.username || '未知',
         amount: amount,
