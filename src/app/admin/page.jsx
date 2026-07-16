@@ -73,7 +73,7 @@ export default function AdminPage() {
       </div>
 
       {tab === 'threads' && (
-        <div>
+        <>
           <input value={threadSearch} onChange={e => setThreadSearch(e.target.value)}
             className="w-full mb-3 bg-white border border-[#f0f0f0] rounded-lg px-3 py-2 text-xs text-[#555] outline-none focus:border-[#b45309]"
             placeholder="🔍 搜索帖子标题..." />
@@ -92,7 +92,7 @@ export default function AdminPage() {
             </div>
           ))}
         </div>
-      )}
+      </>)
 
       {tab === 'users' && (
         <div className="border border-[#f0f0f0] rounded-xl overflow-hidden">
