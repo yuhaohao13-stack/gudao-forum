@@ -931,10 +931,21 @@ export default function LotteryTypePage() {
 
   // ── Upgrade modal ──
   const upgradeModal = (
-    <div className={`fixed inset-0 z-50 flex items-center justify-center p-4 transition-all duration-200 ${showUpgradeModal ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+    <div style={{
+      position: 'fixed',
+      top: 0, left: 0, right: 0, bottom: 0,
+      zIndex: 99999,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '1rem',
+      transition: 'all 0.2s',
+      opacity: showUpgradeModal ? 1 : 0,
+      pointerEvents: showUpgradeModal ? 'auto' : 'none',
+    }}>
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black"
+        style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: '#000' }}
         onClick={() => setShowUpgradeModal(false)}
       />
       {/* Modal */}
@@ -1010,9 +1021,20 @@ export default function LotteryTypePage() {
   const donateInfoModal = (
     <>
       {/* 打赏主弹窗 */}
-      <div className={`fixed inset-0 z-[60] flex items-center justify-center p-4 transition-all duration-200 ${showDonateInfo ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
-        <div className="absolute inset-0 bg-black" onClick={() => { setShowDonateInfo(false); setShowDonateQR('') }} />
-        <div className="relative bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 animate-in zoom-in-95 duration-200">
+      <div style={{
+        position: 'fixed',
+        top: 0, left: 0, right: 0, bottom: 0,
+        zIndex: 99998,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '1rem',
+        transition: 'all 0.2s',
+        opacity: showDonateInfo ? 1 : 0,
+        pointerEvents: showDonateInfo ? 'auto' : 'none',
+      }}>
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: '#000' }} onClick={() => { setShowDonateInfo(false); setShowDonateQR('') }} />
+        <div style={{ position: 'relative', backgroundColor: '#fff', borderRadius: '1rem', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)', maxWidth: '24rem', width: '100%', padding: '1.5rem' }}>
           <button
             onClick={() => { setShowDonateInfo(false); setShowDonateQR('') }}
             className="absolute top-3 right-3 text-[#b0a898] hover:text-[#666] transition-colors"
@@ -1066,9 +1088,17 @@ export default function LotteryTypePage() {
       </div>
 
       {/* 微信二维码弹窗 */}
-      <div className={`fixed inset-0 z-[70] flex items-center justify-center p-4 transition-all duration-200 ${showDonateQR === 'wechat' ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
-        <div className="absolute inset-0 bg-black" onClick={() => setShowDonateQR('')} />
-        <div className="relative bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 text-center animate-in zoom-in-95 duration-200">
+      <div style={{
+        position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+        zIndex: 99997,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        padding: '1rem',
+        transition: 'all 0.2s',
+        opacity: showDonateQR === 'wechat' ? 1 : 0,
+        pointerEvents: showDonateQR === 'wechat' ? 'auto' : 'none',
+      }}>
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: '#000' }} onClick={() => setShowDonateQR('')} />
+        <div style={{ position: 'relative', backgroundColor: '#fff', borderRadius: '1rem', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)', maxWidth: '24rem', width: '100%', padding: '1.5rem', textAlign: 'center' }}>
           <button
             onClick={() => setShowDonateQR('')}
             className="absolute top-3 right-3 text-[#b0a898] hover:text-[#666] transition-colors"
@@ -1083,9 +1113,17 @@ export default function LotteryTypePage() {
       </div>
 
       {/* PayNow 二维码弹窗 */}
-      <div className={`fixed inset-0 z-[70] flex items-center justify-center p-4 transition-all duration-200 ${showDonateQR === 'paynow' ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
-        <div className="absolute inset-0 bg-black" onClick={() => setShowDonateQR('')} />
-        <div className="relative bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 text-center animate-in zoom-in-95 duration-200">
+      <div style={{
+        position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+        zIndex: 99997,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        padding: '1rem',
+        transition: 'all 0.2s',
+        opacity: showDonateQR === 'paynow' ? 1 : 0,
+        pointerEvents: showDonateQR === 'paynow' ? 'auto' : 'none',
+      }}>
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: '#000' }} onClick={() => setShowDonateQR('')} />
+        <div style={{ position: 'relative', backgroundColor: '#fff', borderRadius: '1rem', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)', maxWidth: '24rem', width: '100%', padding: '1.5rem', textAlign: 'center' }}>
           <button
             onClick={() => setShowDonateQR('')}
             className="absolute top-3 right-3 text-[#b0a898] hover:text-[#666] transition-colors"
@@ -1103,12 +1141,20 @@ export default function LotteryTypePage() {
 
   // ── Contact info modal ──
   const contactInfoModal = (
-    <div className={`fixed inset-0 z-[60] flex items-center justify-center p-4 transition-all duration-200 ${showContactInfo ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
-      <div className="absolute inset-0 bg-black" onClick={() => setShowContactInfo(false)} />
-      <div className="relative bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 animate-in zoom-in-95 duration-200">
+    <div style={{
+      position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+      zIndex: 99996,
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      padding: '1rem',
+      transition: 'all 0.2s',
+      opacity: showContactInfo ? 1 : 0,
+      pointerEvents: showContactInfo ? 'auto' : 'none',
+    }}>
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: '#000' }} onClick={() => setShowContactInfo(false)} />
+      <div style={{ position: 'relative', backgroundColor: '#fff', borderRadius: '1rem', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)', maxWidth: '24rem', width: '100%', padding: '1.5rem' }}>
         <button
           onClick={() => setShowContactInfo(false)}
-          className="absolute top-3 right-3 text-[#b0a898] hover:text-[#666] transition-colors"
+          style={{ position: 'absolute', top: '0.75rem', right: '0.75rem', color: '#b0a898', background: 'none', border: 'none', cursor: 'pointer' }}
         >
           <X className="w-4 h-4" />
         </button>
