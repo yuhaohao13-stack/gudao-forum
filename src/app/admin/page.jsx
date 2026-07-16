@@ -64,7 +64,7 @@ export default function AdminPage() {
       <div className="flex gap-2 mb-6 flex-wrap">
         {['threads', 'users', 'membership', 'donations', 'broadcast'].map(t => (
           <button key={t} onClick={() => setTab(t)}
-            className={`px-4 py-1.5 rounded-md text-sm font-medium transition-colors ${tab === t ? 'bg-[#1a1a1a] text-white' : 'text-[#999] hover:text-[#1a1a1a] hover:bg-[#f5f5f5]'}`}>
+            className={`px-4 py-1.5 rounded-md text-sm font-medium transition-colors ${tab === t ? 'bg-[#b45309] text-white' : 'text-[#999] hover:text-[#1a1a1a] hover:bg-[#f5f5f5]'}`}>
             {t === 'threads' ? '帖子管理' : t === 'users' ? '用户管理' : t === 'membership' ? <><Crown size={14} className="inline-block align-text-bottom" /> 会员</> : t === 'donations' ? '打赏记录' : <><Megaphone size={14} className="inline-block align-text-bottom" /> 公告</>}
           </button>
         ))}
