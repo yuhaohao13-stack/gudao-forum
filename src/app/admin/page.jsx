@@ -201,8 +201,67 @@ export default function AdminPage() {
 
       {tab === 'donations' && (
         <div>
-          <h2 className="font-bold text-[#1a1a1a] mb-3">💰 打赏记录</h2>
-          <p className="text-xs text-[#aaa] mb-4">所有用户打赏升级记录</p>
+          <div className="flex items-center gap-2 mb-3">
+            <h2 className="font-bold text-[#1a1a1a]">💰 打赏记录</h2>
+            <span className="text-xs text-[#aaa]">用户打赏后联系你，你来这里手动记录并升级</span>
+          </div>
+          
+          {/* 手动添加打赏 */}
+          <div className="bg-[#fefaf5] border border-[#eee8dc] rounded-xl p-4 mb-4">
+            <h3 className="text-sm font-bold text-[#1c1917] mb-3">➕ 手动添加打赏记录</h3>
+            <div className="flex flex-wrap gap-2 items-end">
+              <div>
+                <label className="text-[10px] text-[#888] block mb-0.5">用户名</label>
+                <input id="donate-username"
+                  className="bg-white border border-[#f0f0f0] rounded-md px-3 py-1.5 text-xs text-[#555] outline-none focus:border-[#b45309] w-28"
+                  placeholder="输入用户名" />
+              </div>
+              <div>
+                <label className="text-[10px] text-[#888] block mb-0.5">金额</label>
+                <select id="donate-amount"
+                  className="bg-white border border-[#f0f0f0] rounded-md px-3 py-1.5 text-xs text-[#555] outline-none">
+                  <option value="9.9">¥9.9（黄金）</option>
+                  <option value="99">¥99（钻石）</option>
+                </select>
+              </div>
+              <button onClick={async () => {
+                const username = document.getElementById('donate-username')?.value?.trim()
+                const amount = parseFloat(document.getElementById('donate-amount')?.value || '9.9')
+                if (!username) return alert('请输入用户名')
+                
+                // Find user
+                const { data: user } = await supabase.from('profiles').select('id,display_name,username').or('username.eq.' + username + ',display_name.eq.' + username).maybeSingle()
+                if (!user) return alert('未找到用户「' + username + '」，请先确认用户已注册')
+                
+                const plan = amount >= 50 ? 'diamond' : 'gold'
+                const draws = plan === 'diamond' ? 99999 : 500
+                
+                // Insert donation record
+                await supabase.from('donations').insert({
+                  user_id: user.id,
+                  username: user.display_name || user.username,
+                  amount: amount,
+                  plan: plan,
+                  status: 'completed'
+                })
+                
+                // Upgrade user
+                await supabase.from('profiles').update({ membership_level: plan, gold_draws_remaining: draws }).eq('id', user.id)
+                
+                document.getElementById('donate-username').value = ''
+                alert('✅ ' + username + ' 已升级为' + (plan === 'diamond' ? '钻石' : '黄金') + '会员！')
+                
+                // Refresh
+                supabase.from('donations').select('*, profiles!inner(username, display_name)').order('created_at', { ascending: false }).limit(100).then(({ data }) => setDonations(data || [])).catch(() => {})
+                supabase.from('profiles').select('*').order('created_at', { ascending: false }).then(({ data }) => setUsers(data || []))
+              }} className="px-3 py-1.5 bg-[#b45309] text-white text-xs font-medium rounded-lg hover:bg-[#92400e] transition-colors">
+                添加并升级
+              </button>
+            </div>
+            <p className="text-[10px] text-[#aaa] mt-2">用户打赏后联系你 → 输入用户名 → 选金额 → 一键升级</p>
+          </div>
+          
+          <p className="text-xs text-[#aaa] mb-4">打赏记录列表</p>
           <div className="border border-[#f0f0f0] rounded-xl overflow-hidden">
             <table className="w-full text-sm">
               <thead>
