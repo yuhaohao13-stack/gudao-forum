@@ -140,25 +140,6 @@ export default function Home() {
         </div>
       </Link>
 
-      {/* ===== 版块（缩小紧凑版） ===== */}
-      <section className="anim-up">
-        <h2 className="text-xs font-semibold text-[#bbb] uppercase tracking-widest mb-2">{t('board.title')}</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-          {categories.map((c, i) => (
-            <Link key={c.id} href={`/c/${c.slug}`}
-              className="block bg-white border border-[#ece8e0] rounded-xl px-3 py-2.5 transition-all hover:border-[#c23531] hover:shadow-sm hover:-translate-y-0.5">
-              <div className="flex items-center gap-2">
-                <div className="text-base shrink-0">{CAT_ICONS[c.slug] || <FileText size={16} className="inline-block" />}</div>
-                <div className="min-w-0">
-                  <div className="font-semibold text-xs text-[#1a1a1a] truncate">{c.name}</div>
-                  <div className="text-[10px] text-[#aaa] truncate leading-tight">{c.description}</div>
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
-
       {/* ===== 🎵 音乐频道 ===== */}
       <Link href="/music" className="block anim-up">
         <div className="bg-gradient-to-r from-[#fdf8f4] to-[#fefaf5] border border-[#eee8dc] rounded-xl px-4 py-3 transition-all hover:border-[#b45309] hover:shadow-sm hover:-translate-y-0.5">
@@ -186,6 +167,25 @@ export default function Home() {
           </div>
         </div>
       </Link>
+
+      {/* ===== 版块（缩小紧凑版） ===== */}
+      <section className="anim-up">
+        <h2 className="text-xs font-semibold text-[#bbb] uppercase tracking-widest mb-2">{t('board.title')}</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+          {categories.map((c, i) => (
+            <Link key={c.id} href={`/c/${c.slug}`}
+              className="block bg-white border border-[#ece8e0] rounded-xl px-3 py-2.5 transition-all hover:border-[#c23531] hover:shadow-sm hover:-translate-y-0.5">
+              <div className="flex items-center gap-2">
+                <div className="text-base shrink-0">{CAT_ICONS[c.slug] || <FileText size={16} className="inline-block" />}</div>
+                <div className="min-w-0">
+                  <div className="font-semibold text-xs text-[#1a1a1a] truncate">{c.name}</div>
+                  <div className="text-[10px] text-[#aaa] truncate leading-tight">{c.description}</div>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
 
       {/* ===== 🎮 游戏娱乐（游戏加载后可离线畅玩） ===== */}
       <section className="anim-up">

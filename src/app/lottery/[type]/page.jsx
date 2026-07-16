@@ -22,6 +22,10 @@ import {
   RefreshCw,
   ChevronDown,
   ArrowLeft,
+  Phone,
+  MessageCircle,
+  Copy,
+  Heart,
 } from 'lucide-react'
 
 // ─── Lottery type configuration ─────────────────────────────────
@@ -169,6 +173,9 @@ export default function LotteryTypePage() {
   const [drawsRemaining, setDrawsRemaining] = useState(0)
   const [userLevel, setUserLevel] = useState('regular')
   const [showUpgradeModal, setShowUpgradeModal] = useState(false)
+  const [showDonateInfo, setShowDonateInfo] = useState(false)
+  const [showContactInfo, setShowContactInfo] = useState(false)
+  const [copied, setCopied] = useState('')
   const [history, setHistory] = useState([])
   const [error, setError] = useState('')
   const [user, setUser] = useState(null)
@@ -969,16 +976,213 @@ export default function LotteryTypePage() {
           </div>
         </div>
 
-        <p className="text-[10px] text-[#b0a898] text-center mb-4">
-          联系管理员（飞书/微信）打赏后即可升级
-        </p>
+        {/* Action buttons */}
+        <div className="space-y-2.5 mb-4">
+          <button
+            onClick={() => setShowDonateInfo(true)}
+            className="w-full py-3 bg-gradient-to-r from-[#b45309] to-[#d97706] text-white text-sm font-bold rounded-xl hover:from-[#a04407] hover:to-[#c06806] transition-all duration-200 shadow-sm flex items-center justify-center gap-2"
+          >
+            <Heart className="w-4 h-4" />
+            打赏升级
+          </button>
+          <button
+            onClick={() => setShowContactInfo(true)}
+            className="w-full py-3 bg-white border-2 border-[#ece8e0] text-[#1c1917] text-sm font-bold rounded-xl hover:border-[#b45309] hover:text-[#b45309] transition-all duration-200 flex items-center justify-center gap-2"
+          >
+            <MessageCircle className="w-4 h-4" />
+            联系管理员升级
+          </button>
+        </div>
 
         <Link
           href="/lottery/upgrade"
-          className="block w-full py-2.5 bg-gradient-to-r from-[#b45309] to-[#d97706] text-white text-sm font-bold rounded-xl text-center hover:from-[#a04407] hover:to-[#c06806] transition-all duration-200 shadow-sm"
+          className="block text-center text-xs text-[#b0a898] hover:text-[#b45309] transition-colors"
         >
-          了解会员权益 →
+          了解会员权益详情 →
         </Link>
+      </div>
+    </div>
+  )
+
+  // ── Donate info modal ──
+  const [showDonateQR, setShowDonateQR] = useState('') // 'wechat' | 'paynow'
+
+  const donateInfoModal = (
+    <>
+      {/* 打赏主弹窗 */}
+      <div className={`fixed inset-0 z-[60] flex items-center justify-center p-4 transition-all duration-200 ${showDonateInfo ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+        <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => { setShowDonateInfo(false); setShowDonateQR('') }} />
+        <div className="relative bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 animate-in zoom-in-95 duration-200">
+          <button
+            onClick={() => { setShowDonateInfo(false); setShowDonateQR('') }}
+            className="absolute top-3 right-3 text-[#b0a898] hover:text-[#666] transition-colors"
+          >
+            <X className="w-4 h-4" />
+          </button>
+
+          <div className="text-center mb-5 pt-2">
+            <div className="text-5xl mb-3">☕</div>
+            <h3 className="text-base font-bold text-[#1c1917] mb-1">打赏升级</h3>
+            <p className="text-xs text-[#666] leading-relaxed">
+              黄金 ¥9.9 / 钻石 ¥99，打赏后联系管理员升级
+            </p>
+          </div>
+
+          <div className="space-y-3 mb-4">
+            {/* 微信 */}
+            <button
+              onClick={() => { setShowDonateInfo(false); setTimeout(() => setShowDonateQR('wechat'), 200) }}
+              className="w-full flex items-center gap-3 p-4 rounded-xl border border-[#eee8dc] hover:border-[#07c160] hover:bg-[#f0faf0] transition-all text-left"
+            >
+              <div className="w-10 h-10 rounded-full bg-[#07c160] flex items-center justify-center text-xl shrink-0">💚</div>
+              <div className="flex-1">
+                <div className="font-semibold text-sm text-[#1c1917]">微信</div>
+                <div className="text-xs text-[#999]">扫描二维码支付</div>
+              </div>
+              <span className="text-green-500 text-sm font-bold">→</span>
+            </button>
+
+            {/* PayNow */}
+            <button
+              onClick={() => { setShowDonateInfo(false); setTimeout(() => setShowDonateQR('paynow'), 200) }}
+              className="w-full flex items-center gap-3 p-4 rounded-xl border border-[#eee8dc] hover:border-[#16a34a] hover:bg-[#f0fdf0] transition-all text-left"
+            >
+              <div className="w-10 h-10 rounded-full bg-[#16a34a] flex items-center justify-center text-xl shrink-0">🇸🇬</div>
+              <div className="flex-1">
+                <div className="font-semibold text-sm text-[#1c1917]">PayNow</div>
+                <div className="text-xs text-[#999]">扫描二维码支付</div>
+              </div>
+              <span className="text-green-600 text-sm font-bold">→</span>
+            </button>
+          </div>
+
+          <button
+            onClick={() => { setShowDonateInfo(false); setTimeout(() => setShowContactInfo(true), 200) }}
+            className="text-xs text-[#b45309] hover:underline block mx-auto"
+          >
+            打赏后点此联系管理员 →
+          </button>
+        </div>
+      </div>
+
+      {/* 微信二维码弹窗 */}
+      <div className={`fixed inset-0 z-[70] flex items-center justify-center p-4 transition-all duration-200 ${showDonateQR === 'wechat' ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+        <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setShowDonateQR('')} />
+        <div className="relative bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 text-center animate-in zoom-in-95 duration-200">
+          <button
+            onClick={() => setShowDonateQR('')}
+            className="absolute top-3 right-3 text-[#b0a898] hover:text-[#666] transition-colors"
+          >
+            <X className="w-4 h-4" />
+          </button>
+          <div className="text-lg font-bold text-[#1c1917] mb-1 mt-2">💚 微信</div>
+          <p className="text-xs text-[#999] mb-4">打开微信扫描二维码支付</p>
+          <img src="/images/wechat-pay-qr.jpg" alt="微信收款码" className="w-full max-w-[15rem] mx-auto rounded-xl border border-[#eee8dc]" />
+          <p className="text-[10px] text-[#ccc] mt-3">截图保存到相册，在微信中扫码</p>
+        </div>
+      </div>
+
+      {/* PayNow 二维码弹窗 */}
+      <div className={`fixed inset-0 z-[70] flex items-center justify-center p-4 transition-all duration-200 ${showDonateQR === 'paynow' ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+        <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setShowDonateQR('')} />
+        <div className="relative bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 text-center animate-in zoom-in-95 duration-200">
+          <button
+            onClick={() => setShowDonateQR('')}
+            className="absolute top-3 right-3 text-[#b0a898] hover:text-[#666] transition-colors"
+          >
+            <X className="w-4 h-4" />
+          </button>
+          <div className="text-lg font-bold text-[#1c1917] mb-1 mt-2">🇸🇬 PayNow</div>
+          <p className="text-xs text-[#999] mb-4">打开银行 App 扫描二维码支付</p>
+          <img src="/images/paynow-qr.jpg" alt="PayNow 收款码" className="w-full max-w-[15rem] mx-auto rounded-xl border border-[#eee8dc]" />
+          <p className="text-[10px] text-[#ccc] mt-3">截图保存到相册，在银行 App 中扫码</p>
+        </div>
+      </div>
+    </>
+  )
+
+  // ── Contact info modal ──
+  const contactInfoModal = (
+    <div className={`fixed inset-0 z-[60] flex items-center justify-center p-4 transition-all duration-200 ${showContactInfo ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setShowContactInfo(false)} />
+      <div className="relative bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 animate-in zoom-in-95 duration-200">
+        <button
+          onClick={() => setShowContactInfo(false)}
+          className="absolute top-3 right-3 text-[#b0a898] hover:text-[#666] transition-colors"
+        >
+          <X className="w-4 h-4" />
+        </button>
+
+        <div className="text-center mb-5 pt-2">
+          <div className="text-5xl mb-3">📞</div>
+          <h3 className="text-base font-bold text-[#1c1917] mb-1">联系管理员</h3>
+          <p className="text-xs text-[#666] leading-relaxed">
+            打赏后联系管理员，立即为您升级
+          </p>
+        </div>
+
+        <div className="space-y-3 mb-4">
+          {/* 微信 */}
+          <div className="bg-white border border-[#ece8e0] rounded-xl p-4">
+            <div className="flex items-center gap-2 mb-1">
+              <MessageCircle className="w-4 h-4 text-green-500" />
+              <span className="font-bold text-sm text-[#1c1917]">微信</span>
+            </div>
+            <div className="flex items-center justify-between bg-[#f9f9f9] rounded-lg px-3 py-2 mt-1">
+              <span className="text-sm text-[#555]">yuhaohao13</span>
+              <button
+                onClick={() => { navigator.clipboard.writeText('yuhaohao13'); setCopied('contact-wechat'); setTimeout(() => setCopied(''), 2000) }}
+                className={`flex items-center gap-1 text-xs px-2.5 py-1 rounded-lg transition-colors ${copied === 'contact-wechat' ? 'bg-green-50 text-green-600' : 'bg-[#f5f5f5] text-[#888] hover:bg-[#eee]'}`}
+              >
+                <Copy className="w-3 h-3" />
+                {copied === 'contact-wechat' ? '已复制' : '复制'}
+              </button>
+            </div>
+          </div>
+
+          {/* 飞书 */}
+          <div className="bg-white border border-[#ece8e0] rounded-xl p-4">
+            <div className="flex items-center gap-2 mb-1">
+              <span className="w-4 h-4 flex items-center justify-center">🦜</span>
+              <span className="font-bold text-sm text-[#1c1917]">飞书</span>
+            </div>
+            <p className="text-xs text-[#666] mt-1">直接在飞书联系管理员（浩哥）</p>
+          </div>
+
+          {/* 电话 */}
+          <div className="bg-white border border-[#ece8e0] rounded-xl p-4">
+            <div className="flex items-center gap-2 mb-1">
+              <Phone className="w-4 h-4 text-[#b45309]" />
+              <span className="font-bold text-sm text-[#1c1917]">电话</span>
+            </div>
+            <div className="space-y-1 mt-1">
+              <div className="flex items-center justify-between bg-[#f9f9f9] rounded-lg px-3 py-1.5">
+                <span className="text-xs text-[#555]">🇨🇳 中国 +86 13573735550</span>
+                <button
+                  onClick={() => { navigator.clipboard.writeText('+8613573735550'); setCopied('cn-phone'); setTimeout(() => setCopied(''), 2000) }}
+                  className={`flex items-center gap-1 text-[10px] px-2 py-1 rounded-lg transition-colors ${copied === 'cn-phone' ? 'bg-green-50 text-green-600' : 'bg-[#f5f5f5] text-[#888] hover:bg-[#eee]'}`}
+                >
+                  <Copy className="w-2.5 h-2.5" />
+                  {copied === 'cn-phone' ? '已复制' : '复制'}
+                </button>
+              </div>
+              <div className="flex items-center justify-between bg-[#f9f9f9] rounded-lg px-3 py-1.5">
+                <span className="text-xs text-[#555]">🇸🇬 新加坡 +65 96146709</span>
+                <button
+                  onClick={() => { navigator.clipboard.writeText('+6596146709'); setCopied('sg-phone'); setTimeout(() => setCopied(''), 2000) }}
+                  className={`flex items-center gap-1 text-[10px] px-2 py-1 rounded-lg transition-colors ${copied === 'sg-phone' ? 'bg-green-50 text-green-600' : 'bg-[#f5f5f5] text-[#888] hover:bg-[#eee]'}`}
+                >
+                  <Copy className="w-2.5 h-2.5" />
+                  {copied === 'sg-phone' ? '已复制' : '复制'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p className="text-[10px] text-[#b0a898] text-center">
+          打赏后直接联系管理员，核实后立即升级
+        </p>
       </div>
     </div>
   )
@@ -1135,6 +1339,8 @@ export default function LotteryTypePage() {
 
       {/* ─── Upgrade modal ─── */}
       {upgradeModal}
+      {donateInfoModal}
+      {contactInfoModal}
 
       {/* ─── Keyframe animations ─── */}
       <style jsx>{`

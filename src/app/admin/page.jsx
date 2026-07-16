@@ -10,6 +10,7 @@ export default function AdminPage() {
   const [threads, setThreads] = useState([]); const [users, setUsers] = useState([]); const [tab, setTab] = useState('threads'); const [donations, setDonations] = useState([])
   const [broadcastText, setBroadcastText] = useState(''); const [broadcasting, setBroadcasting] = useState(false); const [broadcastResult, setBroadcastResult] = useState('')
   const [threadSearch, setThreadSearch] = useState(''); const [memberSearch, setMemberSearch] = useState('')
+  const [memberError, setMemberError] = useState('')
   const supabase = createClient(); const router = useRouter()
 
   useEffect(() => { if (!loading && (!user || profile?.role !== 'admin')) router.push('/') }, [user, profile, loading])
@@ -136,6 +137,11 @@ export default function AdminPage() {
             <h2 className="font-bold text-[#1a1a1a]"><Crown size={16} className="inline-block align-text-bottom" /> 会员等级管理</h2>
             <span className="text-xs text-[#aaa]">管理彩票模拟器会员等级</span>
           </div>
+          {memberError && (
+            <div className="mb-3 px-4 py-2.5 bg-red-50 border border-red-200 rounded-lg text-xs text-red-600">
+              {memberError}
+            </div>
+          )}
           <input value={memberSearch} onChange={e => setMemberSearch(e.target.value)}
             className="w-full mb-3 bg-white border border-[#f0f0f0] rounded-lg px-3 py-2 text-xs text-[#555] outline-none focus:border-[#b45309]"
             placeholder="🔍 搜索用户名..." />
@@ -175,12 +181,23 @@ export default function AdminPage() {
                           onChange={async e => {
                             const level = e.target.value
                             if (!confirm(`确定将 ${u.display_name || u.username} 设为${level === 'diamond' ? '钻石' : level === 'gold' ? '黄金' : '普通'}会员？`)) return
+                            setMemberError('')
                             const draws = level === 'gold' ? 500 : level === 'diamond' ? 99999 : 0
-                            await fetch('/api/admin/upgrade', {
-                              method: 'POST',
-                              headers: { 'Content-Type': 'application/json' },
-                              body: JSON.stringify({ user_id: u.id, level, draws })
-                            })
+                            try {
+                              const res = await fetch('/api/admin/upgrade', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ user_id: u.id, level, draws })
+                              })
+                              const data = await res.json()
+                              if (!res.ok) {
+                                setMemberError(`❌ 升级失败: ${data.error || '未知错误'}`)
+                                return
+                              }
+                            } catch (e) {
+                              setMemberError(`❌ 网络错误: ${e.message}`)
+                              return
+                            }
                             supabase.from('profiles').select('*').order('created_at', { ascending: false }).then(({ data }) => setUsers(data || []))
                             supabase.from('donations').select('*, profiles!inner(username, display_name)').order('created_at', { ascending: false }).limit(100).then(({ data }) => setDonations(data || [])).catch(() => {})
                           }}
