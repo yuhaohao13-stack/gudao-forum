@@ -990,14 +990,14 @@ export default function LotteryTypePage() {
         {/* Action buttons */}
         <div className="space-y-2.5 mb-4">
           <button
-            onClick={() => setShowDonateInfo(true)}
+            onClick={() => { setShowUpgradeModal(false); setTimeout(() => setShowDonateInfo(true), 200) }}
             className="w-full py-3 bg-gradient-to-r from-[#b45309] to-[#d97706] text-white text-sm font-bold rounded-xl hover:from-[#a04407] hover:to-[#c06806] transition-all duration-200 shadow-sm flex items-center justify-center gap-2"
           >
             <Heart className="w-4 h-4" />
             打赏升级
           </button>
           <button
-            onClick={() => setShowContactInfo(true)}
+            onClick={() => { setShowUpgradeModal(false); setTimeout(() => setShowContactInfo(true), 200) }}
             className="w-full py-3 bg-white border-2 border-[#ece8e0] text-[#1c1917] text-sm font-bold rounded-xl hover:border-[#b45309] hover:text-[#b45309] transition-all duration-200 flex items-center justify-center gap-2"
           >
             <MessageCircle className="w-4 h-4" />
