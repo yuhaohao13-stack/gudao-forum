@@ -945,7 +945,7 @@ export default function LotteryTypePage() {
     }}>
       {/* Backdrop */}
       <div
-        style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.65)' }}
+        style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: '#fafaf9' }}
         onClick={() => setShowUpgradeModal(false)}
       />
       {/* Modal */}
@@ -1033,7 +1033,7 @@ export default function LotteryTypePage() {
         opacity: showDonateInfo ? 1 : 0,
         pointerEvents: showDonateInfo ? 'auto' : 'none',
       }}>
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.65)' }} onClick={() => { setShowDonateInfo(false); setShowDonateQR('') }} />
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: '#fafaf9' }} onClick={() => { setShowDonateInfo(false); setShowDonateQR('') }} />
         <div style={{ position: 'relative', backgroundColor: '#fff', borderRadius: '1rem', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)', maxWidth: '24rem', width: '100%', padding: '1.5rem' }}>
           <button
             onClick={() => { setShowDonateInfo(false); setShowDonateQR('') }}
@@ -1097,7 +1097,7 @@ export default function LotteryTypePage() {
         opacity: showDonateQR === 'wechat' ? 1 : 0,
         pointerEvents: showDonateQR === 'wechat' ? 'auto' : 'none',
       }}>
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.65)' }} onClick={() => setShowDonateQR('')} />
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: '#fafaf9' }} onClick={() => setShowDonateQR('')} />
         <div style={{ position: 'relative', backgroundColor: '#fff', borderRadius: '1rem', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)', maxWidth: '24rem', width: '100%', padding: '1.5rem', textAlign: 'center' }}>
           <button
             onClick={() => setShowDonateQR('')}
@@ -1122,7 +1122,7 @@ export default function LotteryTypePage() {
         opacity: showDonateQR === 'paynow' ? 1 : 0,
         pointerEvents: showDonateQR === 'paynow' ? 'auto' : 'none',
       }}>
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.65)' }} onClick={() => setShowDonateQR('')} />
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: '#fafaf9' }} onClick={() => setShowDonateQR('')} />
         <div style={{ position: 'relative', backgroundColor: '#fff', borderRadius: '1rem', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)', maxWidth: '24rem', width: '100%', padding: '1.5rem', textAlign: 'center' }}>
           <button
             onClick={() => setShowDonateQR('')}
@@ -1150,7 +1150,7 @@ export default function LotteryTypePage() {
       opacity: showContactInfo ? 1 : 0,
       pointerEvents: showContactInfo ? 'auto' : 'none',
     }}>
-      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.65)' }} onClick={() => setShowContactInfo(false)} />
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: '#fafaf9' }} onClick={() => setShowContactInfo(false)} />
       <div style={{ position: 'relative', backgroundColor: '#fff', borderRadius: '1rem', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)', maxWidth: '24rem', width: '100%', padding: '1.5rem' }}>
         <button
           onClick={() => setShowContactInfo(false)}
