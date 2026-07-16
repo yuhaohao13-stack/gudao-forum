@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useAuth } from '@/components/AuthProvider'
 import { createClient } from '@/lib/supabase/client'
-import { Crown, Shield, Sparkles, ArrowLeft, Check, Copy } from 'lucide-react'
+import { Crown, Shield, Sparkles, ArrowLeft, Check, Heart } from 'lucide-react'
 
 const PLANS = [
   {
@@ -40,9 +40,7 @@ const PLANS = [
 ]
 
 const PAYMENT_INFO = {
-  alipay: '13573735550',
-  wechat: 'yuhaohao13',
-  contact: '请打赏后联系浩哥（飞书）提升等级',
+  contact: '打赏后联系浩哥（飞书）提升等级',
 }
 
 export default function UpgradePage() {
@@ -50,10 +48,8 @@ export default function UpgradePage() {
   const [copied, setCopied] = useState('')
   const [selectedPlan, setSelectedPlan] = useState('diamond')
 
-  const copyText = (text, key) => {
-    navigator.clipboard.writeText(text)
-    setCopied(key)
-    setTimeout(() => setCopied(''), 2000)
+  const openDonate = () => {
+    window.dispatchEvent(new CustomEvent('open-donate'))
   }
 
   const currentLevel = profile?.membership_level || 'regular'
@@ -125,37 +121,20 @@ export default function UpgradePage() {
         ))}
       </div>
 
-      {/* 支付方式 */}
-      <div className="bg-[#fefaf5] border border-[#eee8dc] rounded-xl p-5 mb-6">
-        <h2 className="font-semibold text-[#1c1917] text-sm mb-3">💰 打赏方式</h2>
-        <div className="space-y-3">
-          <div className="flex items-center justify-between bg-white rounded-lg px-3 py-2.5 border border-[#ece8e0]">
-            <div className="flex items-center gap-2">
-              <span className="text-sm">📱 支付宝</span>
-              <code className="text-xs bg-[#f5f5f5] px-2 py-0.5 rounded font-mono">{PAYMENT_INFO.alipay}</code>
-            </div>
-            <button
-              onClick={() => copyText(PAYMENT_INFO.alipay, 'alipay')}
-              className="text-xs text-[#b45309] hover:underline flex items-center gap-1"
-            >
-              <Copy size={12} /> {copied === 'alipay' ? '已复制' : '复制'}
-            </button>
-          </div>
-          <div className="flex items-center justify-between bg-white rounded-lg px-3 py-2.5 border border-[#ece8e0]">
-            <div className="flex items-center gap-2">
-              <span className="text-sm">💚 微信</span>
-              <code className="text-xs bg-[#f5f5f5] px-2 py-0.5 rounded font-mono">{PAYMENT_INFO.wechat}</code>
-            </div>
-            <button
-              onClick={() => copyText(PAYMENT_INFO.wechat, 'wechat')}
-              className="text-xs text-[#b45309] hover:underline flex items-center gap-1"
-            >
-              <Copy size={12} /> {copied === 'wechat' ? '已复制' : '复制'}
-            </button>
-          </div>
-        </div>
-        <div className="mt-3 p-3 bg-[#FFD700] bg-opacity-10 border border-[#FFD700] border-opacity-30 rounded-lg">
-          <p className="text-xs text-[#666] flex items-center gap-1">
+      {/* 打赏升级按钮 */}
+      <div className="bg-gradient-to-r from-[#fefaf5] to-[#fdf8f4] border border-[#eee8dc] rounded-xl p-6 mb-6 text-center">
+        <div className="text-lg mb-2">💝</div>
+        <h2 className="font-bold text-[#1c1917] text-base mb-1">打赏升级会员</h2>
+        <p className="text-xs text-[#888] mb-4">点击下方按钮打赏，联系管理员即可升级</p>
+        <button
+          onClick={openDonate}
+          className="inline-flex items-center gap-2 bg-[#b45309] hover:bg-[#92400e] text-white font-bold px-6 py-3 rounded-xl transition-colors"
+        >
+          <Heart size={18} />
+          打赏支持
+        </button>
+        <div className="mt-3 p-3 bg-[#FFD700] bg-opacity-10 border border-[#FFD700] border-opacity-20 rounded-lg">
+          <p className="text-xs text-[#666] flex items-center gap-1 justify-center">
             <Sparkles size={14} className="text-[#FFD700]" />
             {PAYMENT_INFO.contact}
           </p>
@@ -168,15 +147,15 @@ export default function UpgradePage() {
         <div className="space-y-3 text-xs text-[#666]">
           <div>
             <div className="font-medium text-[#444] mb-0.5">如何升级黄金会员？</div>
-            <div>打赏 ¥9.9 到支付宝或微信，然后联系管理员（浩哥飞书），管理员会手动提升你的会员等级，并发放500次摇奖机会。</div>
+            <div>点击「打赏支持」按钮，打赏 ¥9.9 后联系浩哥飞书，管理员手动提升会员等级并发放500次摇奖机会。</div>
           </div>
           <div>
             <div className="font-medium text-[#444] mb-0.5">钻石会员有什么额外权益？</div>
-            <div>钻石会员 ¥99，无限次摇奖，无需担心次数用完，同时拥有尊贵的钻石标识展示在你的个人资料上。</div>
+            <div>打赏 ¥99 升级钻石会员，无限次摇奖，尊贵钻石标识。</div>
           </div>
           <div>
             <div className="font-medium text-[#444] mb-0.5">黄金会员次数用完了怎么办？</div>
-            <div>联系管理员续费即可补充摇奖次数。</div>
+            <div>联系浩哥续费即可补充摇奖次数。</div>
           </div>
           <div>
             <div className="font-medium text-[#444] mb-0.5">升级后立即生效吗？</div>
