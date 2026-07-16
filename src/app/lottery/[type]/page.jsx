@@ -934,7 +934,7 @@ export default function LotteryTypePage() {
     <div className={`fixed inset-0 z-50 flex items-center justify-center p-4 transition-all duration-200 ${showUpgradeModal ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+        className="absolute inset-0 bg-black"
         onClick={() => setShowUpgradeModal(false)}
       />
       {/* Modal */}
@@ -1011,7 +1011,7 @@ export default function LotteryTypePage() {
     <>
       {/* 打赏主弹窗 */}
       <div className={`fixed inset-0 z-[60] flex items-center justify-center p-4 transition-all duration-200 ${showDonateInfo ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
-        <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => { setShowDonateInfo(false); setShowDonateQR('') }} />
+        <div className="absolute inset-0 bg-black" onClick={() => { setShowDonateInfo(false); setShowDonateQR('') }} />
         <div className="relative bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 animate-in zoom-in-95 duration-200">
           <button
             onClick={() => { setShowDonateInfo(false); setShowDonateQR('') }}
@@ -1067,7 +1067,7 @@ export default function LotteryTypePage() {
 
       {/* 微信二维码弹窗 */}
       <div className={`fixed inset-0 z-[70] flex items-center justify-center p-4 transition-all duration-200 ${showDonateQR === 'wechat' ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
-        <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setShowDonateQR('')} />
+        <div className="absolute inset-0 bg-black" onClick={() => setShowDonateQR('')} />
         <div className="relative bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 text-center animate-in zoom-in-95 duration-200">
           <button
             onClick={() => setShowDonateQR('')}
@@ -1084,7 +1084,7 @@ export default function LotteryTypePage() {
 
       {/* PayNow 二维码弹窗 */}
       <div className={`fixed inset-0 z-[70] flex items-center justify-center p-4 transition-all duration-200 ${showDonateQR === 'paynow' ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
-        <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setShowDonateQR('')} />
+        <div className="absolute inset-0 bg-black" onClick={() => setShowDonateQR('')} />
         <div className="relative bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 text-center animate-in zoom-in-95 duration-200">
           <button
             onClick={() => setShowDonateQR('')}
@@ -1104,7 +1104,7 @@ export default function LotteryTypePage() {
   // ── Contact info modal ──
   const contactInfoModal = (
     <div className={`fixed inset-0 z-[60] flex items-center justify-center p-4 transition-all duration-200 ${showContactInfo ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setShowContactInfo(false)} />
+      <div className="absolute inset-0 bg-black" onClick={() => setShowContactInfo(false)} />
       <div className="relative bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 animate-in zoom-in-95 duration-200">
         <button
           onClick={() => setShowContactInfo(false)}
