@@ -446,22 +446,7 @@ export default function LotteryTypePage() {
   }, [user, userLevel, drawsRemaining, type, selected, fetchUserStatus])
 
   // ── Check if selection is valid ──
-  const canDraw = useCallback(() => {
-    switch (type) {
-      case 'ssq':
-        return selected.red?.length === 6 && selected.blue !== null && selected.blue !== undefined
-      case 'dlt':
-        return selected.front?.length === 5 && selected.back?.length === 2
-      case 'fc3d':
-        return Array.isArray(selected) && selected.every(d => d !== '')
-      case 'sg4d':
-        return Array.isArray(selected) && selected.every(d => d !== '')
-      case 'toto':
-        return selected.numbers?.length === selected.system
-      default:
-        return false
-    }
-  }, [type, selected])
+  const canDraw = useCallback(() => true, [])
 
   // ── Render helpers ──
 
