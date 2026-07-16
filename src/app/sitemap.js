@@ -20,6 +20,8 @@ export default async function sitemap() {
     { url: `${BASE}/register`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.3 },
     { url: `${BASE}/new-thread`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.4 },
     { url: `${BASE}/messages`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.4 },
+    { url: `${BASE}/lottery`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
+    { url: `${BASE}/lottery/upgrade`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.3 },
   ]
 
   // 分类页面 - 从数据库获取

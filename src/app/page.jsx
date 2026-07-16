@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { MessageCircle, Megaphone, Pin, FileText, Eye, Clock, Flame, ArrowRight, Monitor, Flower2, Package, BookOpen, Sparkles, Gamepad2 } from 'lucide-react'
+import DonationMarquee from '@/components/DonationMarquee'
 import { createClient } from '@/lib/supabase/client'
 import { useLanguage } from '@/lib/LanguageContext'
 
@@ -100,6 +101,11 @@ export default function Home() {
         <Link href="/chat" className="btn-secondary text-xs whitespace-nowrap"><MessageCircle size={14} className="inline-block align-text-bottom" /> {t('home.chatroom')}</Link>
       </div>
 
+      {/* ===== 打赏滚动 ===== */}
+      <div className="anim-up">
+        <DonationMarquee />
+      </div>
+
       {/* ===== 公告 ===== */}
       {announcements.length > 0 && (
         <section className="anim-up">
@@ -161,6 +167,20 @@ export default function Home() {
             <div className="min-w-0 flex-1">
               <div className="text-sm font-semibold text-[#1a1a1a]">音乐频道</div>
               <div className="text-xs text-[#999]">六大分类，120首精选——8090经典、网络红歌、民谣、中文名曲、英文金曲、助眠夜曲</div>
+            </div>
+            <div className="text-xs text-[#b45309] font-medium shrink-0">进入 ›</div>
+          </div>
+        </div>
+      </Link>
+
+      {/* ===== 🎰 彩票模拟器 ===== */}
+      <Link href="/lottery" className="block anim-up">
+        <div className="bg-gradient-to-r from-[#fdf8f4] to-[#fefaf5] border border-[#eee8dc] rounded-xl px-4 py-3 transition-all hover:border-[#b45309] hover:shadow-sm hover:-translate-y-0.5">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-[#b45309] bg-opacity-10 flex items-center justify-center text-base shrink-0">🎰</div>
+            <div className="min-w-0 flex-1">
+              <div className="text-sm font-semibold text-[#1a1a1a]">彩票模拟器</div>
+              <div className="text-xs text-[#999]">双色球 · 大乐透 · 3D · 4D · TOTO — 在线摇奖模拟</div>
             </div>
             <div className="text-xs text-[#b45309] font-medium shrink-0">进入 ›</div>
           </div>
