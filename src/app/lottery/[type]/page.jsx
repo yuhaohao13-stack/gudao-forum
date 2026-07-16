@@ -112,7 +112,7 @@ function NumberBall({ num, selected, color, onClick, size = 'sm' }) {
 
 // ─── Large result ball (white bold text, gradient background) ──
 function ResultBall({ num, color, size = 'lg', type }) {
-  const sizeClass = size === 'xl' ? 'w-14 h-14 text-2xl' : size === 'lg' ? 'w-12 h-12 text-xl' : 'w-10 h-10 text-lg'
+  const sizeClass = size === 'xl' ? 'w-20 h-16 text-4xl' : size === 'lg' ? 'w-12 h-12 text-xl' : 'w-10 h-10 text-lg'
 
   // For fc3d/sg4d we use a block/square styling
   if (type === 'digit') {

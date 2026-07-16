@@ -107,30 +107,28 @@ export default function LotteryPage() {
       </div>
 
       {/* ── Upgrade Banner ── */}
-      <div className="mt-6 bg-gradient-to-r from-amber-50 to-yellow-50 border border-amber-200 rounded-xl p-4 shadow-sm">
-        <div className="flex items-start gap-3">
-          <div className="flex-shrink-0 mt-0.5">
-            <Sparkles className="w-5 h-5 text-[#b45309]" />
-          </div>
-          <div className="flex-1 min-w-0">
-            <h3 className="text-sm font-bold text-[#1c1917] flex items-center gap-1.5">
-              升级会员解锁摇奖
-              <Star className="w-3.5 h-3.5 text-[#b45309]" />
-              <Crown className="w-3.5 h-3.5 text-purple-600" />
-            </h3>
-            <p className="text-[11px] text-[#666] mt-1 leading-relaxed">
-              黄金会员 · 500次摇奖 &nbsp;|&nbsp; 钻石会员 · 无限摇奖
-            </p>
-            <Link
-              href="/lottery/upgrade"
-              className="inline-flex items-center gap-1 mt-2 text-[11px] font-medium text-[#b45309] hover:text-[#a04407] transition-colors"
-            >
-              了解会员权益
-              <ChevronRight className="w-3 h-3" />
-            </Link>
+      <Link href="/lottery/upgrade" className="block mt-6 group">
+        <div className="bg-gradient-to-r from-amber-50 to-yellow-50 border border-amber-200 rounded-xl p-4 shadow-sm transition-all group-hover:shadow-md group-hover:-translate-y-0.5">
+          <div className="flex items-start gap-3">
+            <div className="flex-shrink-0 mt-0.5">
+              <Sparkles className="w-5 h-5 text-[#b45309]" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <h3 className="text-sm font-bold text-[#1c1917] flex items-center gap-1.5 group-hover:text-[#b45309] transition-colors">
+                升级会员解锁摇奖
+                <Star className="w-3.5 h-3.5 text-[#b45309]" />
+                <Crown className="w-3.5 h-3.5 text-purple-600" />
+              </h3>
+              <p className="text-[11px] text-[#666] mt-1 leading-relaxed">
+                黄金会员 · 500次摇奖 &nbsp;|&nbsp; 钻石会员 · 无限摇奖
+              </p>
+              <div className="inline-flex items-center gap-1 mt-2 text-[11px] font-medium text-[#b45309] group-hover:text-[#a04407] transition-colors">
+                了解会员权益 ›
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      </Link>
 
       {/* ── Footer Tip ── */}
       <div className="mt-4 px-1 text-center text-[10px] text-[#b0a898]">

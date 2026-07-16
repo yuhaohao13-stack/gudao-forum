@@ -142,24 +142,24 @@ export default function UpgradePage() {
       </div>
 
       {/* 常见问题 */}
-      <div className="bg-white border border-[#ece8e0] rounded-xl p-5">
-        <h2 className="font-semibold text-[#1c1917] text-sm mb-3">❓ 常见问题</h2>
-        <div className="space-y-3 text-xs text-[#666]">
-          <div>
-            <div className="font-medium text-[#444] mb-0.5">如何升级黄金会员？</div>
-            <div>点击「打赏支持」按钮，打赏 ¥9.9 后联系浩哥飞书，管理员手动提升会员等级并发放500次摇奖机会。</div>
+      <div className="bg-white border border-[#e0d8cc] rounded-xl p-5">
+        <h2 className="font-bold text-[#1c1917] text-base mb-4">❓ 常见问题</h2>
+        <div className="space-y-4 text-sm text-[#444]">
+          <div className="bg-[#fefaf5] p-3.5 rounded-lg border border-[#f0e8dc]">
+            <div className="font-bold text-[#1c1917] mb-1">如何升级黄金会员？</div>
+            <div className="text-[#555] leading-relaxed">点击「打赏支持」按钮，打赏 ¥9.9 后联系浩哥飞书，管理员手动提升会员等级并发放500次摇奖机会。</div>
           </div>
-          <div>
-            <div className="font-medium text-[#444] mb-0.5">钻石会员有什么额外权益？</div>
-            <div>打赏 ¥99 升级钻石会员，无限次摇奖，尊贵钻石标识。</div>
+          <div className="bg-[#fefaf5] p-3.5 rounded-lg border border-[#f0e8dc]">
+            <div className="font-bold text-[#1c1917] mb-1">钻石会员有什么额外权益？</div>
+            <div className="text-[#555] leading-relaxed">打赏 ¥99 升级钻石会员，无限次摇奖，尊贵钻石标识。</div>
           </div>
-          <div>
-            <div className="font-medium text-[#444] mb-0.5">黄金会员次数用完了怎么办？</div>
-            <div>联系浩哥续费即可补充摇奖次数。</div>
+          <div className="bg-[#fefaf5] p-3.5 rounded-lg border border-[#f0e8dc]">
+            <div className="font-bold text-[#1c1917] mb-1">黄金会员次数用完了怎么办？</div>
+            <div className="text-[#555] leading-relaxed">联系浩哥续费即可补充摇奖次数。</div>
           </div>
-          <div>
-            <div className="font-medium text-[#444] mb-0.5">升级后立即生效吗？</div>
-            <div>管理员确认打赏后立即手动升级，升级后即可使用摇奖功能。</div>
+          <div className="bg-[#fefaf5] p-3.5 rounded-lg border border-[#f0e8dc]">
+            <div className="font-bold text-[#1c1917] mb-1">升级后立即生效吗？</div>
+            <div className="text-[#555] leading-relaxed">管理员确认打赏后立即手动升级，升级后即可使用摇奖功能。</div>
           </div>
         </div>
       </div>
