@@ -92,7 +92,7 @@ export default function AdminPage() {
             </div>
           ))}
         </div>
-      </>)
+      </div>)
 
       {tab === 'users' && (
         <div className="border border-[#f0f0f0] rounded-xl overflow-hidden">
