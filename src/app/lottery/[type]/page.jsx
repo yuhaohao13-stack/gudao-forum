@@ -1087,29 +1087,24 @@ export default function LotteryTypePage() {
       {/* ─── Draw button ─── */}
       <button
         onClick={handleDraw}
-        disabled={!canDraw() || drawing || !isAuthLoaded}
-        className={`w-full py-3.5 rounded-xl font-bold text-sm transition-all duration-200 shadow-sm flex items-center justify-center gap-2 ${
-          !canDraw() || drawing
-            ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-            : userLevel === 'regular'
-              ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white hover:from-amber-600 hover:to-orange-600'
-              : `bg-gradient-to-r ${config.color} text-white hover:brightness-110`
-        }`}
+        disabled={drawing || !isAuthLoaded}
+        className={"w-full py-4 rounded-xl font-bold text-base transition-all duration-200 shadow-sm flex items-center justify-center gap-2 " + (
+          drawing || !isAuthLoaded
+            ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+            : userLevel === "regular"
+              ? "bg-gradient-to-r from-amber-500 to-orange-500 text-white hover:from-amber-600 hover:to-orange-600 hover:shadow-md active:scale-[0.98]"
+              : "bg-gradient-to-r " + config.color + " text-white hover:brightness-110 hover:shadow-md active:scale-[0.98]"
+        )}
       >
         {drawing ? (
           <>
             <Loader2 className="w-4 h-4 animate-spin" />
             摇奖中...
           </>
-        ) : !canDraw() ? (
-          <>
-            <Lock className="w-4 h-4" />
-            请完成选号
-          </>
-        ) : userLevel === 'regular' ? (
+        ) : userLevel === "regular" ? (
           <>
             <Star className="w-4 h-4" />
-            升级会员后摇奖 🎰
+            💎 升级会员摇奖
           </>
         ) : (
           <>
