@@ -176,18 +176,11 @@ export default function AdminPage() {
                             const level = e.target.value
                             if (!confirm(`确定将 ${u.display_name || u.username} 设为${level === 'diamond' ? '钻石' : level === 'gold' ? '黄金' : '普通'}会员？`)) return
                             const draws = level === 'gold' ? 500 : level === 'diamond' ? 99999 : 0
-                            await supabase.from('profiles').update({ membership_level: level, gold_draws_remaining: draws }).eq('id', u.id)
-                            // 自动生成打赏记录
-                            if (level === 'gold' || level === 'diamond') {
-                              const amount = level === 'diamond' ? 99 : 9.9
-                              await supabase.from('donations').insert({
-                                user_id: u.id,
-                                username: u.display_name || u.username,
-                                amount: amount,
-                                plan: level,
-                                status: 'completed'
-                              }).catch(() => {})
-                            }
+                            await fetch('/api/admin/upgrade', {
+                              method: 'POST',
+                              headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({ user_id: u.id, level, draws })
+                            })
                             supabase.from('profiles').select('*').order('created_at', { ascending: false }).then(({ data }) => setUsers(data || []))
                             supabase.from('donations').select('*, profiles!inner(username, display_name)').order('created_at', { ascending: false }).limit(100).then(({ data }) => setDonations(data || [])).catch(() => {})
                           }}
