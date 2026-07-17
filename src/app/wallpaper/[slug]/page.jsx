@@ -23,12 +23,12 @@ export default function WallpaperCategoryPage() {
     setTimeout(() => setToast(''), 2500)
   }
 
-  const handleDownload = async (seed, title, type) => {
+  const handleDownload = async (catId, wpId, title, type) => {
     if (!user) { showToast('请先登录'); return }
     if (!isMember) { showToast('请升级会员后下载'); return }
 
-    const url = type === 'desktop' ? getDesktopUrl(seed) : getMobileUrl(seed)
-    setDownloading(`${seed}-${type}`)
+    const url = type === 'desktop' ? getDesktopUrl(catId, wpId) : getMobileUrl(catId, wpId)
+    setDownloading(`${wpId}-${type}`)
 
     try {
       const res = await fetch(url)
@@ -47,11 +47,10 @@ export default function WallpaperCategoryPage() {
     setTimeout(() => setDownloading(''), 2000)
   }
 
-  const handleClick = (seed, title, type) => {
+  const handleClick = (wpId, title, type) => {
     if (!user) { showToast('请先登录'); return }
     if (!isMember) { showToast('请升级会员后下载'); return }
-    // 如果是会员，直接触发下载
-    handleDownload(seed, title, type)
+    handleDownload(category.id, wpId, title, type)
   }
 
   if (!category) {
@@ -96,17 +95,17 @@ export default function WallpaperCategoryPage() {
             {/* 双排：桌面版 + 手机版 */}
             <div className="grid grid-cols-2 gap-3 mb-4">
               {/* 桌面版 */}
-              <div className="cursor-pointer group" onClick={() => handleClick(wp.seed, wp.title, 'desktop')}>
+              <div className="cursor-pointer group" onClick={() => handleClick(wp.id, wp.title, 'desktop')}>
                 <div className="relative overflow-hidden rounded-xl border border-[#ece8e0] bg-[#faf8f5] aspect-video">
-                  <img src={getDesktopUrl(wp.seed)} alt=""
+                  <img src={getDesktopUrl(category.id, wp.id)} alt=""
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     loading="lazy" />
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/15 transition-colors" />
                   {/* 下载按钮 */}
                   <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                     <span className={`px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 ${isMember ? 'bg-[#b45309] text-white' : 'bg-black/60 text-white'}`}>
-                      {downloading === `${wp.seed}-desktop` ? <Loader2 size={12} className="animate-spin" /> : isMember ? <Download size={12} /> : <Lock size={12} />}
-                      {downloading === `${wp.seed}-desktop` ? '下载中...' : isMember ? '下载' : '会员可下载'}
+                      {downloading === `${wp.id}-desktop` ? <Loader2 size={12} className="animate-spin" /> : isMember ? <Download size={12} /> : <Lock size={12} />}
+                      {downloading === `${wp.id}-desktop` ? '下载中...' : isMember ? '下载' : '会员可下载'}
                     </span>
                   </div>
                   <span className="absolute bottom-2 left-2 text-[9px] px-1.5 py-0.5 rounded bg-black/50 text-white">🖥️ 桌面</span>
@@ -114,16 +113,16 @@ export default function WallpaperCategoryPage() {
               </div>
 
               {/* 手机版 */}
-              <div className="cursor-pointer group" onClick={() => handleClick(wp.seed, wp.title, 'mobile')}>
+              <div className="cursor-pointer group" onClick={() => handleClick(wp.id, wp.title, 'mobile')}>
                 <div className="relative overflow-hidden rounded-xl border border-[#ece8e0] bg-[#faf8f5] aspect-[3/4]">
-                  <img src={getMobileUrl(wp.seed)} alt=""
+                  <img src={getMobileUrl(category.id, wp.id)} alt=""
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     loading="lazy" />
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/15 transition-colors" />
                   <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                     <span className={`px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 ${isMember ? 'bg-[#b45309] text-white' : 'bg-black/60 text-white'}`}>
-                      {downloading === `${wp.seed}-mobile` ? <Loader2 size={12} className="animate-spin" /> : isMember ? <Download size={12} /> : <Lock size={12} />}
-                      {downloading === `${wp.seed}-mobile` ? '下载中...' : isMember ? '下载' : '会员可下载'}
+                      {downloading === `${wp.id}-mobile` ? <Loader2 size={12} className="animate-spin" /> : isMember ? <Download size={12} /> : <Lock size={12} />}
+                      {downloading === `${wp.id}-mobile` ? '下载中...' : isMember ? '下载' : '会员可下载'}
                     </span>
                   </div>
                   <span className="absolute bottom-2 left-2 text-[9px] px-1.5 py-0.5 rounded bg-black/50 text-white">📱 手机</span>

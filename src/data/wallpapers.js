@@ -144,13 +144,13 @@ const CATEGORIES = [
   },
 ]
 
-// 生成图片URL
-export function getDesktopUrl(seed) {
-  return `https://picsum.photos/seed/${seed}/1920/1080`
+// 生成图片URL（本地路径）
+export function getDesktopUrl(catId, wpId) {
+  return `/images/wallpapers/${catId}-${wpId}-desktop.jpg`
 }
 
-export function getMobileUrl(seed) {
-  return `https://picsum.photos/seed/${seed}mb/1080/1920`
+export function getMobileUrl(catId, wpId) {
+  return `/images/wallpapers/${catId}-${wpId}-mobile.jpg`
 }
 
 export default CATEGORIES
