@@ -1,12 +1,12 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { MessageCircle, X, Phone, MessageSquare } from 'lucide-react'
+import { MessageCircle, X } from 'lucide-react'
 
 // 联系信息
 const WECHAT_ID = 'crazy-repair'
-const PHONE_CHINA = '+8613573735550'
-const PHONE_SG = '+6596146709'
+const EMAIL_QQ = '994730969@qq.com'
+const EMAIL_GMAIL = 'yuhaohao13@gmail.com'
 const QR_URL = '/images/wechat-pay-qr.jpg'
 
 export default function FloatingButtons() {
@@ -70,12 +70,6 @@ export default function FloatingButtons() {
       setCopied(true)
       setTimeout(() => setCopied(false), 3000)
     }).catch(() => {})
-  }
-
-  // 短信
-  const handleSms = () => {
-    window.location.href = `sms:${PHONE_CHINA}?body=${encodeURIComponent('你好，我在古道论坛看到Crazy维修的信息，想咨询维修事宜')}`
-    setShowContact(false)
   }
 
   // 保存二维码
@@ -232,45 +226,39 @@ export default function FloatingButtons() {
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', fontSize: '0.8rem' }}>
-              {/* 📱 短信咨询 */}
-              <button onClick={handleSms} style={btnBase}>
-                <div style={iconCircle('#3b82f6')}><MessageSquare size={16} color="#fff" /></div>
-                <div style={{ textAlign: 'left', flex: 1 }}>
-                  <div style={{ fontWeight: 600, fontSize: '0.8rem' }}>📱 短信咨询</div>
-                  <div style={{ fontSize: '0.65rem', color: '#666' }}>一键发送短信，自动填写咨询内容</div>
-                </div>
-                <span style={{ color: '#3b82f6', fontSize: '0.8rem' }}>→</span>
-              </button>
-
               {/* 💚 微信 */}
               <button onClick={handleWechat} style={btnBase}>
                 <div style={iconCircle('#07c160')}><MessageCircle size={16} color="#fff" /></div>
                 <div style={{ textAlign: 'left', flex: 1 }}>
                   <div style={{ fontWeight: 600, fontSize: '0.8rem' }}>💚 微信</div>
-                  <div style={{ fontSize: '0.65rem', color: '#666' }}>复制微信号，去微信搜索添加</div>
+                  <div style={{ fontSize: '0.65rem', color: '#666' }}>复制微信号 crazy-repair，去微信搜索添加</div>
                 </div>
                 <span style={{ color: '#07c160', fontSize: '0.8rem' }}>→</span>
               </button>
 
-              {/* 📞 中国电话 */}
-              <a href={`tel:${PHONE_CHINA}`} target="_blank" rel="noopener" style={btnBase}>
-                <div style={iconCircle('#ea4335')}><Phone size={16} color="#fff" /></div>
+              {/* QQ邮箱 */}
+              <button onClick={() => {
+                navigator.clipboard.writeText(EMAIL_QQ).then(() => { setCopied('qq'); setTimeout(() => setCopied(''), 2500) }).catch(() => {})
+              }} style={btnBase}>
+                <div style={iconCircle('#ea4335')}>📧</div>
                 <div style={{ textAlign: 'left', flex: 1 }}>
-                  <div style={{ fontWeight: 600, fontSize: '0.8rem' }}>📞 中国电话</div>
-                  <div style={{ fontSize: '0.65rem', color: '#666' }}>+86 13573735550</div>
+                  <div style={{ fontWeight: 600, fontSize: '0.8rem' }}>📧 QQ邮箱</div>
+                  <div style={{ fontSize: '0.65rem', color: '#666' }}>{copied === 'qq' ? '✅ 已复制' : '点击复制邮箱地址'}</div>
                 </div>
                 <span style={{ color: '#ea4335', fontSize: '0.8rem' }}>→</span>
-              </a>
+              </button>
 
-              {/* WhatsApp */}
-              <a href={`https://wa.me/${PHONE_SG.replace('+', '')}?text=我想咨询维修事宜`} target="_blank" rel="noopener" style={btnBase}>
-                <div style={iconCircle('#25d366')}><Phone size={16} color="#fff" /></div>
+              {/* 谷歌邮箱 */}
+              <button onClick={() => {
+                navigator.clipboard.writeText(EMAIL_GMAIL).then(() => { setCopied('gmail'); setTimeout(() => setCopied(''), 2500) }).catch(() => {})
+              }} style={btnBase}>
+                <div style={iconCircle('#4285F4')}>📧</div>
                 <div style={{ textAlign: 'left', flex: 1 }}>
-                  <div style={{ fontWeight: 600, fontSize: '0.8rem' }}>WhatsApp</div>
-                  <div style={{ fontSize: '0.65rem', color: '#666' }}>+65 96146709</div>
+                  <div style={{ fontWeight: 600, fontSize: '0.8rem' }}>📧 谷歌邮箱</div>
+                  <div style={{ fontSize: '0.65rem', color: '#666' }}>{copied === 'gmail' ? '✅ 已复制' : '点击复制邮箱地址'}</div>
                 </div>
-                <span style={{ color: '#25d366', fontSize: '0.8rem' }}>→</span>
-              </a>
+                <span style={{ color: '#4285F4', fontSize: '0.8rem' }}>→</span>
+              </button>
 
               {/* 官方网站 */}
               <a href="https://www.crazy-repair.com" target="_blank" rel="noopener" style={btnBase}>

@@ -20,6 +20,14 @@ export default function LoginPage() {
   const [newPassword, setNewPassword] = useState(''); const [confirmPassword, setConfirmPassword] = useState('')
   const supabase = createClient(); const router = useRouter()
 
+  // 获取 redirect 参数，登录后跳回原页面
+  const [redirectTo, setRedirectTo] = useState(null)
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const r = params.get('redirect')
+    if (r && r.startsWith('/')) setRedirectTo(r)
+  }, [])
+
   useEffect(() => {
     if (cooldown <= 0) return
     const timer = setInterval(() => setCooldown(c => Math.max(0, c - 1)), 1000)
@@ -35,7 +43,7 @@ export default function LoginPage() {
     setLoading(true)
     const { error: err } = await supabase.auth.signInWithPassword({ email, password })
     if (err) setError(err.message === 'Invalid login credentials' ? '邮箱或密码错误' : `错误: ${err.message}`)
-    else { router.push('/'); router.refresh() }
+    else { router.push(redirectTo || '/'); router.refresh() }
     setLoading(false)
   }
 

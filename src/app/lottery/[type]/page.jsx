@@ -22,7 +22,6 @@ import {
   RefreshCw,
   ChevronDown,
   ArrowLeft,
-  Phone,
   MessageCircle,
   Copy,
   Heart,
@@ -1168,16 +1167,17 @@ export default function LotteryTypePage() {
         </div>
 
         <div className="space-y-3 mb-4">
-          {/* 微信 */}
+          {/* 微信 — 微信号: crazy-repair */}
           <div className="bg-white border border-[#ece8e0] rounded-xl p-4">
             <div className="flex items-center gap-2 mb-1">
               <MessageCircle className="w-4 h-4 text-green-500" />
               <span className="font-bold text-sm text-[#1c1917]">微信</span>
             </div>
-            <div className="flex items-center justify-between bg-[#f9f9f9] rounded-lg px-3 py-2 mt-1">
-              <span className="text-sm text-[#555]">yuhaohao13</span>
+            <p className="text-[10px] text-[#999] mb-1">点击复制微信号，打开微信 → 添加朋友 → 粘贴搜索</p>
+            <div className="flex items-center justify-between bg-[#f9f9f9] rounded-lg px-3 py-2">
+              <span className="text-sm text-[#555]">crazy-repair</span>
               <button
-                onClick={() => { navigator.clipboard.writeText('yuhaohao13'); setCopied('contact-wechat'); setTimeout(() => setCopied(''), 2000) }}
+                onClick={() => { navigator.clipboard.writeText('crazy-repair'); setCopied('contact-wechat'); setTimeout(() => setCopied(''), 2000) }}
                 className={`flex items-center gap-1 text-xs px-2.5 py-1 rounded-lg transition-colors ${copied === 'contact-wechat' ? 'bg-green-50 text-green-600' : 'bg-[#f5f5f5] text-[#888] hover:bg-[#eee]'}`}
               >
                 <Copy className="w-3 h-3" />
@@ -1186,42 +1186,39 @@ export default function LotteryTypePage() {
             </div>
           </div>
 
-          {/* 飞书 */}
+          {/* QQ邮箱 */}
           <div className="bg-white border border-[#ece8e0] rounded-xl p-4">
             <div className="flex items-center gap-2 mb-1">
-              <span className="w-4 h-4 flex items-center justify-center">🦜</span>
-              <span className="font-bold text-sm text-[#1c1917]">飞书</span>
+              <span className="w-4 h-4 flex items-center justify-center">📧</span>
+              <span className="font-bold text-sm text-[#1c1917]">QQ邮箱</span>
             </div>
-            <p className="text-xs text-[#666] mt-1">直接在飞书联系管理员（浩哥）</p>
+            <div className="flex items-center justify-between bg-[#f9f9f9] rounded-lg px-3 py-2 mt-1">
+              <span className="text-sm text-[#555]">994730969@qq.com</span>
+              <button
+                onClick={() => { navigator.clipboard.writeText('994730969@qq.com'); setCopied('contact-qq'); setTimeout(() => setCopied(''), 2000) }}
+                className={`flex items-center gap-1 text-xs px-2.5 py-1 rounded-lg transition-colors ${copied === 'contact-qq' ? 'bg-green-50 text-green-600' : 'bg-[#f5f5f5] text-[#888] hover:bg-[#eee]'}`}
+              >
+                <Copy className="w-3 h-3" />
+                {copied === 'contact-qq' ? '已复制' : '复制'}
+              </button>
+            </div>
           </div>
 
-          {/* 电话 */}
+          {/* 谷歌邮箱 */}
           <div className="bg-white border border-[#ece8e0] rounded-xl p-4">
             <div className="flex items-center gap-2 mb-1">
-              <Phone className="w-4 h-4 text-[#b45309]" />
-              <span className="font-bold text-sm text-[#1c1917]">电话</span>
+              <span className="w-4 h-4 flex items-center justify-center">📧</span>
+              <span className="font-bold text-sm text-[#1c1917]">谷歌邮箱</span>
             </div>
-            <div className="space-y-1 mt-1">
-              <div className="flex items-center justify-between bg-[#f9f9f9] rounded-lg px-3 py-1.5">
-                <span className="text-xs text-[#555]">🇨🇳 中国 +86 13573735550</span>
-                <button
-                  onClick={() => { navigator.clipboard.writeText('+8613573735550'); setCopied('cn-phone'); setTimeout(() => setCopied(''), 2000) }}
-                  className={`flex items-center gap-1 text-[10px] px-2 py-1 rounded-lg transition-colors ${copied === 'cn-phone' ? 'bg-green-50 text-green-600' : 'bg-[#f5f5f5] text-[#888] hover:bg-[#eee]'}`}
-                >
-                  <Copy className="w-2.5 h-2.5" />
-                  {copied === 'cn-phone' ? '已复制' : '复制'}
-                </button>
-              </div>
-              <div className="flex items-center justify-between bg-[#f9f9f9] rounded-lg px-3 py-1.5">
-                <span className="text-xs text-[#555]">🇸🇬 新加坡 +65 96146709</span>
-                <button
-                  onClick={() => { navigator.clipboard.writeText('+6596146709'); setCopied('sg-phone'); setTimeout(() => setCopied(''), 2000) }}
-                  className={`flex items-center gap-1 text-[10px] px-2 py-1 rounded-lg transition-colors ${copied === 'sg-phone' ? 'bg-green-50 text-green-600' : 'bg-[#f5f5f5] text-[#888] hover:bg-[#eee]'}`}
-                >
-                  <Copy className="w-2.5 h-2.5" />
-                  {copied === 'sg-phone' ? '已复制' : '复制'}
-                </button>
-              </div>
+            <div className="flex items-center justify-between bg-[#f9f9f9] rounded-lg px-3 py-2 mt-1">
+              <span className="text-sm text-[#555]">yuhaohao13@gmail.com</span>
+              <button
+                onClick={() => { navigator.clipboard.writeText('yuhaohao13@gmail.com'); setCopied('contact-gmail'); setTimeout(() => setCopied(''), 2000) }}
+                className={`flex items-center gap-1 text-xs px-2.5 py-1 rounded-lg transition-colors ${copied === 'contact-gmail' ? 'bg-green-50 text-green-600' : 'bg-[#f5f5f5] text-[#888] hover:bg-[#eee]'}`}
+              >
+                <Copy className="w-3 h-3" />
+                {copied === 'contact-gmail' ? '已复制' : '复制'}
+              </button>
             </div>
           </div>
         </div>
@@ -1283,7 +1280,7 @@ export default function LotteryTypePage() {
         <div className="flex items-center gap-2 mt-3 pt-3 border-t border-white/20">
           {isAuthLoaded && !user ? (
             <Link
-              href="/login"
+              href={`/login?redirect=${encodeURIComponent(window.location.pathname + window.location.search)}`}
               className="flex items-center gap-1.5 px-3 py-1.5 bg-white/20 backdrop-blur-sm rounded-lg text-[11px] text-white hover:bg-white/30 transition-colors"
             >
               <User className="w-3 h-3" />
