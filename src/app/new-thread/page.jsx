@@ -92,7 +92,7 @@ export default function NewThreadPage() {
                 {previews.map((p, i) => (
                   <div key={i} className="relative group w-[45%] sm:w-[30%]">
                     <img src={p} alt="" className="w-full h-auto max-h-40 object-cover rounded-xl border border-[#f0f0f0]" />
-                    <button type="button" onClick={() => removeImage(i)} className="absolute -top-2 -right-2 w-5 h-5 bg-[#1a1a1a] rounded-full text-xs text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"><X size={10} /></button>
+                    <button type="button" onClick={() => removeImage(i)} className="absolute -top-2 -right-2 w-5 h-5 bg-[#b45309] rounded-full text-xs text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"><X size={10} /></button>
                   </div>
                 ))}
               </div>

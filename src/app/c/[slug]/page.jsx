@@ -87,9 +87,9 @@ export default function CategoryPage() {
       <div className="flex items-center justify-between mb-4">
         <div className="flex gap-1.5">
           <button onClick={() => setSortBy('latest')}
-            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${sortBy === 'latest' ? 'bg-[#1a1a1a] text-white' : 'bg-[#f5f5f3] text-[#888] hover:text-[#1a1a1a]'}`}><Clock size={14} className="inline-block align-text-bottom" /> 最新</button>
+            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${sortBy === 'latest' ? 'bg-[#b45309] text-white' : 'bg-[#f5f5f3] text-[#888] hover:text-[#1a1a1a]'}`}><Clock size={14} className="inline-block align-text-bottom" /> 最新</button>
           <button onClick={() => setSortBy('hot')}
-            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${sortBy === 'hot' ? 'bg-[#1a1a1a] text-white' : 'bg-[#f5f5f3] text-[#888] hover:text-[#1a1a1a]'}`}><Flame size={14} className="inline-block align-text-bottom" /> 最热</button>
+            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${sortBy === 'hot' ? 'bg-[#b45309] text-white' : 'bg-[#f5f5f3] text-[#888] hover:text-[#1a1a1a]'}`}><Flame size={14} className="inline-block align-text-bottom" /> 最热</button>
         </div>
         {(!isAnnouncements || isAdmin) && (
           <Link href="/new-thread" className="btn-primary !px-3 !py-1.5 !text-xs"><Pencil size={14} className="inline-block align-text-bottom" /> 发帖</Link>
