@@ -1015,7 +1015,7 @@ export default function LotteryTypePage() {
   )
 
   // ── Donate info modal ──
-  const [showDonateQR, setShowDonateQR] = useState('') // 'wechat' | 'paynow'
+  const [showDonateQR, setShowDonateQR] = useState('') // 'wechat' | 'alipay' | 'paynow'
 
   const donateInfoModal = (
     <>
@@ -1063,6 +1063,19 @@ export default function LotteryTypePage() {
               <span className="text-green-500 text-sm font-bold">→</span>
             </button>
 
+            {/* 支付宝 */}
+            <button
+              onClick={() => { setShowDonateInfo(false); setTimeout(() => setShowDonateQR('alipay'), 200) }}
+              className="w-full flex items-center gap-3 p-4 rounded-xl border border-[#eee8dc] hover:border-[#1677ff] hover:bg-[#f0f7ff] transition-all text-left"
+            >
+              <div className="w-10 h-10 rounded-full bg-[#1677ff] flex items-center justify-center text-xl shrink-0">💰</div>
+              <div className="flex-1">
+                <div className="font-semibold text-sm text-[#1c1917]">支付宝</div>
+                <div className="text-xs text-[#999]">扫描二维码支付</div>
+              </div>
+              <span className="text-blue-500 text-sm font-bold">→</span>
+            </button>
+
             {/* PayNow */}
             <button
               onClick={() => { setShowDonateInfo(false); setTimeout(() => setShowDonateQR('paynow'), 200) }}
@@ -1108,6 +1121,31 @@ export default function LotteryTypePage() {
           <p className="text-xs text-[#999] mb-4">打开微信扫描二维码支付</p>
           <img src="/images/wechat-pay-qr.jpg" alt="微信收款码" className="w-full max-w-[15rem] mx-auto rounded-xl border border-[#eee8dc]" />
           <p className="text-[10px] text-[#ccc] mt-3">截图保存到相册，在微信中扫码</p>
+        </div>
+      </div>
+
+      {/* 支付宝二维码弹窗 */}
+      <div style={{
+        position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+        zIndex: 99997,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        padding: '1rem',
+        transition: 'all 0.2s',
+        opacity: showDonateQR === 'alipay' ? 1 : 0,
+        pointerEvents: showDonateQR === 'alipay' ? 'auto' : 'none',
+      }}>
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: '#fafaf9' }} onClick={() => setShowDonateQR('')} />
+        <div style={{ position: 'relative', backgroundColor: '#fff', borderRadius: '1rem', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)', maxWidth: '24rem', width: '100%', padding: '1.5rem', textAlign: 'center' }}>
+          <button
+            onClick={() => setShowDonateQR('')}
+            className="absolute top-3 right-3 text-[#b0a898] hover:text-[#666] transition-colors"
+          >
+            <X className="w-4 h-4" />
+          </button>
+          <div className="text-lg font-bold text-[#1c1917] mb-1 mt-2">💰 支付宝</div>
+          <p className="text-xs text-[#999] mb-4">打开支付宝扫描二维码支付</p>
+          <img src="/images/alipay-qr.jpg" alt="支付宝收款码" className="w-full max-w-[15rem] mx-auto rounded-xl border border-[#eee8dc]" />
+          <p className="text-[10px] text-[#ccc] mt-3">截图保存到相册，在支付宝中扫码</p>
         </div>
       </div>
 
