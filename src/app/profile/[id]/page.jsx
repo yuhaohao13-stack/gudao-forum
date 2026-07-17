@@ -152,6 +152,9 @@ export default function ProfilePage() {
 
   const isAdmin = profileUser.role === 'admin'
   const isMod = profileUser.role === 'moderator'
+  const memberLevel = profileUser.membership_level || 'regular'
+  const memberLabel = memberLevel === 'diamond' ? '💎 钻石会员' : memberLevel === 'gold' ? '🏆 黄金会员' : ''
+  const memberColor = memberLevel === 'diamond' ? 'text-purple-600 bg-purple-50 border-purple-200' : memberLevel === 'gold' ? 'text-amber-700 bg-amber-50 border-amber-200' : ''
   const avatarLetter = (profileUser.display_name || profileUser.username || '?')[0]
   const genderLabel = (g) => {
     if (g === 'male') return '♂ 男'
@@ -175,6 +178,12 @@ export default function ProfilePage() {
             {avatarLetter}
           </div>
           <div className="min-w-0 flex-1">
+            {/* 会员等级（在名称上方） */}
+            {memberLabel && (
+              <div className={`text-[10px] font-bold px-2 py-0.5 rounded-full border inline-block mb-0.5 ${memberColor}`}>
+                {memberLabel}
+              </div>
+            )}
             <div className="flex items-center gap-1.5 flex-wrap">
               <h1 className="text-[14px] font-bold text-[#1a1a1a]">{profileUser.display_name || profileUser.username}</h1>
               {profileUser.member_no && <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-[#f5f0e8] border border-[#e8e0d0] text-[#8b6914] font-mono">#{profileUser.member_no}</span>}
