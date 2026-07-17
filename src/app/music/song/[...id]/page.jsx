@@ -3,11 +3,13 @@
 import { useParams } from 'next/navigation'
 import { useRef, useState, useEffect } from 'react'
 import Link from 'next/link'
-import { ArrowLeft, Play, Pause, SkipBack, Forward, Music, Volume2, List, Lock } from 'lucide-react'
+import { ArrowLeft, Play, Pause, SkipBack, Forward, Music, Volume2, List, Lock, Download } from 'lucide-react'
 import Breadcrumb from '@/components/Breadcrumb'
 import musicData from '@/data/music'
 import lyricsData from '@/data/lyrics'
 import { useAuth } from '@/components/AuthProvider'
+import { canDownloadMusic } from '@/lib/member'
+import { createClient } from '@/lib/supabase/client'
 
 // Sleep music descriptions (助眠文案，纯音乐无歌词)
 const sleepLyrics = {
@@ -89,6 +91,41 @@ export default function SongPlayerPage() {
 
   const mp3Url = `https://rsndnhdimruisysacujg.supabase.co/storage/v1/object/public/music/${category?.id}/${songId}.mp3`
 
+  const supabase = createClient()
+  const [downloading, setDownloading] = useState('')
+
+  const handleDownload = async () => {
+    if (!user) return
+    const check = canDownloadMusic(user, { membership_level: 'regular' }) // will be overridden
+    // Re-check with actual profile
+    const { data: profile } = await supabase.from('profiles').select('membership_level, gold_music_downloads, music_downloads_used').eq('id', user.id).single()
+    if (!profile) return
+    const access = canDownloadMusic(user, profile)
+    if (!access.allowed) {
+      setDownloading(access.reason)
+      setTimeout(() => setDownloading(''), 3000)
+      return
+    }
+    // Download
+    setDownloading('dl')
+    try {
+      const res = await fetch(mp3Url)
+      const blob = await res.blob()
+      const a = document.createElement('a')
+      a.href = URL.createObjectURL(blob)
+      a.download = `${song.title}.mp3`
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+      setTimeout(() => URL.revokeObjectURL(blob), 5000)
+      // Count download
+      if (access.remaining !== undefined) {
+        await supabase.from('profiles').update({ music_downloads_used: (profile.music_downloads_used || 0) + 1 }).eq('id', user.id)
+      }
+    } catch(e) {}
+    setTimeout(() => setDownloading(''), 3000)
+  }
+
   const togglePlay = () => {
     if (!audioRef.current) return
     if (playing) {
@@ -162,7 +199,17 @@ export default function SongPlayerPage() {
                 <Music size={24} className={`${playing ? 'text-[#b45309]' : 'text-[#b45309]/40'} transition-colors`} />
               </div>
               <div className="min-w-0 flex-1">
-                <h2 className="text-base font-bold text-[#1a1a1a] truncate">{song.title}</h2>
+                <h2 className="text-base font-bold text-[#1a1a1a] truncate flex items-center gap-2">
+                  {song.title}
+                  {user && (
+                    <button onClick={handleDownload} disabled={downloading === 'dl'}
+                      className="text-xs font-normal inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#b45309] text-white hover:bg-[#92400e] transition-colors shrink-0"
+                      title="下载歌曲">
+                      <Download size={14} />
+                      {downloading === 'dl' ? '下载中...' : downloading === 'login' ? '请先登录' : downloading === 'upgrade' ? '需升级' : downloading === 'exhausted' ? '次数用完' : '下载'}
+                    </button>
+                  )}
+                </h2>
                 <p className="text-xs text-[#888]">{song.artist}</p>
               </div>
               <button onClick={() => setShowLyrics(!showLyrics)}
