@@ -4,17 +4,21 @@ import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Clock, Flame, Pencil, Lock, Pin, Crown, MessageCircle } from 'lucide-react'
+import { TECH_CATEGORY_SLUG, canViewTech, TechLockOverlay, canPinThread } from '@/lib/member'
 import { useAuth } from '@/components/AuthProvider'
 import Breadcrumb from '@/components/Breadcrumb'
 
 export default function CategoryPage() {
-  const { profile } = useAuth()
+  const { user, profile } = useAuth()
   const { slug } = useParams()
   const router = useRouter()
   const [category, setCategory] = useState(null)
   const [threads, setThreads] = useState([])
   const [sortBy, setSortBy] = useState('latest')
+  const [lockOverlay, setLockOverlay] = useState({ show: false, reason: 'upgrade' })
   const isAdmin = profile?.role === 'admin' || profile?.role === 'moderator'
+  const membershipLevel = profile?.membership_level || 'regular'
+  const canShowPinButton = isAdmin || membershipLevel === 'gold' || membershipLevel === 'diamond'
   const isAnnouncements = slug === 'announcements'
   const supabase = createClient()
 
@@ -41,9 +45,30 @@ export default function CategoryPage() {
 
   const togglePin = async (e, thread) => {
     e.stopPropagation()
+    // 检查置顶权限
+    const check = canPinThread(user, profile)
+    if (!check.allowed) return
+
     const newVal = !thread.is_pinned
     await supabase.from('threads').update({ is_pinned: newVal }).eq('id', thread.id)
     setThreads(threads.map(t => t.id === thread.id ? { ...t, is_pinned: newVal } : t))
+
+    // 黄金会员：置顶后 +1
+    if (!check.unlimited && profile?.id) {
+      const currentUsed = profile.thread_pins_used || 0
+      await supabase.from('profiles').update({ thread_pins_used: currentUsed + 1 }).eq('id', profile.id)
+    }
+  }
+
+  const isTech = slug === TECH_CATEGORY_SLUG
+  const techAccess = isTech ? canViewTech(user, profile) : { allowed: true }
+
+  const handleThreadClick = (t) => {
+    if (isTech && !techAccess.allowed) {
+      setLockOverlay({ show: true, reason: techAccess.reason || 'upgrade' })
+      return
+    }
+    router.push(`/t/${t.id}`)
   }
 
   if (!category) return <div className="flex justify-center py-16"><div className="w-4 h-4 border-[1.5px] border-[#ddd] border-t-[#1a1a1a] rounded-full animate-spin" /></div>
@@ -82,7 +107,7 @@ export default function CategoryPage() {
             {(!isAnnouncements || isAdmin) && <Link href="/new-thread" className="btn-primary mt-3">发第一条帖子</Link>}
           </div>
         ) : threads.map((t, i) => (
-          <div key={t.id} onClick={() => router.push(`/t/${t.id}`)}
+          <div key={t.id} onClick={() => handleThreadClick(t)}
             className={`thread-item px-4 ${i === 0 ? 'pt-3' : ''} last:pb-3`}>
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0 flex-1">
@@ -91,7 +116,7 @@ export default function CategoryPage() {
                   {(t.profiles?.role === 'admin' || t.profiles?.role === 'moderator') && !t.is_pinned && <span className="tag"><Crown size={12} className="inline-block align-text-bottom" /> 管理员</span>}
                   {t.is_locked && <span className="tag"><Lock size={12} className="inline-block align-text-bottom" /> 已锁</span>}
                 </div>
-                <h3 className="font-medium text-sm text-[#1a1a1a] truncate leading-snug">{t.title}</h3>
+                <h3 className="font-medium text-sm text-[#1a1a1a] truncate leading-snug">{isTech && !techAccess.allowed && <span className="mr-1">🔒</span>}{t.title}</h3>
                 <div className="flex items-center gap-2 text-xs text-[#bbb] mt-1">
                   <span>{t.profiles?.display_name || t.profiles?.username}</span>
                   <span>·</span>
@@ -100,7 +125,7 @@ export default function CategoryPage() {
               </div>
               <div className="flex items-center gap-1 shrink-0 mt-1">
                 <span className="text-xs text-[#bbb]"><MessageCircle size={14} className="inline-block align-text-bottom" /> {t.reply_count || 0}</span>
-                {isAdmin && (
+                {canShowPinButton && (
                   <button onClick={(e) => togglePin(e, t)}
                     className={`ml-1 px-1.5 py-0.5 rounded text-xs ${t.is_pinned ? 'text-[#8b6914] bg-[#f5f5f3]' : 'text-[#ddd] hover:text-[#8b6914] hover:bg-[#f5f5f3]'}`}>
                     <Pin size={14} className="inline-block" />
@@ -111,6 +136,13 @@ export default function CategoryPage() {
           </div>
         ))}
       </div>
+      {isTech && (
+        <TechLockOverlay
+          show={lockOverlay.show}
+          onClose={() => setLockOverlay({ show: false, reason: 'upgrade' })}
+          reason={lockOverlay.reason}
+        />
+      )}
     </div>
   )
 }

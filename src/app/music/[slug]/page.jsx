@@ -3,10 +3,12 @@
 import { useParams, useRouter } from 'next/navigation'
 import { useRef, useState, useEffect } from 'react'
 import Link from 'next/link'
-import { ArrowLeft, Play, Pause, SkipBack, SkipForward, Music, ListMusic, Lock } from 'lucide-react'
+import { ArrowLeft, Play, Pause, SkipBack, SkipForward, Music, ListMusic, Lock, Download } from 'lucide-react'
 import Breadcrumb from '@/components/Breadcrumb'
 import musicData from '@/data/music'
 import { useAuth } from '@/components/AuthProvider'
+import { canDownloadMusic, getUpgradeInfo, TechLockOverlay } from '@/lib/member'
+import { createClient } from '@/lib/supabase/client'
 
 export default function MusicCategoryPage() {
   const { slug } = useParams()
@@ -23,6 +25,8 @@ export default function MusicCategoryPage() {
   const [duration, setDuration] = useState(0)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [downloadOverlay, setDownloadOverlay] = useState({ show: false, reason: '' })
+  const supabase = createClient()
 
   const songs = category?.songs || []
   const currentSong = songs[selectedIndex]
@@ -197,6 +201,36 @@ export default function MusicCategoryPage() {
     if (audioRef.current && duration) audioRef.current.currentTime = x * duration
   }
 
+  const handleDownload = async (song) => {
+    const check = canDownloadMusic(user, profile)
+    if (!check.allowed) {
+      setDownloadOverlay({ show: true, reason: check.reason })
+      return
+    }
+
+    // 开始下载
+    const url = `https://rsndnhdimruisysacujg.supabase.co/storage/v1/object/public/music/${category.id}/${song.id}.mp3`
+    try {
+      const resp = await fetch(url)
+      const blob = await resp.blob()
+      const a = document.createElement('a')
+      a.href = URL.createObjectURL(blob)
+      a.download = `${song.title} - ${song.artist}.mp3`
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+      URL.revokeObjectURL(a.href)
+
+      // 黄金会员：下载后+1
+      if (!check.unlimited && profile?.id) {
+        const currentUsed = profile.music_downloads_used || 0
+        await supabase.from('profiles').update({ music_downloads_used: currentUsed + 1 }).eq('id', profile.id)
+      }
+    } catch (e) {
+      setError('下载失败，请稍后重试')
+    }
+  }
+
   if (!category) {
     return (
       <div className="text-center py-20 anim-fade-in">
@@ -295,7 +329,11 @@ export default function MusicCategoryPage() {
                 <p className="text-[10px] text-[#999]">{song.artist}</p>
               </div>
 
-              <span className="text-[9px] text-[#b45309] shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
+              <span className="text-[9px] text-[#b45309] shrink-0 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-2">
+                <button onClick={(e) => { e.stopPropagation(); handleDownload(song) }}
+                  className="text-[#b45309] hover:text-[#92400e] transition-colors" title="下载歌曲">
+                  <Download size={12} />
+                </button>
                 进入 →
               </span>
             </div>
@@ -352,6 +390,13 @@ export default function MusicCategoryPage() {
           </div>
         </div>
       )}
+
+      {/* 下载限制弹窗 */}
+      <TechLockOverlay
+        show={downloadOverlay.show}
+        reason={downloadOverlay.reason}
+        onClose={() => setDownloadOverlay({ show: false, reason: '' })}
+      />
     </div>
   )
 }

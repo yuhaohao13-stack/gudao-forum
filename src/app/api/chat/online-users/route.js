@@ -59,11 +59,11 @@ export async function GET(request) {
     if (registeredUserIds.length > 0) {
       const { data: profiles } = await sbAdmin
         .from('profiles')
-        .select('id, role')
+        .select('id, role, membership_level')
         .in('id', registeredUserIds)
       if (profiles) {
         for (const p of profiles) {
-          rolesMap[p.id] = p.role
+          rolesMap[p.id] = p
         }
       }
     }
@@ -84,7 +84,8 @@ export async function GET(request) {
         guest_label: p.guest_label,
         device_label: deviceLabel,
         is_guest: !p.user_id,
-        role: p.user_id ? (rolesMap[p.user_id] || 'user') : null,
+        role: p.user_id ? (rolesMap[p.user_id]?.role || 'user') : null,
+        membership_level: p.user_id ? (rolesMap[p.user_id]?.membership_level || 'regular') : null,
         status: p.status,
       }
     })

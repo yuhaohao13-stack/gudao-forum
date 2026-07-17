@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { MessageCircle, Megaphone, Pin, FileText, Eye, Clock, Flame, ArrowRight, Monitor, Flower2, Package, BookOpen, Sparkles, Gamepad2 } from 'lucide-react'
+import { useAuth } from '@/components/AuthProvider'
+import { canViewTech, TECH_CATEGORY_SLUG } from '@/lib/member'
 import DonationMarquee from '@/components/DonationMarquee'
 import { createClient } from '@/lib/supabase/client'
 import { useLanguage } from '@/lib/LanguageContext'
@@ -39,6 +41,7 @@ const GAMES = [
 
 export default function Home() {
   const { t } = useLanguage()
+  const { user, profile } = useAuth()
   const [categories, setCategories] = useState([])
   const [announcements, setAnnouncements] = useState([])
   const [recentThreads, setRecentThreads] = useState([])
@@ -230,27 +233,57 @@ export default function Home() {
               <Link href="/new-thread" className="btn-primary mt-3">{t('home.first_post')}</Link>
             </div>
           ) : (
-            (activeTab === 'recent' ? recentThreads : hotThreads).map((t, i) => (
-              <Link key={t.id} href={`/t/${t.id}`}
-                className={`thread-item px-3 first:pt-2.5 last:pb-2.5 ${i > 0 ? `anim-delay-${Math.min(i, 5)}` : ''}`}>
-                <div className="flex items-start justify-between gap-2">
-                  <div className="min-w-0 flex-1">
-                    <h3 className="font-medium text-sm text-[#1a1a1a] truncate leading-snug">{t.title}</h3>
-                    <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 mt-0.5 text-[11px] text-[#bbb]">
-                      <span className="text-[#888]">{t.profiles?.display_name || t.profiles?.username}</span>
-                      <span>·</span>
-                      <span>{t.categories?.name}</span>
-                      <span>·</span>
-                      <span>{new Date(t.created_at).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })}</span>
-                      <span className="flex items-center gap-1.5 ml-auto">
-                        <span className="inline-flex items-center gap-0.5"><MessageCircle size={11} className="inline-block" /> {t.reply_count || 0}</span>
-                        <span className="inline-flex items-center gap-0.5"><Eye size={11} className="inline-block" /> {t.view_count || 0}</span>
-                      </span>
+            (activeTab === 'recent' ? recentThreads : hotThreads).map((t, i) => {
+              const isTechPost = t.categories?.slug === TECH_CATEGORY_SLUG
+              const techViewCheck = isTechPost ? canViewTech(user, profile) : null
+              const isTechLocked = techViewCheck && !techViewCheck.allowed
+
+              if (isTechLocked) {
+                return (
+                  <div key={t.id}
+                    className={`thread-item px-3 first:pt-2.5 last:pb-2.5 opacity-60 ${i > 0 ? `anim-delay-${Math.min(i, 5)}` : ''}`}>
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="min-w-0 flex-1">
+                        <h3 className="font-medium text-sm text-[#999] truncate leading-snug">🔒 {t.title}</h3>
+                        <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 mt-0.5 text-[11px] text-[#bbb]">
+                          <span className="text-[#aaa]">{t.profiles?.display_name || t.profiles?.username}</span>
+                          <span>·</span>
+                          <span>{t.categories?.name}</span>
+                          <span>·</span>
+                          <span>{new Date(t.created_at).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })}</span>
+                          <span className="flex items-center gap-1.5 ml-auto">
+                            <span className="inline-flex items-center gap-0.5"><MessageCircle size={11} className="inline-block" /> {t.reply_count || 0}</span>
+                            <span className="inline-flex items-center gap-0.5"><Eye size={11} className="inline-block" /> {t.view_count || 0}</span>
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </Link>
-            ))
+                )
+              }
+
+              return (
+                <Link key={t.id} href={`/t/${t.id}`}
+                  className={`thread-item px-3 first:pt-2.5 last:pb-2.5 ${i > 0 ? `anim-delay-${Math.min(i, 5)}` : ''}`}>
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0 flex-1">
+                      <h3 className="font-medium text-sm text-[#1a1a1a] truncate leading-snug">{t.title}</h3>
+                      <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 mt-0.5 text-[11px] text-[#bbb]">
+                        <span className="text-[#888]">{t.profiles?.display_name || t.profiles?.username}</span>
+                        <span>·</span>
+                        <span>{t.categories?.name}</span>
+                        <span>·</span>
+                        <span>{new Date(t.created_at).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })}</span>
+                        <span className="flex items-center gap-1.5 ml-auto">
+                          <span className="inline-flex items-center gap-0.5"><MessageCircle size={11} className="inline-block" /> {t.reply_count || 0}</span>
+                          <span className="inline-flex items-center gap-0.5"><Eye size={11} className="inline-block" /> {t.view_count || 0}</span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              )
+            })
           )}
         </div>
       </section>

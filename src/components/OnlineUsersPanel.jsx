@@ -159,6 +159,9 @@ export default function OnlineUsersPanel({ roomSlug, currentUserId, onUserDevice
               {u.display_name}
             </span>
             {!u.is_guest && u.role === 'admin' && <Crown size={8} className="text-[#c23531] shrink-0" />}
+            {/* 会员等级标识 */}
+            {!u.is_guest && u.membership_level === 'gold' && <span className="text-[11px] shrink-0" title="黄金会员">🏆</span>}
+            {!u.is_guest && u.membership_level === 'diamond' && <span className="text-[11px] shrink-0" title="钻石会员">💎</span>}
             {/* 设备标签 — 和用户名同行 */}
             {!u.is_guest && u.device_label && (
               <span className="inline-flex items-center gap-0.5 px-1.5 py-[1px] rounded-full bg-[#f0ede8] text-[#8a8070] text-[8px] leading-tight font-medium ml-1 shrink-0">
