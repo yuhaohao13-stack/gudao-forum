@@ -7,20 +7,13 @@ import { MessageCircle, X } from 'lucide-react'
 const WECHAT_ID = 'crazy-repair'
 const EMAIL_QQ = '994730969@qq.com'
 const EMAIL_GMAIL = 'yuhaohao13@gmail.com'
-const QR_URL = '/images/wechat-pay-qr.jpg'
 
 export default function FloatingButtons() {
   const [showContact, setShowContact] = useState(false)
-  const [showWechat, setShowWechat] = useState(false)
-  const [copied, setCopied] = useState(false)
-  const [savingQr, setSavingQr] = useState(false)
-  const [qrSaved, setQrSaved] = useState(false)
+  const [copied, setCopied] = useState('')
 
-  // 微信：复制 + 弹窗
+  // 微信：复制+显示已复制（不弹窗）
   const handleWechat = () => {
-    setShowContact(false)
-    setCopied(false)
-    setShowWechat(true)
     const val = WECHAT_ID
     const doCopy = () => {
       if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -41,58 +34,9 @@ export default function FloatingButtons() {
       })
     }
     doCopy().then(() => {
-      setCopied(true)
-      setTimeout(() => setCopied(false), 3000)
-    }).catch(() => setCopied(false))
-  }
-
-  // 点击微信号：复制 + 显示已复制
-  const copyWechatId = () => {
-    const doCopy = () => {
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        return navigator.clipboard.writeText(WECHAT_ID)
-      }
-      return new Promise((resolve, reject) => {
-        try {
-          const ta = document.createElement('textarea')
-          ta.value = WECHAT_ID
-          ta.style.position = 'fixed'
-          ta.style.opacity = '0'
-          document.body.appendChild(ta)
-          ta.select()
-          document.execCommand('copy')
-          document.body.removeChild(ta)
-          resolve()
-        } catch(e) { reject(e) }
-      })
-    }
-    doCopy().then(() => {
-      setCopied(true)
-      setTimeout(() => setCopied(false), 3000)
+      setCopied('wechat')
+      setTimeout(() => setCopied(''), 3000)
     }).catch(() => {})
-  }
-
-  // 保存二维码
-  const saveQrToAlbum = async () => {
-    setSavingQr(true)
-    try {
-      const res = await fetch(QR_URL)
-      const blob = await res.blob()
-      const url = URL.createObjectURL(blob)
-      const a = document.createElement('a')
-      a.href = url
-      a.download = 'Crazy维修微信二维码.jpg'
-      document.body.appendChild(a)
-      a.click()
-      document.body.removeChild(a)
-      setTimeout(() => URL.revokeObjectURL(url), 5000)
-      setQrSaved(true)
-      setTimeout(() => setQrSaved(false), 3000)
-    } catch(e) {
-      setQrSaved(true)
-      setTimeout(() => setQrSaved(false), 3000)
-    }
-    setSavingQr(false)
   }
 
   const btnBase = {
@@ -128,76 +72,7 @@ export default function FloatingButtons() {
         </button>
       </div>
 
-      {/* ===== 微信引导弹窗 ===== */}
-      {showWechat && (
-        <div style={{
-          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-          zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center',
-          backgroundColor: 'rgba(0,0,0,0.3)', backdropFilter: 'blur(3px)',
-          WebkitBackdropFilter: 'blur(3px)', padding: '1rem',
-        }} onClick={() => setShowWechat(false)}>
-          <div style={{
-            backgroundColor: '#fff', borderRadius: '0.875rem',
-            maxWidth: '20rem', width: '100%', padding: '1rem',
-            animation: 'scaleIn 0.25s ease-out both',
-            textAlign: 'center',
-          }} onClick={e => e.stopPropagation()}>
-            <div style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>💚</div>
-            <h3 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#1a1a1a', marginBottom: '0.25rem' }}>添加微信</h3>
-            <p style={{ fontSize: '0.65rem', color: '#999', marginBottom: '0.75rem' }}>
-              长按二维码直接添加，或在微信搜索微信号
-            </p>
 
-            {/* 二维码 */}
-            <div style={{ marginBottom: '0.75rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <img src={QR_URL} alt="微信二维码"
-                style={{ width: '8rem', height: '8rem', borderRadius: '0.65rem', border: '1px solid #eee8dc', cursor: 'pointer' }}
-                onClick={saveQrToAlbum} />
-              <button onClick={saveQrToAlbum}
-                style={{ marginTop: '0.35rem', fontSize: '0.6rem', color: '#3b82f6', background: 'none', border: 'none', cursor: 'pointer' }}>
-                {savingQr ? '保存中...' : qrSaved ? '✅ 已保存到相册' : '📥 点击保存二维码到相册'}
-              </button>
-            </div>
-
-            {/* 微信号 */}
-            <button onClick={copyWechatId} style={{
-              backgroundColor: '#f9f9f9', borderRadius: '0.5rem',
-              padding: '0.5rem', marginBottom: '0.75rem', width: '100%',
-              border: 'none', cursor: 'pointer',
-            }}>
-              <p style={{ fontSize: '0.55rem', color: '#999', marginBottom: '0.2rem' }}>
-                {copied ? '✅ 已复制' : '点击复制微信号'}
-              </p>
-              <p style={{ fontSize: '0.9rem', fontWeight: 700, letterSpacing: '0.1em', userSelect: 'all', color: copied ? '#10b981' : '#07c160' }}>
-                {copied ? '请到微信粘贴搜索' : WECHAT_ID}
-              </p>
-            </button>
-
-            {/* 步骤 */}
-            <div style={{ textAlign: 'left', fontSize: '0.6rem', color: '#666', marginBottom: '0.75rem', marginLeft: '0.75rem', lineHeight: '1.6' }}>
-              <p>① 微信号已复制 ✅</p>
-              <p>② 打开微信 → 添加朋友 → 粘贴搜索</p>
-              <p>③ 发送「咨询维修」即可</p>
-            </div>
-
-            {/* 按钮 */}
-            <div style={{ display: 'flex', gap: '0.5rem' }}>
-              <button onClick={() => setShowWechat(false)}
-                style={{
-                  flex: 1, padding: '0.5rem', borderRadius: '0.65rem',
-                  border: '1px solid #ddd', background: 'none',
-                  fontSize: '0.75rem', color: '#666', cursor: 'pointer',
-                }}>知道了</button>
-              <button onClick={() => { try { window.location.href = 'weixin://' } catch(e) {} }}
-                style={{
-                  flex: 1, padding: '0.5rem', borderRadius: '0.65rem',
-                  border: 'none', backgroundColor: '#07c160',
-                  fontSize: '0.75rem', color: '#fff', cursor: 'pointer',
-                }}>打开微信</button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* ===== 联系弹窗 ===== */}
       {showContact && (
@@ -231,7 +106,7 @@ export default function FloatingButtons() {
                 <div style={iconCircle('#07c160')}><MessageCircle size={16} color="#fff" /></div>
                 <div style={{ textAlign: 'left', flex: 1 }}>
                   <div style={{ fontWeight: 600, fontSize: '0.8rem' }}>💚 微信</div>
-                  <div style={{ fontSize: '0.65rem', color: '#666' }}>复制微信号 crazy-repair，去微信搜索添加</div>
+                  <div style={{ fontSize: '0.65rem', color: '#666' }}>{copied === 'wechat' ? '✅ 已复制' : WECHAT_ID}</div>
                 </div>
                 <span style={{ color: '#07c160', fontSize: '0.8rem' }}>→</span>
               </button>
