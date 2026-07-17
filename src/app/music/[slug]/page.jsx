@@ -331,8 +331,8 @@ export default function MusicCategoryPage() {
 
               <span className="text-[9px] text-[#b45309] shrink-0 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-2">
                 <button onClick={(e) => { e.stopPropagation(); handleDownload(song) }}
-                  className="text-[#b45309] hover:text-[#92400e] transition-colors" title="下载歌曲">
-                  <Download size={12} />
+                  className="inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-lg bg-[#b45309] text-white hover:bg-[#92400e] transition-colors" title="下载歌曲">
+                  <Download size={13} /> 下载
                 </button>
                 进入 →
               </span>
