@@ -173,7 +173,7 @@ export default function Home() {
 
       {/* ===== 版块（缩小紧凑版） ===== */}
       <section className="anim-up">
-        <h2 className="text-xs font-semibold text-[#bbb] uppercase tracking-widest mb-2">{t('board.title')}</h2>
+        <h2 className="text-[11px] font-semibold text-[#bbb] mb-2">{t('board.title')}</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
           {categories.map((c, i) => (
             <Link key={c.id} href={`/c/${c.slug}`}
@@ -192,7 +192,7 @@ export default function Home() {
 
       {/* ===== 🎮 游戏娱乐（游戏加载后可离线畅玩） ===== */}
       <section className="anim-up">
-        <h2 className="flex items-center gap-1.5 text-xs font-semibold text-[#bbb] uppercase tracking-widest mb-2">
+        <h2 className="flex items-center gap-1.5 text-[11px] font-semibold text-[#bbb] mb-2">
           <Gamepad2 size={14} />
           游戏娱乐
           <span className="font-normal lowercase text-[10px] text-[#ccc]">（游戏加载后可离线畅玩）</span>
