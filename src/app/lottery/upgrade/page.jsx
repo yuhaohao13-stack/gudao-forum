@@ -40,7 +40,7 @@ const PLANS = [
 ]
 
 const PAYMENT_INFO = {
-  contact: '打赏后联系浩哥（飞书）提升等级',
+  contact: '打赏后联系管理员（微信: crazy-repair / QQ邮箱: 994730969@qq.com）提升等级',
 }
 
 export default function UpgradePage() {
@@ -147,7 +147,7 @@ export default function UpgradePage() {
         <div className="space-y-4 text-sm text-[#444]">
           <div className="bg-[#fefaf5] p-3.5 rounded-lg border border-[#f0e8dc]">
             <div className="font-bold text-[#1c1917] mb-1">如何升级黄金会员？</div>
-            <div className="text-[#555] leading-relaxed">点击「打赏支持」按钮，打赏 ¥9.9 后联系浩哥飞书，管理员手动提升会员等级并发放500次摇奖机会。</div>
+            <div className="text-[#555] leading-relaxed">点击「打赏支持」按钮，打赏 ¥9.9 后联系管理员（微信: crazy-repair / QQ邮箱: 994730969@qq.com），手动提升会员等级并发放500次摇奖机会。</div>
           </div>
           <div className="bg-[#fefaf5] p-3.5 rounded-lg border border-[#f0e8dc]">
             <div className="font-bold text-[#1c1917] mb-1">钻石会员有什么额外权益？</div>
@@ -155,7 +155,7 @@ export default function UpgradePage() {
           </div>
           <div className="bg-[#fefaf5] p-3.5 rounded-lg border border-[#f0e8dc]">
             <div className="font-bold text-[#1c1917] mb-1">黄金会员次数用完了怎么办？</div>
-            <div className="text-[#555] leading-relaxed">联系浩哥续费即可补充摇奖次数。</div>
+            <div className="text-[#555] leading-relaxed">联系管理员（微信: crazy-repair / QQ邮箱: 994730969@qq.com）续费即可补充摇奖次数。</div>
           </div>
           <div className="bg-[#fefaf5] p-3.5 rounded-lg border border-[#f0e8dc]">
             <div className="font-bold text-[#1c1917] mb-1">升级后立即生效吗？</div>
