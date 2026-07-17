@@ -134,7 +134,7 @@ export default function ThreadPage() {
 
           <div className="my-6 h-px bg-[#f0f0f0]" />
 
-          <div className={`text-[#444] leading-7 sm:leading-8 whitespace-pre-wrap text-sm sm:text-base ${!user ? 'line-clamp-3' : ''}`}>
+          <div className={`text-[#444] leading-7 sm:leading-8 whitespace-pre-wrap text-sm sm:text-base font-mono ${!user ? 'line-clamp-3' : ''}`}>
             {!user ? thread.content.split('\n').slice(0, 3).join('\n') : thread.content}
           </div>
           {!user && thread.content.split('\n').length > 3 && (
