@@ -109,61 +109,60 @@ export default function Home() {
         <DonationMarquee />
       </div>
 
-      {/* ===== 在线聊天室入口 ===== */}
-      <Link href="/chat" className="block anim-up">
-        <div className="bg-gradient-to-r from-[#fdf8f4] to-[#f8f0e8] border border-[#eee8dc] rounded-xl px-4 py-3 transition-all hover:border-[#c23531] hover:shadow-sm hover:-translate-y-0.5">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-[#c23531] bg-opacity-10 flex items-center justify-center text-base shrink-0">💬</div>
-            <div className="min-w-0 flex-1">
-              <div className="text-sm font-semibold text-[#1a1a1a]">在线聊天室</div>
-              <div className="text-xs text-[#999]">非会员可查看聊天记录，会员可参与聊天</div>
+      {/* ===== 功能入口（2×2双排） ===== */}
+      <div className="grid grid-cols-2 gap-2 anim-up">
+        <Link href="/chat">
+          <div className="bg-gradient-to-r from-[#fdf8f4] to-[#f8f0e8] border border-[#eee8dc] rounded-xl px-3 py-2.5 transition-all hover:border-[#c23531] hover:shadow-sm hover:-translate-y-0.5 h-full">
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-[#c23531] bg-opacity-10 flex items-center justify-center text-sm shrink-0">💬</div>
+              <div className="min-w-0 flex-1">
+                <div className="text-xs font-semibold text-[#1a1a1a]">在线聊天室</div>
+                <div className="text-[9px] text-[#999] leading-tight">会员可参与聊天</div>
+              </div>
+              <span className="text-[10px] text-[#c23531] font-medium shrink-0">→</span>
             </div>
-            <div className="text-xs text-[#c23531] font-medium shrink-0">进入 ›</div>
           </div>
-        </div>
-      </Link>
+        </Link>
 
-      {/* ===== 🎵 音乐频道 ===== */}
-      <Link href="/music" className="block anim-up">
-        <div className="bg-gradient-to-r from-[#fdf8f4] to-[#fefaf5] border border-[#eee8dc] rounded-xl px-4 py-3 transition-all hover:border-[#b45309] hover:shadow-sm hover:-translate-y-0.5">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-[#b45309] bg-opacity-10 flex items-center justify-center text-base shrink-0">🎵</div>
-            <div className="min-w-0 flex-1">
-              <div className="text-sm font-semibold text-[#1a1a1a]">音乐频道</div>
-              <div className="text-[10px] sm:text-xs text-[#999] leading-tight line-clamp-2">六大分类，120首精选——8090经典、网络红歌、民谣、中文名曲、英文金曲、助眠夜曲</div>
+        <Link href="/music">
+          <div className="bg-gradient-to-r from-[#fdf8f4] to-[#fefaf5] border border-[#eee8dc] rounded-xl px-3 py-2.5 transition-all hover:border-[#b45309] hover:shadow-sm hover:-translate-y-0.5 h-full">
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-[#b45309] bg-opacity-10 flex items-center justify-center text-sm shrink-0">🎵</div>
+              <div className="min-w-0 flex-1">
+                <div className="text-xs font-semibold text-[#1a1a1a]">音乐频道</div>
+                <div className="text-[9px] text-[#999] leading-tight line-clamp-2">120首精选·六大分类</div>
+              </div>
+              <span className="text-[10px] text-[#b45309] font-medium shrink-0">→</span>
             </div>
-            <div className="text-xs text-[#b45309] font-medium shrink-0">进入 ›</div>
           </div>
-        </div>
-      </Link>
+        </Link>
 
-      {/* ===== 🎰 彩票模拟器 ===== */}
-      <Link href="/lottery" className="block anim-up">
-        <div className="bg-gradient-to-r from-[#fdf8f4] to-[#fefaf5] border border-[#eee8dc] rounded-xl px-4 py-3 transition-all hover:border-[#b45309] hover:shadow-sm hover:-translate-y-0.5">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-[#b45309] bg-opacity-10 flex items-center justify-center text-base shrink-0">🎰</div>
-            <div className="min-w-0 flex-1">
-              <div className="text-sm font-semibold text-[#1a1a1a]">彩票模拟器</div>
-              <div className="text-[10px] sm:text-xs text-[#999] leading-tight line-clamp-2">双色球 · 大乐透 · 3D · 4D · TOTO — 在线摇奖模拟</div>
+        <Link href="/lottery">
+          <div className="bg-gradient-to-r from-[#fdf8f4] to-[#fefaf5] border border-[#eee8dc] rounded-xl px-3 py-2.5 transition-all hover:border-[#b45309] hover:shadow-sm hover:-translate-y-0.5 h-full">
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-[#b45309] bg-opacity-10 flex items-center justify-center text-sm shrink-0">🎰</div>
+              <div className="min-w-0 flex-1">
+                <div className="text-xs font-semibold text-[#1a1a1a]">彩票模拟器</div>
+                <div className="text-[9px] text-[#999] leading-tight">双色球·大乐透·TOTO</div>
+              </div>
+              <span className="text-[10px] text-[#b45309] font-medium shrink-0">→</span>
             </div>
-            <div className="text-xs text-[#b45309] font-medium shrink-0">进入 ›</div>
           </div>
-        </div>
-      </Link>
+        </Link>
 
-      {/* ===== 🎨 高清壁纸库 ===== */}
-      <Link href="/wallpaper" className="block anim-up">
-        <div className="bg-gradient-to-r from-[#fdf8f4] to-[#fefaf5] border border-[#eee8dc] rounded-xl px-4 py-3 transition-all hover:border-[#b45309] hover:shadow-sm hover:-translate-y-0.5">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-[#b45309] bg-opacity-10 flex items-center justify-center text-base shrink-0">🎨</div>
-            <div className="min-w-0 flex-1">
-              <div className="text-sm font-semibold text-[#1a1a1a]">高清壁纸库</div>
-              <div className="text-[10px] sm:text-xs text-[#999] leading-tight line-clamp-2">十大分类 · 杂志封面/宇宙星空/人物写真/山川四季/动漫/城市/海洋/花鸟/极简 — 电脑+手机双版本</div>
+        <Link href="/wallpaper">
+          <div className="bg-gradient-to-r from-[#fdf8f4] to-[#fefaf5] border border-[#eee8dc] rounded-xl px-3 py-2.5 transition-all hover:border-[#b45309] hover:shadow-sm hover:-translate-y-0.5 h-full">
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-[#b45309] bg-opacity-10 flex items-center justify-center text-sm shrink-0">🎨</div>
+              <div className="min-w-0 flex-1">
+                <div className="text-xs font-semibold text-[#1a1a1a]">高清壁纸库</div>
+                <div className="text-[9px] text-[#999] leading-tight">十大分类·电脑手机双版</div>
+              </div>
+              <span className="text-[10px] text-[#b45309] font-medium shrink-0">→</span>
             </div>
-            <div className="text-xs text-[#b45309] font-medium shrink-0">进入 ›</div>
           </div>
-        </div>
-      </Link>
+        </Link>
+      </div>
 
       {/* ===== 公告 ===== */}
       {announcements.length > 0 && (
