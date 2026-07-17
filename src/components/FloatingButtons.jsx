@@ -243,7 +243,7 @@ export default function FloatingButtons() {
                 <div style={iconCircle('#ea4335')}>📧</div>
                 <div style={{ textAlign: 'left', flex: 1 }}>
                   <div style={{ fontWeight: 600, fontSize: '0.8rem' }}>📧 QQ邮箱</div>
-                  <div style={{ fontSize: '0.65rem', color: '#666' }}>{copied === 'qq' ? '✅ 已复制' : '点击复制邮箱地址'}</div>
+                  <div style={{ fontSize: '0.65rem', color: '#666' }}>{copied === 'qq' ? '✅ 已复制' : '994730969@qq.com'}</div>
                 </div>
                 <span style={{ color: '#ea4335', fontSize: '0.8rem' }}>→</span>
               </button>
@@ -255,7 +255,7 @@ export default function FloatingButtons() {
                 <div style={iconCircle('#4285F4')}>📧</div>
                 <div style={{ textAlign: 'left', flex: 1 }}>
                   <div style={{ fontWeight: 600, fontSize: '0.8rem' }}>📧 谷歌邮箱</div>
-                  <div style={{ fontSize: '0.65rem', color: '#666' }}>{copied === 'gmail' ? '✅ 已复制' : '点击复制邮箱地址'}</div>
+                  <div style={{ fontSize: '0.65rem', color: '#666' }}>{copied === 'gmail' ? '✅ 已复制' : 'yuhaohao13@gmail.com'}</div>
                 </div>
                 <span style={{ color: '#4285F4', fontSize: '0.8rem' }}>→</span>
               </button>
