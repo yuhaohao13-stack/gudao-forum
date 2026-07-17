@@ -153,8 +153,8 @@ export default function ProfilePage() {
   const isAdmin = profileUser.role === 'admin'
   const isMod = profileUser.role === 'moderator'
   const memberLevel = profileUser.membership_level || 'regular'
-  const memberLabel = memberLevel === 'diamond' ? '💎 钻石会员' : memberLevel === 'gold' ? '🏆 黄金会员' : ''
-  const memberColor = memberLevel === 'diamond' ? 'text-purple-600 bg-purple-50 border-purple-200' : memberLevel === 'gold' ? 'text-amber-700 bg-amber-50 border-amber-200' : ''
+  const memberLabel = memberLevel === 'diamond' ? '💎 钻石会员' : memberLevel === 'gold' ? '🏆 黄金会员' : '普通会员'
+  const memberColor = memberLevel === 'diamond' ? 'text-purple-600 bg-purple-50 border-purple-200' : memberLevel === 'gold' ? 'text-amber-700 bg-amber-50 border-amber-200' : 'text-gray-500 bg-gray-50 border-gray-200'
   const avatarLetter = (profileUser.display_name || profileUser.username || '?')[0]
   const genderLabel = (g) => {
     if (g === 'male') return '♂ 男'
