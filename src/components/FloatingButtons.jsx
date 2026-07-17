@@ -107,6 +107,7 @@ export default function FloatingButtons() {
                 <div style={{ textAlign: 'left', flex: 1 }}>
                   <div style={{ fontWeight: 600, fontSize: '0.8rem' }}>💚 微信</div>
                   <div style={{ fontSize: '0.65rem', color: '#666' }}>{copied === 'wechat' ? '✅ 已复制' : WECHAT_ID}</div>
+                  <div style={{ fontSize: '0.5rem', color: '#999', marginTop: '1px' }}>点击复制去添加好友</div>
                 </div>
                 <span style={{ color: '#07c160', fontSize: '0.8rem' }}>→</span>
               </button>
@@ -119,6 +120,7 @@ export default function FloatingButtons() {
                 <div style={{ textAlign: 'left', flex: 1 }}>
                   <div style={{ fontWeight: 600, fontSize: '0.8rem' }}>📧 QQ邮箱</div>
                   <div style={{ fontSize: '0.65rem', color: '#666' }}>{copied === 'qq' ? '✅ 已复制' : '994730969@qq.com'}</div>
+                  <div style={{ fontSize: '0.5rem', color: '#999', marginTop: '1px' }}>点击复制去发邮件</div>
                 </div>
                 <span style={{ color: '#ea4335', fontSize: '0.8rem' }}>→</span>
               </button>
@@ -131,6 +133,7 @@ export default function FloatingButtons() {
                 <div style={{ textAlign: 'left', flex: 1 }}>
                   <div style={{ fontWeight: 600, fontSize: '0.8rem' }}>📧 谷歌邮箱</div>
                   <div style={{ fontSize: '0.65rem', color: '#666' }}>{copied === 'gmail' ? '✅ 已复制' : 'yuhaohao13@gmail.com'}</div>
+                  <div style={{ fontSize: '0.5rem', color: '#999', marginTop: '1px' }}>点击复制去发邮件</div>
                 </div>
                 <span style={{ color: '#4285F4', fontSize: '0.8rem' }}>→</span>
               </button>
