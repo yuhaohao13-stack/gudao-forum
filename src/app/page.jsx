@@ -130,7 +130,7 @@ export default function Home() {
             <div className="w-8 h-8 rounded-lg bg-[#b45309] bg-opacity-10 flex items-center justify-center text-base shrink-0">🎵</div>
             <div className="min-w-0 flex-1">
               <div className="text-sm font-semibold text-[#1a1a1a]">音乐频道</div>
-              <div className="text-xs text-[#999]">六大分类，120首精选——8090经典、网络红歌、民谣、中文名曲、英文金曲、助眠夜曲</div>
+              <div className="text-[10px] sm:text-xs text-[#999] leading-tight line-clamp-2">六大分类，120首精选——8090经典、网络红歌、民谣、中文名曲、英文金曲、助眠夜曲</div>
             </div>
             <div className="text-xs text-[#b45309] font-medium shrink-0">进入 ›</div>
           </div>
@@ -144,7 +144,7 @@ export default function Home() {
             <div className="w-8 h-8 rounded-lg bg-[#b45309] bg-opacity-10 flex items-center justify-center text-base shrink-0">🎰</div>
             <div className="min-w-0 flex-1">
               <div className="text-sm font-semibold text-[#1a1a1a]">彩票模拟器</div>
-              <div className="text-xs text-[#999]">双色球 · 大乐透 · 3D · 4D · TOTO — 在线摇奖模拟</div>
+              <div className="text-[10px] sm:text-xs text-[#999] leading-tight line-clamp-2">双色球 · 大乐透 · 3D · 4D · TOTO — 在线摇奖模拟</div>
             </div>
             <div className="text-xs text-[#b45309] font-medium shrink-0">进入 ›</div>
           </div>
