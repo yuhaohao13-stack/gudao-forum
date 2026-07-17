@@ -151,6 +151,20 @@ export default function Home() {
         </div>
       </Link>
 
+      {/* ===== 🎨 高清壁纸库 ===== */}
+      <Link href="/wallpaper" className="block anim-up">
+        <div className="bg-gradient-to-r from-[#fdf8f4] to-[#fefaf5] border border-[#eee8dc] rounded-xl px-4 py-3 transition-all hover:border-[#b45309] hover:shadow-sm hover:-translate-y-0.5">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-[#b45309] bg-opacity-10 flex items-center justify-center text-base shrink-0">🎨</div>
+            <div className="min-w-0 flex-1">
+              <div className="text-sm font-semibold text-[#1a1a1a]">高清壁纸库</div>
+              <div className="text-[10px] sm:text-xs text-[#999] leading-tight line-clamp-2">十大分类 · 杂志封面/宇宙星空/人物写真/山川四季/动漫/城市/海洋/花鸟/极简 — 电脑+手机双版本</div>
+            </div>
+            <div className="text-xs text-[#b45309] font-medium shrink-0">进入 ›</div>
+          </div>
+        </div>
+      </Link>
+
       {/* ===== 公告 ===== */}
       {announcements.length > 0 && (
         <section className="anim-up">
