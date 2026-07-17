@@ -117,7 +117,7 @@ export default function DonateOverlay() {
           <div style={{ ...innerStyle, textAlign: 'center' }} onClick={e => e.stopPropagation()}>
             <div style={{ fontSize: '1.125rem', fontWeight: 700, fontFamily: "'Inter', 'Noto Sans SC', -apple-system, sans-serif", color: '#1a1a1a', marginBottom: '0.25rem' }}>💰 支付宝</div>
             <p style={{ fontSize: '0.75rem', color: '#999', marginBottom: '1rem' }}>打开支付宝扫描二维码支付</p>
-            <img src="/images/alipay-qr.jpg" alt="Alipay QR" style={{ width: '100%', maxWidth: '15rem', margin: '0 auto', borderRadius: '0.75rem', border: '1px solid #eee8dc' }} />
+            <img src="/images/alipay.jpg" alt="Alipay QR" style={{ width: '100%', maxWidth: '15rem', margin: '0 auto', borderRadius: '0.75rem', border: '1px solid #eee8dc' }} />
             <p style={{ fontSize: '0.625rem', color: '#ccc', marginTop: '1rem' }}>截图保存到相册，在支付宝中扫码</p>
           </div>
         </div>

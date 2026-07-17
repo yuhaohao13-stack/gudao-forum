@@ -1144,7 +1144,7 @@ export default function LotteryTypePage() {
           </button>
           <div className="text-lg font-bold text-[#1c1917] mb-1 mt-2">💰 支付宝</div>
           <p className="text-xs text-[#999] mb-4">打开支付宝扫描二维码支付</p>
-          <img src="/images/alipay-qr.jpg" alt="支付宝收款码" className="w-full max-w-[15rem] mx-auto rounded-xl border border-[#eee8dc]" />
+          <img src="/images/alipay.jpg" alt="支付宝收款码" className="w-full max-w-[15rem] mx-auto rounded-xl border border-[#eee8dc]" />
           <p className="text-[10px] text-[#ccc] mt-3">截图保存到相册，在支付宝中扫码</p>
         </div>
       </div>
