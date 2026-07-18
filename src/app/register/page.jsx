@@ -72,9 +72,11 @@ export default function RegisterPage() {
     const age = today.getFullYear() - dobDate.getFullYear()
     if (age < 10 || age > 120) { setError('出生日期不合法，请检查'); return }
 
-    // 手机号校验（必须填写真实手机号）
+    // 手机号校验：11位中国大陆手机号（必须填写真实手机号）
     if (!phone || !phone.trim()) { setError('请输入手机号'); return }
-    const fullPhone = '+' + phoneCode + phone
+    const phoneDigits = phone.trim().replace(/\D/g, '')
+    if (phoneDigits.length !== 11) { setError('手机号必须为11位数字'); return }
+    const fullPhone = '+' + phoneCode + phoneDigits
     const phoneCheck = validatePhone(fullPhone)
     if (!phoneCheck.valid) { setError(phoneCheck.error); return }
 
