@@ -27,7 +27,7 @@ export default function PoetryPage() {
       </div>
 
       {/* 三列紧凑列表 */}
-      <div className="grid grid-cols-3 gap-x-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-4">
         {/* 第1列: 1-100首 */}
         <div>
           {COL1.map((poem, i) => (
