@@ -188,6 +188,32 @@ export default function Home() {
             </div>
           </div>
         </Link>
+
+        <Link href="/idioms">
+          <div className="bg-gradient-to-r from-[#fdf8f4] to-[#fefaf5] border border-[#eee8dc] rounded-xl px-3 py-2.5 transition-all hover:border-[#b45309] hover:shadow-sm hover:-translate-y-0.5 h-full">
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-[#b45309] bg-opacity-10 flex items-center justify-center text-sm shrink-0">📖</div>
+              <div className="min-w-0 flex-1">
+                <div className="text-xs font-semibold text-[#1a1a1a]">成语故事</div>
+                <div className="text-[9px] text-[#999] leading-tight">三百经典·寓教于乐</div>
+              </div>
+              <span className="text-[10px] text-[#b45309] font-medium shrink-0">→</span>
+            </div>
+          </div>
+        </Link>
+
+        <Link href="/proverbs">
+          <div className="bg-gradient-to-r from-[#fdf8f4] to-[#fefaf5] border border-[#eee8dc] rounded-xl px-3 py-2.5 transition-all hover:border-[#b45309] hover:shadow-sm hover:-translate-y-0.5 h-full">
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-[#b45309] bg-opacity-10 flex items-center justify-center text-sm shrink-0">💬</div>
+              <div className="min-w-0 flex-1">
+                <div className="text-xs font-semibold text-[#1a1a1a]">谚语故事</div>
+                <div className="text-[9px] text-[#999] leading-tight">民间智慧·口口相传</div>
+              </div>
+              <span className="text-[10px] text-[#b45309] font-medium shrink-0">→</span>
+            </div>
+          </div>
+        </Link>
       </div>
 
       {/* ===== 公告 ===== */}

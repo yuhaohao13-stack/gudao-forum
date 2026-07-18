@@ -2,13 +2,15 @@
 
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { ArrowLeft, ChevronLeft, ChevronRight, BookOpen } from 'lucide-react'
+import { ArrowLeft, ChevronLeft, ChevronRight, BookOpen, UserRound } from 'lucide-react'
 import Breadcrumb from '@/components/Breadcrumb'
 import CLASSICS from '@/data/classics'
+import { useAuth } from '@/components/AuthProvider'
 
 export default function ClassicsChapterPage() {
   const params = useParams()
   const router = useRouter()
+  const { user } = useAuth()
   const bookId = params.book
   const chapterId = params.chapter
 
@@ -33,6 +35,41 @@ export default function ClassicsChapterPage() {
   const currentIndex = book.chapters.findIndex((c) => c.id === Number(chapterId))
   const prevChapter = currentIndex > 0 ? book.chapters[currentIndex - 1] : null
   const nextChapter = currentIndex < book.chapters.length - 1 ? book.chapters[currentIndex + 1] : null
+
+  // 访客提示注册
+  if (!user) {
+    return (
+      <div className="anim-fade-in max-w-3xl mx-auto pb-12">
+        <Breadcrumb crumbs={[
+          { label: '首页', href: '/' },
+          { label: '四大名著', href: '/classics' },
+          { label: book.title, href: `/classics/${book.id}` },
+          { label: chapter.title },
+        ]} className="mb-3" />
+
+        <Link href={`/classics/${book.id}`} className="inline-flex items-center gap-1 text-[11px] text-[#b0a898] hover:text-[#b45309] transition-colors mb-3">
+          <ChevronLeft size={13} />
+          返回目录
+        </Link>
+
+        <div className="bg-white border border-[#ece8e0] rounded-xl px-5 py-12 text-center">
+          <h1 className="text-lg font-bold text-[#1a1a1a] mb-4">{chapter.title}</h1>
+          <div className="mx-auto w-12 h-12 rounded-full bg-amber-50 flex items-center justify-center mb-3">
+            <UserRound size={24} className="text-[#b45309]" />
+          </div>
+          <p className="text-sm text-[#888] mb-4">注册会员即可浏览四大名著全部章节</p>
+          <Link href="/register" className="inline-flex items-center gap-1.5 text-xs font-semibold px-4 py-2 rounded-lg bg-[#b45309] text-white hover:bg-[#92400e] transition-colors">
+            免费注册
+          </Link>
+          <p className="text-[10px] text-[#b0a898] mt-3">已是会员？<Link href="/login" className="text-[#b45309] hover:underline">登录</Link></p>
+        </div>
+
+        <div className="text-center mt-4">
+          <Link href={`/classics/${book.id}`} className="text-[11px] text-[#b45309] hover:underline">← 返回《{book.title}》目录</Link>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="anim-fade-in max-w-3xl mx-auto pb-12">

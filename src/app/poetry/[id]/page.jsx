@@ -8,7 +8,7 @@ import Breadcrumb from '@/components/Breadcrumb'
 import POEMS from '@/data/poetry'
 
 export default function PoemDetailPage() {
-  const { id } = useParams()
+  const id = Number(useParams().id)
   const { user } = useAuth()
   const allIds = POEMS.map(p => p.id)
   const currentIndex = allIds.indexOf(id)
