@@ -23,7 +23,7 @@ export default function RegisterPage() {
   const [form, setForm] = useState({
     _honeypot: '',
     _captcha: '',
-    username: '', email: '', password: '', phone: '', gender: 'male',
+    username: '', email: '', password: '', confirm_password: '', phone: '', gender: 'male',
     date_of_birth: '', birth_place: '', hobbies: '', bio: '', resume: '',
   })
   const [phoneCode, setPhoneCode] = useState('86')
@@ -83,6 +83,9 @@ export default function RegisterPage() {
     // 邮箱校验
     if (!email || !email.trim()) { setError('请输入邮箱'); return }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) { setError('邮箱格式不正确'); return }
+
+    // 确认密码校验
+    if (password !== form.confirm_password) { setError('两次输入的密码不一致'); return }
 
     // 密码强度校验
     const pwCheck = validatePassword(password)
@@ -213,6 +216,13 @@ export default function RegisterPage() {
                 onChange={e => update('password', e.target.value)}
                 className={inputClass} placeholder={t('auth.password_placeholder')} autoComplete="new-password" />
               <p className="text-[10px] text-[#ccc] mt-1">至少 8 位，需包含字母和数字</p>
+            </div>
+
+            <div>
+              <label className="block text-xs text-[#888] mb-1.5 font-medium">确认密码 <span className="text-[#c23531]">*</span></label>
+              <input type="password" required value={form.confirm_password}
+                onChange={e => update('confirm_password', e.target.value)}
+                className={inputClass} placeholder="再次输入密码" autoComplete="new-password" />
             </div>
           </div>
 
