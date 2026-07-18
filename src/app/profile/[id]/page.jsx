@@ -219,6 +219,7 @@ export default function ProfilePage() {
         {!editing && (
           <div className="mt-2 pt-2 border-t border-[#f5f0e8] text-[14px] space-y-0.5">
             <div><span className="text-[#999]">用户名：</span><span className="text-[#666]">@{profileUser.username}</span></div>
+            <div><span className="text-[#999]">邮箱：</span><span className="text-[#666]">{user?.email || (isSelf ? '未设置' : '已隐藏')}</span></div>
             <div><span className="text-[#999]">手机号：</span><span className="text-[#666]">{profileUser.phone ? profileUser.phone.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2') : '-'}</span></div>
             <div><span className="text-[#999]">性别：</span><span className="text-[#666]">{profileUser.gender ? genderLabel(profileUser.gender) : '-'}</span></div>
             <div><span className="text-[#999]">出生地：</span><span className="text-[#666]">{profileUser.birth_place || '-'}</span></div>
