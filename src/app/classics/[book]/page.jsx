@@ -2,6 +2,7 @@
 
 import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { useEffect } from 'react'
 import Link from 'next/link'
 import { ArrowLeft, ChevronLeft, ChevronRight, BookOpen } from 'lucide-react'
 import Breadcrumb from '@/components/Breadcrumb'
@@ -10,6 +11,7 @@ import CLASSICS from '@/data/classics'
 const PAGE_SIZE = 20
 
 export default function ClassicsBookPage() {
+  useEffect(() => { document.title = (book ? book.title + '·四大名著' : '四大名著') + ' — 古道论坛' }, [book])
   const { book: bookId } = useParams()
   const router = useRouter()
   const [page, setPage] = useState(1)

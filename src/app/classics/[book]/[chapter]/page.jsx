@@ -6,11 +6,16 @@ import { ArrowLeft, ChevronLeft, ChevronRight, BookOpen, UserRound } from 'lucid
 import Breadcrumb from '@/components/Breadcrumb'
 import CLASSICS from '@/data/classics'
 import { useAuth } from '@/components/AuthProvider'
+import { useEffect } from 'react'
 
 export default function ClassicsChapterPage() {
   const params = useParams()
   const router = useRouter()
   const { user } = useAuth()
+  useEffect(() => {
+    const t = chapter ? chapter.title + ' - ' + (book ? book.title : '') : '四大名著'
+    document.title = t + ' — 古道论坛'
+  }, [book, chapter])
   const bookId = params.book
   const chapterId = params.chapter
 

@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect } from 'react'
 import Link from 'next/link'
 import Breadcrumb from '@/components/Breadcrumb'
 import IDIOMS from '@/data/idioms'
@@ -10,6 +11,7 @@ const COL2 = IDIOMS.slice(100, 200)
 const COL3 = IDIOMS.slice(200, 300)
 
 export default function IdiomsPage() {
+  useEffect(() => { document.title = '成语故事大全300篇 — 古道论坛' }, [])
   return (
     <div className="anim-fade-in max-w-4xl mx-auto pb-4">
       <Breadcrumb crumbs={[

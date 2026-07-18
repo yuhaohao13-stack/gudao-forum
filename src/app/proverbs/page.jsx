@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect } from 'react'
 import Link from 'next/link'
 import Breadcrumb from '@/components/Breadcrumb'
 import PROVERBS from '@/data/proverbs'
@@ -8,6 +9,7 @@ const COL1 = PROVERBS.slice(0, 40)
 const COL2 = PROVERBS.slice(40, 80)
 
 export default function ProverbsPage() {
+  useEffect(() => { document.title = '谚语故事大全80条 — 古道论坛' }, [])
   return (
     <div className="anim-fade-in max-w-4xl mx-auto pb-4">
       <Breadcrumb crumbs={[

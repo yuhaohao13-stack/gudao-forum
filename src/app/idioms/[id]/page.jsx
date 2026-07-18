@@ -6,10 +6,12 @@ import { ArrowLeft, ArrowRight, ChevronLeft, UserRound } from 'lucide-react'
 import Breadcrumb from '@/components/Breadcrumb'
 import IDIOMS from '@/data/idioms'
 import { useAuth } from '@/components/AuthProvider'
+import { useEffect } from 'react'
 
 export default function IdiomDetailPage() {
   const id = Number(useParams().id)
   const { user } = useAuth()
+  useEffect(() => { document.title = (item ? item.idiom + ' - 成语故事' : '成语故事') + ' — 古道论坛' }, [item])
   const allIds = IDIOMS.map(p => p.id)
   const currentIndex = allIds.indexOf(id)
   const item = IDIOMS.find(p => p.id === id)

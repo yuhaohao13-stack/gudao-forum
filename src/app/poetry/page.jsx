@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect } from 'react'
 import Link from 'next/link'
 import Breadcrumb from '@/components/Breadcrumb'
 import POEMS from '@/data/poetry'
@@ -10,6 +11,7 @@ const COL2 = POEMS.slice(100, 200)
 const COL3 = POEMS.slice(200, 300)
 
 export default function PoetryPage() {
+  useEffect(() => { document.title = '唐诗三百首 — 古道论坛 | 国际中文社区' }, [])
   return (
     <div className="anim-fade-in max-w-4xl mx-auto pb-4">
       <Breadcrumb crumbs={[

@@ -6,10 +6,12 @@ import { ArrowLeft, ArrowRight, ChevronLeft, Quote, UserRound } from 'lucide-rea
 import Breadcrumb from '@/components/Breadcrumb'
 import PROVERBS from '@/data/proverbs'
 import { useAuth } from '@/components/AuthProvider'
+import { useEffect } from 'react'
 
 export default function ProverbDetailPage() {
   const { id: paramId } = useParams()
   const { user } = useAuth()
+  useEffect(() => { document.title = (proverb ? proverb.proverb + ' - 谚语故事' : '谚语故事') + ' — 古道论坛' }, [proverb])
   const id = Number(paramId)
   const allIds = PROVERBS.map(p => p.id)
   const currentIndex = allIds.indexOf(id)
