@@ -25,7 +25,7 @@ export default function ProverbsPage() {
       </div>
 
       {/* 两列紧凑列表 */}
-      <div className="grid grid-cols-2 gap-x-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4">
         {/* 第1列: 1-40 */}
         <div>
           {COL1.map((item, i) => (
