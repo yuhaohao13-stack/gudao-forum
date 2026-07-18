@@ -72,10 +72,15 @@ export default function RegisterPage() {
     const age = today.getFullYear() - dobDate.getFullYear()
     if (age < 10 || age > 120) { setError('出生日期不合法，请检查'); return }
 
-    // 手机号校验
+    // 手机号校验（必须填写真实手机号）
+    if (!phone || !phone.trim()) { setError('请输入手机号'); return }
     const fullPhone = '+' + phoneCode + phone
     const phoneCheck = validatePhone(fullPhone)
     if (!phoneCheck.valid) { setError(phoneCheck.error); return }
+
+    // 邮箱校验
+    if (!email || !email.trim()) { setError('请输入邮箱'); return }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) { setError('邮箱格式不正确'); return }
 
     // 密码强度校验
     const pwCheck = validatePassword(password)
