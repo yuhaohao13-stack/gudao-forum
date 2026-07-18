@@ -234,9 +234,12 @@ export default function ProfilePage() {
         {editing && (
           <div className="mt-2 pt-2 border-t border-[#f5f0e8] space-y-2 max-w-lg">
             <h2 className="text-sm font-bold text-[#1a1a1a]"><Pencil size={14} className="inline" /> 编辑资料</h2>
+            {/* 不可更改信息提示 */}
+            <div className="bg-amber-50 border border-amber-200 rounded-lg p-2.5 text-[10px] text-amber-700 leading-relaxed">
+              🔒 用户名 @{profileUser.username}、手机号、邮箱注册后不可更改
+            </div>
             <div className="grid grid-cols-2 gap-2">
               <div><label className="block text-[10px] text-[#888] mb-0.5">昵称</label><input type="text" value={form.display_name} onChange={e => update('display_name', e.target.value)} className="input text-xs py-1" maxLength={10} /></div>
-              <div><label className="block text-[10px] text-[#888] mb-0.5">手机号</label><input type="tel" value={form.phone} onChange={e => update('phone', e.target.value)} className="input text-xs py-1" maxLength={11} placeholder="13812345678" /></div>
               <div><label className="block text-[10px] text-[#888] mb-0.5">出生年月</label><DatePicker value={form.date_of_birth} onChange={(d) => update('date_of_birth', d)} lang="zh" max={new Date().toISOString().split('T')[0]} /></div>
               <div><label className="block text-[10px] text-[#888] mb-0.5">出生地</label><BirthPlaceSelector value={parseBp(form.birth_place)} onChange={(v) => update('birth_place', bpStr(v))} lang="zh" /></div>
             </div>
