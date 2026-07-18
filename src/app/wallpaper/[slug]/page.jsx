@@ -84,53 +84,55 @@ export default function WallpaperCategoryPage() {
         )}
       </div>
 
-      {/* 壁纸双排网格 */}
-      <div className="space-y-3">
-        {category.wallpapers.map((wp, i) => (
-          <div key={wp.id}>
-            {/* 壁纸标题 */}
-            <h3 className="text-xs font-semibold text-[#888] mb-2">
-              <span className="text-[#b45309]">#{i + 1}</span> {wp.title}
-            </h3>
-            {/* 双排：桌面版 + 手机版 */}
-            <div className="grid grid-cols-2 gap-3 mb-4">
-              {/* 桌面版 */}
-              <div className="cursor-pointer group" onClick={() => handleClick(wp.id, wp.title, 'desktop')}>
-                <div className="relative overflow-hidden rounded-xl border border-[#ece8e0] bg-[#faf8f5] aspect-video">
-                  <img src={getDesktopUrl(category.id, wp.id)} alt=""
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    loading="lazy" />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/15 transition-colors" />
-                  {/* 下载按钮 */}
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                    <span className={`px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 ${isMember ? 'bg-[#b45309] text-white' : 'bg-black/60 text-white'}`}>
-                      {downloading === `${wp.id}-desktop` ? <Loader2 size={12} className="animate-spin" /> : isMember ? <Download size={12} /> : <Lock size={12} />}
-                      {downloading === `${wp.id}-desktop` ? '下载中...' : isMember ? '下载' : '会员可下载'}
-                    </span>
-                  </div>
-                  <span className="absolute bottom-2 left-2 text-[9px] px-1.5 py-0.5 rounded bg-black/50 text-white">🖥️ 桌面</span>
+      {/* 缩略图网格：桌面版5张 + 手机版5张 */}
+      {/* 桌面版行 */}
+      <div className="mb-2">
+        <p className="text-[10px] text-[#999] mb-1.5">🖥️ 桌面版（1920×1080）</p>
+        <div className="grid grid-cols-5 gap-2">
+          {category.wallpapers.map((wp, i) => (
+            <div key={`desk-${wp.id}`} className="cursor-pointer group relative" onClick={() => handleClick(wp.id, wp.title, 'desktop')}>
+              <div className="relative overflow-hidden rounded-lg border border-[#ece8e0] bg-[#faf8f5] aspect-video">
+                <img src={getDesktopUrl(category.id, wp.id)} alt={wp.title}
+                  className="w-full h-full object-cover"
+                  loading="lazy" />
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                  <span className={`px-2 py-1 rounded-lg text-[10px] font-medium flex items-center gap-1 ${isMember ? 'bg-[#b45309] text-white' : 'bg-black/60 text-white'}`}>
+                    {downloading === `${wp.id}-desktop` ? <Loader2 size={10} className="animate-spin" /> : isMember ? <Download size={10} /> : <Lock size={10} />}
+                    {downloading === `${wp.id}-desktop` ? '中...' : isMember ? '下载' : '🔒'}
+                  </span>
                 </div>
+                <span className="absolute bottom-1 left-1 text-[8px] px-1 py-0.5 rounded bg-black/50 text-white">#{i+1}</span>
               </div>
-
-              {/* 手机版 */}
-              <div className="cursor-pointer group" onClick={() => handleClick(wp.id, wp.title, 'mobile')}>
-                <div className="relative overflow-hidden rounded-xl border border-[#ece8e0] bg-[#faf8f5] aspect-[3/4]">
-                  <img src={getMobileUrl(category.id, wp.id)} alt=""
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    loading="lazy" />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/15 transition-colors" />
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                    <span className={`px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 ${isMember ? 'bg-[#b45309] text-white' : 'bg-black/60 text-white'}`}>
-                      {downloading === `${wp.id}-mobile` ? <Loader2 size={12} className="animate-spin" /> : isMember ? <Download size={12} /> : <Lock size={12} />}
-                      {downloading === `${wp.id}-mobile` ? '下载中...' : isMember ? '下载' : '会员可下载'}
-                    </span>
-                  </div>
-                  <span className="absolute bottom-2 left-2 text-[9px] px-1.5 py-0.5 rounded bg-black/50 text-white">📱 手机</span>
-                </div>
-              </div>
+              <p className="text-[9px] text-[#888] mt-0.5 truncate">{wp.title}</p>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
+      </div>
+
+      {/* 手机版行 */}
+      <div>
+        <p className="text-[10px] text-[#999] mb-1.5">📱 手机版（1080×1920）</p>
+        <div className="grid grid-cols-5 gap-2">
+          {category.wallpapers.map((wp, i) => (
+            <div key={`mob-${wp.id}`} className="cursor-pointer group relative" onClick={() => handleClick(wp.id, wp.title, 'mobile')}>
+              <div className="relative overflow-hidden rounded-lg border border-[#ece8e0] bg-[#faf8f5] aspect-video">
+                <img src={getMobileUrl(category.id, wp.id)} alt={wp.title}
+                  className="w-full h-full object-cover"
+                  loading="lazy" />
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                  <span className={`px-2 py-1 rounded-lg text-[10px] font-medium flex items-center gap-1 ${isMember ? 'bg-[#b45309] text-white' : 'bg-black/60 text-white'}`}>
+                    {downloading === `${wp.id}-mobile` ? <Loader2 size={10} className="animate-spin" /> : isMember ? <Download size={10} /> : <Lock size={10} />}
+                    {downloading === `${wp.id}-mobile` ? '中...' : isMember ? '下载' : '🔒'}
+                  </span>
+                </div>
+                <span className="absolute bottom-1 left-1 text-[8px] px-1 py-0.5 rounded bg-black/50 text-white">#{i+1}</span>
+              </div>
+              <p className="text-[9px] text-[#888] mt-0.5 truncate">{wp.title}</p>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* 非会员提示 */}
