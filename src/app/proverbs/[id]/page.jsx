@@ -1,24 +1,27 @@
 'use client'
+import React from 'react'
 
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, ArrowRight, ChevronLeft, Quote, UserRound } from 'lucide-react'
 import Breadcrumb from '@/components/Breadcrumb'
-import PROVERBS from '@/data/proverbs'
+
 import { useAuth } from '@/components/AuthProvider'
 import { useEffect } from 'react'
 
 export default function ProverbDetailPage() {
+  const [proverbsData, setData] = React.useState([])
+  React.useEffect(() => { let c = false; import('@/data/proverbs').then(m => { if (!c) setData(m.default) }); return () => { c = true } }, [])
   const { id: paramId } = useParams()
   const { user } = useAuth()
   useEffect(() => { document.title = (proverb ? proverb.proverb + ' - 谚语故事' : '谚语故事') + ' — 古道论坛' }, [proverb])
   const id = Number(paramId)
-  const allIds = PROVERBS.map(p => p.id)
+  const allIds = data.map(p => p.id)
   const currentIndex = allIds.indexOf(id)
-  const proverb = PROVERBS.find(p => p.id === id)
+  const proverb = data.find(p => p.id === id)
 
-  const prevProverb = currentIndex > 0 ? PROVERBS[currentIndex - 1] : null
-  const nextProverb = currentIndex < PROVERBS.length - 1 ? PROVERBS[currentIndex + 1] : null
+  const prevProverb = currentIndex > 0 ? data[currentIndex - 1] : null
+  const nextProverb = currentIndex < data.length - 1 ? data[currentIndex + 1] : null
 
   if (!proverb) {
     return (
@@ -118,7 +121,7 @@ export default function ProverbDetailPage() {
         {/* ID badge */}
         <div className="flex justify-center mt-5">
           <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 text-[10px] text-[#b45309] font-medium">
-            第 {proverb.id} 条 / 共 {PROVERBS.length} 条
+            第 {proverb.id} 条 / 共 {data.length} 条
           </span>
         </div>
       </div>

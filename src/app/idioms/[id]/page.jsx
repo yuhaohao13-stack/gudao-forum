@@ -1,23 +1,26 @@
 'use client'
+import React from 'react'
 
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, ArrowRight, ChevronLeft, UserRound } from 'lucide-react'
 import Breadcrumb from '@/components/Breadcrumb'
-import IDIOMS from '@/data/idioms'
+
 import { useAuth } from '@/components/AuthProvider'
 import { useEffect } from 'react'
 
 export default function IdiomDetailPage() {
+  const [idiomsData, setData] = React.useState([])
+  React.useEffect(() => { let c = false; import('@/data/idioms').then(m => { if (!c) setData(m.default) }); return () => { c = true } }, [])
   const id = Number(useParams().id)
   const { user } = useAuth()
   useEffect(() => { document.title = (item ? item.idiom + ' - 成语故事' : '成语故事') + ' — 古道论坛' }, [item])
-  const allIds = IDIOMS.map(p => p.id)
+  const allIds = data.map(p => p.id)
   const currentIndex = allIds.indexOf(id)
-  const item = IDIOMS.find(p => p.id === id)
+  const item = data.find(p => p.id === id)
 
-  const prevItem = currentIndex > 0 ? IDIOMS[currentIndex - 1] : null
-  const nextItem = currentIndex < IDIOMS.length - 1 ? IDIOMS[currentIndex + 1] : null
+  const prevItem = currentIndex > 0 ? data[currentIndex - 1] : null
+  const nextItem = currentIndex < data.length - 1 ? data[currentIndex + 1] : null
 
   if (!item) {
     return (
