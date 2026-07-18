@@ -1,23 +1,21 @@
 'use client'
-import React from 'react'
 
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, ArrowRight, ChevronLeft, UserRound } from 'lucide-react'
 import { useAuth } from '@/components/AuthProvider'
 import Breadcrumb from '@/components/Breadcrumb'
+import POEMS from '@/data/poetry'
 
 export default function PoemDetailPage() {
-  const [poemsData, setData] = React.useState([])
-  React.useEffect(() => { let c = false; import('@/data/poetry').then(m => { if (!c) setData(m.default) }); return () => { c = true } }, [])
   const id = Number(useParams().id)
   const { user } = useAuth()
-  const allIds = data.map(p => p.id)
+  const allIds = POEMS.map(p => p.id)
   const currentIndex = allIds.indexOf(id)
-  const poem = data.find(p => p.id === id)
+  const poem = POEMS.find(p => p.id === id)
 
-  const prevPoem = currentIndex > 0 ? data[currentIndex - 1] : null
-  const nextPoem = currentIndex < data.length - 1 ? data[currentIndex + 1] : null
+  const prevPoem = currentIndex > 0 ? POEMS[currentIndex - 1] : null
+  const nextPoem = currentIndex < POEMS.length - 1 ? POEMS[currentIndex + 1] : null
 
   if (!poem) {
     return (
