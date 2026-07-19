@@ -65,6 +65,9 @@ export default function RegisterPage() {
     if (username.trim().length > 10) { setError('昵称不能超过 10 个字符'); return }
     if (!/^[\u4e00-\u9fa5a-zA-Z0-9_]+$/.test(username.trim())) { setError('昵称只能包含中文、字母、数字和下划线'); return }
 
+    // 出生地校验
+    if (!form.birth_place || !form.birth_place.trim()) { setError('请选择出生地'); return }
+
     // 出生日期校验
     if (!date_of_birth) { setError('请选择出生日期'); return }
     const dobDate = new Date(date_of_birth)
