@@ -85,7 +85,6 @@ export default function BookDetailPage() {
           <div className="flex-1 min-w-0">
             <h1 className="text-lg font-bold text-[#1c1917]">{book.title}</h1>
             <p className="text-xs text-[#888]">{book.chineseTitle}</p>
-            <p className="text-xs text-[#888]">{book.chineseTitle}</p>
             <div className="flex flex-wrap items-center gap-2 mt-2">
               <span className="text-[10px] px-2 py-0.5 rounded-full bg-white border text-[#666]">{book.author}</span>
               <span className="text-[10px] px-2 py-0.5 rounded-full bg-white border text-[#666]">{book.year}</span>
