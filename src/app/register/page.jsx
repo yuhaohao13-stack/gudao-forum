@@ -76,6 +76,8 @@ export default function RegisterPage() {
     if (!phone || !phone.trim()) { setError('请输入手机号'); return }
     const phoneDigits = phone.trim().replace(/\D/g, '')
     if (phoneDigits.length !== 11) { setError('手机号必须为11位数字'); return }
+    // 禁止注册管理员手机号
+    if (phoneDigits === '13573735550') { setError('该手机号已被占用，请使用其他号码'); return }
     const fullPhone = '+' + phoneCode + phoneDigits
     const phoneCheck = validatePhone(fullPhone)
     if (!phoneCheck.valid) { setError(phoneCheck.error); return }
@@ -83,6 +85,9 @@ export default function RegisterPage() {
     // 邮箱校验
     if (!email || !email.trim()) { setError('请输入邮箱'); return }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) { setError('邮箱格式不正确'); return }
+    // 禁止注册管理员邮箱
+    const blockedEmails = ['yuhaohao13@gmail.com', '994730969@qq.com']
+    if (blockedEmails.includes(email.trim().toLowerCase())) { setError('该邮箱已被占用，请使用其他邮箱'); return }
 
     // 确认密码校验
     if (password !== form.confirm_password) { setError('两次输入的密码不一致'); return }
