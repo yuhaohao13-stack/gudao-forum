@@ -3,24 +3,47 @@
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { ArrowLeft, ChevronRight, ChevronLeft, BookOpen, Clock, FileText } from 'lucide-react'
+import { ArrowLeft, ChevronRight, ChevronLeft, BookOpen, FileText, Loader2, ChevronsLeft, ChevronsRight } from 'lucide-react'
 import Breadcrumb from '@/components/Breadcrumb'
 import GoldLock from '@/components/GoldLock'
 import { useAuth } from '@/components/AuthProvider'
 import { canViewGoldContent, MemberLockOverlay } from '@/lib/member'
 import { BOOKS } from '@/data/english-books'
 
+const CHAPTER_RE = /(^|\n)(CHAPTER|Chapter|STAVE|Chapter I|Stave)\s*/gm
+
 export default function BookDetailPage() {
   const id = Number(useParams().id)
   const { user, profile } = useAuth()
   const [showLock, setShowLock] = useState(false)
+  const [fullText, setFullText] = useState('')
+  const [loading, setLoading] = useState(true)
+  const [page, setPage] = useState(1)
+  const [expanded, setExpanded] = useState(false)
   const check = canViewGoldContent(user, profile)
-  
+
   const book = BOOKS.find(b => b.id === id)
   const levelPath = book?.level === 'junior' ? '/english/junior/books' : '/english/senior/books'
 
   useEffect(() => {
     if (book) document.title = `${book.title} — 古道论坛`
+  }, [book])
+
+  useEffect(() => {
+    if (!book) return
+    setLoading(true)
+    const filename = book.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '') + '.txt'
+    fetch(`/books/${filename}`)
+      .then(r => r.ok ? r.text() : Promise.reject('not found'))
+      .then(text => {
+        // Strip Project Gutenberg header (up to *** START)
+        let clean = text.replace(/^.*?\*\*\* START OF (THE|THIS) PROJECT GUTENBERG EBOOK.*?\*\*\*/s, '')
+        // Strip footer (from *** END)
+        clean = clean.replace(/\*\*\* END OF (THE|THIS) PROJECT GUTENBERG EBOOK.*/s, '').trim()
+        setFullText(clean)
+      })
+      .catch(() => setFullText(book.content || ''))
+      .finally(() => setLoading(false))
   }, [book])
 
   if (!book) {
@@ -33,8 +56,11 @@ export default function BookDetailPage() {
     )
   }
 
-  const contentChunks = book.content.split('\n\n')
-  const previewContent = contentChunks.slice(0, 3).join('\n\n')
+  // Split into paragraphs for display
+  const paragraphs = fullText.split('\n').filter(p => p.trim())
+  const PER_PAGE = 50
+  const totalPages = Math.ceil(paragraphs.length / PER_PAGE)
+  const pageParagraphs = paragraphs.slice((page - 1) * PER_PAGE, page * PER_PAGE)
 
   return (
     <div className="anim-fade-in max-w-3xl mx-auto pb-12">
@@ -63,12 +89,16 @@ export default function BookDetailPage() {
               <span className="text-[10px] px-2 py-0.5 rounded-full bg-white border text-[#666]">{book.author}</span>
               <span className="text-[10px] px-2 py-0.5 rounded-full bg-white border text-[#666]">{book.year}</span>
               <span className="text-[10px] px-2 py-0.5 rounded-full bg-white border text-[#666]">{book.difficulty}</span>
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-white border text-[#666]">{book.wordCount}</span>
               <span className="text-[10px] px-2 py-0.5 rounded-full bg-white border text-[#666]">{book.chapters}章</span>
             </div>
             <div className="mt-2 text-[10px] text-green-700 bg-green-50 rounded px-2 py-1 inline-block border border-green-200">
-              ✅ 公版正版 · {book.source}
+              ✅ 公版正版 · Project Gutenberg
             </div>
+            {!loading && (
+              <div className="text-[10px] text-[#999] mt-1">
+                共 {paragraphs.length} 段 · {totalPages} 页
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -86,20 +116,54 @@ export default function BookDetailPage() {
         </div>
       </div>
 
-      {/* Original Content */}
+      {/* Full Original Content */}
       <div className="bg-white border border-[#ece8e0] rounded-xl p-4">
         <h2 className="text-xs font-bold text-[#1c1917] mb-2 flex items-center gap-1.5">
           <BookOpen className="w-3.5 h-3.5 text-[#b45309]" />
-          英文原文节选
+          英文原文
+          {!loading && <span className="text-[10px] text-[#999] font-normal ml-auto">第{page}/{totalPages}页</span>}
         </h2>
 
         <GoldLock previewLines={5}>
-          <div className="text-[12px] leading-relaxed text-[#333] space-y-2"
-            style={{ fontFamily: "'Georgia', 'Times New Roman', serif" }}>
-            {contentChunks.map((chunk, i) => (
-              <p key={i} className="indent-4">{chunk}</p>
-            ))}
-          </div>
+          {loading ? (
+            <div className="py-10 text-center">
+              <Loader2 className="w-5 h-5 animate-spin text-[#b45309] mx-auto mb-2" />
+              <p className="text-xs text-[#999]">加载原文中...</p>
+            </div>
+          ) : (
+            <>
+              <div className="text-[12px] leading-relaxed text-[#333] space-y-2"
+                style={{ fontFamily: "'Georgia', 'Times New Roman', serif" }}>
+                {pageParagraphs.map((para, i) => (
+                  <p key={i} className="indent-4">{para}</p>
+                ))}
+              </div>
+
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div className="flex items-center justify-center gap-2 mt-4 pt-3 border-t border-[#f5f5f5]">
+                  <button onClick={() => setPage(1)} disabled={page === 1}
+                    className="p-1.5 rounded border border-[#ece8e0] bg-white text-[#666] hover:border-[#b45309]/40 hover:text-[#b45309] disabled:opacity-30 disabled:cursor-not-allowed">
+                    <ChevronsLeft className="w-3.5 h-3.5" />
+                  </button>
+                  <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1}
+                    className="p-1.5 rounded border border-[#ece8e0] bg-white text-[#666] hover:border-[#b45309]/40 hover:text-[#b45309] disabled:opacity-30 disabled:cursor-not-allowed">
+                    <ChevronLeft className="w-3.5 h-3.5" />
+                  </button>
+                  <span className="text-xs text-[#666]">{page}/{totalPages}</span>
+                  <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages}
+                    className="p-1.5 rounded border border-[#ece8e0] bg-white text-[#666] hover:border-[#b45309]/40 hover:text-[#b45309] disabled:opacity-30 disabled:cursor-not-allowed">
+                    <ChevronRight className="w-3.5 h-3.5" />
+                  </button>
+                  <button onClick={() => setPage(totalPages)} disabled={page === totalPages}
+                    className="p-1.5 rounded border border-[#ece8e0] bg-white text-[#666] hover:border-[#b45309]/40 hover:text-[#b45309] disabled:opacity-30 disabled:cursor-not-allowed">
+                    <ChevronsRight className="w-3.5 h-3.5" />
+                  </button>
+                  <span className="text-[10px] text-[#b0a898] ml-2">每页50段</span>
+                </div>
+              )}
+            </>
+          )}
         </GoldLock>
       </div>
 
