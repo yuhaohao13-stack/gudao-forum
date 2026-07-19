@@ -64,10 +64,9 @@ export default function SeniorVocabPage() {
       </div>
 
       <div className="relative mb-3">
-        <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#b0a898]" />
         <input type="text" placeholder="搜索单词或中文..." value={search}
           onChange={e => { setSearch(e.target.value); setPage(1) }}
-          className="w-full pr-8 pl-3 py-2 text-xs border border-[#ece8e0] rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-[#b45309]/30 focus:border-[#b45309]" />
+          className="w-full px-3 py-2 text-xs border border-[#ece8e0] rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-[#b45309]/30 focus:border-[#b45309]" />
       </div>
 
       <GoldLock previewLines={5} className="bg-white border border-[#ece8e0] rounded-xl overflow-hidden shadow-sm">
