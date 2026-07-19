@@ -14,14 +14,14 @@ export default function JuniorOverviewPage() {
   const check = canViewGoldContent(user, profile)
   const [showLock, setShowLock] = useState(false)
 
-  useEffect(() => { document.title = '初中词汇与语法 — 古道论坛' }, [])
+  useEffect(() => { document.title = '初中词汇与名著 — 古道论坛' }, [])
 
   return (
     <div className="anim-fade-in max-w-2xl mx-auto pb-6">
       <Breadcrumb crumbs={[
         { label: '首页', href: '/' },
         { label: '英语学习', href: '/english' },
-        { label: '初中词汇与语法' },
+        { label: '初中词汇与名著' },
       ]} className="mb-3" />
 
       <Link href="/english" className="inline-flex items-center gap-1 text-[11px] text-[#b0a898] hover:text-[#b45309] transition-colors mb-3">
@@ -31,7 +31,7 @@ export default function JuniorOverviewPage() {
 
       <div className="flex items-center gap-2 mb-3">
         <span className="text-lg">🌱</span>
-        <h1 className="text-base font-bold text-[#1a1a1a]">初中词汇与语法</h1>
+        <h1 className="text-base font-bold text-[#1a1a1a]">初中词汇与名著</h1>
       </div>
 
       <p className="text-[11px] text-[#666] mb-4 leading-relaxed bg-green-50 border border-green-200 rounded-lg px-3 py-2">

@@ -44,7 +44,7 @@ export default function EnglishPage() {
               </div>
               <div className="flex-1 min-w-0">
                 <div className="text-xs font-semibold text-[#1c1917] group-hover:text-[#b45309] transition-colors">
-                  初中词汇与语法
+                  初中词汇与名著
                 </div>
                 <div className="text-[10px] text-[#999]">中考词汇 · 名师推荐 · 学习资源</div>
               </div>

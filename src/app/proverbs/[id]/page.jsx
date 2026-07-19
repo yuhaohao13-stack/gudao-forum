@@ -170,3 +170,5 @@ export default function ProverbDetailPage() {
       </div>
     </div>
   )
+
+}
