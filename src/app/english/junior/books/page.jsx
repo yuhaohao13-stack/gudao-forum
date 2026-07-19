@@ -55,7 +55,7 @@ export default function JuniorBooksPage() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="text-sm font-bold text-[#1c1917] group-hover:text-[#b45309] transition-colors">
-                    {book.title}
+                    {book.title}<span className="text-[#999] font-normal">（{book.chineseTitle}）</span>
                   </h3>
                   <p className="text-[10px] text-[#b0a898]">{book.author} · {book.year} · {book.difficulty} · {book.wordCount}</p>
                   <p className="text-[10px] text-[#666] mt-1 line-clamp-2">{book.chineseSummary}</p>
