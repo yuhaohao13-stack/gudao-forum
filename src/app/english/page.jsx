@@ -85,7 +85,7 @@ export default function EnglishPage() {
               </div>
               <div className="flex-1 min-w-0">
                 <div className="text-xs font-semibold text-[#1c1917] group-hover:text-[#b45309] transition-colors">
-                  高中词汇与语法
+                  高中词汇与名著
                 </div>
                 <div className="text-[10px] text-[#999]">台湾学测词汇 · 名师推荐 · 学习资源</div>
               </div>

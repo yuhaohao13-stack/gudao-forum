@@ -233,7 +233,7 @@ export default function Home() {
             <div className="flex items-center gap-2">
               <div className="w-7 h-7 rounded-lg bg-amber-500 bg-opacity-10 flex items-center justify-center text-sm shrink-0">🌿</div>
               <div className="min-w-0 flex-1">
-                <div className="text-xs font-semibold text-[#1a1a1a]">高中词汇与语法</div>
+                <div className="text-xs font-semibold text-[#1a1a1a]">高中词汇与名著</div>
                 <div className="text-[9px] text-[#999] leading-tight">台湾学测·3754词</div>
               </div>
               <span className="text-[10px] text-[#b45309] font-medium shrink-0">→</span>
