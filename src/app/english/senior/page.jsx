@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { ChevronRight, BookOpen, GraduationCap, Sparkles, Crown } from 'lucide-react'
 import Breadcrumb from '@/components/Breadcrumb'
