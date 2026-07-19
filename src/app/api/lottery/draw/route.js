@@ -71,16 +71,8 @@ export async function POST(request) {
       .single()
 
     const level = profile?.membership_level || 'regular'
-    if (level === 'regular') {
-      return NextResponse.json({ error: '需要黄金会员以上才能摇奖', needUpgrade: true }, { status: 403 })
-    }
-
-    // Gold会员检查剩余次数
-    if (level === 'gold') {
-      const remaining = profile?.gold_draws_remaining || 0
-      if (remaining <= 0) {
-        return NextResponse.json({ error: '摇奖次数已用完，请联系管理员充值', needUpgrade: true }, { status: 403 })
-      }
+    if (level !== 'diamond') {
+      return NextResponse.json({ error: '仅钻石会员可摇奖', needUpgrade: true }, { status: 403 })
     }
 
     // 执行摇奖
@@ -97,14 +89,6 @@ export async function POST(request) {
       default: return NextResponse.json({ error: '无效彩票类型' }, { status: 400 })
     }
 
-    // Gold会员扣次数
-    if (level === 'gold') {
-      await supabase
-        .from('profiles')
-        .update({ gold_draws_remaining: (profile.gold_draws_remaining || 0) - 1 })
-        .eq('id', user.id)
-    }
-
     // 记录摇奖结果
     await supabase
       .from('lottery_records')
@@ -116,7 +100,7 @@ export async function POST(request) {
       })
 
     // 获取最新剩余次数
-    const remaining = level === 'diamond' ? 99999 : ((profile?.gold_draws_remaining || 0) - (level === 'gold' ? 1 : 0))
+    const remaining = 99999
 
     return NextResponse.json({
       numbers,

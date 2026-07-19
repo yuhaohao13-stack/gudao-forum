@@ -45,6 +45,23 @@ export function canPinThread(user, profile) {
   return { allowed: false, reason: 'upgrade' }
 }
 
+// 检查黄金会员及以上内容权限（英语学习、成语故事、谚语、唐诗、名著等）
+export function canViewGoldContent(user, profile) {
+  if (!user) return { allowed: false, reason: 'login' }
+  const level = profile?.membership_level || 'regular'
+  if (level === 'diamond') return { allowed: true, unlimited: true }
+  if (level === 'gold') return { allowed: true, unlimited: true }
+  return { allowed: false, reason: 'upgrade' }
+}
+
+// 检查彩票模拟器权限（仅钻石会员）
+export function canUseLottery(user, profile) {
+  if (!user) return { allowed: false, reason: 'login' }
+  const level = profile?.membership_level || 'regular'
+  if (level === 'diamond') return { allowed: true, unlimited: true }
+  return { allowed: false, reason: 'diamond_only' }
+}
+
 // 获取升级提示文案
 export function getUpgradeInfo(reason, lang = 'zh') {
   if (reason === 'login') return {
@@ -59,6 +76,12 @@ export function getUpgradeInfo(reason, lang = 'zh') {
     btn: '升级钻石会员',
     link: '/lottery/upgrade'
   }
+  if (reason === 'diamond_only') return {
+    title: '💎 仅限钻石会员',
+    desc: '此功能仅限钻石会员使用，升级后无限畅玩',
+    btn: '升级钻石会员',
+    link: '/lottery/upgrade'
+  }
   return {
     title: '💎 需要升级会员',
     desc: '升级黄金/钻石会员即可解锁此功能',
@@ -67,8 +90,8 @@ export function getUpgradeInfo(reason, lang = 'zh') {
   }
 }
 
-// 技术帖锁定提示弹窗组件（内联样式版，给普通JSX用）
-export function TechLockOverlay({ show, onClose, reason, onAction }) {
+// 会员锁定提示弹窗组件（内联样式版）
+export function MemberLockOverlay({ show, onClose, reason, onAction }) {
   if (!show) return null
   const info = getUpgradeInfo(reason)
   return (
@@ -110,4 +133,9 @@ export function TechLockOverlay({ show, onClose, reason, onAction }) {
       </div>
     </div>
   )
+}
+
+// 黄金会员锁定弹窗（别名，兼容旧代码）
+export function TechLockOverlay({ show, onClose, reason, onAction }) {
+  return MemberLockOverlay({ show, onClose, reason, onAction })
 }

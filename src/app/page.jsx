@@ -214,6 +214,32 @@ export default function Home() {
             </div>
           </div>
         </Link>
+
+        <Link href="/english/junior">
+          <div className="bg-gradient-to-r from-[#f0faf0] to-[#e8f5e8] border border-[#dce8dc] rounded-xl px-3 py-2.5 transition-all hover:border-[#16a34a] hover:shadow-sm hover:-translate-y-0.5 h-full">
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-green-500 bg-opacity-10 flex items-center justify-center text-sm shrink-0">🌱</div>
+              <div className="min-w-0 flex-1">
+                <div className="text-xs font-semibold text-[#1a1a1a]">初中词汇</div>
+                <div className="text-[9px] text-[#999] leading-tight">中考英语·200词</div>
+              </div>
+              <span className="text-[10px] text-[#16a34a] font-medium shrink-0">→</span>
+            </div>
+          </div>
+        </Link>
+
+        <Link href="/english/senior">
+          <div className="bg-gradient-to-r from-[#fefaf0] to-[#fef5e8] border border-[#ece0cc] rounded-xl px-3 py-2.5 transition-all hover:border-[#b45309] hover:shadow-sm hover:-translate-y-0.5 h-full">
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-amber-500 bg-opacity-10 flex items-center justify-center text-sm shrink-0">🌿</div>
+              <div className="min-w-0 flex-1">
+                <div className="text-xs font-semibold text-[#1a1a1a]">高中词汇</div>
+                <div className="text-[9px] text-[#999] leading-tight">高考英语·200词</div>
+              </div>
+              <span className="text-[10px] text-[#b45309] font-medium shrink-0">→</span>
+            </div>
+          </div>
+        </Link>
       </div>
 
       {/* ===== 公告 ===== */}

@@ -10,7 +10,7 @@ const FEATURES = [
   {
     name: '🎰 彩票模拟器摇奖',
     free: <XIcon size={14} className="text-red-400" />,
-    gold: '500次',
+    gold: <XIcon size={14} className="text-red-400" />,
     diamond: '♾️ 无限次',
   },
   {
@@ -27,25 +27,37 @@ const FEATURES = [
   },
   {
     name: '📜 唐诗三百首',
-    free: <Check size={14} className="text-green-500" />,
+    free: '只看3行',
     gold: <Check size={14} className="text-green-500" />,
     diamond: <Check size={14} className="text-green-500" />,
   },
   {
     name: '📚 四大名著',
-    free: <Check size={14} className="text-green-500" />,
+    free: '只看5行',
     gold: <Check size={14} className="text-green-500" />,
     diamond: <Check size={14} className="text-green-500" />,
   },
   {
     name: '📖 成语故事300篇',
-    free: <Check size={14} className="text-green-500" />,
+    free: '只看5行',
     gold: <Check size={14} className="text-green-500" />,
     diamond: <Check size={14} className="text-green-500" />,
   },
   {
     name: '💬 谚语故事80篇',
-    free: <Check size={14} className="text-green-500" />,
+    free: '只看5行',
+    gold: <Check size={14} className="text-green-500" />,
+    diamond: <Check size={14} className="text-green-500" />,
+  },
+  {
+    name: '🌱 初中英语词汇/语法/名句',
+    free: '只看5行',
+    gold: <Check size={14} className="text-green-500" />,
+    diamond: <Check size={14} className="text-green-500" />,
+  },
+  {
+    name: '🌿 高中英语词汇/语法/名句',
+    free: '只看5行',
     gold: <Check size={14} className="text-green-500" />,
     diamond: <Check size={14} className="text-green-500" />,
   },

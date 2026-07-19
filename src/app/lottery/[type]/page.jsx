@@ -960,22 +960,11 @@ export default function LotteryTypePage() {
           <div className="text-5xl mb-3">🎯</div>
           <h3 className="text-base font-bold text-[#1c1917] mb-1">免费用户无法摇奖</h3>
           <p className="text-xs text-[#666] leading-relaxed">
-            需要升级到黄金会员或钻石会员才能使用彩票模拟器
+            需要升级到钻石会员才能使用彩票模拟器
           </p>
         </div>
 
-        {/* Gold */}
-        <div className="space-y-3 mb-5">
-          <div className="bg-gradient-to-r from-amber-50 to-yellow-50 border border-amber-200 rounded-xl p-4">
-            <div className="flex items-center gap-2 mb-1">
-              <Star className="w-4 h-4 text-[#b45309]" />
-              <span className="font-bold text-sm text-[#1c1917]">黄金会员</span>
-              <span className="text-[#b45309] font-bold text-sm ml-auto">¥9.9</span>
-            </div>
-            <p className="text-xs text-[#666] pl-6">500次摇奖机会</p>
-          </div>
-
-          {/* Diamond */}
+        {/* Diamond */}
           <div className="bg-gradient-to-r from-purple-50 to-violet-50 border border-purple-200 rounded-xl p-4">
             <div className="flex items-center gap-2 mb-1">
               <Crown className="w-4 h-4 text-purple-600" />
@@ -1045,7 +1034,7 @@ export default function LotteryTypePage() {
             <div className="text-5xl mb-3">☕</div>
             <h3 className="text-base font-bold text-[#1c1917] mb-1">打赏升级</h3>
             <p className="text-xs text-[#666] leading-relaxed">
-              黄金 ¥9.9 / 钻石 ¥99，打赏后联系管理员升级
+              钻石会员 ¥99，打赏后联系管理员升级
             </p>
           </div>
 

@@ -120,7 +120,7 @@ export default function LotteryPage() {
                 <Crown className="w-3.5 h-3.5 text-purple-600" />
               </h3>
               <p className="text-[11px] text-[#666] mt-1 leading-relaxed">
-                黄金会员 · 500次摇奖 &nbsp;|&nbsp; 钻石会员 · 无限摇奖
+                💎 仅限钻石会员 · 无限摇奖
               </p>
               <div className="inline-flex items-center gap-1 mt-2 text-[11px] font-medium text-[#b45309] group-hover:text-[#a04407] transition-colors">
                 了解会员权益 ›
@@ -132,7 +132,7 @@ export default function LotteryPage() {
 
       {/* ── Footer Tip ── */}
       <div className="mt-4 px-1 text-center text-[10px] text-[#b0a898]">
-        💎 黄金/钻石会员可摇奖
+        💎 仅钻石会员可摇奖
       </div>
 
       {/* ── Styles ── */}
