@@ -9,6 +9,29 @@ import GoldLock from '@/components/GoldLock'
 import { useAuth } from '@/components/AuthProvider'
 import { canViewGoldContent, MemberLockOverlay } from '@/lib/member'
 import { BOOKS } from '@/data/english-books'
+import { JUNIOR_VOCAB } from '@/data/real-junior-vocab'
+import { SENIOR_VOCAB } from '@/data/real-senior-vocab'
+
+// 构建词汇快速查找表
+const VOCAB_MAP = new Map()
+JUNIOR_VOCAB.forEach(v => VOCAB_MAP.set(v.word.toLowerCase(), v.meaning))
+SENIOR_VOCAB.forEach(v => VOCAB_MAP.set(v.word.toLowerCase(), v.meaning))
+
+// 从段落中提取重点词汇注释
+function extractVocab(para) {
+  const words = para.toLowerCase().match(/[a-z]+[a-z\'\-]+[a-z]/g) || []
+  const unique = [...new Set(words)]
+  const found = []
+  for (const w of unique) {
+    if (w.length <= 3) continue // 跳过太短的词
+    const meaning = VOCAB_MAP.get(w)
+    if (meaning) {
+      found.push({ word: w, meaning })
+      if (found.length >= 5) break // 每段最多5个注释
+    }
+  }
+  return found
+}
 
 const CHAPTER_RE = /(^|\n)(CHAPTER|Chapter|STAVE|Chapter I|Stave)\s*/gm
 
@@ -132,11 +155,29 @@ export default function BookDetailPage() {
             </div>
           ) : (
             <>
-              <div className="text-[12px] leading-relaxed text-[#333] space-y-2"
-                style={{ fontFamily: "'Georgia', 'Times New Roman', serif" }}>
-                {pageParagraphs.map((para, i) => (
-                  <p key={i} className="indent-4">{para}</p>
-                ))}
+              <div className="space-y-4">
+                {pageParagraphs.map((para, i) => {
+                  const vocabNotes = extractVocab(para)
+                  return (
+                    <div key={i}>
+                      <p className="text-[12px] leading-relaxed text-[#333] indent-4"
+                        style={{ fontFamily: "'Georgia', 'Times New Roman', serif" }}>
+                        {para}
+                      </p>
+                      {vocabNotes.length > 0 && (
+                        <div className="flex flex-wrap gap-1.5 mt-0.5 ml-4">
+                          {vocabNotes.map((v, j) => (
+                            <span key={j} className="text-[10px] text-[#999]/60">
+                              <span className="font-medium text-[#888]">{v.word}</span>
+                              {' '}
+                              <span className="text-[#bbb]">{v.meaning}</span>
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  )
+                })}
               </div>
 
               {/* Pagination */}
