@@ -18,7 +18,14 @@ export default function JuniorVocabPage() {
   const [showLock, setShowLock] = useState(false)
   const check = canViewGoldContent(user, profile)
 
-  useEffect(() => { document.title = '中考英语词汇表 — 古道论坛' }, [])
+  useEffect(() => { document.title = '中考英语词汇表1815词 — 古道论坛';
+    // SEO
+    let m = document.querySelector('meta[name=description]');
+    if (!m) { m = document.createElement('meta'); m.name = 'description'; document.head.appendChild(m); }
+    m.content = '中考英语词汇表，教育部《义务教育英语课程标准》词汇，共1815词。带音标和中文释义，每页50词三列显示，支持搜索。';
+    let k = document.querySelector('meta[name=keywords]');
+    if (!k) { k = document.createElement('meta'); k.name = 'keywords'; document.head.appendChild(k); }
+    k.content = '中考英语词汇表,中考英语单词,中考词汇1815词,初中英语词汇,中考英语音标,义务教育英语课程标准词汇' }, [])
 
   const filtered = search
     ? JUNIOR_VOCAB.filter(v => {

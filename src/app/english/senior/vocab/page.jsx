@@ -18,7 +18,14 @@ export default function SeniorVocabPage() {
   const [showLock, setShowLock] = useState(false)
   const check = canViewGoldContent(user, profile)
 
-  useEffect(() => { document.title = '高中英语词汇 — 古道论坛' }, [])
+  useEffect(() => { document.title = '台湾高中英语词汇3754词 — 古道论坛';
+    // SEO
+    let m = document.querySelector('meta[name=description]');
+    if (!m) { m = document.createElement('meta'); m.name = 'description'; document.head.appendChild(m); }
+    m.content = '台湾大学学测4000字+指考7000字词汇表，共3754个基础词汇。带中文释义，每页50词三列显示，支持搜索。';
+    let k = document.querySelector('meta[name=keywords]');
+    if (!k) { k = document.createElement('meta'); k.name = 'keywords'; document.head.appendChild(k); }
+    k.content = '台湾学测英文词汇,指考英文词汇,高中英语词汇表,学测4000字,指考7000词,台湾高中英文,大学入学考试英文' }, [])
 
   const filtered = search
     ? SENIOR_VOCAB.filter(v => {

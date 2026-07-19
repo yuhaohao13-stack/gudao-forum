@@ -14,7 +14,14 @@ export default function JuniorOverviewPage() {
   const check = canViewGoldContent(user, profile)
   const [showLock, setShowLock] = useState(false)
 
-  useEffect(() => { document.title = '初中词汇与名著 — 古道论坛' }, [])
+  useEffect(() => { document.title = '初中词汇与名著 — 古道论坛';
+    // SEO
+    let m = document.querySelector('meta[name=description]');
+    if (!m) { m = document.createElement('meta'); m.name = 'description'; document.head.appendChild(m); }
+    m.content = '初中英语学习，中考英语词汇表1815词（教育部课程标准），初中英文名著阅读。适合初中生英语学习、中考备考。';
+    let k = document.querySelector('meta[name=keywords]');
+    if (!k) { k = document.createElement('meta'); k.name = 'keywords'; document.head.appendChild(k); }
+    k.content = '初中英语,中考英语词汇,中考词汇表,初中英文书籍,中考英语单词,中考备考,初中英语学习,中考英语1815词' }, [])
 
   return (
     <div className="anim-fade-in max-w-2xl mx-auto pb-6">
