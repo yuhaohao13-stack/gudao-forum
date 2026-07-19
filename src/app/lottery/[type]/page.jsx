@@ -973,7 +973,6 @@ export default function LotteryTypePage() {
             </div>
             <p className="text-xs text-[#666] pl-6">无限次摇奖机会</p>
           </div>
-        </div>
 
         {/* Action buttons */}
         <div className="space-y-2.5 mb-4">
