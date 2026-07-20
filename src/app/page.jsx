@@ -249,8 +249,8 @@ export default function Home() {
             <span className="text-xs font-semibold text-[#999] tracking-wide"><Megaphone size={14} className="inline-block align-text-bottom" /> 站务公告</span>
             <span className="tag">置顶</span>
           </div>
-          <div style={{display:'flex', flexDirection:'row', gap:'12px', alignItems:'flex-start'}}>
-            <div style={{flex:1}}>
+          <div className="flex flex-col sm:flex-row sm:gap-3">
+            <div className="sm:flex-1">
               <div className="card divide-y divide-[#f5f5f5]">
                 {announcements.slice(0, 6).map((t, i) => (
                   <Link key={t.id} href={`/t/${t.id}`}
@@ -262,8 +262,8 @@ export default function Home() {
                 ))}
               </div>
             </div>
-            {/* 站长风采 — 固定160高，放在右边 */}
-            <div style={{width:'160px', flexShrink:0}}>
+            {/* 站长风采 — 手机在下，电脑在右160px */}
+            <div className="mt-2 sm:mt-0 sm:w-[160px] sm:shrink-0">
               <div className="card overflow-hidden" style={{display:'flex', flexDirection:'column', height:'160px'}}>
                 <div className="px-2 pt-1.5 pb-1 text-[9px] font-medium text-[#b8860b] tracking-wider text-center border-b border-[#f5f5f5] shrink-0">
                   🧑 站长浩哥风采
