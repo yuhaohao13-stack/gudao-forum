@@ -249,28 +249,30 @@ export default function Home() {
             <span className="text-xs font-semibold text-[#999] tracking-wide"><Megaphone size={14} className="inline-block align-text-bottom" /> 站务公告</span>
             <span className="tag">置顶</span>
           </div>
-          <div className="card divide-y divide-[#f5f5f5]">
-            {announcements.slice(0, 6).map((t, i) => (
-              <Link key={t.id} href={`/t/${t.id}`}
-                className={`flex items-center gap-2 px-3 py-2.5 hover:bg-[#fafafa] transition-colors ${i > 0 ? `anim-delay-${i}` : ''}`}>
-                <Pin size={14} className="text-[#b8860b] shrink-0 inline-block" />
-                <span className="text-sm font-medium text-[#1a1a1a] truncate">{t.title}</span>
-                <span className="ml-auto text-xs text-[#bbb]">{new Date(t.created_at).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })}</span>
-              </Link>
-            ))}
-          </div>
-          {/* 站长照片 — 单独展示在公告下方 */}
-          <div className="mt-2 sm:mt-3" style={{maxWidth:'280px'}}>
-            <div className="card overflow-hidden">
-              <div className="px-2.5 pt-2 pb-1 text-[10px] font-medium text-[#b8860b] tracking-wider text-center border-b border-[#f5f5f5]">
-                🧑 站长浩哥风采
+          <div style={{display:'flex', gap:'12px'}}>
+            <div style={{flex:'4'}}>
+              <div className="card divide-y divide-[#f5f5f5]">
+                {announcements.slice(0, 6).map((t, i) => (
+                  <Link key={t.id} href={`/t/${t.id}`}
+                    className={`flex items-center gap-2 px-3 py-2.5 hover:bg-[#fafafa] transition-colors ${i > 0 ? `anim-delay-${i}` : ''}`}>
+                    <Pin size={14} className="text-[#b8860b] shrink-0 inline-block" />
+                    <span className="text-sm font-medium text-[#1a1a1a] truncate">{t.title}</span>
+                    <span className="ml-auto text-xs text-[#bbb]">{new Date(t.created_at).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })}</span>
+                  </Link>
+                ))}
               </div>
-              <img
-                src="/images/hao-tiananmen.jpg"
-                alt="站长和儿子在天安门"
-                className="w-full"
-                style={{ maxHeight: '150px', objectFit: 'cover' }}
-              />
+            </div>
+            <div style={{flex:'1', display:'flex'}}>
+              <div className="card overflow-hidden" style={{display:'flex', flexDirection:'column', width:'100%'}}>
+                <div className="px-2 pt-1.5 pb-1 text-[9px] font-medium text-[#b8860b] tracking-wider text-center border-b border-[#f5f5f5]">
+                  🧑 站长浩哥风采
+                </div>
+                <img
+                  src="/images/hao-tiananmen.jpg"
+                  alt="站长和儿子在天安门"
+                  style={{width:'100%', flex:1, objectFit:'cover'}}
+                />
+              </div>
             </div>
           </div>
 
