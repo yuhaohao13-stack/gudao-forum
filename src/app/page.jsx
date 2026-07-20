@@ -249,15 +249,30 @@ export default function Home() {
             <span className="text-xs font-semibold text-[#999] tracking-wide"><Megaphone size={14} className="inline-block align-text-bottom" /> 站务公告</span>
             <span className="tag">置顶</span>
           </div>
-          <div className="card divide-y divide-[#f5f5f5]">
-            {announcements.map((t, i) => (
-              <Link key={t.id} href={`/t/${t.id}`}
-                className={`flex items-center gap-2 px-3 py-2.5 hover:bg-[#fafafa] transition-colors ${i > 0 ? `anim-delay-${i}` : ''}`}>
-                <Pin size={14} className="text-[#b8860b] shrink-0 inline-block" />
-                <span className="text-sm font-medium text-[#1a1a1a] truncate">{t.title}</span>
-                <span className="ml-auto text-xs text-[#bbb]">{new Date(t.created_at).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })}</span>
-              </Link>
-            ))}
+          <div className="flex gap-3">
+            <div className="flex-1 min-w-0">
+              <div className="card divide-y divide-[#f5f5f5]">
+                {announcements.slice(0, 6).map((t, i) => (
+                  <Link key={t.id} href={`/t/${t.id}`}
+                    className={`flex items-center gap-2 px-3 py-2.5 hover:bg-[#fafafa] transition-colors ${i > 0 ? `anim-delay-${i}` : ''}`}>
+                    <Pin size={14} className="text-[#b8860b] shrink-0 inline-block" />
+                    <span className="text-sm font-medium text-[#1a1a1a] truncate">{t.title}</span>
+                    <span className="ml-auto text-xs text-[#bbb]">{new Date(t.created_at).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+            {/* 站长照片 — 占右侧1/3 */}
+            <div className="hidden sm:block w-[33%] shrink-0">
+              <div className="card overflow-hidden h-full">
+                <img
+                  src="/images/hao-tiananmen.jpg"
+                  alt="站长和儿子在天安门"
+                  className="w-full h-full object-cover"
+                  style={{ maxHeight: '200px' }}
+                />
+              </div>
+            </div>
           </div>
         </section>
       )}
