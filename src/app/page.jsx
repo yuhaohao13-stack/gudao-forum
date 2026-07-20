@@ -262,9 +262,9 @@ export default function Home() {
                 ))}
               </div>
             </div>
-            {/* 站长风采 — 固定180高，放在右边 */}
-            <div style={{width:'180px', flexShrink:0}}>
-              <div className="card overflow-hidden" style={{display:'flex', flexDirection:'column', height:'180px'}}>
+            {/* 站长风采 — 固定160高，放在右边 */}
+            <div style={{width:'160px', flexShrink:0}}>
+              <div className="card overflow-hidden" style={{display:'flex', flexDirection:'column', height:'160px'}}>
                 <div className="px-2 pt-1.5 pb-1 text-[9px] font-medium text-[#b8860b] tracking-wider text-center border-b border-[#f5f5f5] shrink-0">
                   🧑 站长浩哥风采
                 </div>
