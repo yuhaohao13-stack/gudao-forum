@@ -60,8 +60,7 @@ const nextConfig = {
           // 禁止 IE 自动检测内容类型（兼容旧浏览器）
           { key: 'X-Download-Options', value: 'noopen' },
 
-          // 禁止搜索引擎索引敏感页面（配合 robots meta，额外的 server-level 控制）
-          { key: 'X-Robots-Tag', value: 'noindex, nofollow', },
+          // 敏感页面在下方路径规则中单独设置 noindex
         ],
       },
 
