@@ -249,8 +249,8 @@ export default function Home() {
             <span className="text-xs font-semibold text-[#999] tracking-wide"><Megaphone size={14} className="inline-block align-text-bottom" /> 站务公告</span>
             <span className="tag">置顶</span>
           </div>
-          <div style={{display:'flex', gap:'8px', alignItems:'flex-start'}}>
-            <div style={{flex:2}} className="sm:flex-[4]">
+          <div className="flex flex-col sm:flex-row sm:gap-3">
+            <div className="sm:flex-1">
               <div className="card divide-y divide-[#f5f5f5]">
                 {announcements.slice(0, 6).map((t, i) => (
                   <Link key={t.id} href={`/t/${t.id}`}
@@ -262,15 +262,16 @@ export default function Home() {
                 ))}
               </div>
             </div>
-            <div style={{flex:1.5, display:'flex', alignItems:'stretch', overflow:'hidden'}} className="sm:flex-[1]">
-              <div className="card" style={{display:'flex', flexDirection:'column', width:'100%', maxHeight:'220px', overflow:'hidden'}}>
-                <div className="px-2 pt-1.5 pb-1 text-[9px] font-medium text-[#b8860b] tracking-wider text-center border-b border-[#f5f5f5]">
+            {/* 站长风采 — 和公告框等高，参考Crazy-Repair */}
+            <div className="flex-1 sm:flex-initial sm:w-[180px]">
+              <div className="card overflow-hidden" style={{display:'flex', flexDirection:'column', height:'100%'}}>
+                <div className="px-2 pt-1.5 pb-1 text-[9px] font-medium text-[#b8860b] tracking-wider text-center border-b border-[#f5f5f5] shrink-0">
                   🧑 站长浩哥风采
                 </div>
                 <img
                   src="/images/hao-tiananmen.jpg"
                   alt="站长和儿子在天安门"
-                  style={{width:'100%', height:'100%', objectFit:'cover', display:'block', flex:1}}
+                  className="w-full flex-1 object-cover"
                 />
               </div>
             </div>
