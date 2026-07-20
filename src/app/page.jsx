@@ -249,36 +249,30 @@ export default function Home() {
             <span className="text-xs font-semibold text-[#999] tracking-wide"><Megaphone size={14} className="inline-block align-text-bottom" /> 站务公告</span>
             <span className="tag">置顶</span>
           </div>
-          <div className="sm:grid sm:grid-cols-3 sm:gap-3">
-            <div className="sm:col-span-2">
-              <div className="card divide-y divide-[#f5f5f5]">
-                {announcements.slice(0, 6).map((t, i) => (
-                  <Link key={t.id} href={`/t/${t.id}`}
-                    className={`flex items-center gap-2 px-3 py-2.5 hover:bg-[#fafafa] transition-colors ${i > 0 ? `anim-delay-${i}` : ''}`}>
-                    <Pin size={14} className="text-[#b8860b] shrink-0 inline-block" />
-                    <span className="text-sm font-medium text-[#1a1a1a] truncate">{t.title}</span>
-                    <span className="ml-auto text-xs text-[#bbb]">{new Date(t.created_at).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })}</span>
-                  </Link>
-                ))}
+          <div className="card divide-y divide-[#f5f5f5]">
+            {announcements.slice(0, 6).map((t, i) => (
+              <Link key={t.id} href={`/t/${t.id}`}
+                className={`flex items-center gap-2 px-3 py-2.5 hover:bg-[#fafafa] transition-colors ${i > 0 ? `anim-delay-${i}` : ''}`}>
+                <Pin size={14} className="text-[#b8860b] shrink-0 inline-block" />
+                <span className="text-sm font-medium text-[#1a1a1a] truncate">{t.title}</span>
+                <span className="ml-auto text-xs text-[#bbb]">{new Date(t.created_at).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })}</span>
+              </Link>
+            ))}
+          </div>
+          {/* 站长照片 — 单独展示在公告下方 */}
+          <div className="mt-2 sm:mt-3" style={{maxWidth:'280px'}}>
+            <div className="card overflow-hidden">
+              <div className="px-2.5 pt-2 pb-1 text-[10px] font-medium text-[#b8860b] tracking-wider text-center border-b border-[#f5f5f5]">
+                🧑 站长浩哥风采
               </div>
-            </div>
-            {/* 站长照片 — 占右侧1列 */}
-            <div className="max-sm:mt-3">
-              <div className="card overflow-hidden">
-                <div className="px-2.5 pt-2 pb-1 text-[10px] font-medium text-[#b8860b] tracking-wider text-center border-b border-[#f5f5f5]">
-                  🧑 站长浩哥风采
-                </div>
-                <img
-                  src="/images/hao-tiananmen.jpg"
-                  alt="站长和儿子在天安门"
-                  className="w-full object-cover"
-                  style={{ maxHeight: '180px' }}
-                />
-              </div>
+              <img
+                src="/images/hao-tiananmen.jpg"
+                alt="站长和儿子在天安门"
+                className="w-full"
+                style={{ maxHeight: '150px', objectFit: 'cover' }}
+              />
             </div>
           </div>
-        </section>
-      )}
 
       {/* ===== 版块（缩小紧凑版） ===== */}
       <section className="anim-up">
