@@ -62,7 +62,7 @@ export default function Home() {
 
       const annCat = sorted.find(c => c.slug === 'announcements')
       if (annCat) {
-        const { data: a } = await supabase.from('threads').select('*, profiles(username, display_name)').eq('category_id', annCat.id).order('created_at', { ascending: false }).limit(5)
+        const { data: a } = await supabase.from('threads').select('*, profiles(username, display_name)').eq('category_id', annCat.id).order('pin_order', { ascending: true, nullsFirst: false }).order('created_at', { ascending: false }).limit(5)
         setAnnouncements(a || [])
       }
 
