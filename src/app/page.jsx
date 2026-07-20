@@ -249,8 +249,8 @@ export default function Home() {
             <span className="text-xs font-semibold text-[#999] tracking-wide"><Megaphone size={14} className="inline-block align-text-bottom" /> 站务公告</span>
             <span className="tag">置顶</span>
           </div>
-          <div className="flex gap-3">
-            <div className="flex-1 min-w-0">
+          <div className="sm:grid sm:grid-cols-3 sm:gap-3">
+            <div className="sm:col-span-2">
               <div className="card divide-y divide-[#f5f5f5]">
                 {announcements.slice(0, 6).map((t, i) => (
                   <Link key={t.id} href={`/t/${t.id}`}
@@ -262,16 +262,16 @@ export default function Home() {
                 ))}
               </div>
             </div>
-            {/* 站长照片 — 占右侧1/3 */}
-            <div className="w-[33%] shrink-0 hidden md:block">
-              <div className="card overflow-hidden h-full flex flex-col">
+            {/* 站长照片 — 占右侧1列 */}
+            <div className="max-sm:mt-3">
+              <div className="card overflow-hidden">
                 <div className="px-2.5 pt-2 pb-1 text-[10px] font-medium text-[#b8860b] tracking-wider text-center border-b border-[#f5f5f5]">
                   🧑 站长浩哥风采
                 </div>
                 <img
                   src="/images/hao-tiananmen.jpg"
                   alt="站长和儿子在天安门"
-                  className="w-full flex-1 object-cover"
+                  className="w-full object-cover"
                   style={{ maxHeight: '180px' }}
                 />
               </div>
