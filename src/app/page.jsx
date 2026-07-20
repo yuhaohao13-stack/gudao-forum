@@ -262,7 +262,7 @@ export default function Home() {
                 ))}
               </div>
             </div>
-            <div style={{flex:'1', display:'flex'}}>
+            <div style={{flex:'1', display:'flex', alignItems:'stretch'}}>
               <div className="card overflow-hidden" style={{display:'flex', flexDirection:'column', width:'100%'}}>
                 <div className="px-2 pt-1.5 pb-1 text-[9px] font-medium text-[#b8860b] tracking-wider text-center border-b border-[#f5f5f5]">
                   🧑 站长浩哥风采
@@ -270,7 +270,7 @@ export default function Home() {
                 <img
                   src="/images/hao-tiananmen.jpg"
                   alt="站长和儿子在天安门"
-                  style={{width:'100%', flex:1, objectFit:'cover'}}
+                  style={{width:'100%', height:'100%', flex:1, objectFit:'cover', display:'block'}}
                 />
               </div>
             </div>
