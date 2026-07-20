@@ -275,6 +275,8 @@ export default function Home() {
               </div>
             </div>
           </div>
+        </section>
+      )}
 
       {/* ===== 版块（缩小紧凑版） ===== */}
       <section className="anim-up">
