@@ -249,24 +249,24 @@ export default function Home() {
             <span className="text-xs font-semibold text-[#999] tracking-wide"><Megaphone size={14} className="inline-block align-text-bottom" /> 站务公告</span>
             <span className="tag">置顶</span>
           </div>
-          <div className="flex flex-col sm:flex-row sm:gap-3">
-            <div className="sm:flex-1">
+          <div className="flex flex-row gap-1 sm:gap-3 items-stretch">
+            <div className="flex-1 min-w-0">
               <div className="card divide-y divide-[#f5f5f5]">
                 {announcements.slice(0, 6).map((t, i) => (
                   <Link key={t.id} href={`/t/${t.id}`}
                     className={`flex items-center gap-2 px-3 py-2.5 hover:bg-[#fafafa] transition-colors ${i > 0 ? `anim-delay-${i}` : ''}`}>
                     <Pin size={14} className="text-[#b8860b] shrink-0 inline-block" />
                     <span className="text-sm font-medium text-[#1a1a1a] truncate">{t.title}</span>
-                    <span className="ml-auto text-xs text-[#bbb]">{new Date(t.created_at).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })}</span>
+                    <span className="ml-auto text-xs text-[#bbb] shrink-0">{new Date(t.created_at).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })}</span>
                   </Link>
                 ))}
               </div>
             </div>
-            {/* 站长风采 — 手机在下，电脑在右160px */}
-            <div className="mt-2 sm:mt-0 sm:w-[160px] sm:shrink-0">
+            {/* 站长风采 — 始终在右侧，高度140px */}
+            <div className="shrink-0 sm:w-[140px]" style={{width:'100px'}}>
               <div className="card overflow-hidden" style={{display:'flex', flexDirection:'column', height:'140px'}}>
-                <div className="px-2 pt-1.5 pb-1 text-[9px] font-medium text-[#b8860b] tracking-wider text-center border-b border-[#f5f5f5] shrink-0">
-                  🧑 站长浩哥风采
+                <div className="px-1 sm:px-2 pt-1 pb-0.5 text-[8px] sm:text-[9px] font-medium text-[#b8860b] tracking-wider text-center border-b border-[#f5f5f5] shrink-0">
+                  🧑 站长风采
                 </div>
                 <img
                   src="/images/hao-tiananmen.jpg"
