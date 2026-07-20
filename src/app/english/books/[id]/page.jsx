@@ -44,6 +44,7 @@ export default function BookDetailPage() {
   const [page, setPage] = useState(1)
   const [expanded, setExpanded] = useState(false)
   const check = canViewGoldContent(user, profile)
+  const goldAllowed = check.allowed
 
   const book = BOOKS.find(b => b.id === id)
   const levelPath = book?.level === 'junior' ? '/english/junior/books' : '/english/senior/books'
@@ -144,11 +145,28 @@ export default function BookDetailPage() {
         <h2 className="text-xs font-bold text-[#1c1917] mb-2 flex items-center gap-1.5">
           <BookOpen className="w-3.5 h-3.5 text-[#b45309]" />
           英文原文
-          {!loading && <span className="text-[10px] text-[#999] font-normal ml-auto">第{page}/{totalPages}页</span>}
+          {goldAllowed && !loading && <span className="text-[10px] text-[#999] font-normal ml-auto">第{page}/{totalPages}页</span>}
         </h2>
 
-        <GoldLock previewLines={5}>
-          {loading ? (
+        {/* 未登录访客：注册引导 */}
+        {!user && typeof user !== 'undefined' ? (
+          <div className="text-center py-10">
+            <div className="mx-auto w-12 h-12 rounded-full bg-amber-50 flex items-center justify-center mb-3">
+              <UserRound size={24} className="text-[#b45309]" />
+            </div>
+            <p className="text-sm text-[#888] mb-3">注册会员即可浏览英文原著全文</p>
+            <div className="flex items-center justify-center gap-3">
+              <Link href="/register" className="inline-flex items-center gap-1.5 text-xs font-semibold px-4 py-2 rounded-lg bg-[#b45309] text-white hover:bg-[#92400e] transition-colors">
+                免费注册
+              </Link>
+              <Link href="/login" className="inline-flex items-center gap-1.5 text-xs font-semibold px-4 py-2 rounded-lg border border-[#b45309] text-[#b45309] hover:bg-amber-50 transition-colors">
+                登录
+              </Link>
+            </div>
+          </div>
+        ) : goldAllowed ? (
+          /* 黄金/钻石会员：全文 */
+          loading ? (
             <div className="py-10 text-center">
               <Loader2 className="w-5 h-5 animate-spin text-[#b45309] mx-auto mb-2" />
               <p className="text-xs text-[#999]">加载原文中...</p>
@@ -179,8 +197,6 @@ export default function BookDetailPage() {
                   )
                 })}
               </div>
-
-              {/* Pagination */}
               {totalPages > 1 && (
                 <div className="flex items-center justify-center gap-2 mt-4 pt-3 border-t border-[#f5f5f5]">
                   <button onClick={() => setPage(1)} disabled={page === 1}
@@ -204,8 +220,27 @@ export default function BookDetailPage() {
                 </div>
               )}
             </>
-          )}
-        </GoldLock>
+          )
+        ) : (
+          /* 已登录非黄金：GoldLock预览 */
+          <GoldLock previewLines={5}>
+            {loading ? (
+              <div className="py-10 text-center">
+                <Loader2 className="w-5 h-5 animate-spin text-[#b45309] mx-auto mb-2" />
+                <p className="text-xs text-[#999]">加载原文中...</p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {pageParagraphs.slice(0, 5).map((para, i) => (
+                  <p key={i} className="text-[12px] leading-relaxed text-[#333] indent-4"
+                    style={{ fontFamily: "'Georgia', 'Times New Roman', serif" }}>
+                    {para}
+                  </p>
+                ))}
+              </div>
+            )}
+          </GoldLock>
+        )}
       </div>
 
       <div className="mt-4 text-center">
