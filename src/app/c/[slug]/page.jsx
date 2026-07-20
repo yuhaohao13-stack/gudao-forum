@@ -31,9 +31,14 @@ export default function CategoryPage() {
           .select('*, profiles!inner(username, display_name, role)').eq('category_id', cat.id)
           .order('is_pinned', { ascending: false }).order(sortBy === 'hot' ? 'reply_count' : 'created_at', { ascending: false })
         const sorted = (data || []).sort((a, b) => {
+          // 置顶帖子按 pin_order 排序（0=未置顶，1,2,3...为顺序）
+          if (a.is_pinned && b.is_pinned) {
+            return (a.pin_order || 999) - (b.pin_order || 999)
+          }
+          if (a.is_pinned !== b.is_pinned) return a.is_pinned ? -1 : 1
+          // 非置顶：管理员/版主优先，然后按时间
           const aA = a.profiles?.role === 'admin' || a.profiles?.role === 'moderator'
           const bB = b.profiles?.role === 'admin' || b.profiles?.role === 'moderator'
-          if (a.is_pinned !== b.is_pinned) return a.is_pinned ? -1 : 1
           if (aA !== bB) return aA ? -1 : 1
           return 0
         })
