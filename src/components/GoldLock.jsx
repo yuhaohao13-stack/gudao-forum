@@ -21,23 +21,31 @@ export default function GoldLock({
     return <div className={className}>{children}</div>
   }
 
-  // 未登录或普通会员：显示有限行数 + 点击解锁
-  const previewContent = String(children).trim()
-  const lines = previewContent.split('\n').slice(0, previewLines)
+  // 未登录或普通会员：显示有限预览 + 点击解锁
+  const isTextChildren = typeof children === 'string' || typeof children === 'number'
 
   return (
     <div className={className}>
-      {/* 预览内容 */}
-      <div className="relative overflow-hidden">
-        <div className="text-sm leading-relaxed text-[#2a2a2a] space-y-3">
-          {lines.map((line, i) => (
-            <p key={i}>{line}</p>
-          ))}
+      {isTextChildren ? (
+        /* 文本内容：显示有限行数预览 */
+        <div className="relative overflow-hidden">
+          <div className="text-sm leading-relaxed text-[#2a2a2a] space-y-3">
+            {String(children).trim().split('\n').slice(0, previewLines).map((line, i) => (
+              <p key={i}>{line}</p>
+            ))}
+          </div>
+          {/* 渐变遮罩 */}
+          <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white via-white/80 to-transparent" />
         </div>
-
-        {/* 渐变遮罩 */}
-        <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white via-white/80 to-transparent" />
-      </div>
+      ) : (
+        /* 组件内容：显示条目数量预览+遮罩 */
+        <div className="relative overflow-hidden">
+          <div className="opacity-30 pointer-events-none select-none">
+            {children}
+          </div>
+          <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-white via-white/60 to-transparent" />
+        </div>
+      )}
 
       {/* 升级提示 */}
       <div className="text-center py-6">
