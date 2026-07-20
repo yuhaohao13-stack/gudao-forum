@@ -249,8 +249,8 @@ export default function Home() {
             <span className="text-xs font-semibold text-[#999] tracking-wide"><Megaphone size={14} className="inline-block align-text-bottom" /> 站务公告</span>
             <span className="tag">置顶</span>
           </div>
-          <div className="flex flex-row gap-1 sm:gap-3 items-stretch overflow-hidden">
-            <div className="flex-1 min-w-0">
+          <div className="flex flex-row gap-1 sm:gap-3 items-stretch">
+            <div className="w-1/2 shrink-0">
               <div className="card divide-y divide-[#f5f5f5]">
                 {announcements.slice(0, 6).map((t, i) => (
                   <Link key={t.id} href={`/t/${t.id}`}
