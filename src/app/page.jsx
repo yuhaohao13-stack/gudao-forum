@@ -264,12 +264,15 @@ export default function Home() {
             </div>
             {/* 站长照片 — 占右侧1/3 */}
             <div className="hidden sm:block w-[33%] shrink-0">
-              <div className="card overflow-hidden h-full">
+              <div className="card overflow-hidden h-full flex flex-col">
+                <div className="px-2.5 pt-2 pb-1 text-[10px] font-medium text-[#b8860b] tracking-wider text-center border-b border-[#f5f5f5]">
+                  🧑 站长浩哥风采
+                </div>
                 <img
                   src="/images/hao-tiananmen.jpg"
                   alt="站长和儿子在天安门"
-                  className="w-full h-full object-cover"
-                  style={{ maxHeight: '200px' }}
+                  className="w-full flex-1 object-cover"
+                  style={{ maxHeight: '180px' }}
                 />
               </div>
             </div>
