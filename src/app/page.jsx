@@ -263,7 +263,7 @@ export default function Home() {
               </div>
             </div>
             {/* 站长照片 — 占右侧1/3 */}
-            <div className="hidden sm:block w-[33%] shrink-0">
+            <div className="w-[33%] shrink-0 hidden md:block">
               <div className="card overflow-hidden h-full flex flex-col">
                 <div className="px-2.5 pt-2 pb-1 text-[10px] font-medium text-[#b8860b] tracking-wider text-center border-b border-[#f5f5f5]">
                   🧑 站长浩哥风采
