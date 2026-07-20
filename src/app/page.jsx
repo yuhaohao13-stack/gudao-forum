@@ -263,7 +263,7 @@ export default function Home() {
               </div>
             </div>
             {/* 站长风采 — 始终在右侧，高度140px */}
-            <div className="shrink-0">
+            <div className="shrink-0 max-w-[110px] sm:max-w-none">
               <div className="card overflow-hidden">
                 <div className="px-1 sm:px-2 pt-1 pb-0.5 text-[8px] sm:text-[9px] font-medium text-[#b8860b] tracking-wider text-center border-b border-[#f5f5f5]">
                   🧑 站长风采
@@ -271,7 +271,7 @@ export default function Home() {
                 <img
                   src="/images/hao-tiananmen.jpg"
                   alt="站长和儿子在天安门"
-                  style={{height:'140px', width:'auto', display:'block'}}
+                  style={{height:'140px', width:'auto', maxWidth:'100%', display:'block'}}
                 />
               </div>
             </div>
