@@ -3,7 +3,7 @@
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { ArrowLeft, ChevronRight, ChevronLeft, BookOpen, FileText, Loader2, ChevronsLeft, ChevronsRight } from 'lucide-react'
+import { ArrowLeft, ChevronRight, ChevronLeft, BookOpen, FileText, Loader2, ChevronsLeft, ChevronsRight, UserRound } from 'lucide-react'
 import Breadcrumb from '@/components/Breadcrumb'
 import GoldLock from '@/components/GoldLock'
 import { useAuth } from '@/components/AuthProvider'
