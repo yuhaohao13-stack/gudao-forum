@@ -17,9 +17,9 @@ export default function SeniorVocabPage() {
   const [isMobile, setIsMobile] = useState(false)
   const check = canViewGoldContent(user, profile)
 
-  const cols = isMobile ? 2 : 3
-  const perPage = isMobile ? 50 : 75
-  const rowsLabel = isMobile ? '50词 · 25行×2列' : '75词 · 25行×3列'
+  const cols = 2
+  const perPage = 50
+  const rowsLabel = '50词 · 25行×2列'
 
   useEffect(() => {
     document.title = '台湾高中英语词汇3754词 — 古道论坛'
@@ -31,14 +31,7 @@ export default function SeniorVocabPage() {
     k.content = '台湾学测英文词汇,指考英文词汇,高中英语词汇表,学测4000字,指考7000词,台湾高中英文,大学入学考试英文'
   }, [])
 
-  useEffect(() => {
-    const checkWidth = () => setIsMobile(window.innerWidth < 640)
-    checkWidth()
-    window.addEventListener('resize', checkWidth)
-    return () => window.removeEventListener('resize', checkWidth)
-  }, [])
-
-  useEffect(() => { setPage(1) }, [isMobile])
+  useEffect(() => { setPage(1) }, [])
 
   const filtered = search
     ? SENIOR_VOCAB.filter(v => {
