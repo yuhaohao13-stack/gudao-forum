@@ -45,11 +45,18 @@ export async function POST(request) {
       })
     }
 
-    // 检查是否已经是目标会员等级
-    if (profile?.membership_level === target) {
+    // 检查会员等级：已持有同等级或更高级别则禁止兑换
+    const currentLevel = profile?.membership_level || 'regular'
+    if (currentLevel === 'diamond') {
       return NextResponse.json({
         success: false,
-        message: `您已经是${target === 'gold' ? '黄金' : '钻石'}会员了`
+        message: '您已经是钻石会员，无需重复兑换'
+      })
+    }
+    if (target === 'gold' && currentLevel === 'gold') {
+      return NextResponse.json({
+        success: false,
+        message: '您已经是黄金会员，无需重复兑换'
       })
     }
 
