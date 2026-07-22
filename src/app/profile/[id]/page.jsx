@@ -11,6 +11,7 @@ import Breadcrumb from '@/components/Breadcrumb'
 import { Crown, Shield, Pencil, MessageCircle, Users, Clock, CheckCircle, X, FileText, Inbox, Mars, Venus, Sparkles, Eye, Loader2, UserPlus, UserCheck, Inbox as InboxIcon } from 'lucide-react'
 import DatePicker from '@/components/DatePicker'
 import BirthPlaceSelector, { bpStr, parseBp } from '@/components/BirthPlaceSelector'
+import CheckInButton from '@/components/CheckInButton'
 
 export default function ProfilePage() {
   const { id } = useParams()
@@ -26,6 +27,9 @@ export default function ProfilePage() {
   const [loading, setLoading] = useState(true)
   const [editing, setEditing] = useState(false)
   const [saving, setSaving] = useState(false)
+  const [points, setPoints] = useState(0)
+  const [exchangeMsg, setExchangeMsg] = useState('')
+  const [exchanging, setExchanging] = useState('')
   const [message, setMessage] = useState('')
   const [form, setForm] = useState({})
   const [friendUpdate, setFriendUpdate] = useState(0)
@@ -143,6 +147,42 @@ export default function ProfilePage() {
     setPendingRequests(prev => prev.filter(r => r.requester_id !== rid))
   }
 
+  // 加载积分
+  const loadPoints = useCallback(async () => {
+    if (!user || !isSelf) return
+    const { data: p } = await supabase.from('profiles').select('points').eq('id', id).single()
+    if (p) setPoints(p.points || 0)
+  }, [user, isSelf, id, supabase])
+
+  useEffect(() => { loadPoints() }, [loadPoints])
+
+  // 监听积分更新事件（签到后自动刷新）
+  useEffect(() => {
+    const handler = () => loadPoints()
+    window.addEventListener('points-updated', handler)
+    return () => window.removeEventListener('points-updated', handler)
+  }, [loadPoints])
+
+  const handleExchange = async (target) => {
+    if (exchanging) return
+    setExchanging(target)
+    setExchangeMsg('')
+    const res = await fetch('/api/points/exchange', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ target }),
+    })
+    const data = await res.json()
+    if (data.success) {
+      setPoints(data.remaining_points)
+      setExchangeMsg(data.message)
+      setTimeout(() => setExchangeMsg(''), 6000)
+    } else {
+      setExchangeMsg(data.message)
+      setTimeout(() => setExchangeMsg(''), 8000)
+    }
+    setExchanging('')
+  }
+
   const handleLogout = async () => {
     await supabase.auth.signOut(); router.push('/login'); router.refresh()
   }
@@ -187,6 +227,7 @@ export default function ProfilePage() {
             <div className="flex items-center gap-1.5 flex-wrap">
               <h1 className="text-[14px] font-bold text-[#1a1a1a]">{profileUser.display_name || profileUser.username}</h1>
               {profileUser.member_no && <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-[#f5f0e8] border border-[#e8e0d0] text-[#8b6914] font-mono">#{profileUser.member_no}</span>}
+              <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 font-bold">💰 {points} 积分</span>
               {isAdmin && <Crown size={14} className="text-[#c23531]" />}
               {isMod && <span className="text-[10px] text-[#8b6914] font-medium bg-[#8b6914]/10 px-1.5 py-0.5 rounded">版主</span>}
               <span className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${isAdmin ? 'bg-[#c23531]/10 text-[#c23531]' : isMod ? 'bg-[#8b6914]/10 text-[#8b6914]' : 'text-[#999]'}`}>@{profileUser.username}</span>
@@ -206,6 +247,7 @@ export default function ProfilePage() {
               )
             ) : isSelf && !editing ? (
               <>
+                <CheckInButton className="bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100" />
                 <button onClick={() => setEditing(true)} className="text-xs text-[#c23531] font-medium px-3 py-1.5 rounded-full border border-[#c23531]/20 hover:bg-[#c23531]/5"><Pencil size={12} className="inline-block align-middle" /> 编辑</button>
                 {amAdmin && <button onClick={() => router.push('/members')} className="text-xs text-[#c23531] font-medium px-3 py-1.5 rounded-full border border-[#c23531]/20 hover:bg-[#c23531]/5"><Users size={12} className="inline-block align-middle" /> 会员管理</button>}
                 <button onClick={handleLogout} className="text-xs text-[#666] font-medium px-3 py-1.5 rounded-full border border-[#ddd] hover:bg-gray-50">退出</button>
@@ -227,6 +269,37 @@ export default function ProfilePage() {
             <div><span className="text-[#999]">兴趣爱好：</span><span className="text-[#666]">{profileUser.hobbies || '-'}</span></div>
             <div><span className="text-[#999]">个人简介：</span><span className="text-[#666]">{profileUser.bio || '-'}</span></div>
             <div className="whitespace-pre-wrap"><span className="text-[#999]">简历：</span><span className="text-[#666]">{profileUser.resume || '-'}</span></div>
+          </div>
+        )}
+
+        {/* ===== 积分兑换会员 ===== */}
+        {isSelf && !editing && (
+          <div className="mt-2 pt-2 border-t border-[#f5f0e8]">
+            <div className="flex items-center justify-between gap-3 flex-wrap">
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-[#999]">积分兑换：</span>
+                <button
+                  onClick={() => {
+                    if (confirm('确定用 5000 积分兑换黄金会员？')) handleExchange('gold')
+                  }}
+                  disabled={exchanging === 'gold'}
+                  className="text-xs font-medium px-3 py-1.5 rounded-full border border-amber-300 bg-amber-50 text-amber-700 hover:bg-amber-100 transition-colors"
+                >{exchanging === 'gold' ? '处理中...' : '🏆 兑换黄金会员（5000积分）'}</button>
+                <button
+                  onClick={() => {
+                    if (confirm('确定用 20000 积分兑换钻石会员？')) handleExchange('diamond')
+                  }}
+                  disabled={exchanging === 'diamond'}
+                  className="text-xs font-medium px-3 py-1.5 rounded-full border border-purple-300 bg-purple-50 text-purple-700 hover:bg-purple-100 transition-colors"
+                >{exchanging === 'diamond' ? '处理中...' : '💎 兑换钻石会员（20000积分）'}</button>
+              </div>
+              <Link href="/lottery/upgrade" className="text-[10px] text-[#c23531] hover:text-[#a02a24]">积分不够？联系管理员充值打赏 →</Link>
+            </div>
+            {exchangeMsg && (
+              <div className={`mt-2 text-xs px-3 py-2 rounded-lg ${exchangeMsg.includes('🎉') ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-amber-50 text-amber-700 border border-amber-200'}`}>
+                {exchangeMsg}
+              </div>
+            )}
           </div>
         )}
 

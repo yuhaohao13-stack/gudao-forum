@@ -6,6 +6,7 @@ import { MessageCircle, Megaphone, Pin, FileText, Eye, Clock, Flame, ArrowRight,
 import { useAuth } from '@/components/AuthProvider'
 import { canViewTech, TECH_CATEGORY_SLUG } from '@/lib/member'
 import DonationMarquee from '@/components/DonationMarquee'
+import CheckInButton from '@/components/CheckInButton'
 import { createClient } from '@/lib/supabase/client'
 import { useLanguage } from '@/lib/LanguageContext'
 
@@ -101,7 +102,10 @@ export default function Home() {
             <Link href="/members" className="hover:text-[#c23531] transition-colors"><strong className="text-sm font-semibold text-[#1a1a1a]">{totalUsers}</strong> {t('home.members')}</Link>
           </div>
         </div>
-        <Link href="/chat" className="btn-secondary text-xs whitespace-nowrap"><MessageCircle size={14} className="inline-block align-text-bottom" /> {t('home.chatroom')}</Link>
+        <div className="flex items-center gap-2">
+          <Link href="/chat" className="btn-secondary text-xs whitespace-nowrap"><MessageCircle size={14} className="inline-block align-text-bottom" /> {t('home.chatroom')}</Link>
+          <CheckInButton />
+        </div>
       </div>
 
       {/* ===== 打赏滚动 ===== */}
