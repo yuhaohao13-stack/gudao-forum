@@ -9,7 +9,7 @@ import { useAuth } from '@/components/AuthProvider'
 import { canViewGoldContent, MemberLockOverlay } from '@/lib/member'
 import { JUNIOR_VOCAB } from '@/data/real-junior-vocab'
 
-const PER_PAGE = 50
+const PER_PAGE = 75
 
 export default function JuniorVocabPage() {
   const { user, profile } = useAuth()
@@ -141,7 +141,7 @@ export default function JuniorVocabPage() {
                     className="p-1.5 rounded-lg border border-[#ece8e0] bg-white text-[#666] hover:border-[#b45309]/40 hover:text-[#b45309] disabled:opacity-30 disabled:cursor-not-allowed transition-all">
                     <ChevronsRight className="w-3.5 h-3.5" />
                   </button>
-                  <span className="text-[10px] text-[#b0a898] ml-2">每页50词</span>
+                  <span className="text-[10px] text-[#b0a898] ml-2">每页75词 · 25行×3列</span>
                 </div>
               )}
             </>
