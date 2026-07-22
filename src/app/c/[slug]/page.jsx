@@ -1,52 +1,72 @@
 'use client'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
-import { useParams, useRouter } from 'next/navigation'
+import { useEffect, useState, useCallback } from 'react'
+import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
-import { Clock, Flame, Pencil, Lock, Pin, Crown, MessageCircle } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Clock, Flame, Pencil, Lock, Pin, Crown, MessageCircle } from 'lucide-react'
 import { TECH_CATEGORY_SLUG, canViewTech, TechLockOverlay, canPinThread } from '@/lib/member'
 import { useAuth } from '@/components/AuthProvider'
 import Breadcrumb from '@/components/Breadcrumb'
 
+const PAGE_SIZE = 10
+
 export default function CategoryPage() {
   const { user, profile } = useAuth()
   const { slug } = useParams()
+  const searchParams = useSearchParams()
   const router = useRouter()
   const [category, setCategory] = useState(null)
   const [threads, setThreads] = useState([])
+  const [totalCount, setTotalCount] = useState(0)
   const [sortBy, setSortBy] = useState('latest')
   const [lockOverlay, setLockOverlay] = useState({ show: false, reason: 'upgrade' })
+  const page = parseInt(searchParams.get('page') || '1', 10)
+  const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE))
   const isAdmin = profile?.role === 'admin' || profile?.role === 'moderator'
   const membershipLevel = profile?.membership_level || 'regular'
   const canShowPinButton = isAdmin || membershipLevel === 'gold' || membershipLevel === 'diamond'
   const isAnnouncements = slug === 'announcements'
   const supabase = createClient()
 
-  useEffect(() => {
-    const fetch = async () => {
-      const { data: cat } = await supabase.from('categories').select('*').eq('slug', slug).single()
-      setCategory(cat)
-      if (cat) {
-        const { data } = await supabase.from('threads')
-          .select('*, profiles!inner(username, display_name, role)').eq('category_id', cat.id)
-          .order('is_pinned', { ascending: false }).order(sortBy === 'hot' ? 'reply_count' : 'created_at', { ascending: false })
-        const sorted = (data || []).sort((a, b) => {
-          // 置顶帖子按 pin_order 排序（0=未置顶，1,2,3...为顺序）
-          if (a.is_pinned && b.is_pinned) {
-            return (a.pin_order || 999) - (b.pin_order || 999)
-          }
-          if (a.is_pinned !== b.is_pinned) return a.is_pinned ? -1 : 1
-          // 非置顶：管理员/版主优先，然后按时间
-          const aA = a.profiles?.role === 'admin' || a.profiles?.role === 'moderator'
-          const bB = b.profiles?.role === 'admin' || b.profiles?.role === 'moderator'
-          if (aA !== bB) return aA ? -1 : 1
-          return 0
-        })
-        setThreads(sorted)
-      }
-    }
-    fetch()
-  }, [slug, sortBy])
+  const fetchData = useCallback(async () => {
+    const { data: cat } = await supabase.from('categories').select('*').eq('slug', slug).single()
+    setCategory(cat)
+    if (!cat) return
+
+    // 先查总数
+    const { count } = await supabase.from('threads')
+      .select('*', { count: 'exact', head: true })
+      .eq('category_id', cat.id)
+    setTotalCount(count || 0)
+
+    // 分页查询：先拿置顶帖，再拿当前页的普通帖
+    const from_ = (page - 1) * PAGE_SIZE
+    const { data: pinned } = await supabase.from('threads')
+      .select('*, profiles!inner(username, display_name, role)')
+      .eq('category_id', cat.id)
+      .eq('is_pinned', true)
+      .order('pin_order', { ascending: true, nullsFirst: false })
+
+    const { data: regular } = await supabase.from('threads')
+      .select('*, profiles!inner(username, display_name, role)')
+      .eq('category_id', cat.id)
+      .eq('is_pinned', false)
+      .order(sortBy === 'hot' ? 'reply_count' : 'created_at', { ascending: false })
+      .range(from_, from_ + PAGE_SIZE - 1)
+
+    // 合并：置顶永远在最前，然后才是当前页的普通帖
+    const sorted = [...(pinned || [])]
+    const nonPinned = (regular || []).sort((a, b) => {
+      const aA = a.profiles?.role === 'admin' || a.profiles?.role === 'moderator'
+      const bB = b.profiles?.role === 'admin' || b.profiles?.role === 'moderator'
+      if (aA !== bB) return aA ? -1 : 1
+      return 0
+    })
+    sorted.push(...nonPinned)
+    setThreads(sorted)
+  }, [slug, sortBy, page])
+
+  useEffect(() => { fetchData() }, [fetchData])
 
   const togglePin = async (e, thread) => {
     e.stopPropagation()
@@ -141,6 +161,53 @@ export default function CategoryPage() {
           </div>
         ))}
       </div>
+
+      {/* 分页 */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-center gap-1 mt-6 mb-8">
+          <button
+            onClick={() => router.push(`/c/${slug}?page=${page - 1}`)}
+            disabled={page <= 1}
+            className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium border border-[#eee8dc] bg-white text-[#666] hover:bg-[#f5f5f3] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+          >
+            <ChevronLeft size={14} /> 上一页
+          </button>
+
+          {Array.from({ length: totalPages }, (_, i) => i + 1)
+            .filter(p => p === 1 || p === totalPages || Math.abs(p - page) <= 2)
+            .reduce((acc, p, idx, arr) => {
+              if (idx > 0 && p - arr[idx - 1] > 1) acc.push('...')
+              acc.push(p)
+              return acc
+            }, [])
+            .map((p, i) =>
+              p === '...' ? (
+                <span key={`ellipsis-${i}`} className="px-2 text-xs text-[#bbb]">...</span>
+              ) : (
+                <button
+                  key={p}
+                  onClick={() => router.push(`/c/${slug}?page=${p}`)}
+                  className={`min-w-[2rem] px-2 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                    p === page
+                      ? 'bg-[#b45309] text-white'
+                      : 'border border-[#eee8dc] bg-white text-[#666] hover:bg-[#f5f5f3]'
+                  }`}
+                >
+                  {p}
+                </button>
+              )
+            )}
+
+          <button
+            onClick={() => router.push(`/c/${slug}?page=${page + 1}`)}
+            disabled={page >= totalPages}
+            className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium border border-[#eee8dc] bg-white text-[#666] hover:bg-[#f5f5f3] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+          >
+            下一页 <ChevronRight size={14} />
+          </button>
+        </div>
+      )}
+
       {isTech && (
         <TechLockOverlay
           show={lockOverlay.show}
