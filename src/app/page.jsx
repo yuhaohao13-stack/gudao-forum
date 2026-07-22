@@ -314,6 +314,30 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ===== 关于古道论坛 ===== */}
+      <section className="anim-up py-6 border-t border-[#f0f0f0]">
+        <h2 className="text-xs font-semibold text-[#bbb] mb-3">🏛️ 关于古道论坛</h2>
+        <div className="bg-white border border-[#ece8e0] rounded-xl p-5 sm:p-6">
+          <p className="text-xs text-[#666] leading-relaxed mb-3">
+            古道论坛是一个面向全球华人的国际中文社区，以「以文会友，以友辅仁」为宗旨，
+            致力于打造一个自由交流、文化分享、共同成长的精神家园。
+          </p>
+          <p className="text-xs text-[#666] leading-relaxed mb-3">
+            这里汇集了唐诗三百首、四大名著、成语故事、谚语故事等中华传统文化精华，
+            也有技术讨论、生活分享、音乐频道、高清壁纸等丰富多彩的内容板块。
+            更有18款免费在线小游戏，加载后可离线畅玩。
+          </p>
+          <p className="text-xs text-[#666] leading-relaxed">
+            注册会员即可参与讨论、下载资源、解锁完整内容。欢迎加入古道大家庭！
+          </p>
+          <div className="flex items-center gap-3 mt-3 pt-3 border-t border-[#f5f5f5]">
+            <Link href="/register" className="text-xs font-semibold px-4 py-2 rounded-lg bg-[#b45309] text-white hover:bg-[#92400e] transition-colors">免费注册</Link>
+            <Link href="/board" className="text-xs text-[#b45309] hover:underline">浏览板块 →</Link>
+            <Link href="https://www.crazy-repair.com" target="_blank" className="text-xs text-[#999] hover:text-[#666]">🔧 Crazy维修</Link>
+          </div>
+        </div>
+      </section>
+
     </div>
   )
 }
