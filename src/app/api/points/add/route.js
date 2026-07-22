@@ -3,8 +3,8 @@ import { NextResponse } from 'next/server'
 
 const POINTS_RULES = {
   post: 50,
-  download: -50,
-  content_view: -20,
+  download: -500,
+  content_view: -500,
 }
 
 export async function POST(request) {
@@ -55,8 +55,8 @@ export async function POST(request) {
   // 记录交易
   const descriptions = {
     post: '发帖奖励 +50积分',
-    download: '下载资源 -50积分',
-    content_view: '查看内容 -20积分',
+    download: '下载资源 -500积分',
+    content_view: '查看隐藏内容 -500积分',
   }
 
   await supabase
