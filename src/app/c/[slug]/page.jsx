@@ -103,6 +103,7 @@ export default function CategoryPage() {
       <div className="mb-5">
         <Breadcrumb crumbs={[
           { label: '首页', href: '/' },
+          { label: '板块列表', href: '/board' },
           { label: `${category.icon} ${category.name}` },
         ]} />
         <h1 className="text-xl font-bold text-[#1a1a1a] mt-1">{category.icon} {category.name}</h1>

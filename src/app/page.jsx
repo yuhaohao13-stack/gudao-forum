@@ -285,7 +285,7 @@ export default function Home() {
 
       {/* ===== 版块（缩小紧凑版） ===== */}
       <section className="anim-up">
-        <h2 className="text-xs font-semibold text-[#bbb] mb-2">{t('board.title')}</h2>
+        <Link href="/board" className="inline-flex items-center gap-1 text-xs font-semibold text-[#bbb] mb-2 hover:text-[#b45309] transition-colors">{t('board.title')} <span className="text-[9px]">→</span></Link>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
           {categories.map((c, i) => (
             <Link key={c.id} href={`/c/${c.slug}`}
@@ -304,11 +304,12 @@ export default function Home() {
 
       {/* ===== 🎮 游戏娱乐（游戏加载后可离线畅玩） ===== */}
       <section className="anim-up">
-        <h2 className="flex items-center gap-1.5 text-xs font-semibold text-[#bbb] mb-2">
+        <Link href="/games" className="flex items-center gap-1.5 text-xs font-semibold text-[#bbb] mb-2 hover:text-[#b45309] transition-colors">
           <Gamepad2 size={14} />
           游戏娱乐
           <span className="font-normal lowercase text-[10px] text-[#ccc]">（游戏加载后可离线畅玩）</span>
-        </h2>
+          <span className="text-[9px]">→</span>
+        </Link>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
           {GAMES.map((g, i) => (
             <Link key={g.slug} href={`/games/${g.slug}`}
