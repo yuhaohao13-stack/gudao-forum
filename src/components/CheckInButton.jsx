@@ -40,7 +40,9 @@ export default function CheckInButton({ className = '' }) {
       if (data.success) {
         setCheckedIn(true)
         let msg = `✅ 签到成功 +${data.points_earned}积分`
-        if (data.bonus > 0) msg += ` 月签到奖励 +${data.bonus}积分 🎉`
+        if (data.streak_days > 1) msg += ` 🔥连续${data.streak_days}天`
+        if (data.streak_bonus > 0) msg += ` 冲刺奖励 +${data.streak_bonus}积分 🎉`
+        if (data.monthly_bonus > 0) msg += ` 月满勤 +${data.monthly_bonus}积分 🏆`
         setMessage(msg)
         refreshPoints()
         setTimeout(() => setMessage(''), 5000)
