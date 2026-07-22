@@ -39,6 +39,8 @@ export default function NewThreadPage() {
   const handleSubmit = async (e) => {
     e.preventDefault(); setError('')
     if (!title.trim() || !content.trim() || !category) { setError('请填写完整'); return }
+    if (title.trim().length < 5) { setError('标题至少 5 个字'); return }
+    if (content.trim().length < 30) { setError('内容至少 30 个字'); return }
     const titleCheck = checkContent(title, true)
     if (!titleCheck.pass) { setError('标题包含不当内容'); return }
     const contentCheck = checkContent(content)
