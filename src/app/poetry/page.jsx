@@ -6,7 +6,7 @@ import Breadcrumb from '@/components/Breadcrumb'
 import POEMS from '@/data/poetry'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
-const PAGE_SIZE = 15
+const PAGE_SIZE = 30
 
 export default function PoetryPage() {
   const [page, setPage] = useState(1)
