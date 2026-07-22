@@ -62,12 +62,15 @@ export async function POST(request) {
 
     const remainingPoints = currentPoints - cost
 
-    // 扣分 + 升级会员（在同一事务中处理）
+    // 扣分 + 升级会员 + 重置已用次数
     const { error: updateError } = await supabase
       .from('profiles')
       .update({
         points: remainingPoints,
-        membership_level: target
+        membership_level: target,
+        tech_views_used: 0,
+        music_downloads_used: 0,
+        thread_pins_used: 0,
       })
       .eq('id', user.id)
 

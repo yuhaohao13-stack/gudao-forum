@@ -204,8 +204,19 @@ export default function MusicCategoryPage() {
   const handleDownload = async (song) => {
     const check = canDownloadMusic(user, profile)
     if (!check.allowed) {
-      setDownloadOverlay({ show: true, reason: check.reason })
-      return
+      // 普通会员：尝试积分扣除500
+      if (check.reason === 'upgrade') {
+        const res = await fetch('/api/points/add', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ type: 'download' }) })
+        const data = await res.json()
+        if (!data.success) {
+          setDownloadOverlay({ show: true, reason: check.reason })
+          return
+        }
+        window.dispatchEvent(new CustomEvent('points-updated'))
+      } else {
+        setDownloadOverlay({ show: true, reason: check.reason })
+        return
+      }
     }
 
     // 开始下载

@@ -60,6 +60,8 @@ export default function NewThreadPage() {
         title: title.trim(), content: content.trim(), category_id: category, author_id: user.id, images: urls.length ? urls : null,
       }).select('id').single()
       if (err) throw new Error(err.message)
+      // 发帖积分+50
+      fetch('/api/points/add', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ type: 'post', reference_id: data.id }) }).catch(() => {})
       router.push(`/t/${data.id}`)
     } catch (err) { setError(err.message) }
     setLoading(false)

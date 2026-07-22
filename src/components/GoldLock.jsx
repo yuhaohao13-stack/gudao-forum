@@ -11,14 +11,38 @@ export default function GoldLock({
   children,
   previewLines = 5,
   className = '',
+  contentId = '',
 }) {
   const { user, profile } = useAuth()
   const [showLock, setShowLock] = useState(false)
+  const [unlocked, setUnlocked] = useState(false)
+  const [spending, setSpending] = useState(false)
+  const [spendMsg, setSpendMsg] = useState('')
   const check = canViewGoldContent(user, profile)
 
   // 钻石/黄金会员直接看全部
-  if (check.allowed) {
+  if (check.allowed || unlocked) {
     return <div className={className}>{children}</div>
+  }
+
+  // 积分解锁
+  const handlePointsUnlock = async () => {
+    if (!user) { setShowLock(true); return }
+    setSpending(true)
+    setSpendMsg('')
+    const res = await fetch('/api/points/add', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type: 'content_view', reference_id: contentId }),
+    })
+    const data = await res.json()
+    if (data.success) {
+      setUnlocked(true)
+      window.dispatchEvent(new CustomEvent('points-updated'))
+    } else {
+      setSpendMsg(data.message || '积分不足，查看需500积分')
+      setTimeout(() => setSpendMsg(''), 4000)
+    }
+    setSpending(false)
   }
 
   // 未登录或普通会员：显示有限预览 + 点击解锁
@@ -58,12 +82,24 @@ export default function GoldLock({
         <p className="text-xs text-[#aaa] mb-4">
           {getUpgradeInfo(check.reason).desc}
         </p>
-        <button
-          onClick={() => setShowLock(true)}
-          className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-lg bg-gradient-to-r from-[#b45309] to-[#d97706] text-white text-sm font-semibold hover:from-[#a04407] hover:to-[#c06806] transition-all shadow-sm"
-        >
-          🔓 解锁完整内容
-        </button>
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-2">
+          <button
+            onClick={handlePointsUnlock}
+            disabled={spending}
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-emerald-600 text-white text-xs font-semibold hover:bg-emerald-700 transition-all shadow-sm disabled:opacity-50"
+          >
+            {spending ? '处理中...' : '💰 500积分查看'}
+          </button>
+          <button
+            onClick={() => setShowLock(true)}
+            className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-lg bg-gradient-to-r from-[#b45309] to-[#d97706] text-white text-sm font-semibold hover:from-[#a04407] hover:to-[#c06806] transition-all shadow-sm"
+          >
+            🔓 升级会员解锁
+          </button>
+        </div>
+        {spendMsg && (
+          <p className="text-xs text-amber-600 mt-2">{spendMsg}</p>
+        )}
       </div>
 
       <MemberLockOverlay

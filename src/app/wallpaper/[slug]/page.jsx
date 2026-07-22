@@ -25,7 +25,17 @@ export default function WallpaperCategoryPage() {
 
   const handleDownload = async (catId, wpId, title, type) => {
     if (!user) { showToast('请先登录'); return }
-    if (!isMember) { showToast('请升级会员后下载'); return }
+
+    // 普通会员扣除500积分，会员免费
+    if (!isMember) {
+      const res = await fetch('/api/points/add', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ type: 'download' }) })
+      const data = await res.json()
+      if (!data.success) {
+        showToast(data.message || '积分不足，下载需500积分')
+        return
+      }
+      window.dispatchEvent(new CustomEvent('points-updated'))
+    }
 
     const url = type === 'desktop' ? getDesktopUrl(catId, wpId) : getMobileUrl(catId, wpId)
     setDownloading(`${wpId}-${type}`)
