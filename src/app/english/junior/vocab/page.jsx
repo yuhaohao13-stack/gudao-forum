@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import Link from 'next/link'
 import { ChevronRight, Search, ChevronLeft, ChevronsLeft, ChevronsRight, UserRound } from 'lucide-react'
 import Breadcrumb from '@/components/Breadcrumb'
@@ -9,22 +9,36 @@ import { useAuth } from '@/components/AuthProvider'
 import { canViewGoldContent, MemberLockOverlay } from '@/lib/member'
 import { JUNIOR_VOCAB } from '@/data/real-junior-vocab'
 
-const PER_PAGE = 75
-
 export default function JuniorVocabPage() {
   const { user, profile } = useAuth()
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
   const [showLock, setShowLock] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
   const check = canViewGoldContent(user, profile)
 
-  useEffect(() => { document.title = '中考英语词汇表1815词 — 古道论坛';
-    let m = document.querySelector('meta[name=description]');
-    if (!m) { m = document.createElement('meta'); m.name = 'description'; document.head.appendChild(m); }
-    m.content = '中考英语词汇表，教育部《义务教育英语课程标准》词汇，共1815词。带音标和中文释义，每页50词三列显示，支持搜索。';
-    let k = document.querySelector('meta[name=keywords]');
-    if (!k) { k = document.createElement('meta'); k.name = 'keywords'; document.head.appendChild(k); }
-    k.content = '中考英语词汇表,中考英语单词,中考词汇1815词,初中英语词汇,中考英语音标,义务教育英语课程标准词汇' }, [])
+  const cols = isMobile ? 2 : 3
+  const perPage = isMobile ? 50 : 75
+  const rowsLabel = isMobile ? '50词 · 25行×2列' : '75词 · 25行×3列'
+
+  useEffect(() => {
+    document.title = '中考英语词汇表1815词 — 古道论坛'
+    let m = document.querySelector('meta[name=description]')
+    if (!m) { m = document.createElement('meta'); m.name = 'description'; document.head.appendChild(m) }
+    m.content = '中考英语词汇表，教育部《义务教育英语课程标准》词汇，共1815词。带音标和中文释义，每页75词三列显示，支持搜索。'
+    let k = document.querySelector('meta[name=keywords]')
+    if (!k) { k = document.createElement('meta'); k.name = 'keywords'; document.head.appendChild(k) }
+    k.content = '中考英语词汇表,中考英语单词,中考词汇1815词,初中英语词汇,中考英语音标,义务教育英语课程标准词汇'
+  }, [])
+
+  useEffect(() => {
+    const checkWidth = () => setIsMobile(window.innerWidth < 640)
+    checkWidth()
+    window.addEventListener('resize', checkWidth)
+    return () => window.removeEventListener('resize', checkWidth)
+  }, [])
+
+  useEffect(() => { setPage(1) }, [isMobile])
 
   const filtered = search
     ? JUNIOR_VOCAB.filter(v => {
@@ -33,11 +47,31 @@ export default function JuniorVocabPage() {
       })
     : JUNIOR_VOCAB
 
-  const totalPages = Math.ceil(filtered.length / PER_PAGE)
-  const startIdx = (page - 1) * PER_PAGE
-  const pageItems = filtered.slice(startIdx, startIdx + PER_PAGE)
+  const totalPages = Math.ceil(filtered.length / perPage)
+  const startIdx = (page - 1) * perPage
+  const pageItems = filtered.slice(startIdx, startIdx + perPage)
 
   const goPage = (p) => { if (p >= 1 && p <= totalPages) setPage(p) }
+
+  const colIndices = Array.from({ length: cols }, (_, i) => i)
+
+  const renderVocabItem = (item, idx) => {
+    const realIdx = startIdx + pageItems.findIndex(it => it.id === item.id)
+    return (
+      <div key={item.id} className="px-3 py-2 hover:bg-[#faf8f5] transition-colors">
+        <div className="flex items-baseline gap-2">
+          <span className="text-[9px] text-[#c5bdb0] font-mono w-[28px] text-right shrink-0">{realIdx + 1}</span>
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <span className="text-sm font-bold text-[#1c1917]">{item.word}</span>
+              {item.phonetic && <span className="text-[9px] text-[#999] font-mono truncate max-w-[120px]">{item.phonetic}</span>}
+            </div>
+            <div className="text-[11px] text-[#b45309] mt-0.5">{item.meaning}</div>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="anim-fade-in max-w-5xl mx-auto pb-6">
@@ -68,17 +102,12 @@ export default function JuniorVocabPage() {
           </div>
           <p className="text-sm text-[#888] mb-4">注册会员即可浏览中考英语词汇全部1815词</p>
           <div className="flex items-center justify-center gap-3">
-            <Link href="/register" className="inline-flex items-center gap-1.5 text-xs font-semibold px-4 py-2 rounded-lg bg-[#b45309] text-white hover:bg-[#92400e] transition-colors">
-              免费注册
-            </Link>
-            <Link href="/login" className="inline-flex items-center gap-1.5 text-xs font-semibold px-4 py-2 rounded-lg border border-[#b45309] text-[#b45309] hover:bg-amber-50 transition-colors">
-              登录
-            </Link>
+            <Link href="/register" className="inline-flex items-center gap-1.5 text-xs font-semibold px-4 py-2 rounded-lg bg-[#b45309] text-white hover:bg-[#92400e] transition-colors">免费注册</Link>
+            <Link href="/login" className="inline-flex items-center gap-1.5 text-xs font-semibold px-4 py-2 rounded-lg border border-[#b45309] text-[#b45309] hover:bg-amber-50 transition-colors">登录</Link>
           </div>
         </div>
       ) : (
         <>
-          {/* Search */}
           {!check.allowed && (
             <div className="mb-3 px-3 py-3 rounded-lg bg-amber-50 border border-amber-200 text-center">
               <p className="text-xs text-[#92400e] font-medium mb-1">🔒 中考词汇仅限黄金/钻石会员浏览</p>
@@ -92,35 +121,16 @@ export default function JuniorVocabPage() {
           </div>
 
           {(check.allowed) ? (
-            /* 黄金/钻石会员：全部内容 */
             <>
               <div className="bg-white border border-[#ece8e0] rounded-xl overflow-hidden shadow-sm">
-                <div className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-[#f0ede8]">
-                  {[0, 1, 2].map(col => (
+                <div className="grid grid-cols-2 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-[#f0ede8]">
+                  {colIndices.map(col => (
                     <div key={col} className="divide-y divide-[#f5f5f5]">
-                      {pageItems.filter((_, i) => i % 3 === col).map((item, idx) => {
-                        const realIdx = startIdx + pageItems.findIndex(it => it.id === item.id)
-                        return (
-                          <div key={item.id} className="px-3 py-2 hover:bg-[#faf8f5] transition-colors">
-                            <div className="flex items-baseline gap-2">
-                              <span className="text-[9px] text-[#c5bdb0] font-mono w-[28px] text-right shrink-0">{realIdx + 1}</span>
-                              <div className="min-w-0 flex-1">
-                                <div className="flex items-center gap-1.5 flex-wrap">
-                                  <span className="text-sm font-bold text-[#1c1917]">{item.word}</span>
-                                  {item.phonetic && <span className="text-[9px] text-[#999] font-mono truncate max-w-[120px]">{item.phonetic}</span>}
-                                </div>
-                                <div className="text-[11px] text-[#b45309] mt-0.5">{item.meaning}</div>
-                              </div>
-                            </div>
-                          </div>
-                        )
-                      })}
+                      {pageItems.filter((_, i) => i % cols === col).map((item) => renderVocabItem(item))}
                     </div>
                   ))}
                 </div>
-                {filtered.length === 0 && (
-                  <div className="py-10 text-center text-sm text-[#999]">没有找到匹配的单词</div>
-                )}
+                {filtered.length === 0 && (<div className="py-10 text-center text-sm text-[#999]">没有找到匹配的单词</div>)}
               </div>
               {totalPages > 1 && (
                 <div className="flex items-center justify-center gap-2 mt-4">
@@ -132,7 +142,7 @@ export default function JuniorVocabPage() {
                     className="p-1.5 rounded-lg border border-[#ece8e0] bg-white text-[#666] hover:border-[#b45309]/40 hover:text-[#b45309] disabled:opacity-30 disabled:cursor-not-allowed transition-all">
                     <ChevronLeft className="w-3.5 h-3.5" />
                   </button>
-                  <span className="px-3 py-1 text-xs text-[#666]">{page} / {totalPages}</span>
+                  <span className="px-3 py-1 text-xs text-[#666] whitespace-nowrap">{page}/{totalPages} · {rowsLabel}</span>
                   <button onClick={() => goPage(page + 1)} disabled={page === totalPages}
                     className="p-1.5 rounded-lg border border-[#ece8e0] bg-white text-[#666] hover:border-[#b45309]/40 hover:text-[#b45309] disabled:opacity-30 disabled:cursor-not-allowed transition-all">
                     <ChevronRight className="w-3.5 h-3.5" />
@@ -141,41 +151,23 @@ export default function JuniorVocabPage() {
                     className="p-1.5 rounded-lg border border-[#ece8e0] bg-white text-[#666] hover:border-[#b45309]/40 hover:text-[#b45309] disabled:opacity-30 disabled:cursor-not-allowed transition-all">
                     <ChevronsRight className="w-3.5 h-3.5" />
                   </button>
-                  <span className="text-[10px] text-[#b0a898] ml-2">每页75词 · 25行×3列</span>
                 </div>
               )}
             </>
           ) : (
-            /* 已登录非黄金：GoldLock预览 */
             <>
               <GoldLock previewLines={5} className="bg-white border border-[#ece8e0] rounded-xl overflow-hidden shadow-sm">
-                <div className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-[#f0ede8]">
-                  {[0, 1, 2].map(col => (
+                <div className="grid grid-cols-2 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-[#f0ede8]">
+                  {colIndices.map(col => (
                     <div key={col} className="divide-y divide-[#f5f5f5]">
-                      {pageItems.filter((_, i) => i % 3 === col).map((item, idx) => {
-                        const realIdx = startIdx + pageItems.findIndex(it => it.id === item.id)
-                        return (
-                          <div key={item.id} className="px-3 py-2 hover:bg-[#faf8f5] transition-colors">
-                            <div className="flex items-baseline gap-2">
-                              <span className="text-[9px] text-[#c5bdb0] font-mono w-[28px] text-right shrink-0">{realIdx + 1}</span>
-                              <div className="min-w-0 flex-1">
-                                <div className="flex items-center gap-1.5 flex-wrap">
-                                  <span className="text-sm font-bold text-[#1c1917]">{item.word}</span>
-                                  {item.phonetic && <span className="text-[9px] text-[#999] font-mono truncate max-w-[120px]">{item.phonetic}</span>}
-                                </div>
-                                <div className="text-[11px] text-[#b45309] mt-0.5">{item.meaning}</div>
-                              </div>
-                            </div>
-                          </div>
-                        )
-                      })}
+                      {pageItems.filter((_, i) => i % cols === col).map((item) => renderVocabItem(item))}
                     </div>
                   ))}
                 </div>
               </GoldLock>
               {totalPages > 1 && (
                 <div className="flex items-center justify-center gap-2 mt-4 opacity-50 pointer-events-none">
-                  <span className="px-3 py-1 text-xs text-[#666]">{page} / {totalPages}</span>
+                  <span className="px-3 py-1 text-xs text-[#666] whitespace-nowrap">{page}/{totalPages}</span>
                 </div>
               )}
             </>
