@@ -244,7 +244,7 @@ export default function Home() {
         <div className="mb-1 sm:mb-2 bg-black rounded-xl overflow-hidden shadow-sm" style={{aspectRatio:'16/9'}}>
           <video 
             src="/videos/crazy-repair.mp4"
-            controls
+            controls poster="/videos/crazy-repair-poster.jpg"
             playsInline
             preload="metadata"
             className="w-full h-full object-contain"
