@@ -96,7 +96,7 @@ export default function FloatingButtons() {
 
             <div style={{ textAlign: 'center', marginBottom: '0.75rem' }}>
               <div style={{ fontSize: '1.5rem', marginBottom: '0.25rem' }}>🔧</div>
-              <h3 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#1a1a1a' }}>Crazy维修 — 联系我们</h3>
+              <h3 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#1a1a1a' }}>古道论坛 — 联系我们</h3>
               <p style={{ fontSize: '0.65rem', color: '#999', marginTop: '0.2rem' }}>威海手机电脑维修 · 2007年至今</p>
             </div>
 
