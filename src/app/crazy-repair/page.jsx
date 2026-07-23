@@ -66,17 +66,20 @@ export default function CrazyRepairPage() {
           {/* 联系信息 */}
           <div className="mt-6 pt-6 border-t border-gray-100">
             <h3 className="font-semibold text-gray-900 mb-3">联系方式</h3>
-            <div className="flex flex-wrap gap-4 text-sm">
+            <div className="flex flex-wrap gap-3 text-sm">
+              <div className="inline-flex items-center gap-1.5 px-4 py-2 bg-green-50 text-green-800 rounded-lg">
+                💚 微信 <span className="font-mono">{'crazy-repair'}</span>
+              </div>
+              <div className="inline-flex items-center gap-1.5 px-4 py-2 bg-red-50 text-red-800 rounded-lg">
+                📧 QQ <span className="font-mono">{'994730969@qq.com'}</span>
+              </div>
+              <div className="inline-flex items-center gap-1.5 px-4 py-2 bg-blue-50 text-blue-800 rounded-lg">
+                📧 Google <span className="font-mono">{'yuhaohao13@gmail.com'}</span>
+              </div>
               <a href="https://www.crazy-repair.com" target="_blank" rel="noopener"
                 className="inline-flex items-center gap-1.5 px-4 py-2 bg-amber-50 text-amber-800 rounded-lg hover:bg-amber-100 transition-colors">
                 访问官网 <ExternalLink size={14} />
               </a>
-              <span className="inline-flex items-center gap-1.5 px-4 py-2 bg-gray-50 text-gray-700 rounded-lg">
-                📧 yuhaohao13@gmail.com
-              </span>
-              <span className="inline-flex items-center gap-1.5 px-4 py-2 bg-gray-50 text-gray-700 rounded-lg">
-                📞 +86 13573735550
-              </span>
             </div>
           </div>
         </div>
