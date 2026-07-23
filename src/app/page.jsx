@@ -238,39 +238,57 @@ export default function Home() {
         </Link>
       </div>
 
-      {/* ===== 公告 ===== */}
+      {/* ===== 品字形：视频 + 专业维修 + 站长风采 ===== */}
+      <section className="anim-up">
+        {/* 上层：视频播放器 16:9 */}
+        <div className="mb-1 sm:mb-2 bg-black rounded-xl overflow-hidden shadow-sm" style={{aspectRatio:'16/9'}}>
+          <video 
+            src="/videos/crazy-repair.mp4"
+            controls
+            playsInline
+            preload="metadata"
+            className="w-full h-full object-contain"
+          />
+        </div>
+        {/* 下层：两框并排 */}
+        <div className="flex flex-row gap-1 sm:gap-3">
+          {/* 左：专业维修 */}
+          <Link href="/crazy-repair" className="flex-1 card hover:shadow-md transition-shadow">
+            <div className="px-3 py-2 sm:px-4 sm:py-3">
+              <div className="text-sm sm:text-base font-bold text-gray-900 mb-0.5">🔧 专业维修</div>
+              <div className="text-[10px] sm:text-xs text-[#999]">手机 · 电脑 · 平板 · 数码</div>
+            </div>
+          </Link>
+          {/* 右：站长风采 */}
+          <Link href="/crazy-repair" className="flex-1 card overflow-hidden hover:shadow-md transition-shadow">
+            <div className="px-1 sm:px-2 pt-1 pb-0.5 text-[8px] sm:text-[9px] font-medium text-[#b8860b] tracking-wider text-center border-b border-[#f5f5f5]">
+              🧑 站长风采
+            </div>
+            <img
+              src="/images/hao-tiananmen.jpg"
+              alt="站长和儿子在天安门"
+              style={{height:'100px', width:'auto', maxWidth:'100%', display:'block', margin:'0 auto'}}
+            />
+          </Link>
+        </div>
+      </section>
+
+      {/* ===== 公告保留 ===== */}
       {announcements.length > 0 && (
-        <section className="anim-up">
+        <section className="anim-up mt-1">
           <div className="flex items-center gap-2 mb-2">
             <span className="text-xs font-semibold text-[#999] tracking-wide"><Megaphone size={14} className="inline-block align-text-bottom" /> 站务公告</span>
             <span className="tag">置顶</span>
           </div>
-          <div className="flex flex-row gap-1 sm:gap-3 items-stretch">
-            <div className="w-1/2 shrink-0">
-              <div className="card divide-y divide-[#f5f5f5]">
-                {announcements.slice(0, 6).map((t, i) => (
-                  <Link key={t.id} href={`/t/${t.id}`}
-                    className={`flex items-center gap-2 px-3 py-2.5 hover:bg-[#fafafa] transition-colors ${i > 0 ? `anim-delay-${i}` : ''}`}>
-                    <Pin size={14} className="text-[#b8860b] shrink-0 inline-block" />
-                    <span className="text-sm font-medium text-[#1a1a1a] truncate">{t.title}</span>
-                    <span className="ml-auto text-xs text-[#bbb] shrink-0">{new Date(t.created_at).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })}</span>
-                  </Link>
-                ))}
-              </div>
-            </div>
-            {/* 站长风采 — 始终在右侧，高度140px */}
-            <div className="shrink-0">
-              <div className="card overflow-hidden">
-                <div className="px-1 sm:px-2 pt-1 pb-0.5 text-[8px] sm:text-[9px] font-medium text-[#b8860b] tracking-wider text-center border-b border-[#f5f5f5]">
-                  🧑 站长风采
-                </div>
-                <img
-                  src="/images/hao-tiananmen.jpg"
-                  alt="站长和儿子在天安门"
-                  style={{height:'140px', width:'auto', maxWidth:'100%', display:'block'}}
-                />
-              </div>
-            </div>
+          <div className="card divide-y divide-[#f5f5f5]">
+            {announcements.slice(0, 5).map((t, i) => (
+              <Link key={t.id} href={"/t/" + t.id}
+                className={"flex items-center gap-2 px-3 py-2.5 hover:bg-[#fafafa] transition-colors"}>
+                <Pin size={14} className="text-[#b8860b] shrink-0 inline-block" />
+                <span className="text-sm font-medium text-[#1a1a1a] truncate">{t.title}</span>
+                <span className="ml-auto text-xs text-[#bbb] shrink-0">{new Date(t.created_at).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })}</span>
+              </Link>
+            ))}
           </div>
         </section>
       )}
