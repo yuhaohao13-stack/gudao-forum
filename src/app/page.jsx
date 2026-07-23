@@ -274,18 +274,6 @@ export default function Home() {
           </div>
         </section>
       )}
-          <div className="card divide-y divide-[#f5f5f5]">
-            {announcements.slice(0, 5).map((t, i) => (
-              <Link key={t.id} href={"/t/" + t.id}
-                className={"flex items-center gap-2 px-3 py-2.5 hover:bg-[#fafafa] transition-colors"}>
-                <Pin size={14} className="text-[#b8860b] shrink-0 inline-block" />
-                <span className="text-sm font-medium text-[#1a1a1a] truncate">{t.title}</span>
-                <span className="ml-auto text-xs text-[#bbb] shrink-0">{new Date(t.created_at).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })}</span>
-              </Link>
-            ))}
-          </div>
-        </section>
-      )}
 
       {/* ===== 版块（缩小紧凑版） ===== */}
       <section className="anim-up">
