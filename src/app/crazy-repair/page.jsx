@@ -33,7 +33,7 @@ export default function CrazyRepairPage() {
         </div>
 
         {/* 视频播放器 - 电脑端缩小居中 */}
-        <div className="bg-black rounded-xl overflow-hidden shadow-lg mb-8 max-w-2xl mx-auto">
+        <div className="bg-black rounded-xl overflow-hidden shadow-lg mb-8 max-w-sm mx-auto sm:max-w-md">
           <video 
             controls 
             playsInline
