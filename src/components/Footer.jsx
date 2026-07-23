@@ -35,7 +35,7 @@ export default function Footer() {
             <div className="flex items-center gap-3 mt-3 pt-3 border-t border-[#f0f0f0]">
               <Link href="/register" className="text-xs font-semibold px-4 py-2 rounded-lg bg-[#b45309] text-white hover:bg-[#92400e] transition-colors">免费注册</Link>
               <Link href="/board" className="text-xs text-[#b45309] hover:underline">浏览板块 →</Link>
-              <a href="https://www.crazy-repair.com" target="_blank" rel="noopener" className="text-xs text-[#999] hover:text-[#666]">🔧 Crazy维修</a>
+              <Link href="/crazy-repair" className="text-xs text-[#999] hover:text-[#666]">🔧 Crazy维修</Link>
             </div>
           </div>
         </div>
