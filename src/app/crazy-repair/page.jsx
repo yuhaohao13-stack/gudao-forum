@@ -27,7 +27,7 @@ export default function CrazyRepairPage() {
             <ExternalLink size={20} className="opacity-40 group-hover:opacity-100 transition-opacity" />
           </a>
           <a href="https://www.crazy-repair.com" target="_blank" rel="noopener"
-            className="inline-block text-gray-500 mt-1 text-sm hover:text-amber-700 transition-colors">
+            className="block text-gray-500 mt-1 text-sm hover:text-amber-700 transition-colors leading-relaxed">
             2007年至今 · 威海 · 手机电脑维修
           </a>
         </div>
