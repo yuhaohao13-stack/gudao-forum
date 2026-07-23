@@ -32,8 +32,8 @@ export default function CrazyRepairPage() {
           </a>
         </div>
 
-        {/* 视频播放器 - 电脑端缩小居中 */}
-        <div className="bg-black rounded-xl overflow-hidden shadow-lg mb-8 max-w-sm mx-auto sm:max-w-md">
+        {/* 视频播放器 - 限制宽度不超出 */}
+        <div className="bg-black rounded-xl overflow-hidden shadow-lg mb-8" style={{maxWidth:'580px', margin:'0 auto'}}>
           <video 
             controls 
             playsInline
