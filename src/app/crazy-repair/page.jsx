@@ -15,8 +15,8 @@ export default function CrazyRepairPage() {
           <span className="text-gray-800 font-medium">Crazy维修</span>
         </nav>
 
-        {/* 标题区域 */}
-        <div className="mb-6">
+        {/* 标题区域 - 居中 */}
+        <div className="mb-6 text-center">
           <a 
             href="https://www.crazy-repair.com" 
             target="_blank" 
@@ -26,11 +26,14 @@ export default function CrazyRepairPage() {
             🔧 Crazy维修
             <ExternalLink size={20} className="opacity-40 group-hover:opacity-100 transition-opacity" />
           </a>
-          <p className="text-gray-500 mt-1 text-sm">2007年至今 · 威海 · 手机电脑维修</p>
+          <a href="https://www.crazy-repair.com" target="_blank" rel="noopener"
+            className="inline-block text-gray-500 mt-1 text-sm hover:text-amber-700 transition-colors">
+            2007年至今 · 威海 · 手机电脑维修
+          </a>
         </div>
 
-        {/* 视频播放器 */}
-        <div className="bg-black rounded-xl overflow-hidden shadow-lg mb-8">
+        {/* 视频播放器 - 电脑端缩小居中 */}
+        <div className="bg-black rounded-xl overflow-hidden shadow-lg mb-8 max-w-2xl mx-auto">
           <video 
             controls 
             playsInline
