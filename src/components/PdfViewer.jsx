@@ -63,20 +63,15 @@ export default function PdfViewer({ pdfUrl, totalPages, bookTitle, bookColor = '
         </div>
       </div>
 
-      {/* 书籍页渲染区 — 原生PDF嵌入 + 书本样式 */}
+      {/* 书籍页渲染区 — iframe嵌入 + 书本样式 */}
       <div className="bg-[#e8e4dc] border border-[#ddd8ce] rounded-xl py-4 sm:py-8 px-2 sm:px-8 flex justify-center">
         <div className="w-full max-w-[500px] bg-white shadow-[0_4px_20px_rgba(0,0,0,0.15)] rounded-sm overflow-hidden">
-          <object
-            data={pdfEmbedUrl}
-            type="application/pdf"
+          <iframe
+            src={pdfEmbedUrl}
             className="w-full border-0"
             style={{ height: '75vh', minHeight: '400px' }}
-          >
-            <div className="flex flex-col items-center justify-center py-20 text-sm text-[#999]">
-              <p>⚠️ 您的浏览器不支持直接预览PDF</p>
-              <a href={pdfUrl} download className="mt-2 text-[#b45309] hover:underline">请点击下载后查看</a>
-            </div>
-          </object>
+            title={`${bookTitle} - 第${pageNumber}页`}
+          />
         </div>
       </div>
 
