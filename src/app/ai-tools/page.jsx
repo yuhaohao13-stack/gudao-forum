@@ -77,18 +77,9 @@ export default function AiToolsPage() {
         const isLocked = access !== 'ok'
 
         return (
-          <Link key={model.id} href={isLocked ? '#' : `/ai-tools/${model.id}`}>
-            <div className={`bg-gradient-to-r ${model.bg} border border-[${model.border}] rounded-xl p-4 sm:p-5 transition-all hover:shadow-sm hover:-translate-y-0.5 relative overflow-hidden ${isLocked ? 'opacity-80' : ''}`}>
-              {isLocked && (
-                <div className="absolute inset-0 bg-white/40 backdrop-blur-[2px] flex items-center justify-center z-10 rounded-xl">
-                  <div className="text-center">
-                    <div className="text-2xl mb-1">🔒</div>
-                    <div className="text-xs font-semibold text-[#666]">
-                      {access === 'login' ? '登录后查看' : '最低黄金会员可入'}
-                    </div>
-                  </div>
-                </div>
-              )}
+          <div key={model.id} className="block relative">
+            <Link href={isLocked ? '#' : `/ai-tools/${model.id}`} className="block w-full">
+            <div className={`bg-gradient-to-r ${model.bg} border border-[${model.border}] rounded-xl p-4 sm:p-5 transition-all hover:shadow-sm hover:-translate-y-0.5 ${isLocked ? 'opacity-30' : ''}`}>
               <div className="flex items-start gap-3 sm:gap-4">
                 <div className="w-12 h-12 rounded-xl bg-white/80 flex items-center justify-center shrink-0 shadow-sm">
                   {model.icon}
@@ -109,6 +100,17 @@ export default function AiToolsPage() {
               </div>
             </div>
           </Link>
+          {isLocked && (
+            <div className="absolute inset-0 flex items-center justify-center z-10 rounded-xl pointer-events-none">
+              <div className="text-center bg-white/70 backdrop-blur-sm px-6 py-3 rounded-xl">
+                <div className="text-2xl mb-1">🔒</div>
+                <div className="text-xs font-semibold text-[#666]">
+                  {access === 'login' ? '登录后查看' : '最低黄金会员可入'}
+                </div>
+              </div>
+            </div>
+          )}
+          </div>
         )
       })}
 
