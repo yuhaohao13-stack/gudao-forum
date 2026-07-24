@@ -77,20 +77,46 @@ export default function PdfViewer({ bookId, totalPages, bookTitle, bookColor = '
         </div>
       </div>
 
-      {/* 书籍页 */}
-      <div className="bg-white border border-[#ece8e0] rounded-xl py-4 sm:py-8 px-2 sm:px-4">
+      {/* 书籍页 — 左右点击翻页 */}
+      <div className="bg-white border border-[#ece8e0] rounded-xl py-4 sm:py-8 px-2 sm:px-4 select-none">
         <div className={`flex ${isMobile ? 'flex-col items-center' : 'flex-row justify-center gap-1 sm:gap-3'}`}>
           {pagesToShow.map((p, idx) => {
             const pageFile = `${p.toString().padStart(4, '0')}.webp`
+            const canGoPrev = isMobile ? pageNumber > 1 : (idx === 0 && pageNumber > 1)
+            const canGoNext = isMobile ? pageNumber < totalPages : (idx === 1 && pageNumber < totalPages)
+            const isLastPage = idx === pagesToShow.length - 1
             return (
-              <div key={p} className={`${isMobile ? 'w-full' : 'w-1/2 max-w-[50%]'}`}>
+              <div key={p} className={`relative ${isMobile ? 'w-full' : 'w-1/2 max-w-[50%]'}`}>
                 <img
                   src={`/pages/${bookId}/${pageFile}`}
                   alt={`第${p}页`}
                   className={`w-full h-auto block ${loading && idx === 0 ? 'hidden' : ''}`}
                   onLoad={() => idx === 0 && setLoading(false)}
                   onError={() => idx === 0 && setLoading(false)}
+                  draggable={false}
                 />
+                {/* 左半区域 — 上一页 */}
+                {canGoPrev && (
+                  <div
+                    onClick={goPrev}
+                    className="absolute left-0 top-0 w-1/2 h-full cursor-pointer group"
+                  >
+                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 absolute left-0 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 bg-black/20 hover:bg-black/40 rounded-r-lg flex items-center justify-center">
+                      <ChevronLeft size={isMobile ? 20 : 24} className="text-white" />
+                    </div>
+                  </div>
+                )}
+                {/* 右半区域 — 下一页 */}
+                {canGoNext && (
+                  <div
+                    onClick={goNext}
+                    className="absolute right-0 top-0 w-1/2 h-full cursor-pointer group"
+                  >
+                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 absolute right-0 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 bg-black/20 hover:bg-black/40 rounded-l-lg flex items-center justify-center">
+                      <ChevronRight size={isMobile ? 20 : 24} className="text-white" />
+                    </div>
+                  </div>
+                )}
                 {!isMobile && (
                   <div className="text-center text-[11px] text-[#999] mt-1">
                     — {p} —
