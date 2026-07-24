@@ -8,8 +8,17 @@ export default function PdfViewer({ bookId, totalPages, bookTitle, bookColor = '
   const [loading, setLoading] = useState(true)
   const [showJump, setShowJump] = useState(false)
   const [jumpInput, setJumpInput] = useState('')
+  const [isMobile, setIsMobile] = useState(false)
   const jumpRef = useRef(null)
   const listRef = useRef(null)
+
+  // 检测设备
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
 
   useEffect(() => {
     const h = (e) => { if (jumpRef.current && !jumpRef.current.contains(e.target)) setShowJump(false) }
@@ -26,10 +35,25 @@ export default function PdfViewer({ bookId, totalPages, bookTitle, bookColor = '
 
   useEffect(() => { setLoading(true) }, [pageNumber])
 
+  // 双页模式：当前页为奇数显示 [N, N+1]，偶数显示 [N-1, N]
+  const pagesToShow = isMobile
+    ? [pageNumber]
+    : (pageNumber % 2 === 1
+        ? [pageNumber, Math.min(pageNumber + 1, totalPages)]
+        : [pageNumber - 1, pageNumber])
+
   const goToPage = useCallback((p) => {
     setPageNumber(Math.max(1, Math.min(totalPages, p)))
     setShowJump(false)
   }, [totalPages])
+
+  const goPrev = useCallback(() => {
+    setPageNumber(p => Math.max(1, isMobile ? p - 1 : p - 2))
+  }, [isMobile])
+
+  const goNext = useCallback(() => {
+    setPageNumber(p => Math.min(totalPages, isMobile ? p + 1 : p + 2))
+  }, [isMobile, totalPages])
 
   const hJump = (e) => {
     e.preventDefault()
@@ -38,8 +62,6 @@ export default function PdfViewer({ bookId, totalPages, bookTitle, bookColor = '
     setJumpInput('')
   }
 
-  const pageFile = `${pageNumber.toString().padStart(4, '0')}.webp`
-  const imgSrc = `/pages/${bookId}/${pageFile}`
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1)
 
   return (
@@ -50,37 +72,47 @@ export default function PdfViewer({ bookId, totalPages, bookTitle, bookColor = '
           <BookOpen size={18} style={{ color: bookColor }} />
           <div>
             <h1 className="text-sm sm:text-base font-bold text-[#1a1a1a]">{bookTitle}</h1>
-            <p className="text-[11px] text-[#999]">共 {totalPages} 页</p>
+            <p className="text-[11px] text-[#999]">共 {totalPages} 页 · {isMobile ? '单页' : '双页'}浏览</p>
           </div>
         </div>
       </div>
 
-      {/* 书籍页 — 左对齐，宽度自适应 */}
-      <div className="bg-white border border-[#ece8e0] rounded-xl py-4 sm:py-8">
-        <div className="overflow-hidden">
-          {loading && (
-            <div className="flex items-center justify-center" style={{ height: '650px' }}>
-              <div className="animate-pulse text-sm text-[#999]">加载中...</div>
-            </div>
-          )}
-          <img
-            src={imgSrc}
-            alt={`${bookTitle} 第${pageNumber}页`}
-            className={`w-full h-auto block ${loading ? 'hidden' : ''}`}
-            onLoad={() => setLoading(false)}
-            onError={() => setLoading(false)}
-          />
+      {/* 书籍页 */}
+      <div className="bg-white border border-[#ece8e0] rounded-xl py-4 sm:py-8 px-2 sm:px-4">
+        <div className={`flex ${isMobile ? 'flex-col items-center' : 'flex-row justify-center gap-1 sm:gap-3'}`}>
+          {pagesToShow.map((p, idx) => {
+            const pageFile = `${p.toString().padStart(4, '0')}.webp`
+            return (
+              <div key={p} className={`${isMobile ? 'w-full' : 'w-1/2 max-w-[50%]'}`}>
+                <img
+                  src={`/pages/${bookId}/${pageFile}`}
+                  alt={`第${p}页`}
+                  className={`w-full h-auto block ${loading && idx === 0 ? 'hidden' : ''}`}
+                  onLoad={() => idx === 0 && setLoading(false)}
+                  onError={() => idx === 0 && setLoading(false)}
+                />
+                {!isMobile && (
+                  <div className="text-center text-[11px] text-[#999] mt-1">
+                    — {p} —
+                  </div>
+                )}
+              </div>
+            )
+          })}
         </div>
+        {isMobile && (
+          <div className="text-center text-[11px] text-[#999] mt-1">— 第 {pageNumber} 页 —</div>
+        )}
       </div>
 
       {/* 导航 */}
       <div className="bg-white border border-[#ece8e0] rounded-xl p-3 sm:p-4">
         <div className="flex items-center justify-center gap-1 sm:gap-3">
-          <button onClick={() => goToPage(pageNumber - 1)}
+          <button onClick={goPrev}
             disabled={pageNumber <= 1}
             className="btn-secondary text-xs disabled:opacity-30 disabled:cursor-not-allowed px-2 sm:px-4 py-1.5 inline-flex items-center gap-1">
             <ChevronLeft size={14} />
-            <span className="hidden sm:inline">上一页</span>
+            <span className="hidden sm:inline">上一{isMobile ? '页' : '组'}</span>
           </button>
 
           {/* 快速跳转 */}
@@ -88,7 +120,7 @@ export default function PdfViewer({ bookId, totalPages, bookTitle, bookColor = '
             <button onClick={() => setShowJump(!showJump)}
               className="bg-[#f5f5f5] hover:bg-[#eee] border border-[#ddd] rounded-lg px-3 sm:px-4 py-1.5 text-sm font-semibold text-[#1a1a1a] inline-flex items-center gap-1.5 transition-colors">
               <FileText size={14} className="text-[#999]" />
-              <span>{pageNumber}</span>
+              <span>{isMobile ? pageNumber : `${pagesToShow[0]}-${pagesToShow[pagesToShow.length-1]}`}</span>
               <span className="text-[#999] font-normal text-xs">/ {totalPages}</span>
             </button>
 
@@ -115,10 +147,10 @@ export default function PdfViewer({ bookId, totalPages, bookTitle, bookColor = '
             )}
           </div>
 
-          <button onClick={() => goToPage(pageNumber + 1)}
+          <button onClick={goNext}
             disabled={pageNumber >= totalPages}
             className="btn-secondary text-xs disabled:opacity-30 disabled:cursor-not-allowed px-2 sm:px-4 py-1.5 inline-flex items-center gap-1">
-            <span className="hidden sm:inline">下一页</span>
+            <span className="hidden sm:inline">下一{isMobile ? '页' : '组'}</span>
             <ChevronRight size={14} />
           </button>
         </div>
