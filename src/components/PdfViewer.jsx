@@ -6,11 +6,8 @@ import { Document, Page, pdfjs } from 'react-pdf'
 import 'react-pdf/dist/Page/TextLayer.css'
 import 'react-pdf/dist/Page/AnnotationLayer.css'
 
-// 配置 PDF.js worker
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  'pdfjs-dist/build/pdf.worker.min.mjs',
-  import.meta.url,
-).toString()
+// 配置 PDF.js worker - 本地加载，避免CSP拦截
+pdfjs.GlobalWorkerOptions.workerSrc = '/pdf-worker/pdf.worker.min.mjs'
 
 export default function PdfViewer({ pdfUrl, totalPages, bookTitle, bookColor = '#b45309' }) {
   const [pageNumber, setPageNumber] = useState(1)
