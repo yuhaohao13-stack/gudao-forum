@@ -105,6 +105,22 @@ export default function Home() {
         <DonationMarquee />
       </div>
 
+      {/* ===== AI工具箱入口 ===== */}
+      <div className="anim-up">
+        <Link href="/ai-tools">
+          <div className="bg-gradient-to-r from-[#eef2ff] via-[#f0fdf4] to-[#fefce8] border border-[#d0d5e0] rounded-xl px-4 py-3 transition-all hover:shadow-md hover:-translate-y-0.5 flex items-center gap-3">
+            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-[#4f46e5] to-[#059669] flex items-center justify-center text-lg shrink-0 shadow-sm">🤖</div>
+            <div className="min-w-0 flex-1">
+              <div className="text-sm font-bold text-[#1a1a1a]">AI 智能工具箱</div>
+              <div className="text-[10px] text-[#888] mt-0.5">
+                DeepSeek 深度推理 · Gemini 极速问答 · 黄金会员100次/钻石1000次
+              </div>
+            </div>
+            <span className="text-[11px] text-[#4f46e5] font-medium shrink-0 bg-white/60 px-2 py-1 rounded-full">NEW</span>
+          </div>
+        </Link>
+      </div>
+
       {/* ===== 功能入口（2×2双排） ===== */}
       <div className="grid grid-cols-2 gap-2 anim-up">
         <Link href="/chat">

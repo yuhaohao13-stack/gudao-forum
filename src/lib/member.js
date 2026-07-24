@@ -54,6 +54,19 @@ export function canViewGoldContent(user, profile) {
   return { allowed: false, reason: 'upgrade' }
 }
 
+// AI工具箱权限
+const AI_QUOTA = { gold: 100, diamond: 1000 }
+
+export function canUseAI(user, profile) {
+  if (!user) return { allowed: false, reason: 'login' }
+  const level = profile?.membership_level || 'regular'
+  if (level === 'regular') return { allowed: false, reason: 'upgrade' }
+  const max = AI_QUOTA[level] || 0
+  const used = profile?.ai_queries_used ?? 0
+  if (used < max) return { allowed: true, remaining: max - used, max }
+  return { allowed: false, reason: 'exhausted' }
+}
+
 // 检查彩票模拟器权限（仅钻石会员）
 export function canUseLottery(user, profile) {
   if (!user) return { allowed: false, reason: 'login' }
