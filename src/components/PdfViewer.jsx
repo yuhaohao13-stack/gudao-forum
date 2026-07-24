@@ -77,16 +77,31 @@ export default function PdfViewer({ bookId, totalPages, bookTitle, bookColor = '
         </div>
       </div>
 
-      {/* 书籍页 — 左右点击翻页 */}
-      <div className="bg-white border border-[#ece8e0] rounded-xl py-4 sm:py-8 px-2 sm:px-4 select-none">
+      {/* 书籍页 — 点击左右翻页（基于点击坐标） */}
+      <div
+        className="bg-white border border-[#ece8e0] rounded-xl py-4 sm:py-8 px-2 sm:px-4 select-none"
+        onClick={(e) => {
+          const rect = e.currentTarget.getBoundingClientRect()
+          const x = e.clientX - rect.left
+          const w = rect.width
+          if (isMobile) {
+            // 手机端：左半=上一页，右半=下一页
+            if (x < w / 2 && pageNumber > 1) goPrev()
+            else if (x >= w / 2 && pageNumber < totalPages) goNext()
+          } else {
+            // 电脑端双页：左图左半=上一组，右图右半=下一组
+            // 两页各占50%宽度，每页内部左半=上页，右半=下页
+            const halfW = w / 2
+            if (x < halfW / 2 && pageNumber > 1) goPrev()
+            else if (x >= halfW + halfW / 2 && pageNumber < totalPages) goNext()
+          }
+        }}
+      >
         <div className={`flex ${isMobile ? 'flex-col items-center' : 'flex-row justify-center gap-1 sm:gap-3'}`}>
           {pagesToShow.map((p, idx) => {
             const pageFile = `${p.toString().padStart(4, '0')}.webp`
-            const canGoPrev = isMobile ? pageNumber > 1 : (idx === 0 && pageNumber > 1)
-            const canGoNext = isMobile ? pageNumber < totalPages : (idx === 1 && pageNumber < totalPages)
-            const isLastPage = idx === pagesToShow.length - 1
             return (
-              <div key={p} className={`relative ${isMobile ? 'w-full' : 'w-1/2 max-w-[50%]'}`}>
+              <div key={p} className={`${isMobile ? 'w-full' : 'w-1/2 max-w-[50%]'}`}>
                 <img
                   src={`/pages/${bookId}/${pageFile}`}
                   alt={`第${p}页`}
@@ -95,28 +110,6 @@ export default function PdfViewer({ bookId, totalPages, bookTitle, bookColor = '
                   onError={() => idx === 0 && setLoading(false)}
                   draggable={false}
                 />
-                {/* 左半区域 — 上一页 */}
-                {canGoPrev && (
-                  <div
-                    onClick={() => goPrev()}
-                    className="absolute left-0 top-0 w-1/2 h-full cursor-pointer z-10"
-                  >
-                    <div className="opacity-0 hover:opacity-100 transition-opacity duration-200 absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/30 hover:bg-black/50 rounded-full flex items-center justify-center">
-                      <ChevronLeft size={24} className="text-white" />
-                    </div>
-                  </div>
-                )}
-                {/* 右半区域 — 下一页 */}
-                {canGoNext && (
-                  <div
-                    onClick={() => goNext()}
-                    className="absolute right-0 top-0 w-1/2 h-full cursor-pointer z-10"
-                  >
-                    <div className="opacity-0 hover:opacity-100 transition-opacity duration-200 absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/30 hover:bg-black/50 rounded-full flex items-center justify-center">
-                      <ChevronRight size={24} className="text-white" />
-                    </div>
-                  </div>
-                )}
                 {!isMobile && (
                   <div className="text-center text-[11px] text-[#999] mt-1">
                     — {p} —
