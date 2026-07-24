@@ -98,22 +98,22 @@ export default function PdfViewer({ bookId, totalPages, bookTitle, bookColor = '
                 {/* 左半区域 — 上一页 */}
                 {canGoPrev && (
                   <div
-                    onClick={goPrev}
-                    className="absolute left-0 top-0 w-1/2 h-full cursor-pointer group"
+                    onClick={() => goPrev()}
+                    className="absolute left-0 top-0 w-1/2 h-full cursor-pointer z-10"
                   >
-                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 absolute left-0 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 bg-black/20 hover:bg-black/40 rounded-r-lg flex items-center justify-center">
-                      <ChevronLeft size={isMobile ? 20 : 24} className="text-white" />
+                    <div className="opacity-0 hover:opacity-100 transition-opacity duration-200 absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/30 hover:bg-black/50 rounded-full flex items-center justify-center">
+                      <ChevronLeft size={24} className="text-white" />
                     </div>
                   </div>
                 )}
                 {/* 右半区域 — 下一页 */}
                 {canGoNext && (
                   <div
-                    onClick={goNext}
-                    className="absolute right-0 top-0 w-1/2 h-full cursor-pointer group"
+                    onClick={() => goNext()}
+                    className="absolute right-0 top-0 w-1/2 h-full cursor-pointer z-10"
                   >
-                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 absolute right-0 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 bg-black/20 hover:bg-black/40 rounded-l-lg flex items-center justify-center">
-                      <ChevronRight size={isMobile ? 20 : 24} className="text-white" />
+                    <div className="opacity-0 hover:opacity-100 transition-opacity duration-200 absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/30 hover:bg-black/50 rounded-full flex items-center justify-center">
+                      <ChevronRight size={24} className="text-white" />
                     </div>
                   </div>
                 )}
