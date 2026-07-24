@@ -66,20 +66,15 @@ export default function PdfViewer({ bookId, totalPages, bookTitle, bookColor = '
 
   return (
     <div className="space-y-3">
-      {/* 顶栏 */}
-      <div className="bg-white border border-[#ece8e0] rounded-xl p-3 sm:p-4 flex items-center justify-between flex-wrap gap-2">
-        <div className="flex items-center gap-2">
-          <BookOpen size={18} style={{ color: bookColor }} />
-          <div>
-            <h1 className="text-sm sm:text-base font-bold text-[#1a1a1a]">{bookTitle}</h1>
-            <p className="text-[11px] text-[#999]">共 {totalPages} 页 · {isMobile ? '单页' : '双页'}浏览</p>
-          </div>
-        </div>
+      {/* 标题 — 居中 */}
+      <div className="text-center">
+        <h1 className="text-base sm:text-lg font-bold text-[#1a1a1a]">{bookTitle}</h1>
+        <p className="text-xs text-[#999] mt-1">共 {totalPages} 页 · {isMobile ? '单页浏览，点击左右翻页' : '双页浏览，点击左右翻页'}</p>
       </div>
 
       {/* 书籍页 — 点击左右翻页（基于点击坐标） */}
-      <div
-        className="bg-white border border-[#ece8e0] rounded-xl py-4 sm:py-8 px-2 sm:px-4 select-none"
+      <div className={`${isMobile ? '' : 'mx-auto'} bg-white border border-[#ece8e0] rounded-xl py-4 sm:py-8 px-2 sm:px-4 select-none`}
+        style={isMobile ? {} : { maxWidth: '60%' }}
         onClick={(e) => {
           const rect = e.currentTarget.getBoundingClientRect()
           const x = e.clientX - rect.left
