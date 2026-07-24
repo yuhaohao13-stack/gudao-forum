@@ -1,17 +1,42 @@
 'use client'
 
 import { useState, useRef, useEffect, useCallback } from 'react'
-import { ChevronLeft, ChevronRight, BookOpen, Download, ExternalLink, Maximize2, Minus, Plus, Search } from 'lucide-react'
+import { ChevronLeft, ChevronRight, BookOpen, Download, ExternalLink, Loader2, FileText } from 'lucide-react'
+import { Document, Page, pdfjs } from 'react-pdf'
+import 'react-pdf/dist/Page/TextLayer.css'
+import 'react-pdf/dist/Page/AnnotationLayer.css'
+
+// 配置 PDF.js worker
+pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+  'pdfjs-dist/build/pdf.worker.min.mjs',
+  import.meta.url,
+).toString()
 
 export default function PdfViewer({ pdfUrl, totalPages, bookTitle, bookColor = '#b45309' }) {
   const [pageNumber, setPageNumber] = useState(1)
-  const [scale, setScale] = useState(1.0)
+  const [numPages, setNumPages] = useState(null)
+  const [pageWidth, setPageWidth] = useState(500)
+  const [loading, setLoading] = useState(true)
   const [showJump, setShowJump] = useState(false)
   const [jumpInput, setJumpInput] = useState('')
+  const containerRef = useRef(null)
   const jumpRef = useRef(null)
   const listRef = useRef(null)
 
-  // Close jump list when clicking outside
+  // 响应式计算页面宽度
+  useEffect(() => {
+    const calcWidth = () => {
+      if (containerRef.current) {
+        const cw = containerRef.current.clientWidth
+        // 书籍宽度：最宽480px，适应容器宽度-40px
+        setPageWidth(Math.min(480, Math.max(300, cw - 40)))
+      }
+    }
+    calcWidth()
+    window.addEventListener('resize', calcWidth)
+    return () => window.removeEventListener('resize', calcWidth)
+  }, [])
+
   useEffect(() => {
     const handleClick = (e) => {
       if (jumpRef.current && !jumpRef.current.contains(e.target)) {
@@ -22,13 +47,10 @@ export default function PdfViewer({ pdfUrl, totalPages, bookTitle, bookColor = '
     return () => document.removeEventListener('mousedown', handleClick)
   }, [])
 
-  // Scroll to current page in jump list
   useEffect(() => {
     if (showJump && listRef.current) {
       const item = listRef.current.querySelector(`[data-page="${pageNumber}"]`)
-      if (item) {
-        item.scrollIntoView({ block: 'center', behavior: 'auto' })
-      }
+      if (item) item.scrollIntoView({ block: 'center', behavior: 'auto' })
     }
   }, [showJump, pageNumber])
 
@@ -41,17 +63,16 @@ export default function PdfViewer({ pdfUrl, totalPages, bookTitle, bookColor = '
   const handleJumpSubmit = (e) => {
     e.preventDefault()
     const p = parseInt(jumpInput)
-    if (p >= 1 && p <= totalPages) {
-      goToPage(p)
-    }
+    if (p >= 1 && p <= totalPages) goToPage(p)
     setJumpInput('')
   }
 
-  // Generate page list for quick jump (all pages)
-  const pageList = Array.from({ length: totalPages }, (_, i) => i + 1)
+  function onDocumentLoadSuccess({ numPages: np }) {
+    setNumPages(np)
+    setLoading(false)
+  }
 
-  // Calculate visible range in the scrollable list around current page
-  const visiblePages = pageList
+  const visiblePages = Array.from({ length: totalPages }, (_, i) => i + 1)
 
   return (
     <div className="space-y-3">
@@ -83,26 +104,56 @@ export default function PdfViewer({ pdfUrl, totalPages, bookTitle, bookColor = '
         </div>
       </div>
 
-      {/* PDF 渲染区域 */}
-      <div className="bg-[#f5f5f5] border border-[#ece8e0] rounded-xl overflow-hidden">
-        <div className="w-full overflow-auto flex justify-center bg-[#555] min-h-[400px] max-h-[75vh]">
-          <iframe
-            src={`${pdfUrl}#page=${pageNumber}&zoom=${scale * 100}`}
-            className="border-0 bg-white"
-            style={{ width: '100%', height: '75vh' }}
-            title={`${bookTitle} - 第${pageNumber}页`}
-          />
-        </div>
+      {/* 书籍页渲染区 */}
+      <div
+        ref={containerRef}
+        className="bg-[#f0ede8] border border-[#e0dcd4] rounded-xl py-6 sm:py-10 flex justify-center items-start min-h-[400px]"
+      >
+        {loading && (
+          <div className="flex flex-col items-center gap-3 py-20">
+            <Loader2 size={32} className="animate-spin text-[#b45309]" />
+            <span className="text-sm text-[#999]">加载中...</span>
+          </div>
+        )}
+
+        <Document
+          file={pdfUrl}
+          onLoadSuccess={onDocumentLoadSuccess}
+          onLoadError={(err) => {
+            console.error('PDF load error:', err)
+            setLoading(false)
+          }}
+          loading={<div className="py-20 text-center text-sm text-[#999]">加载PDF中...</div>}
+          className="flex justify-center"
+        >
+          <div
+            className="bg-white shadow-[0_2px_12px_rgba(0,0,0,0.12)] rounded-sm overflow-hidden transition-all duration-200"
+            style={{ width: pageWidth }}
+          >
+            <Page
+              pageNumber={pageNumber}
+              width={pageWidth}
+              renderTextLayer={false}
+              renderAnnotationLayer={false}
+              className="block"
+              loading={
+                <div className="flex items-center justify-center" style={{ height: pageWidth * 1.4 }}>
+                  <Loader2 size={24} className="animate-spin text-[#ccc]" />
+                </div>
+              }
+            />
+          </div>
+        </Document>
       </div>
 
       {/* 底部导航栏 */}
-      <div className="bg-white border border-[#ece8e0] rounded-xl p-3">
+      <div className="bg-white border border-[#ece8e0] rounded-xl p-3 sm:p-4">
         <div className="flex items-center justify-center gap-1 sm:gap-3">
           {/* 上一页 */}
           <button
             onClick={() => goToPage(pageNumber - 1)}
             disabled={pageNumber <= 1}
-            className="btn-secondary text-xs disabled:opacity-30 disabled:cursor-not-allowed px-2 sm:px-3 py-1.5 inline-flex items-center gap-1"
+            className="btn-secondary text-xs disabled:opacity-30 disabled:cursor-not-allowed px-2 sm:px-4 py-1.5 inline-flex items-center gap-1"
           >
             <ChevronLeft size={14} />
             <span className="hidden sm:inline">上一页</span>
@@ -114,38 +165,28 @@ export default function PdfViewer({ pdfUrl, totalPages, bookTitle, bookColor = '
               onClick={() => setShowJump(!showJump)}
               className="bg-[#f5f5f5] hover:bg-[#eee] border border-[#ddd] rounded-lg px-3 sm:px-4 py-1.5 text-sm font-semibold text-[#1a1a1a] inline-flex items-center gap-1.5 transition-colors"
             >
+              <FileText size={14} className="text-[#999]" />
               <span>{pageNumber}</span>
               <span className="text-[#999] font-normal text-xs">/ {totalPages}</span>
-              <ChevronRight size={12} className={`transition-transform ${showJump ? 'rotate-90' : ''}`} />
             </button>
 
-            {/* 跳转下拉框 */}
             {showJump && (
-              <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-white border border-[#ddd] rounded-xl shadow-lg overflow-hidden z-50" style={{ width: '240px' }}>
-                {/* 输入框 */}
-                <form onSubmit={handleJumpSubmit} className="p-2 border-b border-[#eee]">
-                  <div className="flex items-center gap-1">
-                    <input
-                      type="number"
-                      min={1}
-                      max={totalPages}
-                      value={jumpInput}
-                      onChange={(e) => setJumpInput(e.target.value)}
-                      placeholder="输入页码回车跳转..."
-                      className="w-full text-xs px-2 py-1.5 border border-[#ddd] rounded-lg focus:outline-none focus:border-[#b45309]"
-                    />
-                    <button type="submit" className="text-xs bg-[#b45309] text-white px-2 py-1.5 rounded-lg hover:bg-[#92400e]">
-                      跳
-                    </button>
-                  </div>
+              <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-white border border-[#ddd] rounded-xl shadow-lg overflow-hidden z-50" style={{ width: '250px' }}>
+                <form onSubmit={handleJumpSubmit} className="p-2 border-b border-[#eee] flex gap-1">
+                  <input
+                    type="number"
+                    min={1}
+                    max={totalPages}
+                    value={jumpInput}
+                    onChange={(e) => setJumpInput(e.target.value)}
+                    placeholder="输入页码回车"
+                    className="w-full text-xs px-2 py-1.5 border border-[#ddd] rounded-lg focus:outline-none focus:border-[#b45309]"
+                  />
+                  <button type="submit" className="text-xs bg-[#b45309] text-white px-2 py-1.5 rounded-lg hover:bg-[#92400e] shrink-0">
+                    跳
+                  </button>
                 </form>
-
-                {/* 页码列表 - 滑动选择，限高10个 */}
-                <div
-                  ref={listRef}
-                  className="overflow-y-auto"
-                  style={{ maxHeight: '320px' }}
-                >
+                <div ref={listRef} className="overflow-y-auto" style={{ maxHeight: '320px' }}>
                   <div className="grid grid-cols-5 gap-0.5 p-2">
                     {visiblePages.map((p) => (
                       <button
@@ -163,8 +204,6 @@ export default function PdfViewer({ pdfUrl, totalPages, bookTitle, bookColor = '
                     ))}
                   </div>
                 </div>
-
-                {/* 页数提示 */}
                 <div className="px-2 py-1.5 bg-[#fafafa] border-t border-[#eee] text-[10px] text-[#999] text-center">
                   共 {totalPages} 页 · 当前第 {pageNumber} 页
                 </div>
@@ -176,18 +215,18 @@ export default function PdfViewer({ pdfUrl, totalPages, bookTitle, bookColor = '
           <button
             onClick={() => goToPage(pageNumber + 1)}
             disabled={pageNumber >= totalPages}
-            className="btn-secondary text-xs disabled:opacity-30 disabled:cursor-not-allowed px-2 sm:px-3 py-1.5 inline-flex items-center gap-1"
+            className="btn-secondary text-xs disabled:opacity-30 disabled:cursor-not-allowed px-2 sm:px-4 py-1.5 inline-flex items-center gap-1"
           >
             <span className="hidden sm:inline">下一页</span>
             <ChevronRight size={14} />
           </button>
         </div>
 
-        {/* 当前页进度条 */}
-        <div className="mt-2 px-2">
-          <div className="w-full bg-[#f0f0f0] rounded-full h-1 overflow-hidden">
+        {/* 进度条 */}
+        <div className="mt-3 px-2">
+          <div className="w-full bg-[#f0f0f0] rounded-full h-1.5 overflow-hidden">
             <div
-              className="h-full rounded-full transition-all duration-150"
+              className="h-full rounded-full transition-all duration-200"
               style={{ width: `${(pageNumber / totalPages) * 100}%`, backgroundColor: bookColor }}
             />
           </div>
