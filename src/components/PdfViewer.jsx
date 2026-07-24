@@ -55,10 +55,10 @@ export default function PdfViewer({ bookId, totalPages, bookTitle, bookColor = '
         </div>
       </div>
 
-      {/* 书籍页 */}
-      <div className="bg-[#e8e4dc] border border-[#ddd8ce] rounded-xl py-4 sm:py-8 flex justify-center">
-        <div className="bg-white shadow-[0_4px_20px_rgba(0,0,0,0.15)] rounded-sm overflow-hidden max-w-full"
-          style={{ width: '480px' }}>
+      {/* 书籍页 — 无边白底 */}
+      <div className="flex justify-center bg-white border border-[#ece8e0] rounded-xl py-4 sm:py-8">
+        <div className="bg-white overflow-hidden max-w-full"
+          style={{ width: '720px' }}>
           {loading && (
             <div className="flex items-center justify-center" style={{ height: '650px' }}>
               <div className="animate-pulse text-sm text-[#999]">加载中...</div>
