@@ -92,7 +92,7 @@ export default function DeepSeekChatPage() {
       </div>
 
       {/* 聊天区 */}
-      <div className="bg-white border border-[#ece8e0] rounded-xl overflow-hidden flex flex-col" style={{ height: '65vh' }}>
+      <div className="bg-white border border-[#ece8e0] rounded-xl overflow-hidden flex flex-col" style={{ maxHeight: '70vh', minHeight: '400px' }}>
         <div className="bg-gradient-to-r from-[#eef2ff] to-[#e0e7ff] px-4 py-2.5 border-b border-[#c7d2fe]">
           <div className="flex items-center gap-2">
             <Bot size={16} className="text-[#4f46e5]" />
@@ -132,8 +132,8 @@ export default function DeepSeekChatPage() {
         </div>
 
         {/* 输入区 */}
-        <div className="border-t border-[#ece8e0] p-3">
-          <div className="flex gap-2">
+        <div className="border-t border-[#ece8e0] p-3 sm:p-4">
+          <div className="flex gap-2 sm:gap-3">
             <input
               ref={inputRef}
               type="text"
@@ -141,19 +141,19 @@ export default function DeepSeekChatPage() {
               onChange={e => setInput(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && sendMessage()}
               placeholder="输入您的问题..."
-              className="flex-1 text-xs sm:text-sm px-3 py-2 border border-[#ddd] rounded-lg focus:outline-none focus:border-[#4f46e5]"
+              className="flex-1 text-sm sm:text-base px-4 py-3 border border-[#ddd] rounded-xl focus:outline-none focus:border-[#4f46e5]"
               disabled={sending}
             />
             <button
               onClick={sendMessage}
               disabled={sending || !input.trim()}
-              className="bg-[#4f46e5] text-white px-3 py-2 rounded-lg hover:bg-[#4338ca] disabled:opacity-40 transition-colors"
+              className="bg-[#4f46e5] text-white px-4 sm:px-6 py-3 rounded-xl hover:bg-[#4338ca] disabled:opacity-40 transition-colors text-sm sm:text-base font-medium"
             >
-              <Send size={16} />
+              <Send size={18} />
             </button>
           </div>
-          <div className="text-[10px] text-[#bbb] mt-1.5 text-center">
-            每次问答消耗1次机会 · 剩余 {remaining} 次
+          <div className="text-[11px] text-[#bbb] mt-2 text-center">
+            剩余 {remaining} 次 · 黄金100次 · 钻石1000次
           </div>
         </div>
       </div>
