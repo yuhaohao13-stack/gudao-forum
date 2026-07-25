@@ -35,6 +35,16 @@ export default function AiToolsPage() {
   const [modalType, setModalType] = useState(null)
 
   useEffect(() => {
+    document.title = 'AI 智能工具箱 — 古道论坛 | DeepSeek V4 & Gemini 3.6 Flash 在线对话'
+    let meta = document.querySelector('meta[name="description"]')
+    if (!meta) { meta = document.createElement('meta'); meta.name = 'description'; document.head.appendChild(meta) }
+    meta.content = '古道论坛AI智能工具箱，免费在线使用DeepSeek V4 Flash深度推理模型和Gemini 3.6 Flash快速响应模型。AI聊天、代码编写、创意写作、多轮对话，黄金会员100次/钻石会员1000次。'
+    meta = document.querySelector('meta[name="keywords"]')
+    if (!meta) { meta = document.createElement('meta'); meta.name = 'keywords'; document.head.appendChild(meta) }
+    meta.content = 'AI工具箱,DeepSeek V4,深度推理,Gemini 3.6 Flash,AI聊天,在线AI,免费AI,古道论坛,人工智能,AI对话,代码生成'
+  }, [])
+
+  useEffect(() => {
     if (user && profile) {
       const check = canUseAI(user, profile)
       if (check.allowed) setQuota(check)

@@ -28,6 +28,16 @@ export default function GeminiChatPage() {
   }, [messages])
 
   useEffect(() => {
+    document.title = 'Gemini 3.6 Flash 在线对话 — 古道论坛 AI 智能工具箱'
+    let meta = document.querySelector('meta[name="description"]')
+    if (!meta) { meta = document.createElement('meta'); meta.name = 'description'; document.head.appendChild(meta) }
+    meta.content = '古道论坛Gemini 3.6 Flash在线AI对话，极速响应模型，擅长创意写作、多模态理解、快速问答。黄金会员100次/钻石会员1000次。'
+    meta = document.querySelector('meta[name="keywords"]')
+    if (!meta) { meta = document.createElement('meta'); meta.name = 'keywords'; document.head.appendChild(meta) }
+    meta.content = 'Gemini 3.6 Flash,快速响应,AI对话,在线Gemini,创意写作,多模态AI,古道论坛,AI工具箱'
+  }, [])
+
+  useEffect(() => {
     if (!authLoading && user && profile) {
       const check = canUseAI(user, profile)
       if (!check.allowed) setLockInfo(check)
