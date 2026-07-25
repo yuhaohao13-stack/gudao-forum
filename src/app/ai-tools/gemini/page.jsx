@@ -17,7 +17,7 @@ export default function GeminiChatPage() {
   const chatEndRef = useRef(null)
 
   useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    if (messages.length > 0) chatEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
   useEffect(() => {
