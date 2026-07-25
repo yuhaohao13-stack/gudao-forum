@@ -109,14 +109,10 @@ export default function AiToolsPage() {
 
       {/* 弹窗 */}
       {modalType && (
-        <div
-          className="fixed inset-0 z-50 bg-black/40"
-          onClick={() => setModalType(null)}
-        >
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-2xl p-6 shadow-xl max-w-sm w-[calc(100%-2rem)] text-center">
-            <div
-              onClick={(e) => e.stopPropagation()}
-            >
+        <>
+          <div className="fixed inset-0 z-40 bg-black/40" onClick={() => setModalType(null)} />
+          <div className="fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-2xl p-6 shadow-xl max-w-sm w-[calc(100%-2rem)] text-center">
+            <div onClick={(e) => e.stopPropagation()}>
               <div className="text-3xl mb-3">🔒</div>
               <div className="text-sm font-semibold text-[#1a1a1a] mb-2">
                 {modalType === 'login' ? '请先登录' : '升级会员才能使用'}
@@ -141,7 +137,7 @@ export default function AiToolsPage() {
               </div>
             </div>
           </div>
-        </div>
+        </>
       )}
 
       {/* 会员说明 */}
