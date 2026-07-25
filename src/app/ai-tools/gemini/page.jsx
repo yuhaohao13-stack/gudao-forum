@@ -17,6 +17,10 @@ export default function GeminiChatPage() {
   const chatEndRef = useRef(null)
 
   useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
+  useEffect(() => {
     if (messages.length > 0) chatEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
@@ -70,8 +74,8 @@ export default function GeminiChatPage() {
   }
 
   return (
-    <div className="h-dvh max-w-3xl mx-auto px-3 sm:px-4 flex flex-col">
-      <div className="flex items-center justify-between py-3 shrink-0">
+    <div className="max-w-3xl mx-auto px-3 sm:px-4 py-4 sm:py-6">
+      <div className="flex items-center justify-between mb-3">
         <Link href="/ai-tools" className="text-xs text-[#059669] hover:underline inline-flex items-center gap-1">
           <ChevronLeft size={12} /> 工具箱
         </Link>
@@ -80,7 +84,7 @@ export default function GeminiChatPage() {
         </div>
       </div>
 
-      <div className="bg-white border border-[#ece8e0] rounded-xl overflow-hidden flex flex-col flex-1 min-h-0 mb-3">
+      <div className="bg-white border border-[#ece8e0] rounded-xl overflow-hidden flex flex-col" style={{ maxHeight: '65vh', minHeight: '350px' }}>
         <div className="bg-gradient-to-r from-[#ecfdf5] to-[#d1fae5] px-4 py-2.5 border-b border-[#a7f3d0]">
           <div className="flex items-center gap-2">
             <Bot size={16} className="text-[#059669]" />

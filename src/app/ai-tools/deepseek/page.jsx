@@ -21,6 +21,10 @@ export default function DeepSeekChatPage() {
   }
 
   useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
+  useEffect(() => {
     if (messages.length > 0) scrollToBottom()
   }, [messages])
 
