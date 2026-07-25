@@ -161,8 +161,8 @@ export default function DeepSeekChatPage() {
               <Send size={18} />
             </button>
           </div>
-          <div className="text-[11px] text-[#bbb] mt-2 text-center">
-            剩余 {remaining} 次 · 黄金100次 · 钻石1000次
+          <div className="text-[11px] text-[#999] mt-2 text-center leading-relaxed">
+            <span className="text-[#4f46e5] font-medium">DeepSeek V4 Flash</span> — 擅长深度推理、逻辑分析与代码编写，适合复杂问题拆解与多轮深度对话。剩余 {remaining} 次
           </div>
         </div>
       </div>

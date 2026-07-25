@@ -138,8 +138,8 @@ export default function GeminiChatPage() {
               <Send size={18} />
             </button>
           </div>
-          <div className="text-[11px] text-[#bbb] mt-2 text-center">
-            剩余 {remaining} 次 · 黄金100次 · 钻石1000次
+          <div className="text-[11px] text-[#999] mt-2 text-center leading-relaxed">
+            <span className="text-[#059669] font-medium">Gemini 3.6 Flash</span> — 极速响应、多模态理解与创意生成，适合文案写作、头脑风暴与快速问答。剩余 {remaining} 次
           </div>
         </div>
       </div>
