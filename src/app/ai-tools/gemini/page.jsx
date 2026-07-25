@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useAuth } from '@/components/AuthProvider'
 import { canUseAI, MemberLockOverlay } from '@/lib/member'
 import Link from 'next/link'
@@ -14,6 +14,11 @@ export default function GeminiChatPage() {
   const [lockInfo, setLockInfo] = useState(null)
   const [remaining, setRemaining] = useState(null)
   const [max, setMax] = useState(null)
+  const chatEndRef = useRef(null)
+
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messages])
 
   useEffect(() => {
     if (!authLoading && user && profile) {
@@ -65,8 +70,8 @@ export default function GeminiChatPage() {
   }
 
   return (
-    <div className="max-w-3xl mx-auto py-4 sm:py-6 px-3 sm:px-4">
-      <div className="flex items-center justify-between mb-3">
+    <div className="h-dvh max-w-3xl mx-auto px-3 sm:px-4 flex flex-col">
+      <div className="flex items-center justify-between py-3 shrink-0">
         <Link href="/ai-tools" className="text-xs text-[#059669] hover:underline inline-flex items-center gap-1">
           <ChevronLeft size={12} /> 工具箱
         </Link>
@@ -75,7 +80,7 @@ export default function GeminiChatPage() {
         </div>
       </div>
 
-      <div className="bg-white border border-[#ece8e0] rounded-xl overflow-hidden flex flex-col" style={{ maxHeight: '70vh', minHeight: '400px' }}>
+      <div className="bg-white border border-[#ece8e0] rounded-xl overflow-hidden flex flex-col flex-1 min-h-0 mb-3">
         <div className="bg-gradient-to-r from-[#ecfdf5] to-[#d1fae5] px-4 py-2.5 border-b border-[#a7f3d0]">
           <div className="flex items-center gap-2">
             <Bot size={16} className="text-[#059669]" />
@@ -107,17 +112,18 @@ export default function GeminiChatPage() {
               </div>
             </div>
           )}
-          <div ref={el => el?.scrollIntoView({ behavior: 'smooth' })} />
+          <div ref={chatEndRef} />
         </div>
 
         <div className="border-t border-[#ece8e0] p-3 sm:p-4">
-          <div className="flex gap-2 sm:gap-3">
-            <input
-              type="text" value={input}
+          <div className="flex gap-2 sm:gap-3 max-w-2xl mx-auto">
+            <textarea
+              value={input}
               onChange={e => setInput(e.target.value)}
-              onKeyDown={e => e.key === 'Enter' && sendMessage()}
+              onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage() } }}
               placeholder="输入您的问题..."
-              className="flex-1 text-sm sm:text-base px-4 py-3 border border-[#ddd] rounded-xl focus:outline-none focus:border-[#059669]"
+              rows={4}
+              className="flex-1 text-sm sm:text-base px-4 py-3 border border-[#ddd] rounded-xl focus:outline-none focus:border-[#059669] resize-none"
               disabled={sending}
             />
             <button onClick={sendMessage} disabled={sending || !input.trim()}
