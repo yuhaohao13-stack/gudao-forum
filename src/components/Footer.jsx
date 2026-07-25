@@ -11,7 +11,7 @@ export default function Footer() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
 
         {/* ===== 三列底部导航 ===== */}
-        <div className="flex flex-col md:flex-row gap-8 pb-8 border-b border-[#f0f0f0]">
+        <div className="pb-8 border-b border-[#f0f0f0]" style={{display:'flex',flexDirection:'row',gap:'2rem',flexWrap:'wrap'}}>
 
           <div className="flex-1 min-w-0 space-y-4">
           {/* 第一列：关于古道论坛 */}
