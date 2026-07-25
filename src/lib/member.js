@@ -61,7 +61,8 @@ export function canUseAI(user, profile) {
   if (!user) return { allowed: false, reason: 'login' }
   const level = profile?.membership_level || 'regular'
   if (level === 'regular') return { allowed: false, reason: 'upgrade' }
-  const max = AI_QUOTA[level] || 0
+  const extra = profile?.ai_additional_quota ?? 0
+  const max = (AI_QUOTA[level] || 0) + extra
   const used = profile?.ai_queries_used ?? 0
   if (used < max) return { allowed: true, remaining: max - used, max }
   return { allowed: false, reason: 'exhausted' }

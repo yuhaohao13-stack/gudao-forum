@@ -151,6 +151,7 @@ export default function AdminPage() {
                   <th className="text-left py-3 px-4 font-medium">论坛角色</th>
                   <th className="text-left py-3 px-4 font-medium">会员等级</th>
                   <th className="text-left py-3 px-4 font-medium">剩余摇奖</th>
+                  <th className="text-left py-3 px-4 font-medium">API 次数</th>
                   <th className="text-left py-3 px-4 font-medium">操作</th>
                 </tr>
               </thead>
@@ -173,6 +174,43 @@ export default function AdminPage() {
                       </td>
                       <td className="py-2.5 px-4 text-xs text-[#888]">
                         {ml === 'diamond' ? '♾️ 无限' : ml === 'gold' ? (u.gold_draws_remaining || 0) + '次' : '-'}
+                      </td>
+                      <td className="py-2.5 px-4">
+                        {ml === 'gold' || ml === 'diamond' ? (
+                          <div className="flex flex-col gap-1">
+                            <div className="text-xs text-[#666]">
+                              已用 {u.ai_queries_used || 0} / {ml === 'diamond' ? 1000 : 100}{+(u.ai_additional_quota || 0)} 次
+                            </div>
+                            <div className="flex gap-1">
+                              <button
+                                onClick={async () => {
+                                  if (!confirm(`确认给 ${u.display_name || u.username} 添加 100 次 AI 问答次数？`)) return
+                                  const supabase = (await import('@/lib/supabase/client')).createClient()
+                                  const extra = (u.ai_additional_quota || 0) + 100
+                                  await supabase.from('profiles').update({ ai_additional_quota: extra }).eq('id', u.id)
+                                  supabase.from('profiles').select('*').order('created_at', { ascending: false }).then(({ data }) => setUsers(data || []))
+                                }}
+                                className="px-2 py-0.5 text-[10px] rounded bg-[#e8f5e9] text-green-700 hover:bg-[#c8e6c9] border border-green-200"
+                              >
+                                +100
+                              </button>
+                              <button
+                                onClick={async () => {
+                                  if (!confirm(`确认给 ${u.display_name || u.username} 添加 1000 次 AI 问答次数？`)) return
+                                  const supabase = (await import('@/lib/supabase/client')).createClient()
+                                  const extra = (u.ai_additional_quota || 0) + 1000
+                                  await supabase.from('profiles').update({ ai_additional_quota: extra }).eq('id', u.id)
+                                  supabase.from('profiles').select('*').order('created_at', { ascending: false }).then(({ data }) => setUsers(data || []))
+                                }}
+                                className="px-2 py-0.5 text-[10px] rounded bg-[#e3f2fd] text-blue-700 hover:bg-[#bbdefb] border border-blue-200"
+                              >
+                                +1000
+                              </button>
+                            </div>
+                          </div>
+                        ) : (
+                          <span className="text-xs text-[#ccc]">-</span>
+                        )}
                       </td>
                       <td className="py-2.5 px-4 flex gap-1.5 flex-wrap">
                         <select value={ml}
