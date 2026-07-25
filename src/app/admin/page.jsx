@@ -179,7 +179,7 @@ export default function AdminPage() {
                         {ml === 'gold' || ml === 'diamond' ? (
                           <div className="flex flex-col gap-1">
                             <div className="text-xs text-[#666]">
-                              已用 {u.ai_queries_used || 0} / {ml === 'diamond' ? 1000 : 100}{+(u.ai_additional_quota || 0)} 次
+                              已用 {u.ai_queries_used || 0} / {(ml === 'diamond' ? 1000 : 100) + (u.ai_additional_quota || 0)} 次
                             </div>
                             <div className="flex gap-1">
                               <button
