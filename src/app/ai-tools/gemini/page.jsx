@@ -84,7 +84,7 @@ export default function GeminiChatPage() {
         </div>
       </div>
 
-      <div className="bg-white border border-[#ece8e0] rounded-xl overflow-hidden flex flex-col" style={{ maxHeight: '65vh', minHeight: '350px' }}>
+      <div className="bg-white border border-[#ece8e0] rounded-xl overflow-hidden flex flex-col max-h-[65vh] lg:max-h-[40vh] min-h-[300px]">
         <div className="bg-gradient-to-r from-[#ecfdf5] to-[#d1fae5] px-4 py-2.5 border-b border-[#a7f3d0]">
           <div className="flex items-center gap-2">
             <Bot size={16} className="text-[#059669]" />
