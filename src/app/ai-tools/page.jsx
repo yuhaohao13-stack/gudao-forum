@@ -3,36 +3,29 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '@/components/AuthProvider'
 import { canUseAI } from '@/lib/member'
-import { MemberLockOverlay } from '@/lib/member'
 import Link from 'next/link'
-import { Cpu, Sparkles, Brain, ChevronRight, Zap, BarChart3, Shield, Globe, Bot, MessageSquare } from 'lucide-react'
+import { ChevronRight } from 'lucide-react'
 
 const MODELS = [
   {
     id: 'deepseek',
     name: 'DeepSeek V4',
-    icon: <Brain size={28} className="text-[#4f46e5]" />,
-    color: '#4f46e5',
+    icon: '🧠',
     bg: 'from-[#eef2ff] to-[#e0e7ff]',
     border: '#c7d2fe',
-    desc: '深度推理 · 逻辑分析 · 代码编写',
     tagline: '擅长深度思考与复杂问题拆解',
     features: ['复杂逻辑推理', '代码生成与调试', '多轮深度对话', '中英文双语精通'],
     speed: '⭐⭐⭐⭐',
-    accuracy: '⭐⭐⭐⭐⭐',
   },
   {
     id: 'gemini',
     name: 'Gemini 3.6 Flash',
-    icon: <Sparkles size={28} className="text-[#059669]" />,
-    color: '#059669',
+    icon: '✨',
     bg: 'from-[#ecfdf5] to-[#d1fae5]',
     border: '#a7f3d0',
-    desc: '快速响应 · 多模态 · 创意生成',
     tagline: '闪电速度，创意无限',
     features: ['极速响应', '创意写作与文案', '多轮对话', '多模态理解（图片）'],
     speed: '⭐⭐⭐⭐⭐',
-    accuracy: '⭐⭐⭐⭐',
   },
 ]
 
@@ -77,12 +70,22 @@ export default function AiToolsPage() {
         const access = checkAccess(model.id)
         const isLocked = access !== 'ok'
 
+        const handleClick = (e) => {
+          if (isLocked) {
+            e.preventDefault()
+            setModalType(access === 'login' ? 'login' : 'upgrade')
+          }
+        }
+
         return (
-          <div key={model.id} className="block relative">
-            <Link href={isLocked ? '#' : `/ai-tools/${model.id}`} className="block w-full">
-            <div className={`bg-gradient-to-r ${model.bg} border border-[${model.border}] rounded-xl p-4 sm:p-5 transition-all hover:shadow-sm hover:-translate-y-0.5 ${isLocked ? 'opacity-30' : ''}`}>
+          <div key={model.id}>
+            <Link
+              href={isLocked ? '#' : `/ai-tools/${model.id}`}
+              onClick={handleClick}
+              className={`block w-full bg-gradient-to-r ${model.bg} rounded-xl p-4 sm:p-5 transition-all hover:shadow-sm hover:-translate-y-0.5 ${isLocked ? 'opacity-30 cursor-pointer' : ''}`}
+            >
               <div className="flex items-start gap-3 sm:gap-4">
-                <div className="w-12 h-12 rounded-xl bg-white/80 flex items-center justify-center shrink-0 shadow-sm">
+                <div className="w-12 h-12 rounded-xl bg-white/80 flex items-center justify-center shrink-0 shadow-sm text-xl">
                   {model.icon}
                 </div>
                 <div className="min-w-0 flex-1">
@@ -99,25 +102,7 @@ export default function AiToolsPage() {
                 </div>
                 <ChevronRight size={18} className="text-[#999] shrink-0 mt-2" />
               </div>
-            </div>
-          </Link>
-          {isLocked && (
-            <div
-              className="absolute inset-0 z-10 rounded-xl cursor-pointer flex items-center justify-center"
-              onClick={(e) => {
-                e.preventDefault()
-                e.stopPropagation()
-                setModalType(access === 'login' ? 'login' : 'upgrade')
-              }}
-            >
-              <div className="text-center bg-white/70 backdrop-blur-sm px-6 py-3 rounded-xl pointer-events-none">
-                <div className="text-2xl mb-1">🔒</div>
-                <div className="text-xs font-semibold text-[#666]">
-                  {access === 'login' ? '登录后查看' : '最低黄金会员可入'}
-                </div>
-              </div>
-            </div>
-          )}
+            </Link>
           </div>
         )
       })}
