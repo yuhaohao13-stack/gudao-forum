@@ -11,10 +11,10 @@ export default function Footer() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
 
         {/* ===== 三列底部导航 ===== */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 pb-8 border-b border-[#f0f0f0]">
+        <div className="flex flex-col md:flex-row gap-8 pb-8 border-b border-[#f0f0f0]">
 
+          <div className="flex-1 min-w-0 space-y-4">
           {/* 第一列：关于古道论坛 */}
-          <div className="space-y-4">
             <div className="flex items-center gap-2">
               <Landmark size={18} className="text-[#b45309]" />
               <span className="text-base font-bold text-[#1c1917]">古道论坛</span>
@@ -43,8 +43,8 @@ export default function Footer() {
             </div>
           </div>
 
+          <div className="flex-1 min-w-0 space-y-3">
           {/* 第二列：快速链接 */}
-          <div className="space-y-3">
             <h3 className="text-xs font-bold text-[#1c1917] flex items-center gap-1.5">
               <BookOpen size={14} className="text-[#b45309]" /> 快速链接
             </h3>
@@ -77,8 +77,8 @@ export default function Footer() {
             </ul>
           </div>
 
+          <div className="flex-1 min-w-0 space-y-3">
           {/* 第三列：联系方式 */}
-          <div className="space-y-3">
             <h3 className="text-xs font-bold text-[#1c1917] flex items-center gap-1.5">
               <Mail size={14} className="text-[#b45309]" /> 联系方式
             </h3>
