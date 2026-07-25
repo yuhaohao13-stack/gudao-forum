@@ -364,16 +364,16 @@ export default function ChatRoomPage() {
             {user ? (
               <form onSubmit={handleSend} className="flex flex-col gap-2">
                 <div className="flex gap-2">
-                  <input
+                  <textarea
                     ref={inputRef}
-                    type="text"
                     value={input}
                     onChange={e => setInput(e.target.value)}
+                    onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(e) } }}
                     placeholder={`在 #${room.name} 中发言...`}
                     maxLength={500}
-                    className="input flex-1"
+                    rows={3}
+                    className="input flex-1 resize-none"
                     disabled={sending}
-                    autoFocus
                   />
                   <button
                     type="submit"
