@@ -17,15 +17,7 @@ export default function Footer() {
             <div style={{fontSize:'11px',color:'#bbb',lineHeight:1.6,marginBottom:'10px'}}>
               面向全球华人的国际中文社区。传承中华传统文化，自由交流技术生活，共建温暖精神家园。
             </div>
-            <div style={{display:'flex',flexWrap:'wrap',gap:'6px',fontSize:'11px',marginBottom:'10px'}}>
-              <Link href="/" style={{color:'#b45309',textDecoration:'none'}}>首页</Link>
-              <span style={{color:'#ddd'}}>|</span>
-              <Link href="/rules" style={{color:'#b45309',textDecoration:'none'}}>社区规则</Link>
-              <span style={{color:'#ddd'}}>|</span>
-              <Link href="/chat" style={{color:'#b45309',textDecoration:'none'}}>聊天室</Link>
-              <span style={{color:'#ddd'}}>|</span>
-              <Link href="/board" style={{color:'#b45309',textDecoration:'none'}}>板块</Link>
-            </div>
+
             <div style={{fontSize:'10px',color:'#ccc',lineHeight:1.5}}>
               <div>&copy; {year} 古道论坛 · 最终解释权归古道论坛管理团队所有</div>
               <div style={{color:'#ddd'}}>文章仅代表作者观点 · 如有侵权请联系删除</div>
