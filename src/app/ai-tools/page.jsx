@@ -110,34 +110,35 @@ export default function AiToolsPage() {
       {/* 弹窗 */}
       {modalType && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
+          className="fixed inset-0 z-50 bg-black/40"
           onClick={() => setModalType(null)}
         >
-          <div
-            className="bg-white rounded-2xl p-6 shadow-xl max-w-sm w-full mx-4 text-center"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="text-3xl mb-3">🔒</div>
-            <div className="text-sm font-semibold text-[#1a1a1a] mb-2">
-              {modalType === 'login' ? '请先登录' : '升级会员才能使用'}
-            </div>
-            <div className="text-xs text-[#999] mb-5">
-              {modalType === 'login' ? '登录后即可免费使用 AI 智能工具箱' : '最低黄金会员可入，打赏升级解锁全部功能'}
-            </div>
-            <div className="flex gap-3">
-              <button
-                className="flex-1 py-2.5 text-xs rounded-lg border border-[#e0dcd4] text-[#666] hover:bg-[#f5f5f5]"
-                onClick={() => setModalType(null)}
-              >
-                取消
-              </button>
-              <Link
-                href={modalType === 'login' ? '/login?redirect=/ai-tools' : '/lottery/upgrade'}
-                className="flex-1 py-2.5 text-xs rounded-lg bg-[#b45309] text-white text-center font-medium hover:bg-[#92400e]"
-                onClick={() => setModalType(null)}
-              >
-                {modalType === 'login' ? '去登录' : '查看会员'}
-              </Link>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-2xl p-6 shadow-xl max-w-sm w-[calc(100%-2rem)] text-center">
+            <div
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="text-3xl mb-3">🔒</div>
+              <div className="text-sm font-semibold text-[#1a1a1a] mb-2">
+                {modalType === 'login' ? '请先登录' : '升级会员才能使用'}
+              </div>
+              <div className="text-xs text-[#999] mb-5">
+                {modalType === 'login' ? '登录后即可免费使用 AI 智能工具箱' : '最低黄金会员可入，打赏升级解锁全部功能'}
+              </div>
+              <div className="flex gap-3">
+                <button
+                  className="flex-1 py-2.5 text-xs rounded-lg border border-[#e0dcd4] text-[#666] hover:bg-[#f5f5f5]"
+                  onClick={() => setModalType(null)}
+                >
+                  取消
+                </button>
+                <Link
+                  href={modalType === 'login' ? '/login?redirect=/ai-tools' : '/lottery/upgrade'}
+                  className="flex-1 py-2.5 text-xs rounded-lg bg-[#b45309] text-white text-center font-medium hover:bg-[#92400e]"
+                  onClick={() => setModalType(null)}
+                >
+                  {modalType === 'login' ? '去登录' : '查看会员'}
+                </Link>
+              </div>
             </div>
           </div>
         </div>
