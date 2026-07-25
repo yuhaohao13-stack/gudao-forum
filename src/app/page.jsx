@@ -115,6 +115,12 @@ export default function Home() {
             </div>
           </div>
         </div>
+        <style>{`
+          @keyframes marqueeDonation {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+          }
+        `}</style>
       </div>
 
       {/* ===== AI工具箱入口 ===== */}
