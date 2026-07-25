@@ -74,6 +74,9 @@ export default function Header() {
               <Gamepad2 size={14} />
               <span>游戏</span>
             </Link>
+            <Link href="/board" className="flex items-center gap-1 whitespace-nowrap text-xs sm:text-sm font-medium px-3 py-1.5 rounded-lg bg-[#f5f5f5] text-[#1a1a1a] hover:bg-[#e8e8e8] transition-colors">
+              <span>板块</span>
+            </Link>
           </div>
 
           {/* 右：用户操作 */}

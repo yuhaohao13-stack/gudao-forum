@@ -3,18 +3,12 @@
 // 技术帖分类 slug
 export const TECH_CATEGORY_SLUG = 'tech'
 
-// 检查技术帖查看权限
+// 检查技术帖查看权限（仅钻石会员）
 export function canViewTech(user, profile) {
   if (!user) return { allowed: false, reason: 'login' }
   const level = profile?.membership_level || 'regular'
   if (level === 'diamond') return { allowed: true, unlimited: true }
-  if (level === 'gold') {
-    const max = profile?.gold_tech_views ?? 10
-    const used = profile?.tech_views_used ?? 0
-    if (used < max) return { allowed: true, remaining: max - used }
-    return { allowed: false, reason: 'exhausted' }
-  }
-  return { allowed: false, reason: 'upgrade' }
+  return { allowed: false, reason: 'diamond_only' }
 }
 
 // 检查音乐下载权限
