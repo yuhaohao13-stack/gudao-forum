@@ -105,13 +105,13 @@ export default function Home() {
           <div className="flex items-center gap-2 text-xs text-[#b45309] mb-1">
             <span className="font-semibold">📢 服务说明</span>
           </div>
-          <div className="overflow-hidden relative h-6">
-            <div className="whitespace-nowrap flex" style={{ display: 'inline-block', animation: 'marqueeDonation 30s linear infinite' }}>
+          <div className="overflow-hidden relative h-5">
+            <div style={{ display: 'inline-block', whiteSpace: 'nowrap', animation: 'marqueeDonation 30s linear infinite' }}>
               {Array(3).fill(0).map((_, i) => (
-                <span key={i} className="inline-flex items-center gap-2 text-xs text-[#666] mx-4">
+                <span key={i} className="inline-flex items-center gap-2 text-[10px] text-[#888] mx-4">
                   ⚠️ 本人目前在新加坡工作，威海暂未开设实体店，所有维修服务以线上咨询为主。点击右侧「联系我们」按钮联系。
                 </span>
-              ))}
+              ))}}
             </div>
           </div>
         </div>
