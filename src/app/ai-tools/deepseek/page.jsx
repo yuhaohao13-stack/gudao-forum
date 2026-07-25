@@ -99,7 +99,7 @@ export default function DeepSeekChatPage() {
       </div>
 
       {/* 聊天区 */}
-      <div className="bg-white border border-[#ece8e0] rounded-xl overflow-hidden flex flex-col max-h-[50vh] lg:max-h-[53vh] min-h-[300px]">
+      <div className="bg-white border border-[#ece8e0] rounded-xl overflow-hidden flex flex-col" style={{ maxHeight: '53vh', minHeight: '300px' }}>
         <div className="bg-gradient-to-r from-[#eef2ff] to-[#e0e7ff] px-4 py-2.5 border-b border-[#c7d2fe]">
           <div className="flex items-center gap-2">
             <Bot size={16} className="text-[#4f46e5]" />
