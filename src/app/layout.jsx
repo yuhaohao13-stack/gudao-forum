@@ -151,6 +151,14 @@ s.parentNode.insertBefore(el, s);
           <LanguageProvider>
           <AuthProvider>
             <Header />
+            {/* 公告条 — 左右循环滚动 */}
+            <div className="bg-amber-50 border-b border-amber-200 overflow-hidden">
+              <div className="whitespace-nowrap animate-marquee text-xs sm:text-sm text-amber-800 py-1.5">
+                <span className="mx-4">⚠️ 本人目前在新加坡工作，威海暂未开设实体店，所有维修服务以线上咨询为主。点击右侧「联系我们」按钮联系。</span>
+                <span className="mx-4">⚠️ 本人目前在新加坡工作，威海暂未开设实体店，所有维修服务以线上咨询为主。点击右侧「联系我们」按钮联系。</span>
+                <span className="mx-4">⚠️ 本人目前在新加坡工作，威海暂未开设实体店，所有维修服务以线上咨询为主。点击右侧「联系我们」按钮联系。</span>
+              </div>
+            </div>
             <main className="flex-1 w-full px-4 py-5 sm:py-6 sm:max-w-4xl sm:mx-auto">
               {children}
             </main>
