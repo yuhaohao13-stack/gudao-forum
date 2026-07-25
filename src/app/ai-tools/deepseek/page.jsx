@@ -87,9 +87,9 @@ export default function DeepSeekChatPage() {
   }
 
   return (
-    <div className="h-dvh max-w-3xl mx-auto px-3 sm:px-4 flex flex-col">
+    <div className="max-w-3xl mx-auto px-3 sm:px-4 py-4 sm:py-6">
       {/* 顶栏 */}
-      <div className="flex items-center justify-between py-3 shrink-0">
+      <div className="flex items-center justify-between mb-3">
         <Link href="/ai-tools" className="text-xs text-[#b45309] hover:underline inline-flex items-center gap-1">
           <ChevronLeft size={12} /> 工具箱
         </Link>
@@ -99,7 +99,7 @@ export default function DeepSeekChatPage() {
       </div>
 
       {/* 聊天区 */}
-      <div className="bg-white border border-[#ece8e0] rounded-xl overflow-hidden flex flex-col flex-1 min-h-0 mb-3">
+      <div className="bg-white border border-[#ece8e0] rounded-xl overflow-hidden flex flex-col" style={{ maxHeight: '50vh', minHeight: '300px' }}>
         <div className="bg-gradient-to-r from-[#eef2ff] to-[#e0e7ff] px-4 py-2.5 border-b border-[#c7d2fe]">
           <div className="flex items-center gap-2">
             <Bot size={16} className="text-[#4f46e5]" />
