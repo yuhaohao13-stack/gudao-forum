@@ -177,9 +177,9 @@ export default function AiToolsPage() {
           </div>
         </div>
         <div className="mt-3 text-center">
-          <Link href="/lottery/upgrade" className="text-xs text-[#b45309] hover:underline inline-flex items-center gap-1">
+          <button onClick={() => window.dispatchEvent(new CustomEvent('open-donate'))} className="text-xs text-[#b45309] hover:underline inline-flex items-center gap-1 cursor-pointer">
             打赏升级会员 <ChevronRight size={12} />
-          </Link>
+          </button>
         </div>
       </div>
     </div>
