@@ -45,7 +45,7 @@ export async function POST(req) {
         'Authorization': `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: 'deepseek-chat',
+        model: 'deepseek-v4-flash',
         messages: [{ role: 'system', content: '你是一个有帮助的AI助手。' }, ...messages],
         max_tokens: 4096,
         stream: false,
