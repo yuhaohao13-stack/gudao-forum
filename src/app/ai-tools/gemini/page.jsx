@@ -21,7 +21,10 @@ export default function GeminiChatPage() {
   }, [])
 
   useEffect(() => {
-    if (messages.length > 0) chatEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    if (messages.length > 0) {
+      const el = chatEndRef.current?.parentElement
+      if (el) el.scrollTop = el.scrollHeight
+    }
   }, [messages])
 
   useEffect(() => {

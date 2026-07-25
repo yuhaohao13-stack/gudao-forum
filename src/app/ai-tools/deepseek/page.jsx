@@ -25,7 +25,10 @@ export default function DeepSeekChatPage() {
   }, [])
 
   useEffect(() => {
-    if (messages.length > 0) scrollToBottom()
+    if (messages.length > 0) {
+      const el = chatEndRef.current?.parentElement
+      if (el) el.scrollTop = el.scrollHeight
+    }
   }, [messages])
 
   useEffect(() => {
