@@ -111,7 +111,7 @@ export default function Home() {
                 <span key={i} className="inline-flex items-center gap-2 text-xs text-[#888] mx-4">
                   ⚠️ 本人目前在新加坡工作，威海暂未开设实体店，所有维修服务以线上咨询为主。点击右侧「联系我们」按钮联系。
                 </span>
-              ))}}
+              ))}
             </div>
           </div>
         </div>
