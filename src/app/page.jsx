@@ -5,7 +5,6 @@ import Link from 'next/link'
 import { MessageCircle, Megaphone, Pin, FileText, Eye, Clock, Flame, ArrowRight, Monitor, Flower2, Package, BookOpen, Sparkles, Gamepad2 } from 'lucide-react'
 import { useAuth } from '@/components/AuthProvider'
 import { canViewTech, TECH_CATEGORY_SLUG } from '@/lib/member'
-import DonationMarquee from '@/components/DonationMarquee'
 import CheckInButton from '@/components/CheckInButton'
 import { createClient } from '@/lib/supabase/client'
 import { useLanguage } from '@/lib/LanguageContext'
@@ -100,9 +99,22 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ===== 打赏滚动 ===== */}
+      {/* ===== 公告 ===== */}
       <div className="anim-up">
-        <DonationMarquee />
+        <div className="bg-gradient-to-r from-[#fefaf5] to-[#fdf8f4] border border-[#eee8dc] rounded-xl px-4 py-2.5 overflow-hidden">
+          <div className="flex items-center gap-2 text-xs text-[#b45309] mb-1">
+            <span className="font-semibold">📢 服务说明</span>
+          </div>
+          <div className="overflow-hidden relative h-6">
+            <div className="whitespace-nowrap flex" style={{ display: 'inline-block', animation: 'marqueeDonation 30s linear infinite' }}>
+              {Array(3).fill(0).map((_, i) => (
+                <span key={i} className="inline-flex items-center gap-2 text-xs text-[#666] mx-4">
+                  ⚠️ 本人目前在新加坡工作，威海暂未开设实体店，所有维修服务以线上咨询为主。点击右侧「联系我们」按钮联系。
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* ===== AI工具箱入口 ===== */}

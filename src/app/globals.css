@@ -220,15 +220,3 @@ select.input {
 
 /* Game canvas responsive */
 canvas { max-width: 100%; height: auto; }
-
-/* 公告条滚动 */
-@keyframes marquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-33.333%); }
-}
-.animate-marquee {
-  animation: marquee 30s linear infinite;
-}
-.animate-marquee:hover {
-  animation-play-state: paused;
-}
