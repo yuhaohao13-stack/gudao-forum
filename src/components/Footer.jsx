@@ -10,61 +10,32 @@ export default function Footer() {
     <footer className="mt-auto pt-12 pb-6 bg-white border-t border-[#ece8e0]">
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
 
-        {/* ===== 两栏底部导航 ===== */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 pb-8 border-b border-[#f0f0f0]">
-
-          {/* 快速链接 */}
-          <div>
-            <h3 className="text-xs font-bold text-[#1c1917] mb-3 flex items-center gap-1.5">
-              <BookOpen size={14} className="text-[#b45309]" /> 快速链接
-            </h3>
-            <ul className="space-y-2">
-              <li>
-                <Link href="/rules" className="text-xs text-[#777] hover:text-[#b45309] transition-colors flex items-center gap-1.5">
-                  <Scale size={12} /> 古道社区规则
-                </Link>
-              </li>
-              <li>
-                <Link href="/lottery/upgrade" className="text-xs text-[#777] hover:text-[#b45309] transition-colors flex items-center gap-1.5">
-                  <Medal size={12} /> 会员积分规则
-                </Link>
-              </li>
-              <li>
-                <Link href="/board" className="text-xs text-[#777] hover:text-[#b45309] transition-colors">📋 论坛板块</Link>
-              </li>
-              <li>
-                <Link href="/chat" className="text-xs text-[#777] hover:text-[#b45309] transition-colors">💬 在线聊天</Link>
-              </li>
-              <li>
-                <Link href="/search" className="text-xs text-[#777] hover:text-[#b45309] transition-colors">🔍 搜索</Link>
-              </li>
-              <li>
-                <Link href="/crazy-repair" className="text-xs text-[#777] hover:text-[#b45309] transition-colors">🔧 Crazy维修</Link>
-              </li>
-            </ul>
+        {/* ===== 横排底部导航 ===== */}
+        <div className="py-6 border-b border-[#f0f0f0] space-y-3">
+          <div className="flex flex-wrap items-center gap-x-1 gap-y-1 text-xs text-[#777]">
+            <span className="font-semibold text-[#1c1917] mr-1"><BookOpen size={12} className="inline-block text-[#b45309]" /> 快速链接：</span>
+            <Link href="/rules" className="hover:text-[#b45309] transition-colors">古道社区规则</Link>
+            <span className="text-[#ddd]">·</span>
+            <Link href="/lottery/upgrade" className="hover:text-[#b45309] transition-colors">会员积分规则</Link>
+            <span className="text-[#ddd]">·</span>
+            <Link href="/board" className="hover:text-[#b45309] transition-colors">📋 论坛板块</Link>
+            <span className="text-[#ddd]">·</span>
+            <Link href="/chat" className="hover:text-[#b45309] transition-colors">💬 在线聊天</Link>
+            <span className="text-[#ddd]">·</span>
+            <Link href="/search" className="hover:text-[#b45309] transition-colors">🔍 搜索</Link>
+            <span className="text-[#ddd]">·</span>
+            <Link href="/crazy-repair" className="hover:text-[#b45309] transition-colors">🔧 Crazy维修</Link>
           </div>
-
-          {/* 联系方式 */}
-          <div>
-            <h3 className="text-xs font-bold text-[#1c1917] mb-3 flex items-center gap-1.5">
-              <Mail size={14} className="text-[#b45309]" /> 联系方式
-            </h3>
-            <ul className="space-y-2">
-              <li className="text-xs text-[#777] flex items-center gap-1.5">
-                <Mail size={12} /> 994730969@qq.com
-              </li>
-              <li className="text-xs text-[#777] flex items-center gap-1.5">
-                <MessageCircle size={12} /> 微信：crazy-repair
-              </li>
-              <li className="text-xs text-[#777] flex items-center gap-1.5">
-                📧 yuhaohao13@gmail.com
-              </li>
-              <li className="text-xs text-[#999] mt-2">
-                客服时间：周一至周日 8:00-22:00
-              </li>
-            </ul>
+          <div className="flex flex-wrap items-center gap-x-1 gap-y-1 text-xs text-[#777]">
+            <span className="font-semibold text-[#1c1917] mr-1"><Mail size={12} className="inline-block text-[#b45309]" /> 联系方式：</span>
+            <span>📧 994730969@qq.com</span>
+            <span className="text-[#ddd]">·</span>
+            <span>💬 微信：crazy-repair</span>
+            <span className="text-[#ddd]">·</span>
+            <span>📧 yuhaohao13@gmail.com</span>
+            <span className="text-[#ddd]">·</span>
+            <span className="text-[#999]">客服时间：8:00-22:00</span>
           </div>
-
         </div>
 
         {/* ===== 底部信息 ===== */}
