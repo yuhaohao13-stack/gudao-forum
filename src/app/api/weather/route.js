@@ -10,56 +10,56 @@ async function getJson(url) {
 
 export async function GET(request) {
   try {
-    // 1. 从 URL 参数获取 GPS 经纬度（浏览器定位，最准）
-    const { searchParams } = new URL(request.url)
-    const gpsLat = searchParams.get('lat')
-    const gpsLon = searchParams.get('lon')
+    const forwarded = request.headers.get('x-forwarded-for')
+    const ip = forwarded?.split(',')[0]?.trim() || request.headers.get('x-real-ip') || ''
 
     let lat = 1.3521, lon = 103.8198 // 默认新加坡
     let city = '新加坡'
 
-    if (gpsLat && gpsLon) {
-      // 有 GPS → 直接用，跳过 IP 定位
-      lat = parseFloat(gpsLat)
-      lon = parseFloat(gpsLon)
-
-      // 用 Nominatim 反向查城市名
+    if (ip && ip !== '::1' && ip !== '127.0.0.1') {
+      // ① 先试国内 IP 库（对中国 IP 定位最准）
+      let cnCity = ''
       try {
-        const nomRes = await fetch(
-          `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&accept-language=zh`,
-          { headers: { 'User-Agent': 'GudaoForum/1.0 (weather)' } }
-        )
-        if (nomRes.ok) {
-          const nom = await nomRes.json()
-          const addr = nom?.address || {}
-          const raw = (addr.city || '')
-          if (raw && !/[区县镇乡]/.test(raw)) {
-            city = raw.replace(/[市]$/, '')
+        const res = await fetch(`https://whois.pconline.com.cn/ipJson.jsp?ip=${ip}&json=true`, {
+          signal: AbortSignal.timeout(3000),
+        })
+        if (res.ok) {
+          const data = await res.json()
+          // 返回: {"ip":"xxx","pro":"山东省","city":"威海市"}
+          if (data.city) cnCity = data.city.replace(/[市]$/, '')
+          if (data.pro && !cnCity) cnCity = data.pro // 没有城市就用省份
+          if (cnCity) {
+            city = cnCity
+            // 用省份+城市反正比青岛强，但天气数据需要经纬度
           }
         }
       } catch {}
-    } else {
-      // 没有 GPS → 走 IP 定位（备用）
-      const forwarded = request.headers.get('x-forwarded-for')
-      const ip = forwarded?.split(',')[0]?.trim() || request.headers.get('x-real-ip') || ''
 
-      if (ip && ip !== '::1' && ip !== '127.0.0.1') {
-        try {
-          const geo = await getJson(`https://ipinfo.io/${ip}/json`)
-          const loc = (geo.loc || '').split(',')
-          if (loc.length === 2) {
-            lat = parseFloat(loc[0])
-            lon = parseFloat(loc[1])
-            city = geo.city || ''
-          }
-        } catch {
-          try {
-            const geo = await getJson(`https://ipapi.co/${ip}/json/`)
-            lat = geo.latitude || lat
-            lon = geo.longitude || lon
-            city = geo.city || ''
-          } catch {}
+      // ② ipinfo.io 获取经纬度（天气需要用坐标）
+      try {
+        const geo = await getJson(`https://ipinfo.io/${ip}/json`)
+        const loc = (geo.loc || '').split(',')
+        if (loc.length === 2) {
+          lat = parseFloat(loc[0])
+          lon = parseFloat(loc[1])
         }
+        // 如果国内库没找到城市，用 ipinfo 的城市
+        if (!cnCity) {
+          const ipCity = geo.city || ''
+          if (ipCity && !/[区县镇乡]/.test(ipCity)) {
+            city = ipCity
+          }
+        }
+      } catch {
+        // ③ ipapi.co 兜底
+        try {
+          const geo = await getJson(`https://ipapi.co/${ip}/json/`)
+          lat = geo.latitude || lat
+          lon = geo.longitude || lon
+          if (!cnCity && geo.city && !/[区县镇乡]/.test(geo.city)) {
+            city = geo.city
+          }
+        } catch {}
       }
     }
 
@@ -73,9 +73,7 @@ export async function GET(request) {
         wmoCode = wx.current_weather.weathercode
         temp = Math.round(wx.current_weather.temperature)
       }
-    } catch {
-      // fallback
-    }
+    } catch {}
 
     // 4. 天气转中文
     const weatherMap = {
