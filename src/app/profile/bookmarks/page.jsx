@@ -45,13 +45,14 @@ export default function BookmarksPage() {
       </div>
 
       {/* 搜索框 - 只搜收藏内的帖子 */}
-      <div className="mb-4">
-        <div className="relative">
-          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#bbb]" />
-          <input type="text" value={searchQuery} onChange={e => setSearchQuery(e.target.value)}
-            placeholder="搜索收藏内的帖子..."
-            className="input !text-sm !pl-8 w-full" />
-        </div>
+      <div className="mb-4 flex gap-2 w-1/3 min-w-[200px]">
+        <input type="text" value={searchQuery} onChange={e => setSearchQuery(e.target.value)}
+          placeholder="搜索收藏内的帖子..."
+          className="input !text-sm flex-1" />
+        <button onClick={() => {}}
+          className="px-3 py-2 rounded-lg text-sm font-medium text-white bg-[#b45309] hover:bg-[#a04408] transition-colors shrink-0">
+          <Search size={14} className="inline-block align-text-bottom" /> 搜索
+        </button>
       </div>
 
       {filtered.length === 0 ? (
