@@ -9,6 +9,8 @@ import Breadcrumb from '@/components/Breadcrumb'
 function Results() {
   const sp = useSearchParams(); const router = useRouter()
   const query = sp.get('q') || ''
+  const categoryId = sp.get('category_id') || ''
+  const categoryName = sp.get('category_name') || ''
   const [results, setResults] = useState([]); const [loading, setLoading] = useState(false)
   const [input, setInput] = useState(query); const [searched, setSearched] = useState(false)
   const supabase = createClient()
@@ -16,9 +18,16 @@ function Results() {
   const search = async (q) => {
     if (!q.trim()) return; setLoading(true); setSearched(true)
     try {
+      let baseQuery = supabase
+        .from('threads')
+        .select('*, profiles(username, display_name), categories(name, slug)')
+
+      // 如果指定了板块，只搜该板块
+      if (categoryId) baseQuery = baseQuery.eq('category_id', categoryId)
+
       const [t, c] = await Promise.all([
-        supabase.from('threads').select('*, profiles(username, display_name), categories(name, slug)').ilike('title', `%${q}%`).order('created_at', { ascending: false }).limit(20),
-        supabase.from('threads').select('*, profiles(username, display_name), categories(name, slug)').ilike('content', `%${q}%`).order('created_at', { ascending: false }).limit(20),
+        baseQuery.ilike('title', `%${q}%`).order('created_at', { ascending: false }).limit(20),
+        baseQuery.ilike('content', `%${q}%`).order('created_at', { ascending: false }).limit(20),
       ])
       const seen = new Set()
       setResults([...(t.data || []), ...(c.data || [])].filter(r => { if (seen.has(r.id)) return false; seen.add(r.id); return true }))
@@ -28,20 +37,34 @@ function Results() {
 
   useEffect(() => { if (query) { setInput(query); search(query) } }, [query])
 
+  // 面包屑
+  const crumbs = [
+    { label: '首页', href: '/' },
+    { label: '板块列表', href: '/board' },
+  ]
+  if (categoryName) crumbs.push({ label: categoryName, href: `/c/${categoryId ? '' : ''}` })
+  crumbs.push({ label: '搜索' })
+
   return (
     <div className="anim-fade-in w-full sm:max-w-3xl sm:mx-auto">
-      <Breadcrumb crumbs={[
-        { label: '首页', href: '/' },
-        { label: '搜索' },
-      ]} />
-      <h1 className="text-xl font-bold text-[#1a1a1a] mb-5">搜索</h1>
-      <form onSubmit={e => { e.preventDefault(); if (input.trim()) router.push(`/search?q=${encodeURIComponent(input.trim())}`) }} className="mb-6 flex gap-2">
+      <Breadcrumb crumbs={crumbs} />
+      <h1 className="text-xl font-bold text-[#1a1a1a] mb-5">
+        {categoryName ? `搜索「${categoryName}」` : '搜索'}
+      </h1>
+      <form onSubmit={e => {
+        e.preventDefault()
+        if (input.trim()) {
+          const params = new URLSearchParams({ q: input.trim() })
+          if (categoryId) { params.set('category_id', categoryId); params.set('category_name', categoryName) }
+          router.push(`/search?${params.toString()}`)
+        }
+      }} className="mb-6 flex gap-2">
         <input type="text" value={input} onChange={e => setInput(e.target.value)} placeholder="搜索帖子..." className="input" autoFocus />
         <button type="submit" disabled={loading} className="btn-primary">{loading ? '搜索中...' : '搜索'}</button>
       </form>
       {loading && <div className="flex justify-center py-8"><div className="w-5 h-5 border-[1.5px] border-[#ddd] border-t-[#1a1a1a] rounded-full animate-spin" /></div>}
       {!loading && searched && query && (
-        <><p className="text-sm text-[#aaa] mb-4">搜索「{query}」— {results.length} 个结果</p>
+        <><p className="text-sm text-[#aaa] mb-4">在{categoryName ? `「${categoryName}」中` : ''}搜索「{query}」— {results.length} 个结果</p>
         {results.length === 0 ? (
           <div className="border border-dashed border-[#eee] rounded-xl py-12 text-center"><p className="text-[#bbb]">没有找到相关帖子</p></div>
         ) : (
@@ -59,7 +82,11 @@ function Results() {
           </div>
         )}</>
       )}
-      {!searched && !query && <div className="text-center py-16"><p className="text-[#bbb]">输入关键词，搜索全站帖子</p></div>}
+      {!searched && !query && (
+        <div className="text-center py-16">
+          <p className="text-[#bbb]">{categoryName ? `在「${categoryName}」中搜索帖子` : '输入关键词，搜索全站帖子'}</p>
+        </div>
+      )}
     </div>
   )
 }

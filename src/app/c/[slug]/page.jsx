@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { useEffect, useState, useCallback } from 'react'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
-import { ChevronLeft, ChevronRight, Clock, Flame, Pencil, Lock, Pin, Crown, MessageCircle } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Clock, Flame, Pencil, Lock, Pin, Crown, MessageCircle, Search } from 'lucide-react'
 import { TECH_CATEGORY_SLUG, canViewTech, TechLockOverlay, canPinThread } from '@/lib/member'
 import { useAuth } from '@/components/AuthProvider'
 import Breadcrumb from '@/components/Breadcrumb'
@@ -116,6 +116,15 @@ export default function CategoryPage() {
             className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${sortBy === 'latest' ? 'bg-[#b45309] text-white' : 'bg-[#f5f5f3] text-[#888] hover:text-[#1a1a1a]'}`}><Clock size={14} className="inline-block align-text-bottom" /> 最新</button>
           <button onClick={() => setSortBy('hot')}
             className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${sortBy === 'hot' ? 'bg-[#b45309] text-white' : 'bg-[#f5f5f3] text-[#888] hover:text-[#1a1a1a]'}`}><Flame size={14} className="inline-block align-text-bottom" /> 最热</button>
+          <form onSubmit={e => { e.preventDefault(); const q = new FormData(e.target).get('q')?.trim(); if(q&&category) window.location.href=`/search?q=${encodeURIComponent(q)}&category_id=${category.id}&category_name=${encodeURIComponent(category.name)}` }}
+            className="flex gap-1.5 ml-2">
+            <input name="q" type="text" placeholder="搜索此板块..."
+              className="input !text-xs !py-1.5 w-32" />
+            <button type="submit"
+              className="px-2 py-1.5 rounded-lg text-xs font-medium text-white bg-[#b45309] hover:bg-[#a04408] transition-colors shrink-0">
+              <Search size={12} className="inline-block align-text-bottom" /> 搜
+            </button>
+          </form>
         </div>
         {(!isAnnouncements || isAdmin) && (
           <Link href="/new-thread" className="btn-primary !px-3 !py-1.5 !text-xs"><Pencil size={14} className="inline-block align-text-bottom" /> 发帖</Link>
