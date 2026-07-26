@@ -8,7 +8,7 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { useAuth } from '@/components/AuthProvider'
 import Breadcrumb from '@/components/Breadcrumb'
-import { Crown, Shield, Pencil, MessageCircle, Users, Clock, CheckCircle, X, FileText, Inbox, Mars, Venus, Sparkles, Eye, Loader2, UserPlus, UserCheck, Inbox as InboxIcon } from 'lucide-react'
+import { Crown, Shield, Pencil, MessageCircle, Users, Clock, CheckCircle, X, FileText, Inbox, Mars, Venus, Sparkles, Eye, Loader2, UserPlus, UserCheck, Inbox as InboxIcon, Bookmark } from 'lucide-react'
 import DatePicker from '@/components/DatePicker'
 import BirthPlaceSelector, { bpStr, parseBp } from '@/components/BirthPlaceSelector'
 import CheckInButton from '@/components/CheckInButton'
@@ -248,6 +248,7 @@ export default function ProfilePage() {
             ) : isSelf && !editing ? (
               <>
                 <CheckInButton className="bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100" />
+                <Link href="/profile/bookmarks" className="text-xs text-[#b45309] font-medium px-3 py-1.5 rounded-full border border-[#b45309]/20 hover:bg-[#b45309]/5"><Bookmark size={12} className="inline-block align-middle" /> 收藏</Link>
                 <button onClick={() => setEditing(true)} className="text-xs text-[#c23531] font-medium px-3 py-1.5 rounded-full border border-[#c23531]/20 hover:bg-[#c23531]/5"><Pencil size={12} className="inline-block align-middle" /> 编辑</button>
                 {amAdmin && <button onClick={() => router.push('/members')} className="text-xs text-[#c23531] font-medium px-3 py-1.5 rounded-full border border-[#c23531]/20 hover:bg-[#c23531]/5"><Users size={12} className="inline-block align-middle" /> 会员管理</button>}
                 <button onClick={handleLogout} className="text-xs text-[#666] font-medium px-3 py-1.5 rounded-full border border-[#ddd] hover:bg-gray-50">退出</button>

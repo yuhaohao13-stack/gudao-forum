@@ -19,6 +19,7 @@ export default function ThreadPage() {
   const [loading, setLoading] = useState(true)
   const [sending, setSending] = useState(false)
   const [liked, setLiked] = useState(false)
+  const [likeCount, setLikeCount] = useState(0)
   const [error, setError] = useState('')
   const [techLocked, setTechLocked] = useState(false)
   const [techLockInfo, setTechLockInfo] = useState(null)
@@ -58,8 +59,10 @@ export default function ThreadPage() {
 
   useEffect(() => {
     if (!user) return
-    supabase.from('thread_likes').select('*').eq('thread_id', id).eq('user_id', user.id).maybeSingle()
+    supabase.from("thread_likes").select("*").eq("thread_id", id).eq("user_id", user.id).maybeSingle()
       .then(({ data }) => setLiked(!!data))
+    supabase.from("thread_likes").select("id", { count: "exact", head: true }).eq("thread_id", id)
+      .then(({ count }) => setLikeCount(count || 0))
   }, [user, id])
 
   const handleReply = async (e) => {
@@ -79,8 +82,8 @@ export default function ThreadPage() {
 
   const toggleLike = async () => {
     if (!user) return
-    if (liked) { await supabase.from('thread_likes').delete().eq('thread_id', id).eq('user_id', user.id); setLiked(false) }
-    else { await supabase.from('thread_likes').insert({ thread_id: id, user_id: user.id }); setLiked(true) }
+    if (liked) { await supabase.from("thread_likes").delete().eq("thread_id", id).eq("user_id", user.id); setLiked(false); setLikeCount(c => Math.max(0, c - 1)) }
+    else { await supabase.from("thread_likes").insert({ thread_id: id, user_id: user.id }); setLiked(true); setLikeCount(c => c + 1) }
   }
 
   if (loading) return <div className="flex justify-center py-20"><div className="w-5 h-5 border-[1.5px] border-[#ddd] border-t-[#1a1a1a] rounded-full animate-spin" /></div>
@@ -158,7 +161,7 @@ export default function ThreadPage() {
           <div className="mt-6 pt-5 border-t border-[#f0f0f0] flex items-center gap-4 text-sm">
             <button onClick={toggleLike}
               className={`flex items-center gap-1.5 px-4 py-2 rounded-md transition-all ${liked ? 'text-[#c23531] bg-[#fafafa] border border-[#f0f0f0]' : 'text-[#aaa] border border-[#f0f0f0] hover:text-[#c23531] hover:border-[#e0e0e0]'}`}>
-              {liked ? <Heart size={16} className="fill-current inline-block align-text-bottom" /> : <Heart size={16} className="inline-block align-text-bottom" />} <span>{liked ? '已赞' : '点赞'}</span>
+              {liked ? <Heart size={16} className="fill-current inline-block align-text-bottom" /> : <Heart size={16} className="inline-block align-text-bottom" />} <span>{liked ? "已赞" : "点赞"} {likeCount > 0 ? likeCount : ""}</span>
             </button>
             <BookmarkButton threadId={thread.id} />
             <span className="stat"><MessageCircle size={14} className="inline-block align-text-bottom" /> {replies.length} 回复</span>
