@@ -27,7 +27,7 @@ export default function ThreadPage() {
   useEffect(() => {
     const fetch = async () => {
       const { data: t } = await supabase.from('threads')
-        .select('*, profiles(username, display_name, role), categories(name, slug)').eq('id', id).single()
+        .select('*, profiles(username, display_name, role), categories(name, slug)').eq('id', id).maybeSingle()
       if (t) {
         await supabase.from('threads').update({ view_count: (t.view_count || 0) + 1 }).eq('id', id)
         const { data: r } = await supabase.from('replies').select('*, profiles(username, display_name)').eq('thread_id', id).order('created_at')
@@ -42,7 +42,7 @@ export default function ThreadPage() {
           } else if (!access.unlimited && access.remaining > 0) {
             // Gold member: increment view counter
             const { data: prof } = await supabase
-              .from('profiles').select('tech_views_used').eq('id', user.id).single()
+              .from('profiles').select('tech_views_used').eq('id', user.id).maybeSingle()
             if (prof) {
               await supabase.from('profiles')
                 .update({ tech_views_used: (prof.tech_views_used || 0) + 1 })
@@ -58,7 +58,7 @@ export default function ThreadPage() {
 
   useEffect(() => {
     if (!user) return
-    supabase.from('thread_likes').select('*').eq('thread_id', id).eq('user_id', user.id).single()
+    supabase.from('thread_likes').select('*').eq('thread_id', id).eq('user_id', user.id).maybeSingle()
       .then(({ data }) => setLiked(!!data))
   }, [user, id])
 
