@@ -87,7 +87,17 @@ export async function GET(request) {
     for (let i = 80; i <= 82; i++) weatherMap[i] = { text: '阵雨', emoji: '🌦️' }
     for (let i = 95; i <= 99; i++) weatherMap[i] = { text: '雷雨', emoji: '⛈️' }
 
-    const info = weatherMap[wmoCode] || { text: '未知', emoji: '❓' }
+    let info = weatherMap[wmoCode] || { text: '未知', emoji: '❓' }
+
+    // 夜间判断（19:00-06:59 显示月亮）
+    try {
+      const now = new Date()
+      const hour = now.getHours()
+      if (hour >= 19 || hour < 7) {
+        if (wmoCode === 0) info = { text: '夜间晴', emoji: '🌙' }
+        else if (wmoCode === 1 || wmoCode === 2) info = { text: '夜间', emoji: '🌙' }
+      }
+    } catch {}
 
     return NextResponse.json({ city, temp, ...info })
   } catch {
