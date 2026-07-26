@@ -10,56 +10,55 @@ async function getJson(url) {
 
 export async function GET(request) {
   try {
-    // 1. 从请求头获取客户端 IP
-    const forwarded = request.headers.get('x-forwarded-for')
-    const ip = forwarded?.split(',')[0]?.trim() || request.headers.get('x-real-ip') || ''
+    // 1. 从 URL 参数获取 GPS 经纬度（浏览器定位，最准）
+    const { searchParams } = new URL(request.url)
+    const gpsLat = searchParams.get('lat')
+    const gpsLon = searchParams.get('lon')
 
-    // 2. IP 定位：ipinfo.io 获取经纬度，Nominatim 辅助查城市
     let lat = 1.3521, lon = 103.8198 // 默认新加坡
     let city = '新加坡'
-    let ipCity = '' // IP 库返回的原始城市名（备用）
 
-    if (ip && ip !== '::1' && ip !== '127.0.0.1') {
-      // 先试 ipinfo.io
+    if (gpsLat && gpsLon) {
+      // 有 GPS → 直接用，跳过 IP 定位
+      lat = parseFloat(gpsLat)
+      lon = parseFloat(gpsLon)
+
+      // 用 Nominatim 反向查城市名
       try {
-        const geo = await getJson(`https://ipinfo.io/${ip}/json`)
-        ipCity = geo.city || ''
-        const loc = (geo.loc || '').split(',')
-        if (loc.length === 2) {
-          lat = parseFloat(loc[0])
-          lon = parseFloat(loc[1])
-          city = ipCity // 先用 IP 库的城市名
+        const nomRes = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&accept-language=zh`,
+          { headers: { 'User-Agent': 'GudaoForum/1.0 (weather)' } }
+        )
+        if (nomRes.ok) {
+          const nom = await nomRes.json()
+          const addr = nom?.address || {}
+          const raw = (addr.city || '')
+          if (raw && !/[区县镇乡]/.test(raw)) {
+            city = raw.replace(/[市]$/, '')
+          }
         }
-      } catch {
-        // ipinfo.io 失败，试试 ipapi.co
-        try {
-          const geo = await getJson(`https://ipapi.co/${ip}/json/`)
-          ipCity = geo.city || ''
-          lat = geo.latitude || lat
-          lon = geo.longitude || lon
-          city = ipCity
-        } catch {}
-      }
+      } catch {}
+    } else {
+      // 没有 GPS → 走 IP 定位（备用）
+      const forwarded = request.headers.get('x-forwarded-for')
+      const ip = forwarded?.split(',')[0]?.trim() || request.headers.get('x-real-ip') || ''
 
-      // 用 Nominatim 反向查城市名（仅当返回的是真·城市名时替换）
-      if (lat !== 1.3521 || lon !== 103.8198) {
+      if (ip && ip !== '::1' && ip !== '127.0.0.1') {
         try {
-          const nomRes = await fetch(
-            `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&accept-language=zh`,
-            { headers: { 'User-Agent': 'GudaoForum/1.0 (weather)' } }
-          )
-          if (nomRes.ok) {
-            const nom = await nomRes.json()
-            const addr = nom?.address || {}
-            // 检查 addr.city：如果含"区""县""镇""乡"字，说明是区级地名，跳过
-            const raw = (addr.city || '')
-            // 只有不带 区/县/镇/乡 的才是真·城市名
-            if (raw && !/[区县镇乡]/.test(raw)) {
-              city = raw.replace(/[市]$/, '')
-            }
+          const geo = await getJson(`https://ipinfo.io/${ip}/json`)
+          const loc = (geo.loc || '').split(',')
+          if (loc.length === 2) {
+            lat = parseFloat(loc[0])
+            lon = parseFloat(loc[1])
+            city = geo.city || ''
           }
         } catch {
-          // Nominatim 失败，保持 IP 库城市名
+          try {
+            const geo = await getJson(`https://ipapi.co/${ip}/json/`)
+            lat = geo.latitude || lat
+            lon = geo.longitude || lon
+            city = geo.city || ''
+          } catch {}
         }
       }
     }

@@ -7,17 +7,44 @@ export default function WeatherBar() {
 
   useEffect(() => {
     let cancelled = false
-    async function fetchWeather() {
+
+    async function fetchByIP() {
+      const res = await fetch('/api/weather', { cache: 'no-store' })
+      if (!res.ok) throw new Error('Failed')
+      return res.json()
+    }
+
+    async function fetchByGPS(lat, lon) {
+      const res = await fetch(`/api/weather?lat=${lat}&lon=${lon}`, { cache: 'no-store' })
+      if (!res.ok) throw new Error('Failed')
+      return res.json()
+    }
+
+    async function load() {
       try {
-        const res = await fetch('/api/weather', { cache: 'no-store' })
-        if (!res.ok) throw new Error('Failed')
-        const data = await res.json()
+        // 先尝试浏览器 GPS 定位（手机用户精度高）
+        const pos = await new Promise((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(resolve, reject, {
+            enableHighAccuracy: true,
+            timeout: 5000,
+            maximumAge: 300000,
+          })
+        })
+        const data = await fetchByGPS(pos.coords.latitude, pos.coords.longitude)
         if (!cancelled) setWeather(data)
+        return
       } catch {
-        if (!cancelled) setError(true)
+        // GPS 失败（用户拒绝/超时），fallback 到 IP 定位
+        try {
+          const data = await fetchByIP()
+          if (!cancelled) setWeather(data)
+        } catch {
+          if (!cancelled) setError(true)
+        }
       }
     }
-    fetchWeather()
+
+    load()
     return () => { cancelled = true }
   }, [])
 
