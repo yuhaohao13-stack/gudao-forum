@@ -25,9 +25,22 @@ function Results() {
       // 如果指定了板块，只搜该板块
       if (categoryId) baseQuery = baseQuery.eq('category_id', categoryId)
 
+      // 用不同的查询实例，避免互相干扰
+      const titleQuery = supabase
+        .from('threads')
+        .select('*, profiles(username, display_name), categories(name, slug)')
+      const contentQuery = supabase
+        .from('threads')
+        .select('*, profiles(username, display_name), categories(name, slug)')
+
+      if (categoryId) {
+        titleQuery.eq('category_id', categoryId)
+        contentQuery.eq('category_id', categoryId)
+      }
+
       const [t, c] = await Promise.all([
-        baseQuery.ilike('title', `%${q}%`).order('created_at', { ascending: false }),
-        baseQuery.ilike('content', `%${q}%`).order('created_at', { ascending: false }),
+        titleQuery.ilike('title', `%${q}%`).order('created_at', { ascending: false }),
+        contentQuery.ilike('content', `%${q}%`).order('created_at', { ascending: false }),
       ])
       const seen = new Set()
       setResults([...(t.data || []), ...(c.data || [])].filter(r => { if (seen.has(r.id)) return false; seen.add(r.id); return true }))
