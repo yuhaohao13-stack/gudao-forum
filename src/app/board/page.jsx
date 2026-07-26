@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { useAuth } from '@/components/AuthProvider'
 import { canViewTech, TECH_CATEGORY_SLUG } from '@/lib/member'
-import { Clock, Flame, FileText, MessageCircle, Eye, Megaphone, Monitor, Flower2, Package, BookOpen, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Clock, Flame, FileText, MessageCircle, Eye, Megaphone, Monitor, Flower2, Package, BookOpen, ArrowRight, ChevronLeft, ChevronRight, Search } from 'lucide-react'
 import Breadcrumb from '@/components/Breadcrumb'
 
 const PAGE_SIZE = 10
@@ -27,6 +27,7 @@ export default function BoardPage() {
   const [threads, setThreads] = useState([])
   const [totalCount, setTotalCount] = useState(0)
   const [page, setPage] = useState(1)
+  const [query, setQuery] = useState('')
   const supabase = createClient()
   const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE))
 
@@ -110,6 +111,23 @@ export default function BoardPage() {
         })}
       </div>
 
+      {/* 搜索框 */}
+      <div className="mb-4">
+        <form onSubmit={e => { e.preventDefault(); if(query.trim()) window.location.href = `/search?q=${encodeURIComponent(query.trim())}` }} className="flex gap-2">
+          <input
+            type="text"
+            value={query}
+            onChange={e => setQuery(e.target.value)}
+            placeholder="搜索帖子关键词..."
+            className="input flex-1 !text-sm"
+          />
+          <button type="submit"
+            className="px-5 py-2 rounded-xl text-sm font-semibold text-white bg-[#b45309] hover:bg-[#a04408] transition-colors shrink-0">
+            <Search size={16} className="inline-block align-text-bottom" /> 搜索
+          </button>
+        </form>
+      </div>
+
       {/* 帖子列表 */}
       <div className="flex items-center gap-2 mb-3">
         <button onClick={() => handleTabChange('recent')}
@@ -122,7 +140,6 @@ export default function BoardPage() {
             activeTab === 'hot' ? 'bg-[#b45309] text-white' : 'bg-[#f5f5f5] text-[#888] hover:text-[#1a1a1a] hover:bg-[#eee]'
           }`}
         ><Flame size={18} className="inline-block align-text-bottom" /> 热门</button>
-        <Link href="/search" className="ml-auto text-xs text-[#bbb] hover:text-[#888] transition-colors">搜索 <ArrowRight size={12} className="inline-block align-text-bottom" /></Link>
       </div>
 
       <div className="card divide-y divide-[#f5f5f5]">
