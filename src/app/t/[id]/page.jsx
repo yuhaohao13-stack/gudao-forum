@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/client'
 import { useAuth } from '@/components/AuthProvider'
 import { Crown, MessageCircle, Eye, Heart, Lock, Diamond } from 'lucide-react'
 import Breadcrumb from '@/components/Breadcrumb'
+import BookmarkButton from '@/components/BookmarkButton'
 import { checkContent } from '@/lib/moderation'
 import { TECH_CATEGORY_SLUG, canViewTech, TechLockOverlay, getUpgradeInfo } from '@/lib/member'
 
@@ -159,6 +160,7 @@ export default function ThreadPage() {
               className={`flex items-center gap-1.5 px-4 py-2 rounded-md transition-all ${liked ? 'text-[#c23531] bg-[#fafafa] border border-[#f0f0f0]' : 'text-[#aaa] border border-[#f0f0f0] hover:text-[#c23531] hover:border-[#e0e0e0]'}`}>
               {liked ? <Heart size={16} className="fill-current inline-block align-text-bottom" /> : <Heart size={16} className="inline-block align-text-bottom" />} <span>{liked ? '已赞' : '点赞'}</span>
             </button>
+            <BookmarkButton threadId={thread.id} />
             <span className="stat"><MessageCircle size={14} className="inline-block align-text-bottom" /> {replies.length} 回复</span>
             <span className="stat"><Eye size={14} className="inline-block align-text-bottom" /> {thread.view_count || 0} 浏览</span>
           </div>
