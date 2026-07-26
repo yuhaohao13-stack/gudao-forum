@@ -56,7 +56,7 @@ function Results() {
         if (input.trim()) {
           const params = new URLSearchParams({ q: input.trim() })
           if (categoryId) { params.set('category_id', categoryId); params.set('category_name', categoryName) }
-          router.push(`/search?${params.toString()}`)
+          window.location.href = `/search?${params.toString()}`
         }
       }} className="mb-6 flex gap-2">
         <input type="text" value={input} onChange={e => setInput(e.target.value)} placeholder="搜索帖子..." className="input" autoFocus />
