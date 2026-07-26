@@ -26,8 +26,8 @@ function Results() {
       if (categoryId) baseQuery = baseQuery.eq('category_id', categoryId)
 
       const [t, c] = await Promise.all([
-        baseQuery.ilike('title', `%${q}%`).order('created_at', { ascending: false }).limit(50),
-        baseQuery.ilike('content', `%${q}%`).order('created_at', { ascending: false }).limit(50),
+        baseQuery.ilike('title', `%${q}%`).order('created_at', { ascending: false }),
+        baseQuery.ilike('content', `%${q}%`).order('created_at', { ascending: false }),
       ])
       const seen = new Set()
       setResults([...(t.data || []), ...(c.data || [])].filter(r => { if (seen.has(r.id)) return false; seen.add(r.id); return true }))
