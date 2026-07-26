@@ -7,7 +7,6 @@ export default function WeatherBar() {
 
   useEffect(() => {
     let cancelled = false
-
     async function fetchWeather() {
       try {
         const res = await fetch('/api/weather', { cache: 'no-store' })
@@ -18,22 +17,18 @@ export default function WeatherBar() {
         if (!cancelled) setError(true)
       }
     }
-
     fetchWeather()
     return () => { cancelled = true }
   }, [])
 
-  // 加载中或失败时也不显示任何内容
   if (!weather || error) return null
 
   return (
-    <div className="flex items-center justify-center gap-1.5 py-1.5 text-xs text-[#666] bg-[#fafaf8] border-b border-[#f0f0f0]">
-      <span className="text-sm leading-none">{weather.emoji}</span>
-      <span className="font-medium">{weather.temp}°C</span>
-      <span className="text-[#ccc]">·</span>
-      <span>{weather.text}</span>
-      <span className="text-[#ccc]">·</span>
-      <span className="font-medium text-[#888]">{weather.city}</span>
+    <div className="flex items-center gap-1 text-[11px] text-[#aaa] shrink-0">
+      <span>{weather.emoji}</span>
+      <span>{weather.temp}°C</span>
+      <span>·</span>
+      <span>{weather.city}</span>
     </div>
   )
 }
