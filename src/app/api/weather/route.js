@@ -14,29 +14,34 @@ export async function GET(request) {
     const forwarded = request.headers.get('x-forwarded-for')
     const ip = forwarded?.split(',')[0]?.trim() || request.headers.get('x-real-ip') || ''
 
-    // 2. IP 定位：ipinfo.io 获取经纬度，Nominatim 反向查精确城市
+    // 2. IP 定位：ipinfo.io 获取经纬度，Nominatim 辅助查城市
     let lat = 1.3521, lon = 103.8198 // 默认新加坡
     let city = '新加坡'
+    let ipCity = '' // IP 库返回的原始城市名（备用）
 
     if (ip && ip !== '::1' && ip !== '127.0.0.1') {
       // 先试 ipinfo.io
       try {
         const geo = await getJson(`https://ipinfo.io/${ip}/json`)
+        ipCity = geo.city || ''
         const loc = (geo.loc || '').split(',')
         if (loc.length === 2) {
           lat = parseFloat(loc[0])
           lon = parseFloat(loc[1])
+          city = ipCity // 先用 IP 库的城市名
         }
       } catch {
         // ipinfo.io 失败，试试 ipapi.co
         try {
           const geo = await getJson(`https://ipapi.co/${ip}/json/`)
+          ipCity = geo.city || ''
           lat = geo.latitude || lat
           lon = geo.longitude || lon
+          city = ipCity
         } catch {}
       }
 
-      // 用 Nominatim 反向地理编码查精确中文城市名
+      // 用 Nominatim 反向查城市名（仅取 city 级别，区/县不取）
       if (lat !== 1.3521 || lon !== 103.8198) {
         try {
           const nomRes = await fetch(
@@ -46,12 +51,13 @@ export async function GET(request) {
           if (nomRes.ok) {
             const nom = await nomRes.json()
             const addr = nom?.address || {}
-            // Nominatim 返回的城市名可能带"市"字，去掉
-            const nomCity = (addr.city || addr.town || addr.village || addr.county || '').replace(/市$/, '')
-            if (nomCity) city = nomCity
+            // 只取 city 级别（去掉"市"后缀），不取 county/district 等区级地名
+            if (addr.city) {
+              city = addr.city.replace(/[市区]$/, '')
+            }
           }
         } catch {
-          // Nominatim 失败，用 ipinfo 的城市名
+          // Nominatim 失败，保持 IP 库城市名
         }
       }
     }
