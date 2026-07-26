@@ -1,17 +1,15 @@
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
-import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
+import { createClient } from '@/lib/supabase/server'
 
 export async function POST(request) {
   try {
-    const supabase = createRouteHandlerClient({ cookies })
+    const supabase = createClient()
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return NextResponse.json({ error: '需要登录' }, { status: 401 })
 
     const { thread_id } = await request.json()
     if (!thread_id) return NextResponse.json({ error: '缺少参数' }, { status: 400 })
 
-    // 检查是否已收藏
     const { data: existing } = await supabase
       .from('bookmarks')
       .select('id')
@@ -20,11 +18,9 @@ export async function POST(request) {
       .single()
 
     if (existing) {
-      // 取消收藏
       await supabase.from('bookmarks').delete().eq('id', existing.id)
       return NextResponse.json({ bookmarked: false })
     } else {
-      // 添加收藏
       await supabase.from('bookmarks').insert({ user_id: user.id, thread_id })
       return NextResponse.json({ bookmarked: true })
     }
@@ -35,7 +31,7 @@ export async function POST(request) {
 
 export async function GET(request) {
   try {
-    const supabase = createRouteHandlerClient({ cookies })
+    const supabase = createClient()
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return NextResponse.json({ error: '需要登录' }, { status: 401 })
 
@@ -43,7 +39,6 @@ export async function GET(request) {
     const thread_id = searchParams.get('thread_id')
 
     if (thread_id) {
-      // 检查单个帖子是否收藏
       const { data } = await supabase
         .from('bookmarks')
         .select('id')
@@ -53,7 +48,6 @@ export async function GET(request) {
       return NextResponse.json({ bookmarked: !!data })
     }
 
-    // 获取用户所有收藏（带帖子信息）
     const { data: bookmarks } = await supabase
       .from('bookmarks')
       .select('id, created_at, thread:thread_id(id, title, created_at)')
