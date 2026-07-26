@@ -14,21 +14,34 @@ export async function GET(request) {
     const forwarded = request.headers.get('x-forwarded-for')
     const ip = forwarded?.split(',')[0]?.trim() || request.headers.get('x-real-ip') || ''
 
-    // 2. IP 定位（ipapi.co 免费版）
+    // 2. IP 定位（ipinfo.io + ipapi.co 双保险）
     let lat = 1.3521, lon = 103.8198 // 默认新加坡
     let city = '新加坡'
 
     if (ip && ip !== '::1' && ip !== '127.0.0.1') {
+      // 优先用 ipinfo.io（对中国城市定位更准）
       try {
-        const geo = await getJson(`https://ipapi.co/${ip}/json/`)
+        const geo = await getJson(`https://ipinfo.io/${ip}/json`)
         if (geo.city) {
           city = geo.city
-          if (geo.region) city = `${geo.city}`
-          lat = geo.latitude || lat
-          lon = geo.longitude || lon
+          const loc = (geo.loc || '').split(',')
+          if (loc.length === 2) {
+            lat = parseFloat(loc[0])
+            lon = parseFloat(loc[1])
+          }
         }
       } catch {
-        // fallback 到默认
+        // ipinfo.io 失败，fallback 到 ipapi.co
+        try {
+          const geo = await getJson(`https://ipapi.co/${ip}/json/`)
+          if (geo.city) {
+            city = geo.city
+            lat = geo.latitude || lat
+            lon = geo.longitude || lon
+          }
+        } catch {
+          // 都失败，用默认
+        }
       }
     }
 
