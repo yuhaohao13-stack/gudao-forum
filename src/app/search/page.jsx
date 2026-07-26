@@ -4,6 +4,7 @@ import { useSearchParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { MessageCircle } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
+import Breadcrumb from '@/components/Breadcrumb'
 
 function Results() {
   const sp = useSearchParams(); const router = useRouter()
@@ -29,6 +30,10 @@ function Results() {
 
   return (
     <div className="anim-fade-in w-full sm:max-w-3xl sm:mx-auto">
+      <Breadcrumb crumbs={[
+        { label: '首页', href: '/' },
+        { label: '搜索' },
+      ]} />
       <h1 className="text-xl font-bold text-[#1a1a1a] mb-5">搜索</h1>
       <form onSubmit={e => { e.preventDefault(); if (input.trim()) router.push(`/search?q=${encodeURIComponent(input.trim())}`) }} className="mb-6 flex gap-2">
         <input type="text" value={input} onChange={e => setInput(e.target.value)} placeholder="搜索帖子..." className="input" autoFocus />

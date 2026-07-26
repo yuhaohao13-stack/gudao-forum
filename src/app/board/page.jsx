@@ -81,18 +81,7 @@ export default function BoardPage() {
       ]} />
 
       <h1 className="text-xl font-bold text-[#1a1a1a] mt-2 mb-1">📋 论坛板块</h1>
-      <p className="text-xs text-[#aaa] mb-3">选择一个板块浏览讨论</p>
-
-      {/* 搜索框 */}
-      <form onSubmit={e => { e.preventDefault(); if(query.trim()) window.location.href = `/search?q=${encodeURIComponent(query.trim())}` }} className="flex gap-2 mb-6">
-        <input type="text" value={query} onChange={e => setQuery(e.target.value)}
-          placeholder="搜索帖子..."
-          className="input flex-1 !text-sm" />
-        <button type="submit"
-          className="px-5 py-2 rounded-xl text-sm font-semibold text-white bg-[#b45309] hover:bg-[#a04408] transition-colors shrink-0">
-          <Search size={16} className="inline-block align-text-bottom" /> 搜索
-        </button>
-      </form>
+      <p className="text-xs text-[#aaa] mb-6">选择一个板块浏览讨论</p>
 
       {/* 板块列表：双列 */}
       <div className="grid grid-cols-2 gap-2 mb-8">
@@ -134,6 +123,15 @@ export default function BoardPage() {
             activeTab === 'hot' ? 'bg-[#b45309] text-white' : 'bg-[#f5f5f5] text-[#888] hover:text-[#1a1a1a] hover:bg-[#eee]'
           }`}
         ><Flame size={18} className="inline-block align-text-bottom" /> 热门</button>
+        <form onSubmit={e => { e.preventDefault(); if(query.trim()) window.location.href = `/search?q=${encodeURIComponent(query.trim())}` }} className="ml-auto flex gap-2">
+          <input type="text" value={query} onChange={e => setQuery(e.target.value)}
+            placeholder="搜索帖子..."
+            className="input !text-sm !py-1.5 w-44" />
+          <button type="submit"
+            className="px-3 py-1.5 rounded-lg text-sm font-semibold text-white bg-[#b45309] hover:bg-[#a04408] transition-colors shrink-0">
+            <Search size={14} className="inline-block align-text-bottom mr-0.5" />搜索
+          </button>
+        </form>
       </div>
 
       <div className="card divide-y divide-[#f5f5f5]">
