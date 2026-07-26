@@ -41,7 +41,7 @@ export async function GET(request) {
         } catch {}
       }
 
-      // 用 Nominatim 反向查城市名（仅取 city 级别，区/县不取）
+      // 用 Nominatim 反向查城市名（仅当返回的是真·城市名时替换）
       if (lat !== 1.3521 || lon !== 103.8198) {
         try {
           const nomRes = await fetch(
@@ -51,9 +51,11 @@ export async function GET(request) {
           if (nomRes.ok) {
             const nom = await nomRes.json()
             const addr = nom?.address || {}
-            // 只取 city 级别（去掉"市"后缀），不取 county/district 等区级地名
-            if (addr.city) {
-              city = addr.city.replace(/[市区]$/, '')
+            // 检查 addr.city：如果含"区""县""镇""乡"字，说明是区级地名，跳过
+            const raw = (addr.city || '')
+            // 只有不带 区/县/镇/乡 的才是真·城市名
+            if (raw && !/[区县镇乡]/.test(raw)) {
+              city = raw.replace(/[市]$/, '')
             }
           }
         } catch {
