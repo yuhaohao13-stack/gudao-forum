@@ -15,9 +15,9 @@ export async function POST(request) {
       .select('id')
       .eq('user_id', user.id)
       .eq('thread_id', thread_id)
-      .single()
+      .maybeSingle()
 
-    if (existing) {
+    if (existing?.id) {
       await supabase.from('bookmarks').delete().eq('id', existing.id)
       return NextResponse.json({ bookmarked: false })
     } else {
@@ -44,7 +44,7 @@ export async function GET(request) {
         .select('id')
         .eq('user_id', user.id)
         .eq('thread_id', thread_id)
-        .single()
+        .maybeSingle()
       return NextResponse.json({ bookmarked: !!data })
     }
 
