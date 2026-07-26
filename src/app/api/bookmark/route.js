@@ -3,9 +3,9 @@ import { createClient } from '@/lib/supabase/server'
 
 export async function POST(request) {
   try {
-    const supabase = createClient()
+    const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
-    if (!user) return NextResponse.json({ error: '需要登录' }, { status: 401 })
+    if (!user) return NextResponse.json({ error: '请先登录' }, { status: 401 })
 
     const { thread_id } = await request.json()
     if (!thread_id) return NextResponse.json({ error: '缺少参数' }, { status: 400 })
