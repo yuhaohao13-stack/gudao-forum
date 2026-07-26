@@ -18,20 +18,20 @@ export async function GET(request) {
 
     if (ip && ip !== '::1' && ip !== '127.0.0.1') {
       // ① 先试国内 IP 库（对中国 IP 定位最准）
+      // 注意：pconline 返回 GBK 编码，需转 UTF-8
       let cnCity = ''
       try {
         const res = await fetch(`https://whois.pconline.com.cn/ipJson.jsp?ip=${ip}&json=true`, {
           signal: AbortSignal.timeout(3000),
         })
         if (res.ok) {
-          const data = await res.json()
+          const buf = await res.arrayBuffer()
+          const text = new TextDecoder('gbk').decode(buf)
+          const data = JSON.parse(text)
           // 返回: {"ip":"xxx","pro":"山东省","city":"威海市"}
           if (data.city) cnCity = data.city.replace(/[市]$/, '')
-          if (data.pro && !cnCity) cnCity = data.pro // 没有城市就用省份
-          if (cnCity) {
-            city = cnCity
-            // 用省份+城市反正比青岛强，但天气数据需要经纬度
-          }
+          if (data.pro && !cnCity) cnCity = data.pro
+          if (cnCity) city = cnCity
         }
       } catch {}
 
