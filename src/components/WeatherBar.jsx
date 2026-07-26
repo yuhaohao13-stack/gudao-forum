@@ -24,13 +24,13 @@ export default function WeatherBar() {
   if (!weather || error) return null
 
   return (
-    <div className="flex flex-col items-start leading-tight text-[11px] text-[#aaa] shrink-0">
-      <span className="flex items-center gap-1">
-        <span className="text-sm">{weather.emoji}</span>
-        <span className="font-medium text-[#e8d5a3]">{weather.temp}°</span>
-        <span>{weather.text}</span>
+    <div className="flex flex-col items-start leading-tight text-lg text-[#aaa] shrink-0">
+      <span className="flex items-center gap-2">
+        <span className="text-3xl">{weather.emoji}</span>
+        <span className="font-medium text-[#e8d5a3] text-2xl">{weather.temp}°</span>
+        <span className="text-xl">{weather.text}</span>
       </span>
-      <span className="text-[10px] text-[#bbb]">{weather.city}</span>
+      <span className="text-sm text-[#bbb]">{weather.city}</span>
     </div>
   )
 }
