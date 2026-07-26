@@ -8,6 +8,7 @@ import GoldLock from '@/components/GoldLock'
 import { useAuth } from '@/components/AuthProvider'
 import { canViewGoldContent, MemberLockOverlay } from '@/lib/member'
 import { SENIOR_VOCAB } from '@/data/real-senior-vocab'
+import { JUNIOR_VOCAB } from '@/data/real-junior-vocab'
 
 export default function SeniorVocabPage() {
   const { user, profile } = useAuth()
@@ -33,12 +34,14 @@ export default function SeniorVocabPage() {
 
   useEffect(() => { setPage(1) }, [])
 
+  const ALL_VOCAB = [...JUNIOR_VOCAB, ...SENIOR_VOCAB]
   const filtered = search
-    ? SENIOR_VOCAB.filter(v => {
+    ? ALL_VOCAB.filter(v => {
         const q = search.toLowerCase()
         return v.word.toLowerCase().includes(q) || v.meaning.includes(q)
       })
     : SENIOR_VOCAB
+  const searched = search ? ALL_VOCAB.filter(v => { const q = search.toLowerCase(); return v.word.toLowerCase().includes(q) || v.meaning.includes(q) }) : null
 
   const totalPages = Math.ceil(filtered.length / perPage)
   const startIdx = (page - 1) * perPage
@@ -106,10 +109,14 @@ export default function SeniorVocabPage() {
               <Link href="/members" className="text-[11px] text-[#b45309] hover:underline">查看会员权益 →</Link>
             </div>
           )}
-          <div className="relative mb-3">
-            <input type="text" placeholder="搜索单词或中文..." value={search}
+          <div className="flex gap-2 mb-3 w-1/3 min-w-[200px]">
+            <input type="text" placeholder="搜索初中高中全部词汇..." value={search}
               onChange={e => { setSearch(e.target.value); setPage(1) }}
-              className="w-full px-3 py-2 text-xs border border-[#ece8e0] rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-[#b45309]/30 focus:border-[#b45309]" />
+              className="input flex-1 !text-sm" />
+            <button
+              className="px-4 py-2 rounded-xl text-sm font-semibold text-white bg-[#b45309] hover:bg-[#a04408] transition-colors shrink-0">
+              <Search size={16} className="inline-block align-text-bottom" /> 搜索
+            </button>
           </div>
 
           {(check.allowed) ? (
