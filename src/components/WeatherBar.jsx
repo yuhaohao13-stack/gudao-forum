@@ -7,13 +7,29 @@ export default function WeatherBar() {
 
   useEffect(() => {
     let cancelled = false
+    const CACHE_KEY = 'gudaoforum_weather'
+    const CACHE_TTL = 10 * 60 * 1000 // 10分钟
+
+    // 先读缓存
+    const cached = localStorage.getItem(CACHE_KEY)
+    if (cached) {
+      try {
+        const { data, time } = JSON.parse(cached)
+        if (Date.now() - time < CACHE_TTL) {
+          setWeather(data)
+        }
+      } catch {}
+    }
 
     async function fetchWeather() {
       try {
         const res = await fetch('/api/weather', { cache: 'no-store' })
         if (!res.ok) throw new Error('Failed')
         const data = await res.json()
-        if (!cancelled) setWeather(data)
+        if (!cancelled) {
+          setWeather(data)
+          localStorage.setItem(CACHE_KEY, JSON.stringify({ data, time: Date.now() }))
+        }
       } catch {
         if (!cancelled) setError(true)
       }
