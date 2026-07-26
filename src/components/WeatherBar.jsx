@@ -46,7 +46,7 @@ export default function WeatherBar() {
     async function fetchWeather() {
       try {
         // 1. IP定位
-        const ipRes = await fetch('http://ip-api.com/json/?fields=city,lat,lon,countryCode', { cache: 'no-cache' })
+        const ipRes = await fetch('https://ipapi.co/json/', { cache: 'no-cache' })
         if (!ipRes.ok) throw new Error('IP定位失败')
         const ipData = await ipRes.json()
         if (cancelled) return
