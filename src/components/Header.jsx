@@ -8,6 +8,7 @@ import { useAuth } from './AuthProvider'
 import { createClient } from '@/lib/supabase/client'
 import DonateButton from './DonateButton'
 import UnreadBadge from './UnreadBadge'
+import WeatherBar from './WeatherBar'
 
 export default function Header() {
   const { user, profile, loading } = useAuth()
@@ -34,6 +35,7 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-[#f0f0f0]">
+      <WeatherBar />
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
         {/* 顶部行：Logo居中 + 语言切换最右 */}
         <div className="flex items-center h-20 sm:h-24 relative">
