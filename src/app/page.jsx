@@ -324,11 +324,29 @@ export default function Home() {
                 <div className="px-1 sm:px-2 pt-1 pb-0.5 text-[8px] sm:text-[9px] font-medium text-[#b8860b] tracking-wider text-center border-b border-[#f5f5f5]">
                   🧑 站长风采
                 </div>
-                <img
-                  src="/images/hao-tiananmen.jpg?v=2"
-                  alt="站长浩哥风采"
-                  style={{height:'140px', width:'auto', maxWidth:'100%', display:'block'}}
-                />
+                <div className="flex">
+                  <img
+                    src="/images/hao-tiananmen.jpg?v=2"
+                    alt="站长浩哥风采"
+                    style={{height:'140px', width:'auto', maxWidth:'100%', display:'block'}}
+                  />
+                  {/* 对话气泡 */}
+                  <div className="flex-1 flex items-center justify-center p-2 relative">
+                    {/* 小三角指向图片 */}
+                    <div className="absolute left-0 top-1/2 -translate-y-1/2 -ml-1.5 w-3 h-3 bg-white/80 rotate-45" />
+                    <div className="relative bg-white/80 backdrop-blur-sm rounded-xl px-3 py-2.5 text-center shadow-sm">
+                      <div className="text-[11px] sm:text-xs font-medium text-[#333] leading-relaxed">
+                        今天也要<br />
+                        加油鸭！🚀
+                      </div>
+                      <div className="mt-1 flex justify-center gap-1.5">
+                        <span className="text-[10px]">🎨</span>
+                        <span className="text-[10px]">💪</span>
+                        <span className="text-[10px]">💰</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
