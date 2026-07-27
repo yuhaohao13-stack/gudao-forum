@@ -326,7 +326,7 @@ export default function Home() {
                 </div>
                 <img
                   src="/images/hao-tiananmen.jpg"
-                  alt="站长和儿子在天安门"
+                  alt="站长浩哥风采"
                   style={{height:'140px', width:'auto', maxWidth:'100%', display:'block'}}
                 />
               </div>
