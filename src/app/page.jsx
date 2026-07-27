@@ -350,7 +350,7 @@ export default function Home() {
                         身体健康 · 日日暴富<br />
                         顺风顺水 · 天天开心 🎉
                       </div>
-                      <div className="mt-1 flex justify-center gap-1.5">
+                      <div className="mt-1 flex flex-col items-center gap-0.5">
                         <span className="text-[10px]">🎨</span>
                         <span className="text-[10px]">💪</span>
                         <span className="text-[10px]">💰</span>
