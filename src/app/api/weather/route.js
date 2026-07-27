@@ -90,12 +90,22 @@ export async function GET(request) {
     let info = weatherMap[wmoCode] || { text: '未知', emoji: '❓' }
 
     // 夜间判断（19:00-06:59 显示月亮）
+    // ⚠️ Vercel Edge 的 new Date() 是 UTC 时间，必须转本地时间
     try {
-      const now = new Date()
-      const hour = now.getHours()
-      if (hour >= 19 || hour < 7) {
+      const tz = 'Asia/Shanghai' // 东八区
+      const localHour = parseInt(new Intl.DateTimeFormat('en-CA', { timeZone: tz, hour: 'numeric', hour12: false }).format(new Date()))
+      if (localHour >= 19 || localHour < 7) {
+        // 夜间：所有天气代码都换夜间图标
         if (wmoCode === 0) info = { text: '夜间晴', emoji: '🌙' }
-        else if (wmoCode === 1 || wmoCode === 2) info = { text: '夜间', emoji: '🌙' }
+        else if (wmoCode === 1 || wmoCode === 2) info = { text: '夜间多云', emoji: '☁️' }
+        else if (wmoCode === 3) info = { text: '夜间阴天', emoji: '☁️' }
+        else if (wmoCode >= 45 && wmoCode <= 48) info = { text: '夜间有雾', emoji: '🌫️' }
+        else if (wmoCode >= 51 && wmoCode <= 55) info = { text: '夜间毛毛雨', emoji: '🌧️' }
+        else if (wmoCode >= 61 && wmoCode <= 65) info = { text: '夜间有雨', emoji: '🌧️' }
+        else if (wmoCode >= 71 && wmoCode <= 77) info = { text: '夜间有雪', emoji: '🌨️' }
+        else if (wmoCode >= 80 && wmoCode <= 82) info = { text: '夜间阵雨', emoji: '🌧️' }
+        else if (wmoCode >= 95 && wmoCode <= 99) info = { text: '夜间雷雨', emoji: '⛈️' }
+        else info = { text: '夜间', emoji: '🌙' }
       }
     } catch {}
 
