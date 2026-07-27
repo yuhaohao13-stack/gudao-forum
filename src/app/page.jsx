@@ -330,23 +330,20 @@ export default function Home() {
                     alt="站长浩哥风采"
                     style={{height:'140px', width:'auto', maxWidth:'100%', display:'block'}}
                   />
-                  {/* 对话气泡 — 带图片虚影延伸背景 */}
-                  <div className="flex-1 flex items-center justify-center p-2 relative overflow-hidden">
-                    {/* 虚影延伸背景：图片右侧部分的模糊投影 */}
-                    <div 
-                      className="absolute inset-0 opacity-25 scale-105"
-                      style={{
-                        backgroundImage: 'url(/images/hao-tiananmen.jpg?v=2)',
-                        backgroundSize: 'auto 140px',
-                        backgroundPosition: 'right center',
-                        backgroundRepeat: 'no-repeat',
-                        filter: 'blur(12px)',
-                      }}
+                  {/* 对话气泡 — 图片虚影延伸 */}
+                  <div className="flex-1 flex items-center justify-center p-2 relative overflow-hidden" style={{minWidth:'80px'}}>
+                    {/* 虚影背景：同一张图，绝对定位铺满，左对齐，模糊 + 半透明 */}
+                    <img
+                      src="/images/hao-tiananmen.jpg?v=2"
+                      alt=""
+                      aria-hidden
+                      className="absolute inset-0 w-full h-full object-cover object-left opacity-30"
+                      style={{ filter: 'blur(10px)', transform: 'scale(1.15)' }}
                     />
-                    {/* 亮色渐变过渡层，让虚影到文字的过渡自然 */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-amber-50/40 to-amber-50/60" />
+                    {/* 暖色渐变过渡：从虚影到气泡的柔和衔接 */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-amber-50/30 to-amber-100/20" />
                     {/* 小三角指向图片 */}
-                    <div className="absolute left-0 top-1/2 -translate-y-1/2 -ml-1.5 w-3 h-3 bg-white/85 rotate-45 z-10" />
+                    <div className="absolute left-0 top-1/2 -translate-y-1/2 -ml-1.5 w-3 h-3 bg-white/90 rotate-45 z-10" />
                     <div className="relative bg-white/85 backdrop-blur-md rounded-xl px-3 py-2.5 text-center shadow-sm z-10">
                       <div className="text-[11px] sm:text-xs font-medium text-[#333] leading-relaxed">
                         今天也要<br />
