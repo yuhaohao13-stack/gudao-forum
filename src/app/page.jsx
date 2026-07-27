@@ -325,7 +325,7 @@ export default function Home() {
                   🧑 站长风采
                 </div>
                 <img
-                  src="/images/hao-tiananmen.jpg"
+                  src="/images/hao-tiananmen.jpg?v=2"
                   alt="站长浩哥风采"
                   style={{height:'140px', width:'auto', maxWidth:'100%', display:'block'}}
                 />
