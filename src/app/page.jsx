@@ -334,7 +334,7 @@ export default function Home() {
                   <div className="flex-1 flex items-center justify-center p-2 relative overflow-hidden" style={{minWidth:'80px', background:'linear-gradient(to right, rgba(255,237,200,0.4) 0%, rgba(255,215,160,0.25) 60%, rgba(255,195,120,0.15) 100%)'}}>
                     {/* 小三角指向图片 */}
                     <div className="absolute left-0 top-1/2 -translate-y-1/2 -ml-1.5 w-3 h-3 bg-white/90 rotate-45 z-10" />
-                    <div className="relative bg-white/85 backdrop-blur-sm rounded-xl px-3 py-2.5 text-center shadow-sm z-10">
+                    <div className="relative rounded-xl px-3 py-2.5 text-center shadow-sm z-10" style={{background:'linear-gradient(135deg, rgba(255,248,235,0.92) 0%, rgba(255,240,220,0.88) 100%)', backdropFilter:'blur(4px)'}}>
                       <div className="text-[11px] sm:text-xs font-medium text-[#333] leading-relaxed">
                         今天也要<br />
                         加油鸭！🚀
