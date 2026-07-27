@@ -346,8 +346,9 @@ export default function Home() {
                     <div className="absolute left-0 top-1/2 -translate-y-1/2 -ml-1.5 w-3 h-3 bg-white/90 rotate-45 z-10" />
                     <div className="relative bg-white/85 backdrop-blur-md rounded-xl px-3 py-2.5 text-center shadow-sm z-10">
                       <div className="text-[11px] sm:text-xs font-medium text-[#333] leading-relaxed">
-                        今天也要<br />
-                        加油鸭！🚀
+                        祝站长浩哥<br />
+                        身体健康 · 日日暴富<br />
+                        顺风顺水 · 天天开心 🎉
                       </div>
                       <div className="mt-1 flex justify-center gap-1.5">
                         <span className="text-[10px]">🎨</span>
