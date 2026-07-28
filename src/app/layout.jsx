@@ -1,4 +1,5 @@
 import './globals.css'
+import 'leaflet/dist/leaflet.css'
 import { AuthProvider } from '@/components/AuthProvider'
 import { LanguageProvider } from '@/lib/LanguageContext'
 import Header from '@/components/Header'
