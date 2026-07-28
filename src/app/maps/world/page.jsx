@@ -2,35 +2,47 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import dynamic from 'next/dynamic'
 import { ArrowLeft, Search } from 'lucide-react'
-
-const MapView = dynamic(() => import('@/components/MapView'), { ssr: false })
 
 export default function WorldMapPage() {
   const [mounted, setMounted] = useState(false)
   const [searchText, setSearchText] = useState('')
-  const [searchQuery, setSearchQuery] = useState('')
-  const [userLocation, setUserLocation] = useState(null)
+  const [mapUrl, setMapUrl] = useState(
+    'https://www.openstreetmap.org/export/embed.html?bbox=-180,-90,180,90&layer=mapnik'
+  )
   const [searchResult, setSearchResult] = useState('')
+  const [userInfo, setUserInfo] = useState('')
 
   useEffect(() => { setMounted(true) }, [])
 
-  const handleSearchResult = (type, data) => {
-    if (type === 'userLoc') {
-      setUserLocation(data)
-    } else if (type === 'search') {
-      setSearchResult(data)
-    } else {
-      setSearchResult(data || '')
-    }
-  }
+  useEffect(() => {
+    fetch('https://ipapi.co/json/')
+      .then(r => r.json())
+      .then(d => {
+        if (d.latitude && d.longitude)
+          setUserInfo(`📍 ${d.city}, ${d.country_name}`)
+      })
+      .catch(() => {})
+  }, [])
 
-  const handleSearch = () => {
+  const handleSearch = async () => {
     const q = searchText.trim()
-    if (!q) return
+    if (!q) { setSearchResult('请输入地名'); return }
     setSearchResult('搜索中…')
-    setSearchQuery(q + '')
+    try {
+      const res = await fetch(`https://photon.komoot.io/api/?q=${encodeURIComponent(q)}&limit=3`)
+      if (!res.ok) throw new Error('API错误')
+      const geo = await res.json()
+      const features = geo?.features
+      if (!features?.length) { setSearchResult('未找到该地区'); return }
+      const f = features[0], [lon, lat] = f.geometry.coordinates
+      const p = f.properties
+      const name = [p.name, p.city, p.state, p.country].filter(Boolean).join(', ')
+      setMapUrl(`https://www.openstreetmap.org/export/embed.html?bbox=${lon-1},${lat-0.5},${lon+1},${lat+0.5}&layer=mapnik&marker=${lat},${lon}`)
+      setSearchResult(`📍 ${name}`)
+    } catch (e) {
+      setSearchResult('搜索失败：' + e.message)
+    }
   }
 
   const handleKeyDown = (e) => { if (e.key === 'Enter') handleSearch() }
@@ -46,12 +58,12 @@ export default function WorldMapPage() {
         </Link>
 
         <h1 className="text-lg font-bold text-[#1c1917] mb-1">🌍 世界地图</h1>
-        <p className="text-xs text-[#888] mb-4">全球瓦片地图 · 搜索定位 · 双指缩放拖拽 · 自动IP定位</p>
+        <p className="text-xs text-[#888] mb-4">OpenStreetMap 全球地图 · 搜索定位 · 拖拽缩放</p>
 
         <div className="flex gap-2 mb-3">
           <div className="flex-1">
             <input type="text" value={searchText} onChange={e => setSearchText(e.target.value)} onKeyDown={handleKeyDown}
-              placeholder="搜索世界任何地方，如：Singapore、东京、New York、威海…"
+              placeholder="搜索世界任何地方，如：Singapore、东京、London…"
               className="w-full pl-3 pr-3 py-2.5 rounded-xl border border-[#e5ddd5] bg-white text-sm text-[#1c1917] placeholder:text-[#bbb] focus:outline-none focus:border-[#2563eb] focus:ring-1 focus:ring-[#2563eb]/30 transition-colors" />
           </div>
           <button onClick={handleSearch}
@@ -61,26 +73,28 @@ export default function WorldMapPage() {
         </div>
 
         {searchResult && searchResult !== '搜索中…' && (
-          <div className="mb-3 text-xs text-[#2563eb] bg-blue-50 border border-blue-200 rounded-lg px-3 py-1.5">📍 {searchResult}</div>
+          <div className="mb-3 text-xs text-[#2563eb] bg-blue-50 border border-blue-200 rounded-lg px-3 py-1.5">{searchResult}</div>
         )}
-        {userLocation && (
-          <div className="mb-3 text-xs text-green-700 bg-green-50 border border-green-200 rounded-lg px-3 py-1.5">📌 检测到您的位置：{userLocation.label}</div>
+        {userInfo && (
+          <div className="mb-3 text-xs text-green-700 bg-green-50 border border-green-200 rounded-lg px-3 py-1.5">{userInfo}</div>
         )}
 
-        <div className="bg-white rounded-xl border border-[#e5ddd5] overflow-hidden relative">
-          <MapView
-            center={[20, 0]} zoom={2} minZoom={2}
-            searchQuery={searchQuery}
-            userLoc={userLocation}
-            onSearchResult={handleSearchResult}
+        <div className="bg-white rounded-xl border border-[#e5ddd5] overflow-hidden shadow-sm">
+          <iframe
+            key={mapUrl}
+            src={mapUrl}
+            width="100%"
+            height="480"
+            style={{ border: 0, display: 'block' }}
+            title="OpenStreetMap"
+            allowFullScreen
           />
         </div>
 
         <div className="mt-3 flex flex-wrap gap-2 text-[10px] text-[#888]">
-          <span>👆 拖拽移动 — 从威海拖到乌鲁木齐</span>
-          <span>🔍 双指/滚轮缩放</span>
-          <span>📍 右下角 +/- 按钮</span>
-          <span>🔎 搜索任意地名</span>
+          <span>👆 拖拽移动</span>
+          <span>🔍 滚轮/双指缩放</span>
+          <span>🔎 搜索定位</span>
         </div>
 
       </div>
