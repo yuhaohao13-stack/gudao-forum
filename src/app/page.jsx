@@ -123,18 +123,42 @@ export default function Home() {
         `}</style>
       </div>
 
-      {/* ===== AI工具箱入口 ===== */}
-      <div className="anim-up">
+      {/* ===== 工具入口（AI工具箱 + 地图） ===== */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 anim-up">
         <Link href="/ai-tools">
-          <div className="bg-gradient-to-r from-[#eef2ff] via-[#f0fdf4] to-[#fefce8] border border-[#d0d5e0] rounded-xl px-4 py-3 transition-all hover:shadow-md hover:-translate-y-0.5 flex items-center gap-3">
+          <div className="bg-gradient-to-r from-[#eef2ff] via-[#f0fdf4] to-[#fefce8] border border-[#d0d5e0] rounded-xl px-4 py-3 transition-all hover:shadow-md hover:-translate-y-0.5 flex items-center gap-3 h-full">
             <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-[#4f46e5] to-[#059669] flex items-center justify-center text-lg shrink-0 shadow-sm">🤖</div>
             <div className="min-w-0 flex-1">
               <div className="text-sm font-bold text-[#1a1a1a]">AI 智能工具箱</div>
               <div className="text-[10px] text-[#888] mt-0.5">
-                DeepSeek 深度推理 · Gemini 极速问答 · 黄金会员100次/钻石1000次
+                DeepSeek 深度推理 · Gemini 极速问答
               </div>
             </div>
             <span className="text-[11px] text-[#4f46e5] font-medium shrink-0 bg-white/60 px-2 py-1 rounded-full">NEW</span>
+          </div>
+        </Link>
+        <Link href="/maps">
+          <div className="bg-gradient-to-r from-[#fef2f2] via-[#fff7ed] to-[#ffedd5] border border-[#fbd5d5] rounded-xl px-4 py-3 transition-all hover:shadow-md hover:-translate-y-0.5 flex items-center gap-3 h-full">
+            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-[#dc2626] to-[#ea580c] flex items-center justify-center text-lg shrink-0 shadow-sm">🌏</div>
+            <div className="min-w-0 flex-1">
+              <div className="text-sm font-bold text-[#1a1a1a]">中国地图</div>
+              <div className="text-[10px] text-[#888] mt-0.5">
+                省市搜索 · 双指缩放· 行政区划
+              </div>
+            </div>
+            <span className="text-[11px] text-[#dc2626] font-medium shrink-0 bg-white/60 px-2 py-1 rounded-full">MAP</span>
+          </div>
+        </Link>
+        <Link href="/maps">
+          <div className="bg-gradient-to-r from-[#f0f9ff] via-[#eff6ff] to-[#e0f2fe] border border-[#b8d4f0] rounded-xl px-4 py-3 transition-all hover:shadow-md hover:-translate-y-0.5 flex items-center gap-3 h-full">
+            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-[#2563eb] to-[#0891b2] flex items-center justify-center text-lg shrink-0 shadow-sm">🌍</div>
+            <div className="min-w-0 flex-1">
+              <div className="text-sm font-bold text-[#1a1a1a]">世界地图</div>
+              <div className="text-[10px] text-[#888] mt-0.5">
+                国家搜索 · 双指缩放· 各国边界
+              </div>
+            </div>
+            <span className="text-[11px] text-[#2563eb] font-medium shrink-0 bg-white/60 px-2 py-1 rounded-full">MAP</span>
           </div>
         </Link>
       </div>
