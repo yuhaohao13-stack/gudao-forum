@@ -45,21 +45,17 @@ export default function ChinaMapPage() {
 
   return (
     <div className="min-h-screen">
-      {/* 电脑端：固定左半屏；手机端：正常全宽 */}
-      <div className="bg-[#f5f0eb] min-h-screen px-4 py-6"
-        style={isDesktop ? {
-          position: 'fixed',
-          left: 0,
-          top: 0,
-          width: '50vw',
-          height: '100vh',
-          overflowY: 'auto',
-          zIndex: 10
-        } : {}}>
+      <Link href="/maps" className="inline-flex items-center gap-1 text-xs text-[#888] hover:text-[#c23531] mb-3 transition-colors">
+        <ArrowLeft size={14} /> 返回地图列表
+      </Link>
 
-        <Link href="/maps" className="inline-flex items-center gap-1 text-xs text-[#888] hover:text-[#c23531] mb-4 transition-colors">
-          <ArrowLeft size={14} /> 返回地图列表
-        </Link>
+      {/* 隐藏框 — 限制内容宽度为左半屏 */}
+      <div className="bg-[#f5f0eb] min-h-screen px-4 py-4 rounded-xl"
+        style={isDesktop ? {
+          width: '50vw',
+          overflow: 'hidden',
+          marginLeft: 'calc((100% - 100vw) / 2)',
+        } : {}}>
 
         <h1 className="text-lg font-bold text-[#1c1917] mb-1">🌏 中国地图</h1>
         <p className="text-xs text-[#888] mb-4">高精度瓦片地图 · 搜索定位 · 双指缩放拖拽 · 自动IP定位</p>
@@ -100,8 +96,6 @@ export default function ChinaMapPage() {
         </div>
 
       </div>
-      {/* 占位块：防止fixed脱离文档流后footer重叠 */}
-      {isDesktop && <div style={{ width: '50vw', minHeight: '100vh' }} />}
     </div>
   )
 }
