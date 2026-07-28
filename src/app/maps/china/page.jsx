@@ -102,7 +102,7 @@ export default function ChinaMapPage() {
         </div>
 
         <div className="mt-3 text-[10px] text-[#888] space-y-1">
-          <p>💡 高德地图瓦片，支持全球浏览。中国大陆用户打开即中国视图，拖动/缩小可看全球。</p>
+          <p>💡 高德全球瓦片，自动定位到您的位置。拖动/缩放可查看全球。</p>
           <p>👆 拖拽移动 · 滚轮/双指缩放 · 搜索定位</p>
         </div>
 

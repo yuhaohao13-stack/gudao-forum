@@ -25,8 +25,8 @@ export default function ChinaMap({ onReady }) {
         if (!containerRef.current || cancelled) return
 
         map = L.map(containerRef.current, {
-          center: [35.86, 104.19],
-          zoom: 4,
+          center: [20, 0],
+          zoom: 2,
           minZoom: 2,
           zoomControl: false,
         })
