@@ -100,6 +100,8 @@ export default function ChinaMapPage() {
         </div>
 
       </div>
+      {/* 占位块：防止fixed脱离文档流后footer重叠 */}
+      {isDesktop && <div style={{ width: '50vw', minHeight: '100vh' }} />}
     </div>
   )
 }
