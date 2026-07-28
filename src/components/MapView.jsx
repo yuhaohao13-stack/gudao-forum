@@ -67,21 +67,23 @@ export default function MapView({ center, zoom, minZoom, searchQuery, onSearchRe
     return () => { cancelled = true; mapRef.current?.remove(); mapRef.current = null }
   }, [])
 
-  // 处理搜索
+  // 处理搜索 — 使用 Photon API（免费开源，无限制）
   useEffect(() => {
     if (!ready || !searchQuery || !mapRef.current) return
     ;(async () => {
       try {
-        const res = await fetch(
-          `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(searchQuery)}&format=json&limit=5&accept-language=zh`
-        )
-        const data = await res.json()
-        if (!data?.length) { onSearchResult?.('', '未找到该地区'); return }
+        const q = encodeURIComponent(searchQuery)
+        const res = await fetch(`https://photon.komoot.io/api/?q=${q}&limit=5`)
+        const geo = await res.json()
+        const features = geo?.features
+        if (!features?.length) { onSearchResult?.('', '未找到该地区'); return }
 
-        const first = data[0]
-        const lat = parseFloat(first.lat), lon = parseFloat(first.lon)
+        const first = features[0]
+        const [lon, lat] = first.geometry.coordinates
+        const props = first.properties
+        const placeName = [props.name, props.city, props.state, props.country].filter(Boolean).join(', ')
 
-        mapRef.current.flyTo([lat, lon], Math.max(first.importance > 0.5 ? 10 : 5, 5))
+        mapRef.current.flyTo([lat, lon], 9)
 
         if (searchMarkerRef.current) mapRef.current.removeLayer(searchMarkerRef.current)
         const pin = L.marker([lat, lon], {
@@ -91,10 +93,10 @@ export default function MapView({ center, zoom, minZoom, searchQuery, onSearchRe
             iconSize: [28, 28], iconAnchor: [14, 28],
           })
         }).addTo(mapRef.current)
-        pin.bindPopup(`<b>${first.display_name}</b>`).openPopup()
+        pin.bindPopup(`<b>${placeName}</b>`).openPopup()
         searchMarkerRef.current = pin
 
-        onSearchResult?.('search', first.display_name)
+        onSearchResult?.('search', placeName)
       } catch { onSearchResult?.('', '搜索失败') }
     })()
   }, [searchQuery])
