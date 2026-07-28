@@ -40,7 +40,7 @@ export default function ChinaMapPage() {
   return (
     <div className="min-h-screen bg-[#f5f0eb]">
       {/* 电脑端：整个内容占页面50%宽度，靠左 */}
-      <div className="px-4 py-6 sm:w-1/2">
+      <div className="px-4 py-6 sm:w-[50vw]">
 
         <Link href="/maps" className="inline-flex items-center gap-1 text-xs text-[#888] hover:text-[#c23531] mb-4 transition-colors">
           <ArrowLeft size={14} /> 返回地图列表
