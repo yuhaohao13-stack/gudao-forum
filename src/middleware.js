@@ -63,7 +63,26 @@ export async function middleware(request) {
   }
 
   // Supabase session 刷新
-  return await updateSession(request)
+  const response = await updateSession(request)
+
+  // ─── 地图页面：允许 OpenStreetMap iframe 和瓦片图片 ───
+  if (pathname.startsWith('/maps/')) {
+    const csp = response.headers.get('Content-Security-Policy') || ''
+    const newCsp = csp
+      .replace(/default-src 'self'/, "default-src 'self' https://www.openstreetmap.org https://tile.openstreetmap.org")
+      .replace(/frame-ancestors 'none'/, 'frame-ancestors *')
+    if (newCsp !== csp) {
+      response.headers.set('Content-Security-Policy', newCsp)
+    }
+    // 确保 frame-src 和 img-src 允许 OSM
+    if (!newCsp.includes('frame-src')) {
+      response.headers.set('Content-Security-Policy', 
+        `${newCsp}; frame-src https://www.openstreetmap.org; img-src 'self' data: blob: https://*.supabase.co https://picsum.photos https://tile.openstreetmap.org`
+      )
+    }
+  }
+
+  return response
 }
 
 export const config = {
