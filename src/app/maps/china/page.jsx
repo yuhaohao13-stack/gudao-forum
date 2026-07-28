@@ -2,18 +2,15 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { ArrowLeft, Search, Crosshair, Maximize2 } from 'lucide-react'
+import { ArrowLeft, Search } from 'lucide-react'
 
 export default function ChinaMapPage() {
-  const [mounted, setMounted] = useState(false)
   const [searchText, setSearchText] = useState('')
   const [mapUrl, setMapUrl] = useState(
-    'https://www.openstreetmap.org/export/embed.html?bbox=73.5%2C18.2%2C135.1%2C53.6&layer=mapnik'
+    'https://www.openstreetmap.org/export/embed.html?bbox=73.5,18.2,135.1,53.6&layer=mapnik'
   )
   const [searchResult, setSearchResult] = useState('')
   const [userInfo, setUserInfo] = useState('')
-
-  useEffect(() => { setMounted(true) }, [])
 
   // IP定位
   useEffect(() => {
@@ -48,8 +45,6 @@ export default function ChinaMapPage() {
   }
 
   const handleKeyDown = (e) => { if (e.key === 'Enter') handleSearch() }
-
-  if (!mounted) return null
 
   return (
     <div className="min-h-screen bg-[#f5f0eb]">

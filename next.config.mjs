@@ -44,6 +44,8 @@ const nextConfig = {
               "connect-src 'self' https://*.supabase.co wss://*.supabase.co",
               // 框架：不允许被嵌入
               "frame-ancestors 'none'",
+              // iframe 源：允许 OpenStreetMap 地图嵌入
+              "frame-src https://www.openstreetmap.org",
               // 表单提交：仅限本站
               "form-action 'self'",
               // 媒体：仅限自身 + Supabase Storage

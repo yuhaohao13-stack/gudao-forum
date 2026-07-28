@@ -5,15 +5,12 @@ import Link from 'next/link'
 import { ArrowLeft, Search } from 'lucide-react'
 
 export default function WorldMapPage() {
-  const [mounted, setMounted] = useState(false)
   const [searchText, setSearchText] = useState('')
   const [mapUrl, setMapUrl] = useState(
     'https://www.openstreetmap.org/export/embed.html?bbox=-180,-90,180,90&layer=mapnik'
   )
   const [searchResult, setSearchResult] = useState('')
   const [userInfo, setUserInfo] = useState('')
-
-  useEffect(() => { setMounted(true) }, [])
 
   useEffect(() => {
     fetch('https://ipapi.co/json/')
@@ -46,8 +43,6 @@ export default function WorldMapPage() {
   }
 
   const handleKeyDown = (e) => { if (e.key === 'Enter') handleSearch() }
-
-  if (!mounted) return null
 
   return (
     <div className="min-h-screen bg-[#f5f0eb]">
