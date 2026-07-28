@@ -9,12 +9,20 @@ const MapView = dynamic(() => import('@/components/MapView'), { ssr: false })
 
 export default function ChinaMapPage() {
   const [mounted, setMounted] = useState(false)
+  const [isDesktop, setIsDesktop] = useState(false)
   const [searchText, setSearchText] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
   const [userLocation, setUserLocation] = useState(null)
   const [searchResult, setSearchResult] = useState('')
 
   useEffect(() => { setMounted(true) }, [])
+  useEffect(() => {
+    if (!mounted) return
+    const check = () => setIsDesktop(window.innerWidth >= 768)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [mounted])
 
   const handleSearchResult = (type, data) => {
     if (type === 'userLoc') {
@@ -37,8 +45,17 @@ export default function ChinaMapPage() {
 
   return (
     <div className="min-h-screen">
-      {/* 电脑端固定左半屏，手机端正常全宽 */}
-      <div className="bg-[#f5f0eb] min-h-screen px-4 py-6 sm:fixed sm:left-0 sm:top-0 sm:w-[50vw] sm:h-screen sm:overflow-y-auto">
+      {/* 电脑端：固定左半屏；手机端：正常全宽 */}
+      <div className="bg-[#f5f0eb] min-h-screen px-4 py-6"
+        style={isDesktop ? {
+          position: 'fixed',
+          left: 0,
+          top: 0,
+          width: '50vw',
+          height: '100vh',
+          overflowY: 'auto',
+          zIndex: 10
+        } : {}}>
 
         <Link href="/maps" className="inline-flex items-center gap-1 text-xs text-[#888] hover:text-[#c23531] mb-4 transition-colors">
           <ArrowLeft size={14} /> 返回地图列表
