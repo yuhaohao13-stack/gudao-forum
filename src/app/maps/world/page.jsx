@@ -57,7 +57,8 @@ export default function WorldMapPage() {
         </Link>
 
         <h1 className="text-lg font-bold text-[#1c1917] mb-1">🌍 世界地图</h1>
-        <p className="text-xs text-[#888] mb-4">OpenStreetMap 全球地图 · 搜索定位 · 拖拽缩放</p>
+        <p className="text-xs text-[#888] mb-4">OpenStreetMap 全球地图 · 海外用户专用 · 搜索定位</p>
+        <p className="text-xs text-blue-600 bg-blue-50 border border-blue-200 rounded-lg px-3 py-1.5 mb-4">🌐 国内用户推荐使用 <Link href="/maps/china" className="font-semibold underline">中国地图</Link>（高德瓦片，访问更流畅）</p>
 
         <div className="flex gap-2 mb-3">
           <div className="flex-1">

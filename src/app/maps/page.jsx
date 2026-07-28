@@ -18,7 +18,12 @@ export default function MapsPage() {
         </Link>
 
         <h1 className="text-lg font-bold text-[#1c1917] mb-1">🗺️ 地图浏览</h1>
-        <p className="text-xs text-[#888] mb-6">探索中国与世界的行政区划地图，搜索定位你感兴趣的地区</p>
+        <p className="text-xs text-[#888] mb-2">探索中国与世界的电子地图，搜索定位你感兴趣的地区</p>
+
+        <div className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 mb-4">
+          🇨🇳 中国地图：使用高德地图瓦片，<strong>中国大陆用户推荐</strong><br/>
+          🌍 世界地图：使用 OpenStreetMap，<strong>海外用户专用</strong>
+        </div>
 
         {/* 中国地图卡片 */}
         <Link href="/maps/china">
