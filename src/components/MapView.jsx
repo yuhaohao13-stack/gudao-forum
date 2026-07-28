@@ -63,9 +63,7 @@ export default function MapView({ center, zoom = 6, isChina = false, searchQuery
           width="100%"
           height="420"
           style={{ border: 0, display: 'block' }}
-          allowFullScreen
-          loading="lazy"
-          referrerPolicy="no-referrer"
+          loading="eager"
         />
       ) : (
         <div style={{ height: '420px' }} className="flex items-center justify-center bg-[#f5f0eb]">

@@ -9,30 +9,12 @@ const MapView = dynamic(() => import('@/components/MapView'), { ssr: false })
 
 export default function ChinaMapPage() {
   const [mounted, setMounted] = useState(false)
-  const [isDesktop, setIsDesktop] = useState(false)
   const [searchText, setSearchText] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
   const [userLocation, setUserLocation] = useState(null)
   const [searchResult, setSearchResult] = useState('')
 
   useEffect(() => { setMounted(true) }, [])
-  useEffect(() => {
-    if (!mounted) return
-    const check = () => setIsDesktop(window.innerWidth >= 768)
-    check()
-    window.addEventListener('resize', check)
-    return () => window.removeEventListener('resize', check)
-  }, [mounted])
-
-  // 电脑端固定左半屏时，禁止页面body滚动，内容在框内滚动
-  useEffect(() => {
-    if (isDesktop) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = ''
-    }
-    return () => { document.body.style.overflow = '' }
-  }, [isDesktop])
 
   const handleSearchResult = (type, data) => {
     if (type === 'userLoc') {
@@ -48,33 +30,25 @@ export default function ChinaMapPage() {
     const q = searchText.trim()
     if (!q) return
     setSearchResult('搜索中…')
-    setSearchQuery(q) // 触发 MapView 搜索
+    setSearchQuery(q + Date.now()) // 触发 MapView 搜索
   }
 
   const handleKeyDown = (e) => { if (e.key === 'Enter') handleSearch() }
 
-  return (
-    <div className="min-h-screen">
-      <Link href="/maps" className="inline-flex items-center gap-1 text-xs text-[#888] hover:text-[#c23531] mb-3 transition-colors">
-        <ArrowLeft size={14} /> 返回地图列表
-      </Link>
+  if (!mounted) return null
 
-      {/* 电脑端：固定左半屏，内容在框内滚动，页面body不滚动 */}
-      <div className="bg-[#f5f0eb] min-h-screen px-4 py-4 rounded-xl"
-        style={isDesktop ? {
-          position: 'fixed',
-          left: 0,
-          top: 0,
-          width: '50vw',
-          height: '100vh',
-          overflowY: 'auto',
-          zIndex: 10,
-        } : {}}>
+  return (
+    <div className="min-h-screen bg-[#f5f0eb]">
+      <div className="max-w-4xl mx-auto px-4 py-6">
+
+        <Link href="/maps" className="inline-flex items-center gap-1 text-xs text-[#888] hover:text-[#c23531] mb-4 transition-colors">
+          <ArrowLeft size={14} /> 返回地图列表
+        </Link>
 
         <h1 className="text-lg font-bold text-[#1c1917] mb-1">🌏 中国地图</h1>
-        <p className="text-xs text-[#888] mb-4">高精度瓦片地图 · 搜索定位 · 双指缩放拖拽 · 自动IP定位</p>
+        <p className="text-xs text-[#888] mb-4">OpenStreetMap 全球瓦片地图 · 搜索定位 · 拖拽缩放</p>
 
-        <div className="flex gap-2 mb-3">
+        <div className="flex gap-2 mb-4">
           <div className="flex-1">
             <input type="text" value={searchText} onChange={e => setSearchText(e.target.value)} onKeyDown={handleKeyDown}
               placeholder="搜索中国任何地区，如：威海、山东、天安门、西湖…"
@@ -93,20 +67,13 @@ export default function ChinaMapPage() {
           <div className="mb-3 text-xs text-green-700 bg-green-50 border border-green-200 rounded-lg px-3 py-1.5">📌 检测到您的位置：{userLocation.label}</div>
         )}
 
-        <div className="bg-white rounded-xl border border-[#e5ddd5] overflow-hidden relative">
+        <div className="bg-white rounded-xl border border-[#e5ddd5] overflow-hidden">
           <MapView
-            center={[35.86, 104.19]} zoom={4} minZoom={3}
+            isChina={true}
             searchQuery={searchQuery}
             userLoc={userLocation}
             onSearchResult={handleSearchResult}
           />
-        </div>
-
-        <div className="mt-3 flex flex-wrap gap-2 text-[10px] text-[#888]">
-          <span>👆 拖拽移动 — 从威海拖到乌鲁木齐</span>
-          <span>🔍 双指/滚轮缩放</span>
-          <span>📍 右下角 +/- 按钮</span>
-          <span>🔎 搜索任意地名</span>
         </div>
 
       </div>
