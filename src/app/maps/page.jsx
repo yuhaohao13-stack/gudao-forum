@@ -18,12 +18,7 @@ export default function MapsPage() {
         </Link>
 
         <h1 className="text-lg font-bold text-[#1c1917] mb-1">🗺️ 地图浏览</h1>
-        <p className="text-xs text-[#888] mb-2">探索中国与世界的电子地图，搜索定位你感兴趣的地区</p>
-
-        <div className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 mb-4">
-          🇨🇳 中国地图：使用高德地图瓦片，<strong>中国大陆用户推荐</strong><br/>
-          🌍 世界地图：使用 OpenStreetMap，<strong>海外用户专用</strong>
-        </div>
+        <p className="text-xs text-[#888] mb-6">探索中国与世界的电子地图，搜索定位你感兴趣的地区</p>
 
         {/* 中国地图卡片 */}
         <Link href="/maps/china">
@@ -35,8 +30,9 @@ export default function MapsPage() {
               <div className="flex-1 px-4 py-3 flex items-center justify-between">
                 <div>
                   <div className="text-sm font-bold text-[#1c1917]">中国地图</div>
+                  <span className="ml-1.5 text-[9px] font-medium text-white bg-[#dc2626] rounded-full px-1.5 py-0.5">中国大陆用户专用</span>
                   <div className="text-[11px] text-[#888] mt-1">
-                    34个省市区 · 搜索定位 · 双指缩放
+                    高德地图瓦片 · 搜索定位 · 双指缩放
                   </div>
                 </div>
                 <ChevronRight size={18} className="text-[#ccc]" />
@@ -55,8 +51,9 @@ export default function MapsPage() {
               <div className="flex-1 px-4 py-3 flex items-center justify-between">
                 <div>
                   <div className="text-sm font-bold text-[#1c1917]">世界地图</div>
+                  <span className="ml-1.5 text-[9px] font-medium text-white bg-[#2563eb] rounded-full px-1.5 py-0.5">海外用户专用</span>
                   <div className="text-[11px] text-[#888] mt-1">
-                    200+国家和地区 · 搜索定位 · 双指缩放
+                    OpenStreetMap · 搜索定位 · 双指缩放
                   </div>
                 </div>
                 <ChevronRight size={18} className="text-[#ccc]" />
