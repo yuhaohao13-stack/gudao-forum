@@ -13,12 +13,17 @@ export default function ChinaMapPage() {
   const [userInfo, setUserInfo] = useState('')
 
   // IP定位
+  // IP定位 + 自动飞往用户位置
   useEffect(() => {
     fetch('https://ipapi.co/json/')
       .then(r => r.json())
       .then(d => {
-        if (d.latitude && d.longitude)
+        if (d.latitude && d.longitude) {
           setUserInfo(`📍 ${d.city}, ${d.country_name}`)
+          // 自动定位到用户位置
+          const [lat, lon] = [d.latitude, d.longitude]
+          setMapUrl(`https://www.openstreetmap.org/export/embed.html?bbox=${lon-0.2},${lat-0.15},${lon+0.2},${lat+0.15}&layer=mapnik&marker=${lat},${lon}`)
+        }
       })
       .catch(() => {})
   }, [])

@@ -12,12 +12,16 @@ export default function WorldMapPage() {
   const [searchResult, setSearchResult] = useState('')
   const [userInfo, setUserInfo] = useState('')
 
+  // IP定位 + 自动飞往用户位置
   useEffect(() => {
     fetch('https://ipapi.co/json/')
       .then(r => r.json())
       .then(d => {
-        if (d.latitude && d.longitude)
+        if (d.latitude && d.longitude) {
           setUserInfo(`📍 ${d.city}, ${d.country_name}`)
+          const [lat, lon] = [d.latitude, d.longitude]
+          setMapUrl(`https://www.openstreetmap.org/export/embed.html?bbox=${lon-0.5},${lat-0.3},${lon+0.5},${lat+0.3}&layer=mapnik&marker=${lat},${lon}`)
+        }
       })
       .catch(() => {})
   }, [])
