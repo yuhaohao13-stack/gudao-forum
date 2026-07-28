@@ -36,9 +36,9 @@ export default function ChinaMapPage() {
   const handleKeyDown = (e) => { if (e.key === 'Enter') handleSearch() }
 
   return (
-    <div className="min-h-screen bg-[#f5f0eb]">
-      {/* 电脑端：整个内容占页面50%宽度，靠左 */}
-      <div style={{ width: mounted ? '50vw' : '100%' }} className="px-4 py-6">
+    <div className="min-h-screen">
+      {/* 电脑端固定左半屏，手机端正常全宽 */}
+      <div className="bg-[#f5f0eb] min-h-screen px-4 py-6 sm:fixed sm:left-0 sm:top-0 sm:w-[50vw] sm:h-screen sm:overflow-y-auto">
 
         <Link href="/maps" className="inline-flex items-center gap-1 text-xs text-[#888] hover:text-[#c23531] mb-4 transition-colors">
           <ArrowLeft size={14} /> 返回地图列表
