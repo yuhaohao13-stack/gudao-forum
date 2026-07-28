@@ -24,6 +24,16 @@ export default function ChinaMapPage() {
     return () => window.removeEventListener('resize', check)
   }, [mounted])
 
+  // 电脑端固定左半屏时，禁止页面body滚动，内容在框内滚动
+  useEffect(() => {
+    if (isDesktop) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => { document.body.style.overflow = '' }
+  }, [isDesktop])
+
   const handleSearchResult = (type, data) => {
     if (type === 'userLoc') {
       setUserLocation(data)
@@ -49,12 +59,16 @@ export default function ChinaMapPage() {
         <ArrowLeft size={14} /> 返回地图列表
       </Link>
 
-      {/* 隐藏框 — 限制内容宽度为左半屏 */}
+      {/* 电脑端：固定左半屏，内容在框内滚动，页面body不滚动 */}
       <div className="bg-[#f5f0eb] min-h-screen px-4 py-4 rounded-xl"
         style={isDesktop ? {
+          position: 'fixed',
+          left: 0,
+          top: 0,
           width: '50vw',
-          overflow: 'hidden',
-          marginLeft: 'calc((100% - 100vw) / 2)',
+          height: '100vh',
+          overflowY: 'auto',
+          zIndex: 10,
         } : {}}>
 
         <h1 className="text-lg font-bold text-[#1c1917] mb-1">🌏 中国地图</h1>
