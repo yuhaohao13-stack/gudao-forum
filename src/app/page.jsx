@@ -348,7 +348,8 @@ export default function Home() {
                       <div className="text-[11px] sm:text-xs font-medium text-[#333] leading-relaxed">
                         祝站长浩哥<br />
                         身体健康 · 日日暴富<br />
-                        顺风顺水 · 天天开心 🎉
+                        顺风顺水 · 天天开心<br />
+                        🎉
                       </div>
                       <div className="mt-1 flex justify-center gap-1.5">
                         <span className="text-[10px]">🎨</span>
