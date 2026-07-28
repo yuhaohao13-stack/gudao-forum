@@ -5,11 +5,10 @@ import { useEffect, useRef, useState } from 'react'
 export default function ChinaMap({ onReady }) {
   const containerRef = useRef(null)
   const [error, setError] = useState('')
-  const [usingOSM, setUsingOSM] = useState(false)
 
   useEffect(() => {
     if (!containerRef.current) return
-    let map = null, tileLayer = null, cancelled = false
+    let map = null, cancelled = false
 
     async function init() {
       try {
@@ -28,31 +27,16 @@ export default function ChinaMap({ onReady }) {
         map = L.map(containerRef.current, {
           center: [35.86, 104.19],
           zoom: 4,
-          minZoom: 3,
+          minZoom: 2,
           zoomControl: false,
         })
         L.control.zoom({ position: 'bottomright' }).addTo(map)
 
-        // 默认用高德瓦片（国内流畅）
-        const gaodeUrl = 'https://webrd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}'
-        tileLayer = L.tileLayer(gaodeUrl, {
+        // 高德全球瓦片 — 国内外都可访问
+        L.tileLayer('https://webrd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
           attribution: '&copy; 高德地图',
           maxZoom: 18,
         }).addTo(map)
-
-        // 检测瓦片是否加载失败 → 切换到 OSM
-        let fallbackDone = false
-        map.on('tileerror', () => {
-          if (fallbackDone || cancelled) return
-          fallbackDone = true
-          console.log('高德瓦片加载失败，切换到 OSM')
-          map.removeLayer(tileLayer)
-          tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; OpenStreetMap',
-            maxZoom: 19,
-          }).addTo(map)
-          setUsingOSM(true)
-        })
 
         setTimeout(() => map.invalidateSize(), 300)
         onReady?.(map, L)
@@ -73,14 +57,5 @@ export default function ChinaMap({ onReady }) {
     )
   }
 
-  return (
-    <div className="relative">
-      <div ref={containerRef} style={{ width: '100%', height: '480px' }} className="z-0 rounded-lg" />
-      {usingOSM && (
-        <div className="absolute top-2 left-2 z-[1000] bg-blue-500/80 text-white text-[10px] px-2 py-1 rounded-md">
-          🌐 海外模式 · 已切换到 OpenStreetMap
-        </div>
-      )}
-    </div>
-  )
+  return <div ref={containerRef} style={{ width: '100%', height: '480px' }} className="z-0 rounded-lg" />
 }
