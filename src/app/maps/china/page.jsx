@@ -39,56 +39,49 @@ export default function ChinaMapPage() {
 
   return (
     <div className="min-h-screen bg-[#f5f0eb]">
-      <div className="max-w-5xl mx-auto px-4 py-6">
+      {/* 电脑端：整个内容占页面50%宽度，靠左 */}
+      <div className="px-4 py-6 sm:w-1/2">
 
         <Link href="/maps" className="inline-flex items-center gap-1 text-xs text-[#888] hover:text-[#c23531] mb-4 transition-colors">
           <ArrowLeft size={14} /> 返回地图列表
         </Link>
 
-        {/* 电脑端：地图占左半屏 */}
-        <div className="grid sm:grid-cols-2 gap-4">
-          <div className="min-w-0">
-            <h1 className="text-lg font-bold text-[#1c1917] mb-1">🌏 中国地图</h1>
-            <p className="text-xs text-[#888] mb-4">高精度瓦片地图 · 搜索定位 · 双指缩放拖拽 · 自动IP定位</p>
+        <h1 className="text-lg font-bold text-[#1c1917] mb-1">🌏 中国地图</h1>
+        <p className="text-xs text-[#888] mb-4">高精度瓦片地图 · 搜索定位 · 双指缩放拖拽 · 自动IP定位</p>
 
-            <div className="flex gap-2 mb-3">
-              <div className="flex-1">
-                <input type="text" value={searchText} onChange={e => setSearchText(e.target.value)} onKeyDown={handleKeyDown}
-                  placeholder="搜索中国任何地区，如：威海、山东、天安门、西湖…"
-                  className="w-full pl-3 pr-3 py-2.5 rounded-xl border border-[#e5ddd5] bg-white text-sm text-[#1c1917] placeholder:text-[#bbb] focus:outline-none focus:border-[#d97706] focus:ring-1 focus:ring-[#d97706]/30 transition-colors" />
-              </div>
-              <button onClick={handleSearch}
-                className="px-4 py-2.5 bg-[#d97706] hover:bg-[#b45309] text-white text-sm font-medium rounded-xl transition-colors flex items-center gap-1.5">
-                <Search size={15} /> 搜索
-              </button>
-            </div>
-
-            {searchResult && searchResult !== '搜索中…' && (
-              <div className="mb-3 text-xs text-[#d97706] bg-amber-50 border border-amber-200 rounded-lg px-3 py-1.5">📍 {searchResult}</div>
-            )}
-            {userLocation && (
-              <div className="mb-3 text-xs text-green-700 bg-green-50 border border-green-200 rounded-lg px-3 py-1.5">📌 检测到您的位置：{userLocation.label}</div>
-            )}
-
-            <div className="bg-white rounded-xl border border-[#e5ddd5] overflow-hidden relative">
-              <MapView
-                center={[35.86, 104.19]} zoom={4} minZoom={3}
-                searchQuery={searchQuery}
-                userLoc={userLocation}
-                onSearchResult={handleSearchResult}
-              />
-            </div>
-
-            <div className="mt-3 flex flex-wrap gap-2 text-[10px] text-[#888]">
-              <span>👆 拖拽移动 — 从威海拖到乌鲁木齐</span>
-              <span>🔍 双指/滚轮缩放</span>
-              <span>📍 右下角 +/- 按钮</span>
-              <span>🔎 搜索任意地名</span>
-            </div>
+        <div className="flex gap-2 mb-3">
+          <div className="flex-1">
+            <input type="text" value={searchText} onChange={e => setSearchText(e.target.value)} onKeyDown={handleKeyDown}
+              placeholder="搜索中国任何地区，如：威海、山东、天安门、西湖…"
+              className="w-full pl-3 pr-3 py-2.5 rounded-xl border border-[#e5ddd5] bg-white text-sm text-[#1c1917] placeholder:text-[#bbb] focus:outline-none focus:border-[#d97706] focus:ring-1 focus:ring-[#d97706]/30 transition-colors" />
           </div>
+          <button onClick={handleSearch}
+            className="px-4 py-2.5 bg-[#d97706] hover:bg-[#b45309] text-white text-sm font-medium rounded-xl transition-colors flex items-center gap-1.5">
+            <Search size={15} /> 搜索
+          </button>
+        </div>
 
-          {/* 右半屏留空 */}
-          <div className="hidden sm:block" />
+        {searchResult && searchResult !== '搜索中…' && (
+          <div className="mb-3 text-xs text-[#d97706] bg-amber-50 border border-amber-200 rounded-lg px-3 py-1.5">📍 {searchResult}</div>
+        )}
+        {userLocation && (
+          <div className="mb-3 text-xs text-green-700 bg-green-50 border border-green-200 rounded-lg px-3 py-1.5">📌 检测到您的位置：{userLocation.label}</div>
+        )}
+
+        <div className="bg-white rounded-xl border border-[#e5ddd5] overflow-hidden relative">
+          <MapView
+            center={[35.86, 104.19]} zoom={4} minZoom={3}
+            searchQuery={searchQuery}
+            userLoc={userLocation}
+            onSearchResult={handleSearchResult}
+          />
+        </div>
+
+        <div className="mt-3 flex flex-wrap gap-2 text-[10px] text-[#888]">
+          <span>👆 拖拽移动 — 从威海拖到乌鲁木齐</span>
+          <span>🔍 双指/滚轮缩放</span>
+          <span>📍 右下角 +/- 按钮</span>
+          <span>🔎 搜索任意地名</span>
         </div>
 
       </div>
