@@ -32,10 +32,11 @@ export default function ChinaMap({ onReady }) {
         })
         L.control.zoom({ position: 'bottomright' }).addTo(map)
 
-        // 高德全球瓦片 — 国内外都可访问
-        L.tileLayer('https://webrd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
+        // 高德地图瓦片 — 国内外可访问
+        L.tileLayer('https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
           attribution: '&copy; 高德地图',
           maxZoom: 18,
+          subdomains: ['1', '2', '3', '4'],
         }).addTo(map)
 
         setTimeout(() => map.invalidateSize(), 300)
