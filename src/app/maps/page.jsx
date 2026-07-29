@@ -29,8 +29,10 @@ export default function MapsPage() {
               </div>
               <div className="flex-1 px-4 py-3 flex items-center justify-between">
                 <div>
-                  <div className="text-sm font-bold text-[#1c1917]">中国地图</div>
-                  <span className="ml-1.5 text-[9px] font-medium text-white bg-[#dc2626] rounded-full px-1.5 py-0.5">中国大陆用户专用</span>
+                  <div className="text-sm font-bold text-[#1c1917]">
+                    中国地图
+                    <span className="ml-2 text-sm font-bold text-[#dc2626]">中国大陆用户专用</span>
+                  </div>
                   <div className="text-[11px] text-[#888] mt-1">
                     高德地图瓦片 · 搜索定位 · 双指缩放
                   </div>
@@ -50,8 +52,10 @@ export default function MapsPage() {
               </div>
               <div className="flex-1 px-4 py-3 flex items-center justify-between">
                 <div>
-                  <div className="text-sm font-bold text-[#1c1917]">世界地图</div>
-                  <span className="ml-1.5 text-[9px] font-medium text-white bg-[#2563eb] rounded-full px-1.5 py-0.5">海外用户专用</span>
+                  <div className="text-sm font-bold text-[#1c1917]">
+                    世界地图
+                    <span className="ml-2 text-sm font-bold text-[#2563eb]">海外用户专用</span>
+                  </div>
                   <div className="text-[11px] text-[#888] mt-1">
                     OpenStreetMap · 搜索定位 · 双指缩放
                   </div>
