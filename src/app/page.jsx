@@ -99,6 +99,30 @@ export default function Home() {
         </div>
       </div>
 
+      {/* ===== 公告 ===== */}
+      <div className="anim-up">
+        <div className="bg-gradient-to-r from-[#fefaf5] to-[#fdf8f4] border border-[#eee8dc] rounded-xl px-4 py-2.5 overflow-hidden">
+          <div className="flex items-center gap-2 text-xs text-[#b45309] mb-1">
+            <span className="font-semibold">📢 服务说明</span>
+          </div>
+          <div className="overflow-hidden relative h-5">
+            <div style={{ display: 'inline-block', whiteSpace: 'nowrap', animation: 'marqueeDonation 30s linear infinite' }}>
+              {Array(3).fill(0).map((_, i) => (
+                <span key={i} className="inline-flex items-center gap-2 text-[12px] text-[#888] mx-4">
+                  ⚠️ 本人目前在新加坡工作，威海暂未开设实体店，所有维修服务以线上咨询为主。点击右侧「联系我们」按钮联系。
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+        <style>{`
+          @keyframes marqueeDonation {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+          }
+        `}</style>
+      </div>
+
       {/* ===== 站务公告 + 站长风采 ===== */}
       {announcements.length > 0 && (
         <section className="anim-up">
@@ -165,32 +189,6 @@ export default function Home() {
           </div>
         </section>
       )}
-
-      {/* ===== 公告 ===== */}
-      <div className="anim-up">
-        <div className="bg-gradient-to-r from-[#fefaf5] to-[#fdf8f4] border border-[#eee8dc] rounded-xl px-4 py-2.5 overflow-hidden">
-          <div className="flex items-center gap-2 text-xs text-[#b45309] mb-1">
-            <span className="font-semibold">📢 服务说明</span>
-          </div>
-          <div className="overflow-hidden relative h-5">
-            <div style={{ display: 'inline-block', whiteSpace: 'nowrap', animation: 'marqueeDonation 30s linear infinite' }}>
-              {Array(3).fill(0).map((_, i) => (
-                <span key={i} className="inline-flex items-center gap-2 text-[12px] text-[#888] mx-4">
-                  ⚠️ 本人目前在新加坡工作，威海暂未开设实体店，所有维修服务以线上咨询为主。点击右侧「联系我们」按钮联系。
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-        <style>{`
-          @keyframes marqueeDonation {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-          }
-        `}</style>
-      </div>
-
-      {/* ===== AI工具箱 + 地图（单行双列） ===== */}
       <div className="grid grid-cols-2 gap-2 anim-up">
         <Link href="/ai-tools">
           <div className="bg-gradient-to-r from-[#eef2ff] via-[#f0fdf4] to-[#fefce8] border border-[#d0d5e0] rounded-xl px-3 py-2.5 transition-all hover:shadow-md hover:-translate-y-0.5 h-full">
