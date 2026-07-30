@@ -103,13 +103,13 @@ export default function Home() {
       <div className="anim-up">
         <div className="bg-gradient-to-r from-[#fefaf5] to-[#fdf8f4] border border-[#eee8dc] rounded-xl px-4 py-2.5 overflow-hidden">
           <div className="flex items-center gap-2 text-xs text-[#b45309] mb-1">
-            <span className="font-semibold">📢 服务说明</span>
+            <span className="font-semibold">{t('home.service_notice')}</span>
           </div>
           <div className="overflow-hidden relative h-5">
             <div style={{ display: 'inline-block', whiteSpace: 'nowrap', animation: 'marqueeDonation 30s linear infinite' }}>
               {Array(3).fill(0).map((_, i) => (
                 <span key={i} className="inline-flex items-center gap-2 text-[12px] text-[#888] mx-4">
-                  ⚠️ 本人目前在新加坡工作，威海暂未开设实体店，所有维修服务以线上咨询为主。点击右侧「联系我们」按钮联系。
+                  {t('home.service_text')}
                 </span>
               ))}
             </div>
@@ -127,8 +127,8 @@ export default function Home() {
       {announcements.length > 0 && (
         <section className="anim-up">
           <div className="flex items-center gap-2 mb-2">
-            <span className="text-xs font-semibold text-[#999] tracking-wide"><Megaphone size={14} className="inline-block align-text-bottom" /> 站务公告</span>
-            <span className="tag">置顶</span>
+            <span className="text-xs font-semibold text-[#999] tracking-wide"><Megaphone size={14} className="inline-block align-text-bottom" /> {t('home.announcements')}</span>
+            <span className="tag">{t('home.pinned')}</span>
           </div>
           <div className="flex flex-row gap-1 sm:gap-3 items-stretch">
             <div className="w-1/2 shrink-0">
@@ -147,7 +147,7 @@ export default function Home() {
             <div className="shrink-0">
               <div className="card overflow-hidden">
                 <div className="px-1 sm:px-2 pt-1 pb-0.5 text-[8px] sm:text-[9px] font-medium text-[#b8860b] tracking-wider text-center border-b border-[#f5f5f5]">
-                  🧑 站长风采
+                  {t('home.master_intro')}
                 </div>
                 <div className="flex">
                   <img
@@ -171,9 +171,9 @@ export default function Home() {
                     <div className="absolute left-0 top-1/2 -translate-y-1/2 -ml-1.5 w-3 h-3 bg-white/90 rotate-45 z-10" />
                     <div className="relative bg-white/85 backdrop-blur-md rounded-xl px-3 py-2.5 text-center shadow-sm z-10">
                       <div className="text-[11px] sm:text-xs font-medium text-[#333] leading-relaxed">
-                        祝站长浩哥<br />
-                        身体健康 · 日日暴富<br />
-                        顺风顺水 · 天天开心<br />
+                        {t('home.master_wish')}<br />
+                        {t('home.wish_line1')}<br />
+                        {t('home.wish_line2')}<br />
                         🎉
                       </div>
                       <div className="mt-1 flex justify-center gap-1.5">
@@ -398,8 +398,8 @@ export default function Home() {
       <section className="anim-up">
         <Link href="/games" className="flex items-center gap-1.5 text-xs font-semibold text-[#bbb] mb-2 hover:text-[#b45309] transition-colors">
           <Gamepad2 size={14} />
-          游戏娱乐
-          <span className="font-normal lowercase text-[10px] text-[#ccc]">（游戏加载后可离线畅玩）</span>
+          {t('home.games')}
+          <span className="font-normal lowercase text-[10px] text-[#ccc]">{t('home.games_hint')}</span>
           <span className="text-[9px]">→</span>
         </Link>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">

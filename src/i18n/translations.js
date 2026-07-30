@@ -27,6 +27,16 @@ const zh = {
   'home.no_posts': '还没有帖子',
   'home.first_post': '发第一条帖子',
   'home.chatroom': '聊天室',
+  'home.service_notice': '📢 服务说明',
+  'home.service_text': '⚠️ 本人目前在新加坡工作，威海暂未开设实体店，所有维修服务以线上咨询为主。点击右侧「联系我们」按钮联系。',
+  'home.announcements': '站务公告',
+  'home.pinned': '置顶',
+  'home.master_intro': '🧑 站长风采',
+  'home.master_wish': '祝站长浩哥',
+  'home.wish_line1': '身体健康 · 日日暴富',
+  'home.wish_line2': '顺风顺水 · 天天开心',
+  'home.games': '游戏娱乐',
+  'home.games_hint': '（游戏加载后可离线畅玩）',
 
   // 版块
   'board.title': '版块',
@@ -199,6 +209,16 @@ const en = {
   'home.no_posts': 'No posts yet',
   'home.first_post': 'Write the first post',
   'home.chatroom': 'Chatroom',
+  'home.service_notice': '📢 Service Notice',
+  'home.service_text': '⚠️ Currently based in Singapore. No physical store in Weihai yet. All repair services are online consultation. Click "Contact Us" button to reach us.',
+  'home.announcements': 'Announcements',
+  'home.pinned': 'Pinned',
+  'home.master_intro': '🧑 About the Owner',
+  'home.master_wish': 'Wishing Master Hao',
+  'home.wish_line1': 'Health · Wealth · Happiness',
+  'home.wish_line2': 'Good luck every day',
+  'home.games': 'Games',
+  'home.games_hint': '（Play offline after loading）',
 
   // Board categories
   'board.title': 'Categories',
