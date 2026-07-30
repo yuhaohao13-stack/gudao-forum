@@ -1,4 +1,5 @@
 'use client'
+import Seo from '@/components/Seo'
 
 import { useEffect } from 'react'
 import Link from 'next/link'
@@ -11,6 +12,7 @@ const COL2 = PROVERBS.slice(40, 80)
 export default function ProverbsPage() {
   useEffect(() => { document.title = '谚语故事大全80条 — 古道论坛' }, [])
   return (
+      <Seo title="谚语故事80篇 - 古道论坛古典文学" description="古道论坛收录谚语故事80篇，民间智慧、生活哲理、传统谚语。" />
     <div className="anim-fade-in max-w-4xl mx-auto pb-4">
       <Breadcrumb crumbs={[
         { label: '首页', href: '/' },

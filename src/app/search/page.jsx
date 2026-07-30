@@ -1,4 +1,5 @@
 'use client'
+import Seo from '@/components/Seo'
 import { useEffect, useState, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -59,6 +60,7 @@ function Results() {
   crumbs.push({ label: '搜索' })
 
   return (
+      <Seo title="古道论坛搜索 - 搜索帖子内容" description="古道论坛搜索功能，搜索论坛帖子、话题、用户等内容。" />
     <div className="anim-fade-in w-full sm:max-w-3xl sm:mx-auto">
       <Breadcrumb crumbs={crumbs} />
       <h1 className="text-xl font-bold text-[#1a1a1a] mb-5">

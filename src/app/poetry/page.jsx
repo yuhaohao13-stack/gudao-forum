@@ -1,4 +1,5 @@
 'use client'
+import Seo from '@/components/Seo'
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
@@ -18,6 +19,7 @@ export default function PoetryPage() {
   const pagePoems = POEMS.slice(start, start + PAGE_SIZE)
 
   return (
+      <Seo title="唐诗三百首全集 - 古道论坛古典文学" description="古道论坛收录唐诗三百首304首全集，包含五言古诗、七言古诗、五言绝句、七言绝句、五言律诗、七言律诗、乐府等。" />
     <div className="anim-fade-in max-w-3xl mx-auto pb-4">
       <Breadcrumb crumbs={[
         { label: '首页', href: '/' },

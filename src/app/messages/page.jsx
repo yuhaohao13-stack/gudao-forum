@@ -1,4 +1,5 @@
 'use client'
+import Seo from '@/components/Seo'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'

@@ -1,5 +1,6 @@
 /* BUILD_TAG_20260712 */
 'use client'
+import Seo from '@/components/Seo'
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
@@ -48,6 +49,7 @@ export default function ChatPage() {
   }, [])
 
   return (
+      <Seo title="古道论坛聊天室 - 全球华人在线聊天交友 | 免费中文聊天" description="古道论坛聊天室，全球华人在线聊天交友平台。免费注册即可参与聊天，支持好友系统、在线状态显示。以文会友，畅聊生活。" />
     <div className="anim-fade-in">
       {/* 面包屑 */}
       <div className="mb-4">

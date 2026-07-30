@@ -1,4 +1,5 @@
 'use client'
+import Seo from '@/components/Seo'
 
 import { useEffect, useState, useCallback } from 'react'
 import Link from 'next/link'
@@ -20,6 +21,7 @@ const CAT_ICONS = {
 }
 
 export default function BoardPage() {
+  return <><Seo title='古道论坛板块 - 论坛分类列表 | 科技生活文化' description='古道论坛板块列表，涵盖科技、生活、文化、资源等多领域。畅聊科技、分享生活、讨论文化，免费注册即刻加入。'/>
   const { user, profile } = useAuth()
   const [categories, setCategories] = useState([])
   const [stats, setStats] = useState({})

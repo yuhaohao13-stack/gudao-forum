@@ -1,4 +1,5 @@
 'use client'
+import Seo from '@/components/Seo'
 
 import Link from 'next/link'
 import { ChevronRight, Crown, Star, Sparkles } from 'lucide-react'
@@ -45,6 +46,7 @@ const LOTTERY_LIST = [
 // ─── Lottery Card ──────────────────────────────────────────────
 function LotteryCard({ item }) {
   return (
+      <Seo title="古道论坛彩票模拟器 - 双色球大乐透新加坡TOTO" description="古道论坛彩票模拟器，支持福彩双色球、体彩大乐透、福彩3D、新加坡4D、新加坡TOTO选号模拟。" />
     <Link href={`/lottery/${item.id}`} className="group block">
       <div className="flex items-center gap-3 py-3 px-4">
         {/* Icon */}

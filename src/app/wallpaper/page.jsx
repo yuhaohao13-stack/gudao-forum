@@ -1,6 +1,8 @@
 'use client'
+import Seo from '@/components/Seo'
 
 'use client'
+import Seo from '@/components/Seo'
 
 import Link from 'next/link'
 import { useAuth } from '@/components/AuthProvider'
@@ -14,6 +16,7 @@ export default function WallpaperPage() {
   const isMember = memberLevel === 'gold' || memberLevel === 'diamond'
 
   return (
+      <Seo title="古道论坛高清壁纸 - 免费壁纸下载 | 10大分类" description="古道论坛高清壁纸库，10大分类×5套壁纸，桌面1920×1080+手机1080×1920。杂志封面、火星宇宙、人物写真、山川树木等。" />
     <div className="anim-fade-in max-w-3xl mx-auto pb-8">
       <Breadcrumb crumbs={[
         { label: '首页', href: '/' },

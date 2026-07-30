@@ -1,4 +1,5 @@
 'use client'
+import Seo from '@/components/Seo'
 
 import { useEffect } from 'react'
 import Link from 'next/link'
@@ -13,6 +14,7 @@ const COL3 = IDIOMS.slice(200, 300)
 export default function IdiomsPage() {
   useEffect(() => { document.title = '成语故事大全300篇 — 古道论坛' }, [])
   return (
+      <Seo title="成语故事大全300篇 - 古道论坛古典文学" description="古道论坛收录成语故事300篇，每个成语包含典故、释义、用法、出处，学习中华传统文化。" />
     <div className="anim-fade-in max-w-4xl mx-auto pb-4">
       <Breadcrumb crumbs={[
         { label: '首页', href: '/' },

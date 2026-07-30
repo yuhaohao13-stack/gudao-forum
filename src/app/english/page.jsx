@@ -1,4 +1,5 @@
 'use client'
+import Seo from '@/components/Seo'
 
 import Link from 'next/link'
 import { ChevronRight, BookOpen, GraduationCap, Sparkles, Crown, BookMarked, BookText } from 'lucide-react'
