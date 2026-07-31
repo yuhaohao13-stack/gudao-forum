@@ -1,15 +1,17 @@
 'use client'
-
 import { useEffect } from 'react'
 
-export default function SEO({ title, description, keywords }) {
+/**
+ * 通用SEO组件 — 给'use client'页面设置独立title+description+keywords
+ * 用法：<Seo title="页面标题" description="页面描述" keywords="可选关键词" />
+ */
+export default function Seo({ title, description, keywords }) {
   useEffect(() => {
     // 设置标题
-    document.title = title 
-      ? `${title} — 古道论坛 | 国际中文社区`
-      : '古道论坛 | 国际中文社区 · 以文会友 · 在线聊天'
-
-    // 设置 meta description
+    if (title) {
+      document.title = title
+    }
+    // 设置描述
     if (description) {
       let meta = document.querySelector('meta[name="description"]')
       if (!meta) {
@@ -19,8 +21,7 @@ export default function SEO({ title, description, keywords }) {
       }
       meta.content = description
     }
-
-    // 设置 meta keywords
+    // 设置关键词
     if (keywords) {
       let meta = document.querySelector('meta[name="keywords"]')
       if (!meta) {
@@ -31,6 +32,5 @@ export default function SEO({ title, description, keywords }) {
       meta.content = keywords
     }
   }, [title, description, keywords])
-
   return null
 }

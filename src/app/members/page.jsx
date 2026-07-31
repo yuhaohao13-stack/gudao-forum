@@ -131,6 +131,7 @@ export default function MembersPage() {
   }
 
   return (
+    <>
       <Seo title="古道论坛会员列表 - 全球华人社区会员" description="古道论坛会员列表，查看社区成员。以文会友，以友辅仁，免费注册加入全球华人社区。" />
     <div className="anim-fade-in">
       <Breadcrumb crumbs={[{ label: '首页', href: '/' }, { label: '会员管理' }]} className="mb-4" />
@@ -272,5 +273,6 @@ export default function MembersPage() {
         </div>
       )}
     </div>
+    </>
   )
 }

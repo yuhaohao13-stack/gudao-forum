@@ -60,7 +60,8 @@ export default function Home() {
 
       const annCat = sorted.find(c => c.slug === 'announcements')
       if (annCat) {
-        const { data: a } = await supabase.from('threads').select('*, profiles(username, display_name)').eq('category_id', annCat.id).order('pin_order', { ascending: true, nullsFirst: false }).order('created_at', { ascending: false }).limit(6)
+        // 只显示置顶帖（与板块页一致）
+        const { data: a } = await supabase.from('threads').select('*, profiles(username, display_name)').eq('category_id', annCat.id).eq('is_pinned', true).order('pin_order', { ascending: true, nullsFirst: false }).order('created_at', { ascending: false }).limit(6)
         setAnnouncements(a || [])
       }
 

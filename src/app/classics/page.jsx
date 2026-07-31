@@ -8,6 +8,7 @@ import CLASSICS from '@/data/classics'
 
 export default function ClassicsPage() {
   return (
+    <>
       <Seo title="古道论坛古典文学 - 唐诗三百首四大名著成语故事" description="古道论坛古典文学大全，包括唐诗三百首（304首）、四大名著（水浒传/三国演义/红楼梦/西游记）、成语故事300篇、谚语故事80篇。" />
     <div className="anim-fade-in max-w-3xl mx-auto">
       <Breadcrumb crumbs={[
@@ -63,5 +64,6 @@ export default function ClassicsPage() {
         </p>
       </div>
     </div>
+    </>
   )
 }
