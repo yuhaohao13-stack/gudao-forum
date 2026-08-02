@@ -37,6 +37,11 @@ function TechBrandsContent() {
   const [sortBy, setSortBy] = useState(searchParams.get('sort') === 'hot' ? 'hot' : 'latest')
   const [query, setQuery] = useState(searchParams.get('q') || '')
   const [lockOverlay, setLockOverlay] = useState({ show: false, reason: 'upgrade' })
+
+  // 关键：URL 变化时同步 query 状态（否则搜索后页面不更新）
+  useEffect(() => {
+    setQuery(searchParams.get('q') || '')
+  }, [searchParams])
   const page = parseInt(searchParams.get('page') || '1', 10)
   const supabase = createClient()
   const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE))
@@ -98,7 +103,7 @@ function TechBrandsContent() {
 
   const handleSearch = (e) => {
     e.preventDefault()
-    const q = e.target.q.value.trim()
+    const q = query.trim()
     router.push(q ? `/c/tech?q=${encodeURIComponent(q)}&page=1` : '/c/tech?page=1')
   }
 
@@ -147,7 +152,8 @@ function TechBrandsContent() {
             </button>
           </div>
           <form onSubmit={handleSearch} className="flex gap-2 w-full sm:w-auto sm:ml-auto min-w-0">
-            <input name="q" defaultValue={query} type="search" placeholder="搜索维修案例..."
+            <input name="q" value={query} onChange={e => setQuery(e.target.value)} type="text"
+              placeholder="搜索维修案例..."
               className="input !text-xs !py-1.5 flex-1 sm:w-44 min-w-0" />
             <button type="submit"
               className="px-3 py-1.5 rounded-lg text-xs font-medium text-white bg-[#b45309] hover:bg-[#a04408] transition-colors shrink-0">
