@@ -6,6 +6,43 @@ import { createClient } from '@/lib/supabase/client'
 import { useAuth } from '@/components/AuthProvider'
 import { Crown, MessageCircle, Eye, Heart, Lock, Diamond } from 'lucide-react'
 import Breadcrumb from '@/components/Breadcrumb'
+
+// 技术板块：从标题解析品牌/故障（中文标题格式：品牌 故障：案例名）
+const TECH_BRAND_MAP = {
+  '苹果': { en: 'Apple', label: '苹果 Apple' },
+  '三星': { en: 'Samsung', label: '三星 Samsung' },
+  '华为': { en: 'Huawei', label: '华为 Huawei' },
+  '小米': { en: 'Xiaomi', label: '小米 Xiaomi' },
+  '其他安卓': { en: 'Other Android', label: '其他安卓 Other' },
+  '电脑主板': { en: 'PC', label: '电脑主板 PC' },
+  '通用': { en: 'General', label: '通用 General' },
+}
+const TECH_FAULT_MAP = {
+  '屏幕/显示/触摸维修': '屏幕-显示-触摸',
+  '不开机/死机/重启维修': '不开机-死机',
+  '主板/芯片级维修': '主板-芯片',
+  '电池/耗电维修': '电池-耗电',
+  '信号/无服务维修': '信号-无服务',
+  '充电/尾插维修': '充电-尾插',
+  '扩容/存储维修': '扩容-存储',
+  '功能故障维修': '功能故障',
+  '摄像头维修': '摄像头',
+  '解锁/激活维修': '解锁-激活',
+  '进水维修': '进水',
+  '音频维修': '音频',
+  '其他维修': '其他',
+}
+function parseTechTitle(title) {
+  for (const [cn, b] of Object.entries(TECH_BRAND_MAP)) {
+    if (title.startsWith(cn + ' ')) {
+      for (const [fcn, fshort] of Object.entries(TECH_FAULT_MAP)) {
+        if (title.includes(fcn)) return { brandEn: b.en, brandLabel: b.label, faultShort: fshort, faultLabel: fcn }
+      }
+      return { brandEn: b.en, brandLabel: b.label, faultShort: '其他', faultLabel: '其他维修' }
+    }
+  }
+  return null
+}
 import BookmarkButton from '@/components/BookmarkButton'
 import { checkContent } from '@/lib/moderation'
 import { TECH_CATEGORY_SLUG, canViewTech, TechLockOverlay, getUpgradeInfo } from '@/lib/member'
@@ -91,11 +128,21 @@ export default function ThreadPage() {
 
   return (
     <div className="anim-fade-in w-full sm:max-w-3xl sm:mx-auto">
-      <Breadcrumb crumbs={[
-        { label: '首页', href: '/' },
-        { label: thread.categories?.name || '板块', href: `/c/${thread.categories?.slug}` },
-        { label: thread.title },
-      ]} />
+      {(() => {
+        const isTech = thread.categories?.slug === TECH_CATEGORY_SLUG
+        const parsed = isTech ? parseTechTitle(thread.title) : null
+        const crumbs = [{ label: '首页', href: '/' }, { label: '板块列表', href: '/board' }]
+        if (isTech && parsed) {
+          crumbs.push({ label: '技术讨论', href: '/c/tech' })
+          crumbs.push({ label: parsed.brandLabel, href: `/c/tech/${encodeURIComponent(parsed.brandEn)}` })
+          crumbs.push({ label: parsed.faultLabel, href: `/c/tech/${encodeURIComponent(parsed.brandEn)}/${encodeURIComponent(parsed.faultShort)}` })
+          crumbs.push({ label: thread.title.length > 20 ? thread.title.slice(0, 20) + '…' : thread.title })
+        } else {
+          crumbs.push({ label: thread.categories?.name || '板块', href: `/c/${thread.categories?.slug}` })
+          crumbs.push({ label: thread.title.length > 20 ? thread.title.slice(0, 20) + '…' : thread.title })
+        }
+        return <Breadcrumb crumbs={crumbs} />
+      })()}
 
       {techLocked ? (
         <div className="mt-4 card p-8 text-center anim-up">
