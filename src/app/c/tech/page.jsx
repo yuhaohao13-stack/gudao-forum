@@ -7,49 +7,16 @@ import { TECH_CATEGORY_SLUG } from '@/lib/member'
 import { Smartphone, Monitor, Apple, Cpu, Wrench, Shield, Laptop, ChevronRight } from 'lucide-react'
 import Breadcrumb from '@/components/Breadcrumb'
 
-// 品牌定义：key = 标题前缀，value = 显示信息
+// 品牌定义：key = URL 标识，brand = 数据库 brand 字段值
 const BRANDS = [
-  { key: 'Apple', name: '苹果 Apple', icon: <Apple size={22} />, desc: 'iPhone / iPad / MacBook 维修案例', color: '#6e6e73' },
-  { key: 'Samsung', name: '三星 Samsung', icon: <Smartphone size={22} />, desc: 'Galaxy 系列手机 / 平板维修案例', color: '#1428a0' },
-  { key: 'Huawei', name: '华为 Huawei', icon: <Smartphone size={22} />, desc: 'Mate / P 系列手机维修案例', color: '#c7000b' },
-  { key: 'Xiaomi', name: '小米 Xiaomi', icon: <Smartphone size={22} />, desc: '小米 / 红米手机维修案例', color: '#ff6900' },
-  { key: 'Other Android', name: '其他安卓 Other', icon: <Smartphone size={22} />, desc: '华硕 / 努比亚 / Nothing 等安卓维修', color: '#3ddc84' },
-  { key: 'PC', name: '电脑主板 PC', icon: <Cpu size={22} />, desc: '笔记本 / 台式机 / 主板维修案例', color: '#0078d4' },
-  { key: 'General', name: '通用 General', icon: <Wrench size={22} />, desc: '通用维修技巧与工具案例', color: '#b45309' },
+  { key: 'Apple', brand: '苹果 Apple', name: '苹果 Apple', icon: <Apple size={22} />, desc: 'iPhone / iPad / MacBook 维修案例', color: '#6e6e73' },
+  { key: 'Samsung', brand: '三星 Samsung', name: '三星 Samsung', icon: <Smartphone size={22} />, desc: 'Galaxy 系列手机 / 平板维修案例', color: '#1428a0' },
+  { key: 'Huawei', brand: '华为 Huawei', name: '华为 Huawei', icon: <Smartphone size={22} />, desc: 'Mate / P 系列手机维修案例', color: '#c7000b' },
+  { key: 'Xiaomi', brand: '小米 Xiaomi', name: '小米 Xiaomi', icon: <Smartphone size={22} />, desc: '小米 / 红米手机维修案例', color: '#ff6900' },
+  { key: 'Other Android', brand: '其他安卓 Other', name: '其他安卓 Other', icon: <Smartphone size={22} />, desc: '华硕 / 努比亚 / Nothing 等安卓维修', color: '#3ddc84' },
+  { key: 'PC', brand: '电脑主板 PC', name: '电脑主板 PC', icon: <Cpu size={22} />, desc: '笔记本 / 台式机 / 主板维修案例', color: '#0078d4' },
+  { key: 'General', brand: '通用 General', name: '通用 General', icon: <Wrench size={22} />, desc: '通用维修技巧与工具案例', color: '#b45309' },
 ]
-
-// 故障类型映射（标题关键词 → 中文名）
-const FAULTS = [
-  { kw: "Won't Turn On Repair", name: '不开机-死机' },
-  { kw: 'Screen Display Touch Repair', name: '屏幕-显示-触摸' },
-  { kw: 'Motherboard Chip Repair', name: '主板-芯片' },
-  { kw: 'Battery Repair', name: '电池-耗电' },
-  { kw: 'Charging Port Repair', name: '充电-尾插' },
-  { kw: 'No Signal Repair', name: '信号-无服务' },
-  { kw: 'Storage Upgrade', name: '扩容-存储' },
-  { kw: 'Function Fault Repair', name: '功能故障' },
-  { kw: 'Camera Repair', name: '摄像头' },
-  { kw: 'Unlock Activation', name: '解锁-激活' },
-  { kw: 'Water Damage Repair', name: '进水' },
-  { kw: 'Audio Repair', name: '音频' },
-  { kw: 'Other Repair', name: '其他' },
-]
-
-export function parseBrand(title) {
-  if (!title) return null
-  for (const b of BRANDS) {
-    if (title.startsWith(b.key + ' ') || title.startsWith(b.key + '　')) return b.key
-  }
-  return null
-}
-
-export function parseFault(title) {
-  if (!title) return null
-  for (const f of FAULTS) {
-    if (title.includes(f.kw)) return f.name
-  }
-  return null
-}
 
 export default function TechBrandsPage() {
   const [brands, setBrands] = useState([])
@@ -62,7 +29,7 @@ export default function TechBrandsPage() {
       const { data: cat } = await supabase.from('categories').select('*').eq('slug', TECH_CATEGORY_SLUG).single()
       if (!cat || !mounted) return
       const { data: threads } = await supabase.from('threads')
-        .select('id,title')
+        .select('brand')
         .eq('category_id', cat.id)
       if (!mounted) return
       const list = threads || []
@@ -70,8 +37,9 @@ export default function TechBrandsPage() {
       const counts = {}
       for (const b of BRANDS) counts[b.key] = 0
       for (const t of list) {
-        const bk = parseBrand(t.title)
-        if (bk) counts[bk] = (counts[bk] || 0) + 1
+        for (const b of BRANDS) {
+          if (t.brand === b.brand) { counts[b.key]++; break }
+        }
       }
       setBrands(BRANDS.map(b => ({ ...b, count: counts[b.key] || 0 })))
     }

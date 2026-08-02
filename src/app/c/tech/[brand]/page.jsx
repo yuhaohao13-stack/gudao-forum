@@ -8,32 +8,34 @@ import { TECH_CATEGORY_SLUG } from '@/lib/member'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import Breadcrumb from '@/components/Breadcrumb'
 
-const BRAND_NAMES = {
+// URL key → 数据库 brand 字段值
+const BRAND_MAP = {
   'Apple': '苹果 Apple', 'Samsung': '三星 Samsung', 'Huawei': '华为 Huawei',
   'Xiaomi': '小米 Xiaomi', 'Other Android': '其他安卓 Other',
   'PC': '电脑主板 PC', 'General': '通用 General',
 }
 
-// 故障类型（中文名 → 标题关键词）
+// 故障类型（数据库 fault 字段值）
 const FAULTS = [
-  { name: '不开机-死机', kw: "Won't Turn On Repair", emoji: '📴' },
-  { name: '屏幕-显示-触摸', kw: 'Screen Display Touch Repair', emoji: '📱' },
-  { name: '主板-芯片', kw: 'Motherboard Chip Repair', emoji: '🛠️' },
-  { name: '电池-耗电', kw: 'Battery Repair', emoji: '🔋' },
-  { name: '充电-尾插', kw: 'Charging Port Repair', emoji: '🔌' },
-  { name: '信号-无服务', kw: 'No Signal Repair', emoji: '📡' },
-  { name: '扩容-存储', kw: 'Storage Upgrade', emoji: '💾' },
-  { name: '功能故障', kw: 'Function Fault Repair', emoji: '🔘' },
-  { name: '摄像头', kw: 'Camera Repair', emoji: '📷' },
-  { name: '解锁-激活', kw: 'Unlock Activation', emoji: '🔓' },
-  { name: '进水', kw: 'Water Damage Repair', emoji: '💧' },
-  { name: '音频', kw: 'Audio Repair', emoji: '🔊' },
-  { name: '其他', kw: 'Other Repair', emoji: '📦' },
+  { name: '不开机-死机', emoji: '📴' },
+  { name: '屏幕-显示-触摸', emoji: '📱' },
+  { name: '主板-芯片', emoji: '🛠️' },
+  { name: '电池-耗电', emoji: '🔋' },
+  { name: '充电-尾插', emoji: '🔌' },
+  { name: '信号-无服务', emoji: '📡' },
+  { name: '扩容-存储', emoji: '💾' },
+  { name: '功能故障', emoji: '🔘' },
+  { name: '摄像头', emoji: '📷' },
+  { name: '解锁-激活', emoji: '🔓' },
+  { name: '进水', emoji: '💧' },
+  { name: '音频', emoji: '🔊' },
+  { name: '其他', emoji: '📦' },
 ]
 
 export default function TechFaultsPage() {
   const { brand } = useParams()
   const brandKey = decodeURIComponent(brand)
+  const brandVal = BRAND_MAP[brandKey] || brandKey
   const [faults, setFaults] = useState([])
   const [total, setTotal] = useState(0)
   const supabase = createClient()
@@ -44,42 +46,39 @@ export default function TechFaultsPage() {
       const { data: cat } = await supabase.from('categories').select('*').eq('slug', TECH_CATEGORY_SLUG).single()
       if (!cat || !mounted) return
       const { data: threads } = await supabase.from('threads')
-        .select('id,title')
+        .select('fault')
         .eq('category_id', cat.id)
+        .eq('brand', brandVal)
       if (!mounted) return
-      const list = (threads || []).filter(t => t.title.startsWith(brandKey + ' ') || t.title.startsWith(brandKey + '　'))
+      const list = threads || []
       setTotal(list.length)
       const counts = {}
       for (const f of FAULTS) counts[f.name] = 0
       for (const t of list) {
-        for (const f of FAULTS) {
-          if (t.title.includes(f.kw)) { counts[f.name]++; break }
-        }
+        if (t.fault && counts[t.fault] !== undefined) counts[t.fault]++
       }
       setFaults(FAULTS.map(f => ({ ...f, count: counts[f.name] || 0 })).filter(f => f.count > 0))
     }
     load()
     return () => { mounted = false }
-  }, [brandKey, supabase])
-
-  const brandName = BRAND_NAMES[brandKey] || brandKey
+  }, [brandVal, supabase])
 
   return (
     <>
-      <Seo title={`${brandName} - 故障分类 | 古道论坛技术讨论`} description={`古道论坛技术讨论 ${brandName} 维修案例故障分类`} />
+      <Seo title={`${brandVal} - 故障分类 | 古道论坛技术讨论`} description={`古道论坛技术讨论 ${brandVal} 维修案例故障分类`} />
       <div className="anim-fade-in max-w-3xl mx-auto">
         <Breadcrumb crumbs={[
           { label: '首页', href: '/' },
           { label: '板块列表', href: '/board' },
           { label: '技术讨论', href: '/c/tech' },
-          { label: brandName },
+          { label: brandVal },
         ]} />
 
         <div className="mb-5">
           <Link href="/c/tech" className="text-xs text-[#b45309] hover:underline inline-flex items-center gap-1">
             <ChevronLeft size={14} /> 返回品牌列表
           </Link>
-          <h1 className="text-xl font-bold text-[#1a1a1a] mt-1">{brandName} · 故障分类</h1>
+          <h1 className="text-xl font-bold text-[#1a1a1a] mt-1">{brandVal} · 故障分类</h1>
           <p className="text-[#aaa] text-xs mt-0.5">共 {total} 篇维修案例，选择故障类型查看</p>
         </div>
 

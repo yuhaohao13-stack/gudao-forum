@@ -9,26 +9,11 @@ import { useAuth } from '@/components/AuthProvider'
 import { ChevronLeft, ChevronRight, MessageCircle, Lock, Clock } from 'lucide-react'
 import Breadcrumb from '@/components/Breadcrumb'
 
-const BRAND_NAMES = {
+// URL key → 数据库 brand 字段值
+const BRAND_MAP = {
   'Apple': '苹果 Apple', 'Samsung': '三星 Samsung', 'Huawei': '华为 Huawei',
   'Xiaomi': '小米 Xiaomi', 'Other Android': '其他安卓 Other',
   'PC': '电脑主板 PC', 'General': '通用 General',
-}
-
-const FAULT_KEYWORDS = {
-  '不开机-死机': "Won't Turn On Repair",
-  '屏幕-显示-触摸': 'Screen Display Touch Repair',
-  '主板-芯片': 'Motherboard Chip Repair',
-  '电池-耗电': 'Battery Repair',
-  '充电-尾插': 'Charging Port Repair',
-  '信号-无服务': 'No Signal Repair',
-  '扩容-存储': 'Storage Upgrade',
-  '功能故障': 'Function Fault Repair',
-  '摄像头': 'Camera Repair',
-  '解锁-激活': 'Unlock Activation',
-  '进水': 'Water Damage Repair',
-  '音频': 'Audio Repair',
-  '其他': 'Other Repair',
 }
 
 const PAGE_SIZE = 10
@@ -39,6 +24,7 @@ export default function TechCasesPage() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const brandKey = decodeURIComponent(brand)
+  const brandVal = BRAND_MAP[brandKey] || brandKey
   const faultName = decodeURIComponent(fault)
   const page = parseInt(searchParams.get('page') || '1', 10)
   const [threads, setThreads] = useState([])
@@ -48,30 +34,28 @@ export default function TechCasesPage() {
 
   const isAdmin = profile?.role === 'admin' || profile?.role === 'moderator'
   const techAccess = canViewTech(user, profile)
-  const brandName = BRAND_NAMES[brandKey] || brandKey
-  const faultKw = FAULT_KEYWORDS[faultName] || ''
 
   const fetchData = useCallback(async () => {
     const { data: cat } = await supabase.from('categories').select('*').eq('slug', TECH_CATEGORY_SLUG).single()
     if (!cat) return
-    // 品牌前缀过滤
-    const prefixFilter = (q) => q.or(`title.ilike.${brandKey} %,title.ilike.${brandKey}　`)
     // 总数
-    let countQ = supabase.from('threads').select('*', { count: 'exact', head: true }).eq('category_id', cat.id)
-    countQ = countQ.or(`title.ilike.${brandKey} %,title.ilike.${brandKey}　`)
-    if (faultKw) countQ = countQ.ilike('title', `%${faultKw}%`)
-    const { count } = await countQ
+    const { count } = await supabase.from('threads')
+      .select('*', { count: 'exact', head: true })
+      .eq('category_id', cat.id)
+      .eq('brand', brandVal)
+      .eq('fault', faultName)
     setTotalCount(count || 0)
 
     const from_ = (page - 1) * PAGE_SIZE
-    let q = supabase.from('threads').select('*, profiles!inner(username, display_name, role)').eq('category_id', cat.id)
-    q = q.or(`title.ilike.${brandKey} %,title.ilike.${brandKey}　`)
-    if (faultKw) q = q.ilike('title', `%${faultKw}%`)
-    const { data } = await q
+    const { data } = await supabase.from('threads')
+      .select('*, profiles!inner(username, display_name, role)')
+      .eq('category_id', cat.id)
+      .eq('brand', brandVal)
+      .eq('fault', faultName)
       .order('created_at', { ascending: false })
       .range(from_, from_ + PAGE_SIZE - 1)
     setThreads(data || [])
-  }, [brandKey, faultKw, page, supabase])
+  }, [brandVal, faultName, page, supabase])
 
   useEffect(() => { fetchData() }, [fetchData])
 
@@ -87,13 +71,13 @@ export default function TechCasesPage() {
 
   return (
     <>
-      <Seo title={`${brandName} ${faultName} - 维修案例 | 古道论坛`} description={`古道论坛技术讨论 ${brandName} ${faultName} 维修案例`} />
+      <Seo title={`${brandVal} ${faultName} - 维修案例 | 古道论坛`} description={`古道论坛技术讨论 ${brandVal} ${faultName} 维修案例`} />
       <div className="anim-fade-in max-w-3xl mx-auto">
         <Breadcrumb crumbs={[
           { label: '首页', href: '/' },
           { label: '板块列表', href: '/board' },
           { label: '技术讨论', href: '/c/tech' },
-          { label: brandName, href: `/c/tech/${encodeURIComponent(brandKey)}` },
+          { label: brandVal, href: `/c/tech/${encodeURIComponent(brandKey)}` },
           { label: faultName },
         ]} />
 
@@ -101,7 +85,7 @@ export default function TechCasesPage() {
           <Link href={`/c/tech/${encodeURIComponent(brandKey)}`} className="text-xs text-[#b45309] hover:underline inline-flex items-center gap-1">
             <ChevronLeft size={14} /> 返回故障分类
           </Link>
-          <h1 className="text-xl font-bold text-[#1a1a1a] mt-1">{brandName} · {faultName} 维修案例</h1>
+          <h1 className="text-xl font-bold text-[#1a1a1a] mt-1">{brandVal} · {faultName} 维修案例</h1>
           <p className="text-[#aaa] text-xs mt-0.5">共 {totalCount} 篇</p>
         </div>
 
