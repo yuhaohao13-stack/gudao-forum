@@ -65,12 +65,12 @@ export default function TechFaultsPage() {
 
   return (
     <>
-      <Seo title={`${brandVal} - 故障分类 | 古道论坛技术讨论`} description={`古道论坛技术讨论 ${brandVal} 维修案例故障分类`} />
+      <Seo title={`${brandVal} - 故障分类 | 古道论坛维修案例`} description={`古道论坛维修案例 ${brandVal} 维修案例故障分类`} />
       <div className="anim-fade-in max-w-3xl mx-auto">
         <Breadcrumb crumbs={[
           { label: '首页', href: '/' },
           { label: '板块列表', href: '/board' },
-          { label: '技术讨论', href: '/c/tech' },
+          { label: '维修案例', href: '/c/tech' },
           { label: brandVal },
         ]} />
 

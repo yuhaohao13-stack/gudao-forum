@@ -71,12 +71,12 @@ export default function TechCasesPage() {
 
   return (
     <>
-      <Seo title={`${brandVal} ${faultName} - 维修案例 | 古道论坛`} description={`古道论坛技术讨论 ${brandVal} ${faultName} 维修案例`} />
+      <Seo title={`${brandVal} ${faultName} - 维修案例 | 古道论坛`} description={`古道论坛维修案例 ${brandVal} ${faultName} 维修案例`} />
       <div className="anim-fade-in max-w-3xl mx-auto">
         <Breadcrumb crumbs={[
           { label: '首页', href: '/' },
           { label: '板块列表', href: '/board' },
-          { label: '技术讨论', href: '/c/tech' },
+          { label: '维修案例', href: '/c/tech' },
           { label: brandVal, href: `/c/tech/${encodeURIComponent(brandKey)}` },
           { label: faultName },
         ]} />

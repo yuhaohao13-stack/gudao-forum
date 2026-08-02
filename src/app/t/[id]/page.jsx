@@ -133,7 +133,7 @@ export default function ThreadPage() {
         const parsed = isTech ? parseTechTitle(thread.title) : null
         const crumbs = [{ label: '首页', href: '/' }, { label: '板块列表', href: '/board' }]
         if (isTech && parsed) {
-          crumbs.push({ label: '技术讨论', href: '/c/tech' })
+          crumbs.push({ label: '维修案例', href: '/c/tech' })
           crumbs.push({ label: parsed.brandLabel, href: `/c/tech/${encodeURIComponent(parsed.brandEn)}` })
           crumbs.push({ label: parsed.faultLabel, href: `/c/tech/${encodeURIComponent(parsed.brandEn)}/${encodeURIComponent(parsed.faultShort)}` })
           crumbs.push({ label: thread.title.length > 20 ? thread.title.slice(0, 20) + '…' : thread.title })

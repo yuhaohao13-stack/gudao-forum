@@ -49,15 +49,15 @@ export default function TechBrandsPage() {
 
   return (
     <>
-      <Seo title='技术讨论 - 维修案例品牌分类 | 古道论坛' description='古道论坛技术讨论板块，按品牌分类的手机/电脑维修案例库：苹果、三星、华为、小米、其他安卓、电脑主板、通用。' />
+      <Seo title='维修案例 - 维修案例品牌分类 | 古道论坛' description='古道论坛维修案例板块，按品牌分类的手机/电脑维修案例库：苹果、三星、华为、小米、其他安卓、电脑主板、通用。' />
       <div className="anim-fade-in max-w-3xl mx-auto">
         <Breadcrumb crumbs={[
           { label: '首页', href: '/' },
           { label: '板块列表', href: '/board' },
-          { label: '技术讨论' },
+          { label: '维修案例' },
         ]} />
 
-        <h1 className="text-xl font-bold text-[#1a1a1a] mt-2 mb-1">🔧 技术讨论 · 维修案例库</h1>
+        <h1 className="text-xl font-bold text-[#1a1a1a] mt-2 mb-1">🔧 维修案例 · 维修案例库</h1>
         <p className="text-xs text-[#aaa] mb-6">选择品牌查看对应的维修案例（共 {total} 篇）</p>
 
         <div className="grid grid-cols-2 gap-2 mb-8">
