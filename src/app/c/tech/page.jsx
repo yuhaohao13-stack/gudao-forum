@@ -11,13 +11,13 @@ import Breadcrumb from '@/components/Breadcrumb'
 
 // 品牌定义（紧凑展示）
 const BRANDS = [
-  { key: 'Apple', brand: '苹果 Apple', name: '苹果', icon: <Apple size={14} />, color: '#6e6e73' },
-  { key: 'Samsung', brand: '三星 Samsung', name: '三星', icon: <Smartphone size={14} />, color: '#1428a0' },
-  { key: 'Huawei', brand: '华为 Huawei', name: '华为', icon: <Smartphone size={14} />, color: '#c7000b' },
-  { key: 'Xiaomi', brand: '小米 Xiaomi', name: '小米', icon: <Smartphone size={14} />, color: '#ff6900' },
-  { key: 'Other Android', brand: '其他安卓 Other', name: '其他安卓', icon: <Smartphone size={14} />, color: '#3ddc84' },
-  { key: 'PC', brand: '电脑主板 PC', name: '电脑主板', icon: <Cpu size={14} />, color: '#0078d4' },
-  { key: 'General', brand: '通用 General', name: '通用', icon: <Wrench size={14} />, color: '#b45309' },
+  { key: 'Apple', brand: '苹果 Apple', name: '苹果', icon: <Apple size={20} />, color: '#6e6e73', desc: 'iPhone / iPad / MacBook' },
+  { key: 'Samsung', brand: '三星 Samsung', name: '三星', icon: <Smartphone size={20} />, color: '#1428a0', desc: 'Galaxy 手机 / 平板' },
+  { key: 'Huawei', brand: '华为 Huawei', name: '华为', icon: <Smartphone size={20} />, color: '#c7000b', desc: 'Mate / P 系列手机' },
+  { key: 'Xiaomi', brand: '小米 Xiaomi', name: '小米', icon: <Smartphone size={20} />, color: '#ff6900', desc: '小米 / 红米手机' },
+  { key: 'Other Android', brand: '其他安卓 Other', name: '其他安卓', icon: <Smartphone size={20} />, color: '#3ddc84', desc: '华硕 / 努比亚 / Nothing' },
+  { key: 'PC', brand: '电脑主板 PC', name: '电脑主板', icon: <Cpu size={20} />, color: '#0078d4', desc: '笔记本 / 台式机 / 主板' },
+  { key: 'General', brand: '通用 General', name: '通用', icon: <Wrench size={20} />, color: '#b45309', desc: '通用维修技巧 / 工具' },
 ]
 
 const PAGE_SIZE = 10
@@ -115,14 +115,21 @@ function TechBrandsContent() {
         <h1 className="text-xl font-bold text-[#1a1a1a] mt-2 mb-1">🔧 维修案例</h1>
         <p className="text-xs text-[#aaa] mb-4">共 {total} 篇案例，按品牌分类或直接浏览全部</p>
 
-        {/* 品牌列表（紧凑横排） */}
-        <div className="flex flex-wrap gap-1.5 mb-5">
+        {/* 品牌列表（3列网格卡片） */}
+        <div className="grid grid-cols-3 gap-2 mb-6">
           {brands.map(b => (
             <Link key={b.key} href={`/c/tech/${encodeURIComponent(b.key)}`}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-[#ece8e0] text-xs font-medium text-[#555] hover:border-[#b45309]/40 hover:text-[#b45309] hover:bg-[#faf7f0] transition-all">
-              <span style={{ color: b.color }}>{b.icon}</span>
-              {b.name}
-              <span className="text-[10px] text-[#aaa]">{b.count}</span>
+              className="block bg-white border border-[#ece8e0] rounded-xl px-3 py-3 transition-all hover:border-[#b45309]/40 hover:shadow-sm hover:-translate-y-0.5">
+              <div className="flex items-center gap-2">
+                <div className="w-9 h-9 rounded-lg bg-[#f5f0e8] flex items-center justify-center shrink-0" style={{ color: b.color }}>
+                  {b.icon}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="font-semibold text-sm text-[#1a1a1a] leading-tight">{b.name}</div>
+                  <div className="text-[10px] text-[#999] mt-0.5 truncate">{b.desc}</div>
+                </div>
+              </div>
+              <div className="text-[10px] text-[#b45309] mt-2 font-medium">{b.count} 篇案例 →</div>
             </Link>
           ))}
         </div>
