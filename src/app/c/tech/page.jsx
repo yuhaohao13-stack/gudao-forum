@@ -116,7 +116,7 @@ function TechBrandsContent() {
         <p className="text-xs text-[#aaa] mb-4">共 {total} 篇案例，按品牌分类或直接浏览全部</p>
 
         {/* 品牌列表（3列网格卡片） */}
-        <div className="grid grid-cols-3 gap-2 mb-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-6">
           {brands.map(b => (
             <Link key={b.key} href={`/c/tech/${encodeURIComponent(b.key)}`}
               className="block bg-white border border-[#ece8e0] rounded-xl px-3 py-3 transition-all hover:border-[#b45309]/40 hover:shadow-sm hover:-translate-y-0.5">
@@ -124,8 +124,8 @@ function TechBrandsContent() {
                 <div className="w-9 h-9 rounded-lg bg-[#f5f0e8] flex items-center justify-center shrink-0" style={{ color: b.color }}>
                   {b.icon}
                 </div>
-                <div className="min-w-0 flex-1">
-                  <div className="font-semibold text-sm text-[#1a1a1a] leading-tight">{b.name}</div>
+                <div className="min-w-0 flex-1 overflow-hidden">
+                  <div className="font-semibold text-sm text-[#1a1a1a] leading-tight truncate">{b.name}</div>
                   <div className="text-[10px] text-[#999] mt-0.5 truncate">{b.desc}</div>
                 </div>
               </div>
@@ -135,8 +135,8 @@ function TechBrandsContent() {
         </div>
 
         {/* 最新/热门 + 搜索 */}
-        <div className="flex items-center gap-2 mb-3">
-          <div className="flex gap-1.5">
+        <div className="flex flex-wrap items-center gap-2 mb-3">
+          <div className="flex gap-1.5 shrink-0">
             <button onClick={() => { setSortBy('latest'); router.push(`/c/tech${query ? `?q=${encodeURIComponent(query)}` : ''}`) }}
               className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${sortBy === 'latest' ? 'bg-[#b45309] text-white' : 'bg-[#f5f5f3] text-[#888] hover:text-[#1a1a1a]'}`}>
               <Clock size={14} className="inline-block align-text-bottom" /> 最新
@@ -146,9 +146,9 @@ function TechBrandsContent() {
               <Flame size={14} className="inline-block align-text-bottom" /> 热门
             </button>
           </div>
-          <form onSubmit={handleSearch} className="ml-auto flex gap-2">
-            <input name="q" defaultValue={query} type="text" placeholder="搜索维修案例..."
-              className="input !text-xs !py-1.5 w-40" />
+          <form onSubmit={handleSearch} className="flex gap-2 w-full sm:w-auto sm:ml-auto min-w-0">
+            <input name="q" defaultValue={query} type="search" placeholder="搜索维修案例..."
+              className="input !text-xs !py-1.5 flex-1 sm:w-44 min-w-0" />
             <button type="submit"
               className="px-3 py-1.5 rounded-lg text-xs font-medium text-white bg-[#b45309] hover:bg-[#a04408] transition-colors shrink-0">
               <Search size={12} className="inline-block align-text-bottom" /> 搜索
@@ -157,15 +157,15 @@ function TechBrandsContent() {
         </div>
 
         {/* 全部帖子列表 */}
-        <div className="card divide-y divide-[#f5f5f3]">
+        <div className="card divide-y divide-[#f5f5f3] overflow-hidden">
           {threads.length === 0 ? (
             <div className="py-12 text-center">
               <p className="text-[#bbb] text-sm">{query ? '没有找到相关案例' : '这里还没有帖子'}</p>
             </div>
           ) : threads.map((t, i) => (
             <div key={t.id} onClick={() => handleThreadClick(t)}
-              className={`thread-item px-4 ${i === 0 ? 'pt-3' : ''} last:pb-3 cursor-pointer`}>
-              <div className="flex items-start justify-between gap-3">
+              className={`thread-item px-4 min-w-0 overflow-hidden ${i === 0 ? 'pt-3' : ''} last:pb-3 cursor-pointer`}>
+              <div className="flex items-start justify-between gap-3 min-w-0">
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-1.5 flex-wrap mb-0.5">
                     {t.is_pinned && <span className="tag"><Pin size={12} className="inline-block align-text-bottom" /> 置顶</span>}
