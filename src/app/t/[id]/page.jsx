@@ -152,16 +152,16 @@ export default function ThreadPage() {
           </h2>
           <p className="text-[#888] text-sm mb-6 max-w-xs mx-auto leading-relaxed">
             {techLockInfo?.reason === 'exhausted'
-              ? '你的黄金会员技术帖查看次数已用完，升级钻石会员即可无限次查看技术帖内容。'
+              ? '你的技术帖查看次数已用完，升级钻石会员即可无限次查看维修案例内容。'
               : (techLockInfo?.reason === 'login'
-                ? '登录并升级会员即可查看技术帖内容。'
-                : '升级黄金/钻石会员即可查看技术帖内容。请打赏支持论坛运营。')}
+                ? '维修案例仅限钻石会员查看，请登录并升级钻石会员。'
+                : '维修案例仅限钻石会员查看，升级钻石会员即可解锁全部内容。')}
           </p>
           <div className="flex flex-col items-center gap-3">
             <a href={techLockInfo?.reason === 'login' ? '/login' : '/lottery/upgrade'}
               className="inline-block px-6 py-2.5 rounded-lg text-sm font-bold text-white"
               style={{ background: 'linear-gradient(135deg, #b45309, #d97706)' }}>
-              {techLockInfo?.reason === 'login' ? '去登录' : (techLockInfo?.reason === 'exhausted' ? '升级钻石会员' : '了解会员权益')}
+              {techLockInfo?.reason === 'login' ? '去登录' : '升级钻石会员'}
             </a>
             {techLockInfo?.reason !== 'login' && (
               <a href="/login" className="text-xs text-[#aaa] hover:text-[#888] transition-colors">已有账户？去登录</a>
@@ -185,15 +185,7 @@ export default function ThreadPage() {
 
           <div className="my-6 h-px bg-[#f0f0f0]" />
 
-          <div className={`text-[#444] leading-7 sm:leading-8 whitespace-pre-wrap text-sm sm:text-base font-mono ${!user ? 'line-clamp-3' : ''}`}>
-            {!user ? thread.content.split('\n').slice(0, 3).join('\n') : thread.content}
-          </div>
-          {!user && thread.content.split('\n').length > 3 && (
-            <div className="mt-4 p-4 rounded-xl bg-[#fafafa] border border-[#f0f0f0] text-center">
-              <p className="text-[#aaa] text-xs"><Lock size={14} className="inline-block align-text-bottom" /> 登录后可查看完整内容</p>
-              <Link href="/login" className="btn-primary mt-2 !text-xs">登录</Link>
-            </div>
-          )}
+          <div className="text-[#444] leading-7 sm:leading-8 whitespace-pre-wrap text-sm sm:text-base font-mono">{thread.content}</div>
 
           {thread.images?.length > 0 && (
             <div className="mt-6 flex flex-wrap gap-3">

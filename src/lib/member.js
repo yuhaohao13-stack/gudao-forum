@@ -86,14 +86,14 @@ export function getUpgradeInfo(reason, lang = 'zh') {
   }
   if (reason === 'diamond_only') return {
     title: '💎 仅限钻石会员',
-    desc: '此功能仅限钻石会员使用，升级后无限畅玩',
+    desc: '维修案例仅限钻石会员查看，升级钻石会员即可解锁全部案例内容',
     btn: '升级钻石会员',
     link: '/lottery/upgrade'
   }
   return {
     title: '💎 需要升级会员',
-    desc: '升级黄金/钻石会员即可解锁此功能',
-    btn: '了解会员权益',
+    desc: '升级钻石会员即可解锁此功能',
+    btn: '升级钻石会员',
     link: '/lottery/upgrade'
   }
 }
