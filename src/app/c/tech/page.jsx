@@ -1,36 +1,55 @@
 'use client'
 import Seo from '@/components/Seo'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback, Suspense } from 'react'
 import Link from 'next/link'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
-import { TECH_CATEGORY_SLUG } from '@/lib/member'
-import { Smartphone, Monitor, Apple, Cpu, Wrench, Shield, Laptop, ChevronRight } from 'lucide-react'
+import { useAuth } from '@/components/AuthProvider'
+import { TECH_CATEGORY_SLUG, canViewTech, TechLockOverlay } from '@/lib/member'
+import { Smartphone, Apple, Cpu, Wrench, Clock, Flame, Pin, Crown, Lock, MessageCircle, Search, ChevronLeft, ChevronRight, Eye } from 'lucide-react'
 import Breadcrumb from '@/components/Breadcrumb'
 
-// 品牌定义：key = URL 标识，brand = 数据库 brand 字段值
+// 品牌定义（紧凑展示）
 const BRANDS = [
-  { key: 'Apple', brand: '苹果 Apple', name: '苹果 Apple', icon: <Apple size={22} />, desc: 'iPhone / iPad / MacBook 维修案例', color: '#6e6e73' },
-  { key: 'Samsung', brand: '三星 Samsung', name: '三星 Samsung', icon: <Smartphone size={22} />, desc: 'Galaxy 系列手机 / 平板维修案例', color: '#1428a0' },
-  { key: 'Huawei', brand: '华为 Huawei', name: '华为 Huawei', icon: <Smartphone size={22} />, desc: 'Mate / P 系列手机维修案例', color: '#c7000b' },
-  { key: 'Xiaomi', brand: '小米 Xiaomi', name: '小米 Xiaomi', icon: <Smartphone size={22} />, desc: '小米 / 红米手机维修案例', color: '#ff6900' },
-  { key: 'Other Android', brand: '其他安卓 Other', name: '其他安卓 Other', icon: <Smartphone size={22} />, desc: '华硕 / 努比亚 / Nothing 等安卓维修', color: '#3ddc84' },
-  { key: 'PC', brand: '电脑主板 PC', name: '电脑主板 PC', icon: <Cpu size={22} />, desc: '笔记本 / 台式机 / 主板维修案例', color: '#0078d4' },
-  { key: 'General', brand: '通用 General', name: '通用 General', icon: <Wrench size={22} />, desc: '通用维修技巧与工具案例', color: '#b45309' },
+  { key: 'Apple', brand: '苹果 Apple', name: '苹果', icon: <Apple size={14} />, color: '#6e6e73' },
+  { key: 'Samsung', brand: '三星 Samsung', name: '三星', icon: <Smartphone size={14} />, color: '#1428a0' },
+  { key: 'Huawei', brand: '华为 Huawei', name: '华为', icon: <Smartphone size={14} />, color: '#c7000b' },
+  { key: 'Xiaomi', brand: '小米 Xiaomi', name: '小米', icon: <Smartphone size={14} />, color: '#ff6900' },
+  { key: 'Other Android', brand: '其他安卓 Other', name: '其他安卓', icon: <Smartphone size={14} />, color: '#3ddc84' },
+  { key: 'PC', brand: '电脑主板 PC', name: '电脑主板', icon: <Cpu size={14} />, color: '#0078d4' },
+  { key: 'General', brand: '通用 General', name: '通用', icon: <Wrench size={14} />, color: '#b45309' },
 ]
 
+const PAGE_SIZE = 10
+
 export default function TechBrandsPage() {
+  return <Suspense fallback={<div className="flex justify-center py-16"><div className="w-4 h-4 border-[1.5px] border-[#ddd] border-t-[#1a1a1a] rounded-full animate-spin" /></div>}><TechBrandsContent /></Suspense>
+}
+
+function TechBrandsContent() {
+  const { user, profile } = useAuth()
+  const router = useRouter()
+  const searchParams = useSearchParams()
   const [brands, setBrands] = useState([])
   const [total, setTotal] = useState(0)
+  const [threads, setThreads] = useState([])
+  const [totalCount, setTotalCount] = useState(0)
+  const [sortBy, setSortBy] = useState(searchParams.get('sort') === 'hot' ? 'hot' : 'latest')
+  const [query, setQuery] = useState(searchParams.get('q') || '')
+  const [lockOverlay, setLockOverlay] = useState({ show: false, reason: 'upgrade' })
+  const page = parseInt(searchParams.get('page') || '1', 10)
   const supabase = createClient()
+  const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE))
+  const isAdmin = profile?.role === 'admin' || profile?.role === 'moderator'
+  const techAccess = canViewTech(user, profile)
 
+  // 品牌统计
   useEffect(() => {
     let mounted = true
     const load = async () => {
       const { data: cat } = await supabase.from('categories').select('*').eq('slug', TECH_CATEGORY_SLUG).single()
       if (!cat || !mounted) return
-      const { data: threads } = await supabase.from('threads')
-        .select('brand')
-        .eq('category_id', cat.id)
+      const { data: threads } = await supabase.from('threads').select('brand').eq('category_id', cat.id)
       if (!mounted) return
       const list = threads || []
       setTotal(list.length)
@@ -47,9 +66,45 @@ export default function TechBrandsPage() {
     return () => { mounted = false }
   }, [supabase])
 
+  // 帖子列表（最新/热门 + 搜索）
+  const fetchThreads = useCallback(async () => {
+    const { data: cat } = await supabase.from('categories').select('*').eq('slug', TECH_CATEGORY_SLUG).single()
+    if (!cat) return
+    // 总数
+    let countQ = supabase.from('threads').select('*', { count: 'exact', head: true }).eq('category_id', cat.id)
+    if (query.trim()) countQ = countQ.or(`title.ilike.%${query.trim()}%,content.ilike.%${query.trim()}%`)
+    const { count } = await countQ
+    setTotalCount(count || 0)
+
+    const from_ = (page - 1) * PAGE_SIZE
+    let q = supabase.from('threads').select('*, profiles!inner(username, display_name, role)').eq('category_id', cat.id)
+    if (query.trim()) q = q.or(`title.ilike.%${query.trim()}%,content.ilike.%${query.trim()}%`)
+    const { data } = await q
+      .order('is_pinned', { ascending: false })
+      .order(sortBy === 'hot' ? 'reply_count' : 'created_at', { ascending: false })
+      .range(from_, from_ + PAGE_SIZE - 1)
+    setThreads(data || [])
+  }, [sortBy, page, query, supabase])
+
+  useEffect(() => { fetchThreads() }, [fetchThreads])
+
+  const handleThreadClick = (t) => {
+    if (!techAccess.allowed) {
+      setLockOverlay({ show: true, reason: techAccess.reason || 'upgrade' })
+      return
+    }
+    router.push(`/t/${t.id}`)
+  }
+
+  const handleSearch = (e) => {
+    e.preventDefault()
+    const q = e.target.q.value.trim()
+    router.push(q ? `/c/tech?q=${encodeURIComponent(q)}&page=1` : '/c/tech?page=1')
+  }
+
   return (
     <>
-      <Seo title='维修案例 - 维修案例品牌分类 | 古道论坛' description='古道论坛维修案例板块，按品牌分类的手机/电脑维修案例库：苹果、三星、华为、小米、其他安卓、电脑主板、通用。' />
+      <Seo title='维修案例 - 品牌分类与案例列表 | 古道论坛' description='古道论坛维修案例板块：按品牌分类的手机/电脑维修案例，最新维修案例、热门维修案例，支持搜索。' />
       <div className="anim-fade-in max-w-3xl mx-auto">
         <Breadcrumb crumbs={[
           { label: '首页', href: '/' },
@@ -57,35 +112,121 @@ export default function TechBrandsPage() {
           { label: '维修案例' },
         ]} />
 
-        <h1 className="text-xl font-bold text-[#1a1a1a] mt-2 mb-1">🔧 维修案例 · 维修案例库</h1>
-        <p className="text-xs text-[#aaa] mb-6">选择品牌查看对应的维修案例（共 {total} 篇）</p>
+        <h1 className="text-xl font-bold text-[#1a1a1a] mt-2 mb-1">🔧 维修案例</h1>
+        <p className="text-xs text-[#aaa] mb-4">共 {total} 篇案例，按品牌分类或直接浏览全部</p>
 
-        <div className="grid grid-cols-2 gap-2 mb-8">
+        {/* 品牌列表（紧凑横排） */}
+        <div className="flex flex-wrap gap-1.5 mb-5">
           {brands.map(b => (
             <Link key={b.key} href={`/c/tech/${encodeURIComponent(b.key)}`}
-              className="block bg-white border border-[#ece8e0] rounded-xl px-4 py-3.5 transition-all hover:border-[#b45309]/40 hover:shadow-sm hover:-translate-y-0.5">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#f5f0e8] flex items-center justify-center text-lg shrink-0" style={{ color: b.color }}>
-                  {b.icon}
-                </div>
-                <div className="min-w-0 flex-1">
-                  <div className="font-semibold text-sm text-[#1a1a1a]">{b.name}</div>
-                  <div className="text-xs text-[#888] mt-0.5 truncate">{b.desc}</div>
-                  <div className="text-[10px] text-[#aaa] mt-1">{b.count} 篇案例</div>
-                </div>
-                <ChevronRight size={16} className="text-[#b45309] shrink-0" />
-              </div>
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-[#ece8e0] text-xs font-medium text-[#555] hover:border-[#b45309]/40 hover:text-[#b45309] hover:bg-[#faf7f0] transition-all">
+              <span style={{ color: b.color }}>{b.icon}</span>
+              {b.name}
+              <span className="text-[10px] text-[#aaa]">{b.count}</span>
             </Link>
           ))}
         </div>
 
-        <div className="card p-4">
-          <div className="text-sm font-semibold text-[#1a1a1a] mb-2">📋 品牌说明</div>
-          <p className="text-xs text-[#888] leading-relaxed">
-            这里收录了 Crazy维修（新加坡）发布的技术维修案例，按品牌和故障类型分类整理。
-            点击品牌进入故障分类，再点击故障查看具体维修案例。
-          </p>
+        {/* 最新/热门 + 搜索 */}
+        <div className="flex items-center gap-2 mb-3">
+          <div className="flex gap-1.5">
+            <button onClick={() => { setSortBy('latest'); router.push(`/c/tech${query ? `?q=${encodeURIComponent(query)}` : ''}`) }}
+              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${sortBy === 'latest' ? 'bg-[#b45309] text-white' : 'bg-[#f5f5f3] text-[#888] hover:text-[#1a1a1a]'}`}>
+              <Clock size={14} className="inline-block align-text-bottom" /> 最新
+            </button>
+            <button onClick={() => { setSortBy('hot'); router.push(`/c/tech?sort=hot${query ? `&q=${encodeURIComponent(query)}` : ''}`) }}
+              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${sortBy === 'hot' ? 'bg-[#b45309] text-white' : 'bg-[#f5f5f3] text-[#888] hover:text-[#1a1a1a]'}`}>
+              <Flame size={14} className="inline-block align-text-bottom" /> 热门
+            </button>
+          </div>
+          <form onSubmit={handleSearch} className="ml-auto flex gap-2">
+            <input name="q" defaultValue={query} type="text" placeholder="搜索维修案例..."
+              className="input !text-xs !py-1.5 w-40" />
+            <button type="submit"
+              className="px-3 py-1.5 rounded-lg text-xs font-medium text-white bg-[#b45309] hover:bg-[#a04408] transition-colors shrink-0">
+              <Search size={12} className="inline-block align-text-bottom" /> 搜索
+            </button>
+          </form>
         </div>
+
+        {/* 全部帖子列表 */}
+        <div className="card divide-y divide-[#f5f5f3]">
+          {threads.length === 0 ? (
+            <div className="py-12 text-center">
+              <p className="text-[#bbb] text-sm">{query ? '没有找到相关案例' : '这里还没有帖子'}</p>
+            </div>
+          ) : threads.map((t, i) => (
+            <div key={t.id} onClick={() => handleThreadClick(t)}
+              className={`thread-item px-4 ${i === 0 ? 'pt-3' : ''} last:pb-3 cursor-pointer`}>
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-1.5 flex-wrap mb-0.5">
+                    {t.is_pinned && <span className="tag"><Pin size={12} className="inline-block align-text-bottom" /> 置顶</span>}
+                    {(t.profiles?.role === 'admin' || t.profiles?.role === 'moderator') && !t.is_pinned && <span className="tag"><Crown size={12} className="inline-block align-text-bottom" /> 管理员</span>}
+                    {t.is_locked && <span className="tag"><Lock size={12} className="inline-block align-text-bottom" /> 已锁</span>}
+                  </div>
+                  <h3 className="font-medium text-sm text-[#1a1a1a] truncate leading-snug">
+                    {!techAccess.allowed && <span className="mr-1">🔒</span>}
+                    {t.title}
+                  </h3>
+                  <div className="flex items-center gap-2 text-xs text-[#bbb] mt-1">
+                    <span>{t.profiles?.display_name || t.profiles?.username}</span>
+                    <span>·</span>
+                    <span>{new Date(t.created_at).toLocaleDateString('zh-CN')}</span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 shrink-0 mt-1">
+                  <span className="text-xs text-[#bbb]"><Eye size={14} className="inline-block align-text-bottom" /> {t.view_count || 0}</span>
+                  <span className="text-xs text-[#bbb]"><MessageCircle size={14} className="inline-block align-text-bottom" /> {t.reply_count || 0}</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* 分页 */}
+        {totalPages > 1 && (
+          <div className="flex items-center justify-center gap-1 mt-6 mb-8">
+            <button
+              onClick={() => router.push(`/c/tech?page=${page - 1}${sortBy === 'hot' ? '&sort=hot' : ''}${query ? `&q=${encodeURIComponent(query)}` : ''}`)}
+              disabled={page <= 1}
+              className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium border border-[#eee8dc] bg-white text-[#666] hover:bg-[#f5f5f3] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+            ><ChevronLeft size={14} /> 上一页</button>
+            {Array.from({ length: totalPages }, (_, i) => i + 1)
+              .filter(p => p === 1 || p === totalPages || Math.abs(p - page) <= 2)
+              .reduce((acc, p, idx, arr) => {
+                if (idx > 0 && p - arr[idx - 1] > 1) acc.push('...')
+                acc.push(p)
+                return acc
+              }, [])
+              .map((p, i) =>
+                p === '...' ? (
+                  <span key={`ellipsis-${i}`} className="px-2 text-xs text-[#bbb]">...</span>
+                ) : (
+                  <button
+                    key={p}
+                    onClick={() => router.push(`/c/tech?page=${p}${sortBy === 'hot' ? '&sort=hot' : ''}${query ? `&q=${encodeURIComponent(query)}` : ''}`)}
+                    className={`min-w-[2rem] px-2 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                      p === page ? 'bg-[#b45309] text-white' : 'border border-[#eee8dc] bg-white text-[#666] hover:bg-[#f5f5f3]'
+                    }`}
+                  >{p}</button>
+                )
+              )}
+            <button
+              onClick={() => router.push(`/c/tech?page=${page + 1}${sortBy === 'hot' ? '&sort=hot' : ''}${query ? `&q=${encodeURIComponent(query)}` : ''}`)}
+              disabled={page >= totalPages}
+              className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium border border-[#eee8dc] bg-white text-[#666] hover:bg-[#f5f5f3] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+            >下一页 <ChevronRight size={14} /></button>
+          </div>
+        )}
+
+        {!techAccess.allowed && (
+          <TechLockOverlay
+            show={lockOverlay.show}
+            onClose={() => setLockOverlay({ show: false, reason: 'upgrade' })}
+            reason={lockOverlay.reason}
+          />
+        )}
       </div>
     </>
   )
