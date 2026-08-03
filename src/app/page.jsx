@@ -190,6 +190,25 @@ export default function Home() {
           </div>
         </section>
       )}
+      {/* ===== 版块（缩小紧凑版） ===== */}
+      <section className="anim-up">
+        <Link href="/board" className="inline-flex items-center gap-1 text-xs font-semibold text-[#bbb] mb-2 hover:text-[#b45309] transition-colors">{t('board.title')} <span className="text-[9px]">→</span></Link>
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+          {categories.map((c, i) => (
+            <Link key={c.id} href={`/c/${c.slug}`}
+              className="block bg-white border border-[#ece8e0] rounded-xl px-3 py-2.5 transition-all hover:border-[#c23531] hover:shadow-sm hover:-translate-y-0.5">
+              <div className="flex items-center gap-2">
+                <div className="text-base shrink-0">{CAT_ICONS[c.slug] || <FileText size={16} className="inline-block" />}</div>
+                <div className="min-w-0">
+                  <div className="font-semibold text-xs text-[#1a1a1a] truncate">{c.name}</div>
+                  <div className="text-[10px] text-[#aaa] truncate leading-tight">{c.description}</div>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
       <div className="grid grid-cols-2 gap-2 anim-up">
         <Link href="/ai-tools">
           <div className="bg-gradient-to-r from-[#eef2ff] via-[#f0fdf4] to-[#fefce8] border border-[#d0d5e0] rounded-xl px-3 py-2.5 transition-all hover:shadow-md hover:-translate-y-0.5 h-full">
@@ -375,25 +394,6 @@ export default function Home() {
           </div>
         </Link>
       </div>
-
-      {/* ===== 版块（缩小紧凑版） ===== */}
-      <section className="anim-up">
-        <Link href="/board" className="inline-flex items-center gap-1 text-xs font-semibold text-[#bbb] mb-2 hover:text-[#b45309] transition-colors">{t('board.title')} <span className="text-[9px]">→</span></Link>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-          {categories.map((c, i) => (
-            <Link key={c.id} href={`/c/${c.slug}`}
-              className="block bg-white border border-[#ece8e0] rounded-xl px-3 py-2.5 transition-all hover:border-[#c23531] hover:shadow-sm hover:-translate-y-0.5">
-              <div className="flex items-center gap-2">
-                <div className="text-base shrink-0">{CAT_ICONS[c.slug] || <FileText size={16} className="inline-block" />}</div>
-                <div className="min-w-0">
-                  <div className="font-semibold text-xs text-[#1a1a1a] truncate">{c.name}</div>
-                  <div className="text-[10px] text-[#aaa] truncate leading-tight">{c.description}</div>
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
 
       {/* ===== 🎮 游戏娱乐（游戏加载后可离线畅玩） ===== */}
       <section className="anim-up">
