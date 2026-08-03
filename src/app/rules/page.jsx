@@ -47,6 +47,10 @@ export default function CommunityRules() {
         '2.3 用户的帖子、评论等内容在论坛内公开可见，请勿发布包含个人敏感信息的內容。',
         '2.4 本论坛采取合理的安全措施保护用户数据，但不对因不可抗力或第三方恶意攻击导致的数据泄露承担责任。',
         '2.5 用户有权要求删除自己的账号和相关信息，请联系管理团队处理。',
+        '2.6 【YouTube API 服务条款】本论坛部分功能（如视频内容展示）通过 YouTube API 服务实现。使用相关功能即表示您同意遵守《YouTube 服务条款》（https://www.youtube.com/t/terms）及《Google 隐私权政策》（https://www.google.com/policies/privacy）。',
+        '2.7 本论坛通过 YouTube API 获取的数据仅用于论坛内视频展示，不会用于其他用途，也不会出售或分享给第三方。',
+        '2.8 【数据删除政策】用户可随时通过 Google 账号设置页面（https://myaccount.google.com/permissions）撤销本论坛对您 YouTube 数据的访问授权；授权撤销后，本论坛将停止获取您的数据，并可在您提出申请后 7 个工作日内删除已获取的数据。',
+        '2.9 【API 服务条款】本论坛对 YouTube API 服务的使用受《YouTube API 服务条款》（https://developers.google.com/youtube/terms/api-services-terms-of-service）约束。',
       ],
     },
     {
@@ -122,7 +126,7 @@ export default function CommunityRules() {
       {/* 标题区 */}
       <div className="mb-8 text-center">
         <h1 className="text-2xl sm:text-3xl font-bold text-[#1c1917] mb-2">📜 古道社区规则</h1>
-        <p className="text-sm text-[#999]">最后更新：2026年7月25日</p>
+        <p className="text-sm text-[#999]">最后更新：2026年8月3日</p>
         <p className="text-xs text-[#bbb] mt-1">加入古道论坛即视为同意以下全部条款</p>
       </div>
 
