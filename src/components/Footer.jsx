@@ -35,6 +35,7 @@ export default function Footer() {
               <Link href="/search" style={{color:'#aaa',textDecoration:'none'}}>搜索</Link>
               <Link href="/register" style={{color:'#aaa',textDecoration:'none'}}>免费注册</Link>
               <Link href="/crazy-repair" style={{color:'#aaa',textDecoration:'none'}}>Crazy维修</Link>
+              <a href="https://www.youtube.com/@haohaoyu-o1d5q" target="_blank" rel="noopener noreferrer" style={{color:'#aaa',textDecoration:'none'}}>▶ YouTube 维修频道</a>
             </div>
           </div>
 
