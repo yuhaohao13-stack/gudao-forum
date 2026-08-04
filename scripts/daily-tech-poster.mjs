@@ -6,8 +6,8 @@
 import { createClient } from '@supabase/supabase-js'
 import { readFileSync, existsSync, writeFileSync } from 'fs'
 
-const CASES_FILE = '/Volumes/Storage（仓库）/04-维修资料/01-维修知识库/repair-cases.json'
-const PROGRESS_FILE = '/Volumes/Storage（仓库）/04-维修资料/01-维修知识库/posting-progress.json'
+const CASES_FILE = '/Volumes/Storage（仓库）/维修资料/01-维修知识库/repair-cases.json'
+const PROGRESS_FILE = '/Volumes/Storage（仓库）/维修资料/01-维修知识库/posting-progress.json'
 
 const SUPABASE_URL = 'https://rsndnhdimruisysacujg.supabase.co'
 const SUPABASE_KEY = process.env.SUPABASE_SECRET
