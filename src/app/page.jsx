@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { MessageCircle, Megaphone, Pin, FileText, Eye, Clock, Flame, ArrowRight, Monitor, Flower2, Package, BookOpen, Sparkles, Gamepad2 } from 'lucide-react'
+import { MessageCircle, Megaphone, Pin, FileText, Eye, Clock, Flame, ArrowRight, Monitor, Flower2, Package, BookOpen, Sparkles, Gamepad2, Wrench } from 'lucide-react'
 import { useAuth } from '@/components/AuthProvider'
 import { canViewTech, TECH_CATEGORY_SLUG } from '@/lib/member'
 import CheckInButton from '@/components/CheckInButton'
@@ -124,77 +124,69 @@ export default function Home() {
         `}</style>
       </div>
 
-      {/* ===== 站务公告 + 站长风采 ===== */}
-      {announcements.length > 0 && (
-        <section className="anim-up">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="text-xs font-semibold text-[#999] tracking-wide"><Megaphone size={14} className="inline-block align-text-bottom" /> {t('home.announcements')}</span>
-            <span className="tag">{t('home.pinned')}</span>
+      {/* ===== 站长风采（站务公告已隐藏，入口移至管理员个人页） ===== */}
+      <section className="anim-up">
+        <div className="card overflow-hidden">
+          <div className="px-1 sm:px-2 pt-1 pb-0.5 text-[8px] sm:text-[9px] font-medium text-[#b8860b] tracking-wider text-center border-b border-[#f5f5f5]">
+            {t('home.master_intro')}
           </div>
-          <div className="flex flex-row gap-1 sm:gap-3 items-stretch">
-            <div className="w-1/2 shrink-0">
-              <div className="card divide-y divide-[#f5f5f5]">
-                {announcements.slice(0, 6).map((t, i) => (
-                  <Link key={t.id} href={`/t/${t.id}`}
-                    className={`flex items-center gap-2 px-3 py-2.5 hover:bg-[#fafafa] transition-colors ${i > 0 ? `anim-delay-${i}` : ''}`}>
-                    <Pin size={14} className="text-[#b8860b] shrink-0 inline-block" />
-                    <span className="text-sm font-medium text-[#1a1a1a] truncate">{t.title}</span>
-                    <span className="ml-auto text-xs text-[#bbb] shrink-0">{new Date(t.created_at).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })}</span>
-                  </Link>
-                ))}
-              </div>
-            </div>
-            {/* 站长风采 — 始终在右侧，高度140px */}
-            <div className="shrink-0">
-              <div className="card overflow-hidden">
-                <div className="px-1 sm:px-2 pt-1 pb-0.5 text-[8px] sm:text-[9px] font-medium text-[#b8860b] tracking-wider text-center border-b border-[#f5f5f5]">
-                  {t('home.master_intro')}
+          <div className="flex">
+            <img
+              src="/images/hao-tiananmen.jpg?v=2"
+              alt="站长浩哥风采"
+              style={{height:'140px', width:'auto', maxWidth:'100%', display:'block'}}
+            />
+            <div className="flex-1 flex items-center justify-center p-2 relative overflow-hidden" style={{minWidth:'80px'}}>
+              <img
+                src="/images/hao-tiananmen.jpg?v=2"
+                alt=""
+                aria-hidden
+                className="absolute inset-0 w-full h-full object-cover object-left opacity-30"
+                style={{ filter: 'blur(10px)', transform: 'scale(1.15)' }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-amber-50/30 to-amber-100/20" />
+              <div className="absolute left-0 top-1/2 -translate-y-1/2 -ml-1.5 w-3 h-3 bg-white/90 rotate-45 z-10" />
+              <div className="relative bg-white/85 backdrop-blur-md rounded-xl px-3 py-2.5 text-center shadow-sm z-10">
+                <div className="text-[11px] sm:text-xs font-medium text-[#333] leading-relaxed">
+                  {t('home.master_wish')}<br />
+                  {t('home.wish_line1')}<br />
+                  {t('home.wish_line2')}<br />
+                  🎉
                 </div>
-                <div className="flex">
-                  <img
-                    src="/images/hao-tiananmen.jpg?v=2"
-                    alt="站长浩哥风采"
-                    style={{height:'140px', width:'auto', maxWidth:'100%', display:'block'}}
-                  />
-                  {/* 对话气泡 — 图片虚影延伸 */}
-                  <div className="flex-1 flex items-center justify-center p-2 relative overflow-hidden" style={{minWidth:'80px'}}>
-                    {/* 虚影背景：同一张图，绝对定位铺满，左对齐，模糊 + 半透明 */}
-                    <img
-                      src="/images/hao-tiananmen.jpg?v=2"
-                      alt=""
-                      aria-hidden
-                      className="absolute inset-0 w-full h-full object-cover object-left opacity-30"
-                      style={{ filter: 'blur(10px)', transform: 'scale(1.15)' }}
-                    />
-                    {/* 暖色渐变过渡：从虚影到气泡的柔和衔接 */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-amber-50/30 to-amber-100/20" />
-                    {/* 小三角指向图片 */}
-                    <div className="absolute left-0 top-1/2 -translate-y-1/2 -ml-1.5 w-3 h-3 bg-white/90 rotate-45 z-10" />
-                    <div className="relative bg-white/85 backdrop-blur-md rounded-xl px-3 py-2.5 text-center shadow-sm z-10">
-                      <div className="text-[11px] sm:text-xs font-medium text-[#333] leading-relaxed">
-                        {t('home.master_wish')}<br />
-                        {t('home.wish_line1')}<br />
-                        {t('home.wish_line2')}<br />
-                        🎉
-                      </div>
-                      <div className="mt-1 flex justify-center gap-1.5">
-                        <span className="text-[10px]">🎨</span>
-                        <span className="text-[10px]">💪</span>
-                        <span className="text-[10px]">💰</span>
-                      </div>
-                    </div>
-                  </div>
+                <div className="mt-1 flex justify-center gap-1.5">
+                  <span className="text-[10px]">🎨</span>
+                  <span className="text-[10px]">💪</span>
+                  <span className="text-[10px]">💰</span>
                 </div>
               </div>
             </div>
           </div>
-        </section>
-      )}
+        </div>
+      </section>
       {/* ===== 版块（缩小紧凑版） ===== */}
       <section className="anim-up">
         <Link href="/board" className="inline-flex items-center gap-1 text-xs font-semibold text-[#bbb] mb-2 hover:text-[#b45309] transition-colors">{t('board.title')} <span className="text-[9px]">→</span></Link>
+        {/* 维修案例：单独一排（粗体+介绍） */}
+        {(() => { const techCat = categories.find(c => c.slug === 'tech'); if (!techCat) return null
+          return (
+            <Link key={techCat.id} href="/c/tech"
+              className="block bg-gradient-to-r from-[#f7f2ea] to-[#fdfbf7] border border-[#b45309]/25 rounded-xl px-4 py-3 mb-2 transition-all hover:border-[#b45309]/50 hover:shadow-sm">
+              <div className="flex items-center gap-2.5">
+                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#b45309] to-[#d97706] text-white flex items-center justify-center text-lg shrink-0"><Wrench size={20} /></div>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-1.5">
+                    <span className="font-bold text-sm text-[#1a1a1a]">维修案例</span>
+                    <span className="text-[8px] px-1.5 py-0.5 rounded-full bg-[#b45309]/10 text-[#b45309] font-medium">品牌×故障</span>
+                  </div>
+                  <div className="text-[10px] text-[#888] mt-0.5 leading-tight truncate">苹果/三星/华为/小米等品牌维修案例 · 不开机/屏幕/主板等故障分类 · 抖音视频同步</div>
+                </div>
+                <span className="text-[#b45309] text-[10px] font-semibold shrink-0">→</span>
+              </div>
+            </Link>
+          )
+        })()}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-          {categories.map((c, i) => (
+          {categories.filter(c => c.slug !== 'tech' && c.slug !== 'announcements').map((c, i) => (
             <Link key={c.id} href={`/c/${c.slug}`}
               className="block bg-white border border-[#ece8e0] rounded-xl px-3 py-2.5 transition-all hover:border-[#c23531] hover:shadow-sm hover:-translate-y-0.5">
               <div className="flex items-center gap-2">
