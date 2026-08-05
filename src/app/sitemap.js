@@ -91,6 +91,43 @@ export default async function sitemap() {
         }))
       )
     }
+
+    // 维修案例 品牌×故障 三级页面（SEO 收录）
+    const TECH_CAT = '23e3f4d0-3d28-4b4e-ad17-b0b9cf943cb8'
+    const BRAND_KEY = {
+      '苹果 Apple': 'Apple', '三星 Samsung': 'Samsung', '华为 Huawei': 'Huawei',
+      '小米 Xiaomi': 'Xiaomi', '其他安卓 Other': 'Other%20Android',
+      '电脑主板 PC': 'PC', '通用 General': 'General',
+    }
+    const { data: techThreads } = await supabase
+      .from('threads')
+      .select('brand, fault')
+      .eq('category_id', TECH_CAT)
+    if (techThreads) {
+      const pairs = new Set()
+      for (const t of techThreads) {
+        const bk = BRAND_KEY[t.brand]
+        if (bk && t.fault) pairs.add(`${bk}::${encodeURIComponent(t.fault)}`)
+      }
+      for (const p of pairs) {
+        const [bk, f] = p.split('::')
+        dynamicRoutes.push({
+          url: `${BASE}/c/tech/${bk}/${f}`,
+          lastModified: new Date(),
+          changeFrequency: 'daily',
+          priority: 0.7,
+        })
+      }
+      // 品牌页
+      for (const bk of Object.values(BRAND_KEY)) {
+        dynamicRoutes.push({
+          url: `${BASE}/c/tech/${bk}`,
+          lastModified: new Date(),
+          changeFrequency: 'daily',
+          priority: 0.8,
+        })
+      }
+    }
   } catch (e) {
     // Supabase 连接失败时，忽略动态路由，只返回静态路由
     console.error('Failed to fetch dynamic routes for sitemap:', e.message)

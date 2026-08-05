@@ -78,7 +78,7 @@ export default function TechCasesPage() {
 
   return (
     <>
-      <Seo title={`${brandVal} ${faultName} - 维修案例 | 古道论坛`} description={`古道论坛维修案例 ${brandVal} ${faultName} 维修案例`} />
+      <Seo title={`${brandVal} ${faultName} - 维修案例 | 古道论坛`} description={`古道论坛维修案例 ${brandVal} ${faultName} 维修案例`} keywords={`${brandVal} ${faultName} 维修,${brandVal}维修,手机维修,芯片级维修,${faultName}维修`} />
       <div className="anim-fade-in max-w-3xl mx-auto">
         <Breadcrumb crumbs={[
           { label: '首页', href: '/' },

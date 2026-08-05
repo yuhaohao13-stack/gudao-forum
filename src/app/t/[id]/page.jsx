@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/client'
 import { useAuth } from '@/components/AuthProvider'
 import { Crown, MessageCircle, Eye, Heart, Lock, Diamond, Play } from 'lucide-react'
 import Breadcrumb from '@/components/Breadcrumb'
+import Seo from '@/components/Seo'
 
 // 技术板块：从标题解析品牌/故障（中文标题格式：品牌 故障：案例名）
 const TECH_BRAND_MAP = {
@@ -61,6 +62,13 @@ export default function ThreadPage() {
   const [techLocked, setTechLocked] = useState(false)
   const [techLockInfo, setTechLockInfo] = useState(null)
   const supabase = createClient()
+
+  // SEO：帖子标题/描述/关键词
+  const seoTitle = thread ? `${thread.title} | 古道论坛维修案例` : '古道论坛维修案例'
+  const seoDesc = thread ? (thread.content || '').replace(/https?:\/\/\S+/g, '').replace(/\s+/g, ' ').trim().slice(0, 120) : '古道论坛维修案例，手机电脑芯片级维修' 
+  const seoKeywords = thread
+    ? `${thread.brand || ''} ${(thread.fault || '').replace('-', '/')} 维修案例 手机维修 芯片级维修 ${thread.brand || ''}维修 主板维修 屏幕维修 电池维修`
+    : '维修案例,手机维修,芯片级维修,主板维修,屏幕维修'
 
   useEffect(() => {
     const fetch = async () => {
@@ -127,6 +135,8 @@ export default function ThreadPage() {
   if (!thread) return <div className="text-center py-20 anim-fade-in"><p className="text-[#bbb]">帖子不存在</p><Link href="/" className="text-[#888] hover:text-[#1a1a1a] mt-2 inline-block transition-colors">返回首页</Link></div>
 
   return (
+    <>
+      <Seo title={seoTitle} description={seoDesc} keywords={seoKeywords} />
     <div className="anim-fade-in w-full sm:max-w-3xl sm:mx-auto">
       {(() => {
         const isTech = thread.categories?.slug === TECH_CATEGORY_SLUG

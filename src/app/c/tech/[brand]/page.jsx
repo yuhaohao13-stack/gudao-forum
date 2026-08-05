@@ -65,7 +65,7 @@ export default function TechFaultsPage() {
 
   return (
     <>
-      <Seo title={`${brandVal} - 故障分类 | 古道论坛维修案例`} description={`古道论坛维修案例 ${brandVal} 维修案例故障分类`} />
+      <Seo title={`${brandVal} - 故障分类 | 古道论坛维修案例`} description={`古道论坛维修案例 ${brandVal} 维修案例故障分类`} keywords={`${brandVal}维修,${brandVal}故障,手机维修,芯片级维修,不开机维修,屏幕维修,主板维修`} />
       <div className="anim-fade-in max-w-3xl mx-auto">
         <Breadcrumb crumbs={[
           { label: '首页', href: '/' },
