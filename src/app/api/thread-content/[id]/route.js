@@ -5,7 +5,7 @@ import { createClient } from '@/lib/supabase/server'
 // 访客/普通/黄金 → { locked: true, reason }；钻石 → { content }
 export async function GET(request, { params }) {
   try {
-    const id = params.id
+    const { id } = await params
     const supabase = await createClient()
 
     const { data: thread } = await supabase
