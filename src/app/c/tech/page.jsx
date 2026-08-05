@@ -82,7 +82,7 @@ function TechBrandsContent() {
     setTotalCount(count || 0)
 
     const from_ = (page - 1) * PAGE_SIZE
-    let q = supabase.from('threads').select('*, profiles!inner(username, display_name, role)').eq('category_id', cat.id)
+    let q = supabase.from('threads').select('id, title, category_id, author_id, created_at, updated_at, reply_count, view_count, is_pinned, brand, fault, profiles!inner(username, display_name, role)').eq('category_id', cat.id)
     if (query.trim()) q = q.or(`title.ilike.%${query.trim()}%,content.ilike.%${query.trim()}%`)
     const { data } = await q
       .order('is_pinned', { ascending: false })

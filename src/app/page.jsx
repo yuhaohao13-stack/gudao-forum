@@ -61,12 +61,12 @@ export default function Home() {
       const annCat = sorted.find(c => c.slug === 'announcements')
       if (annCat) {
         // 只显示置顶帖（与板块页一致）
-        const { data: a } = await supabase.from('threads').select('*, profiles(username, display_name)').eq('category_id', annCat.id).eq('is_pinned', true).order('pin_order', { ascending: true, nullsFirst: false }).order('created_at', { ascending: false }).limit(5)
+        const { data: a } = await supabase.from('threads').select('id, title, created_at, profiles(username, display_name)').eq('category_id', annCat.id).eq('is_pinned', true).order('pin_order', { ascending: true, nullsFirst: false }).order('created_at', { ascending: false }).limit(5)
         setAnnouncements(a || [])
       }
 
       const aid = annCat?.id
-      let rq = supabase.from('threads').select('*, profiles(username, display_name), categories(name, slug)')
+      let rq = supabase.from('threads').select('id, title, category_id, author_id, created_at, updated_at, reply_count, view_count, is_pinned, brand, fault, profiles(username, display_name), categories(name, slug)')
       if (aid) rq = rq.neq('category_id', aid)
 
 

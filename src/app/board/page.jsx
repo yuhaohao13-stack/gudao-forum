@@ -57,7 +57,7 @@ export default function BoardPage() {
 
     // 当前页
     const from_ = (page - 1) * PAGE_SIZE
-    let q = supabase.from('threads').select('*, profiles(username, display_name), categories!inner(name, slug)')
+    let q = supabase.from('threads').select('id, title, category_id, author_id, created_at, updated_at, reply_count, view_count, is_pinned, brand, fault, profiles(username, display_name), categories!inner(name, slug)')
     if (aid) q = q.neq('category_id', aid)
     const { data } = await q
       .order('is_pinned', { ascending: false })

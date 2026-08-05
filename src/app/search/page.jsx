@@ -21,7 +21,7 @@ function Results() {
     try {
       let baseQuery = supabase
         .from('threads')
-        .select('*, profiles(username, display_name), categories(name, slug)')
+        .select('id, title, category_id, author_id, created_at, updated_at, reply_count, view_count, is_pinned, brand, fault, profiles(username, display_name), categories(name, slug)')
 
       // 如果指定了板块，只搜该板块
       if (categoryId) baseQuery = baseQuery.eq('category_id', categoryId)
@@ -29,10 +29,10 @@ function Results() {
       // 用不同的查询实例，避免互相干扰
       const titleQuery = supabase
         .from('threads')
-        .select('*, profiles(username, display_name), categories(name, slug)')
+        .select('id, title, category_id, author_id, created_at, updated_at, reply_count, view_count, is_pinned, brand, fault, profiles(username, display_name), categories(name, slug)')
       const contentQuery = supabase
         .from('threads')
-        .select('*, profiles(username, display_name), categories(name, slug)')
+        .select('id, title, category_id, author_id, created_at, updated_at, reply_count, view_count, is_pinned, brand, fault, profiles(username, display_name), categories(name, slug)')
 
       if (categoryId) {
         titleQuery.eq('category_id', categoryId)

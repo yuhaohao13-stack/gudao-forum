@@ -47,17 +47,17 @@ export default function TechCasesPage() {
       .eq('category_id', cat.id)
       .eq('brand', brandVal)
       .eq('fault', faultName)
-    if (query.trim()) countQ = countQ.or(`title.ilike.%${query.trim()}%,content.ilike.%${query.trim()}%`)
+    if (query.trim()) countQ = countQ.or(`title.ilike.%${query.trim()}%`)
     const { count } = await countQ
     setTotalCount(count || 0)
 
     const from_ = (page - 1) * PAGE_SIZE
     let q = supabase.from('threads')
-      .select('*, profiles!inner(username, display_name, role)')
+      .select('id, title, category_id, author_id, created_at, updated_at, reply_count, view_count, is_pinned, brand, fault, profiles!inner(username, display_name, role)')
       .eq('category_id', cat.id)
       .eq('brand', brandVal)
       .eq('fault', faultName)
-    if (query.trim()) q = q.or(`title.ilike.%${query.trim()}%,content.ilike.%${query.trim()}%`)
+    if (query.trim()) q = q.or(`title.ilike.%${query.trim()}%`)
     const { data } = await q
       .order(sortBy === 'hot' ? 'view_count' : 'created_at', { ascending: false })
       .range(from_, from_ + PAGE_SIZE - 1)

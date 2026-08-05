@@ -73,28 +73,25 @@ export default function ThreadPage() {
   useEffect(() => {
     const fetch = async () => {
       const { data: t } = await supabase.from('threads')
-        .select('*, profiles(username, display_name, role), categories(name, slug)').eq('id', id).maybeSingle()
+        .select('id, title, category_id, author_id, images, is_pinned, is_locked, view_count, reply_count, created_at, updated_at, brand, fault, profiles(username, display_name, role), categories(name, slug)')
+        .eq('id', id).maybeSingle()
       if (t) {
         await supabase.from('threads').update({ view_count: (t.view_count || 0) + 1 }).eq('id', id)
         const { data: r } = await supabase.from('replies').select('*, profiles(username, display_name)').eq('thread_id', id).order('created_at')
-        setReplies(r || []); setThread({ ...t, view_count: (t.view_count || 0) + 1 })
+        setReplies(r || []); setThread({ ...t, view_count: (t.view_count || 0) + 1, content: '' })
 
-        // Tech category permission check
-        if (t.categories?.slug === TECH_CATEGORY_SLUG) {
-          const access = canViewTech(user, profile)
-          if (!access.allowed) {
+        // 内容走服务端鉴权 API（维修案例仅钻石会员，其他板块公开）
+        try {
+          const res = await fetch(`/api/thread-content/${id}`)
+          const data = await res.json()
+          if (data.content !== undefined) {
+            setThread(prev => ({ ...prev, content: data.content }))
+          } else if (data.locked) {
             setTechLocked(true)
-            setTechLockInfo({ reason: access.reason || 'upgrade' })
-          } else if (!access.unlimited && access.remaining > 0) {
-            // Gold member: increment view counter
-            const { data: prof } = await supabase
-              .from('profiles').select('tech_views_used').eq('id', user.id).maybeSingle()
-            if (prof) {
-              await supabase.from('profiles')
-                .update({ tech_views_used: (prof.tech_views_used || 0) + 1 })
-                .eq('id', user.id)
-            }
+            setTechLockInfo({ reason: data.reason || 'upgrade' })
           }
+        } catch (e) {
+          console.error('内容加载失败', e)
         }
       }
       setLoading(false)
