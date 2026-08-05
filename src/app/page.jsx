@@ -61,7 +61,7 @@ export default function Home() {
       const annCat = sorted.find(c => c.slug === 'announcements')
       if (annCat) {
         // 只显示置顶帖（与板块页一致）
-        const { data: a } = await supabase.from('threads').select('*, profiles(username, display_name)').eq('category_id', annCat.id).eq('is_pinned', true).order('pin_order', { ascending: true, nullsFirst: false }).order('created_at', { ascending: false }).limit(6)
+        const { data: a } = await supabase.from('threads').select('*, profiles(username, display_name)').eq('category_id', annCat.id).eq('is_pinned', true).order('pin_order', { ascending: true, nullsFirst: false }).order('created_at', { ascending: false }).limit(5)
         setAnnouncements(a || [])
       }
 
@@ -134,7 +134,7 @@ export default function Home() {
                 <span className="text-xs font-semibold text-[#999] tracking-wide"><Megaphone size={14} className="inline-block align-text-bottom" /> {t('home.announcements')}</span>
                 <span className="tag">{t('home.pinned')}</span>
               </div>
-              {announcements.slice(0, 6).map((t, i) => (
+              {announcements.slice(0, 5).map((t, i) => (
                 <Link key={t.id} href={`/t/${t.id}`}
                   className={`flex items-center gap-2 px-3 py-2.5 hover:bg-[#fafafa] transition-colors ${i > 0 ? `anim-delay-${i}` : ''}`}>
                   <Pin size={14} className="text-[#b8860b] shrink-0 inline-block" />
