@@ -42,13 +42,13 @@ export default function CategoryPage() {
     // 分页查询：先拿置顶帖，再拿当前页的普通帖
     const from_ = (page - 1) * PAGE_SIZE
     const { data: pinned } = await supabase.from('threads')
-      .select('*, profiles!inner(username, display_name, role)')
+      .select('id, title, category_id, author_id, created_at, updated_at, reply_count, view_count, is_pinned, is_locked, pin_order, brand, fault, profiles!inner(username, display_name, role)')
       .eq('category_id', cat.id)
       .eq('is_pinned', true)
       .order('pin_order', { ascending: true, nullsFirst: false })
 
     const { data: regular } = await supabase.from('threads')
-      .select('*, profiles!inner(username, display_name, role)')
+      .select('id, title, category_id, author_id, created_at, updated_at, reply_count, view_count, is_pinned, is_locked, pin_order, brand, fault, profiles!inner(username, display_name, role)')
       .eq('category_id', cat.id)
       .eq('is_pinned', false)
       .order(sortBy === 'hot' ? 'reply_count' : 'created_at', { ascending: false })

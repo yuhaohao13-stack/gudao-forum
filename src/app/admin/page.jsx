@@ -16,7 +16,7 @@ export default function AdminPage() {
   useEffect(() => { if (!loading && (!user || profile?.role !== 'admin')) router.push('/') }, [user, profile, loading])
   useEffect(() => {
     if (profile?.role !== 'admin') return
-    supabase.from('threads').select('*, profiles(username, display_name), categories(name)').order('created_at', { ascending: false }).limit(50).then(({ data }) => setThreads(data || []))
+    supabase.from('threads').select('id, title, category_id, author_id, created_at, updated_at, reply_count, view_count, is_pinned, is_locked, pin_order, brand, fault, profiles(username, display_name), categories(name)').order('created_at', { ascending: false }).limit(50).then(({ data }) => setThreads(data || []))
     supabase.from('profiles').select('*').order('created_at', { ascending: false }).then(({ data }) => setUsers(data || []))
     supabase.from('donations').select('*, profiles!inner(username, display_name)').order('created_at', { ascending: false }).limit(100).then(({ data }) => setDonations(data || [])).catch(() => {})
   }, [profile])

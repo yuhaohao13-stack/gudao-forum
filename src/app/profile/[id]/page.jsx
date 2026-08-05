@@ -53,7 +53,7 @@ export default function ProfilePage() {
     })
 
     const { data: t } = await supabase.from('threads')
-      .select('*, categories(name, slug)').eq('author_id', id)
+      .select('id, title, category_id, author_id, created_at, updated_at, reply_count, view_count, is_pinned, is_locked, brand, fault, categories(name, slug)').eq('author_id', id)
       .order('created_at', { ascending: false }).limit(50)
     setThreads(t || [])
 
