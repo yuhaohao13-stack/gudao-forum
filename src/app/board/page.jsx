@@ -43,14 +43,14 @@ export default function BoardPage() {
     // 统计
     const statMap = {}
     for (const c of sorted) {
-      const { count: pc } = await supabase.from('threads').select('*', { count: 'exact', head: true }).eq('category_id', c.id)
+      const { count: pc } = await supabase.from('threads').select('id', { count: 'exact', head: true }).eq('category_id', c.id)
       statMap[c.id] = { posts: pc || 0 }
     }
     setStats(statMap)
 
     // 帖子总数（排除公告板块）
     const aid = sorted.find(c => c.slug === 'announcements')?.id
-    let countQ = supabase.from('threads').select('*', { count: 'exact', head: true })
+    let countQ = supabase.from('threads').select('id', { count: 'exact', head: true })
     if (aid) countQ = countQ.neq('category_id', aid)
     const { count } = await countQ
     setTotalCount(count || 0)

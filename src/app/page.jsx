@@ -70,11 +70,11 @@ export default function Home() {
       if (aid) rq = rq.neq('category_id', aid)
 
 
-      const { count: pc } = await supabase.from('threads').select('*', { count: 'exact', head: true })
+      const { count: pc } = await supabase.from('threads').select('id', { count: 'exact', head: true })
       setTotalPosts(pc || 0)
       const { data: v } = await supabase.from('threads').select('view_count')
       setTotalViews((v || []).reduce((s, t) => s + (t.view_count || 0), 0))
-      const { count: uc } = await supabase.from('profiles').select('*', { count: 'exact', head: true })
+      const { count: uc } = await supabase.from('profiles').select('id', { count: 'exact', head: true })
       setTotalUsers(uc || 0)
     }
     fetchData()

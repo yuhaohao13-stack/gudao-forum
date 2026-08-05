@@ -35,7 +35,7 @@ export default function CategoryPage() {
 
     // 先查总数
     const { count } = await supabase.from('threads')
-      .select('*', { count: 'exact', head: true })
+      .select('id', { count: 'exact', head: true })
       .eq('category_id', cat.id)
     setTotalCount(count || 0)
 

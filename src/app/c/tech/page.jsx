@@ -76,7 +76,7 @@ function TechBrandsContent() {
     const { data: cat } = await supabase.from('categories').select('*').eq('slug', TECH_CATEGORY_SLUG).single()
     if (!cat) return
     // 总数
-    let countQ = supabase.from('threads').select('*', { count: 'exact', head: true }).eq('category_id', cat.id)
+    let countQ = supabase.from('threads').select('id', { count: 'exact', head: true }).eq('category_id', cat.id)
     if (query.trim()) countQ = countQ.or(`title.ilike.%${query.trim()}%,content.ilike.%${query.trim()}%`)
     const { count } = await countQ
     setTotalCount(count || 0)

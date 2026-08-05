@@ -43,7 +43,7 @@ export default function TechCasesPage() {
     if (!cat) return
     // 总数（限定品牌+故障，搜索只搜本故障内）
     let countQ = supabase.from('threads')
-      .select('*', { count: 'exact', head: true })
+      .select('id', { count: 'exact', head: true })
       .eq('category_id', cat.id)
       .eq('brand', brandVal)
       .eq('fault', faultName)
