@@ -48,6 +48,24 @@ import BookmarkButton from '@/components/BookmarkButton'
 import { checkContent } from '@/lib/moderation'
 import { TECH_CATEGORY_SLUG, canViewTech, TechLockOverlay, getUpgradeInfo } from '@/lib/member'
 
+// 把正文里的链接（抖音/YouTube等）渲染成可点击超链接
+function renderContent(text) {
+  if (!text) return null
+  const URL_RE = /(https?:\/\/[^\s<]+)/g
+  const parts = text.split(URL_RE)
+  return parts.map((part, i) => {
+    if (i % 2 === 1) {
+      return (
+        <a key={i} href={part} target="_blank" rel="noopener noreferrer"
+          className="text-[#b45309] underline break-all hover:text-[#8a4308] transition-colors">
+          {part}
+        </a>
+      )
+    }
+    return part
+  })
+}
+
 export default function ThreadPage() {
   const { id } = useParams()
   const { user, profile } = useAuth()
@@ -216,7 +234,7 @@ export default function ThreadPage() {
             ) : null
           })()}
 
-          <div className="text-[#444] leading-7 sm:leading-8 whitespace-pre-wrap text-sm sm:text-base font-mono">{thread.content}</div>
+          <div className="text-[#444] leading-7 sm:leading-8 whitespace-pre-wrap text-sm sm:text-base font-mono">{renderContent(thread.content)}</div>
 
           {thread.images?.length > 0 && (
             <div className="mt-6 flex flex-wrap gap-3">
@@ -261,7 +279,7 @@ export default function ThreadPage() {
                     <span>·</span>
                     <span>{new Date(r.created_at).toLocaleString('zh-CN')}</span>
                   </div>
-                  <div className="text-[#444] leading-7 whitespace-pre-wrap text-sm">{r.content}</div>
+                  <div className="text-[#444] leading-7 whitespace-pre-wrap text-sm">{renderContent(r.content)}</div>
                 </>
               )}
             </div>
