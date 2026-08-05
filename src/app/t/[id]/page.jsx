@@ -72,20 +72,26 @@ export default function ThreadPage() {
 
   useEffect(() => {
     const fetch = async () => {
-      const { data: t } = await supabase.from('threads')
+      const { data: t, error: te } = await supabase.from('threads')
         .select('id, title, category_id, author_id, images, is_pinned, is_locked, view_count, reply_count, created_at, updated_at, brand, fault, profiles(username, display_name, role), categories(name, slug)')
         .eq('id', id).maybeSingle()
       if (t) {
-        await supabase.from('threads').update({ view_count: (t.view_count || 0) + 1 }).eq('id', id)
-        const { data: r } = await supabase.from('replies').select('*, profiles(username, display_name)').eq('thread_id', id).order('created_at')
+        const { error: ue } = await supabase.from('threads').update({ view_count: (t.view_count || 0) + 1 }).eq('id', id)
+        const { data: r, error: re } = await supabase.from('replies').select('*, profiles(username, display_name)').eq('thread_id', id).order('created_at')
         setReplies(r || []); setThread({ ...t, view_count: (t.view_count || 0) + 1, content: '' })
 
         // 内容走服务端鉴权 API（维修案例仅钻石会员，其他板块公开）
+        // ⚠️ 用 XHR 而非 fetch（Next.js 客户端 fetch 在详情页环境会挂起，XHR 已验证正常）
         try {
-          const controller = new AbortController()
-          const timer = setTimeout(() => controller.abort(), 10000)  // 10秒超时保护，避免卡loading
-          const res = await fetch(`/api/thread-content/${id}`, { signal: controller.signal })
-          clearTimeout(timer)
+          const res = await new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest()
+            xhr.open('GET', `/api/thread-content/${id}`)
+            xhr.timeout = 10000
+            xhr.onload = () => resolve({ status: xhr.status, json: () => JSON.parse(xhr.responseText || '{}') })
+            xhr.onerror = () => reject(new Error('xhr error'))
+            xhr.ontimeout = () => reject(new Error('xhr timeout'))
+            xhr.send()
+          })
           const data = await res.json()
           if (data.content !== undefined) {
             setThread(prev => ({ ...prev, content: data.content }))
