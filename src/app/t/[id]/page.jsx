@@ -4,7 +4,7 @@ import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { useAuth } from '@/components/AuthProvider'
-import { Crown, MessageCircle, Eye, Heart, Lock, Diamond } from 'lucide-react'
+import { Crown, MessageCircle, Eye, Heart, Lock, Diamond, Play } from 'lucide-react'
 import Breadcrumb from '@/components/Breadcrumb'
 
 // 技术板块：从标题解析品牌/故障（中文标题格式：品牌 故障：案例名）
@@ -184,6 +184,21 @@ export default function ThreadPage() {
           </div>
 
           <div className="my-6 h-px bg-[#f0f0f0]" />
+
+          {thread.content?.includes('douyin.com') && (() => {
+            const m = thread.content.match(/https:\/\/www\.douyin\.com\/video\/\d+/)
+            const url = m ? m[0] : null
+            return url ? (
+              <a href={url} target="_blank" rel="noopener noreferrer"
+                className="mb-5 inline-flex items-center gap-2.5 px-5 py-3.5 rounded-2xl text-sm font-bold text-white shadow-sm hover:opacity-90 transition-all">
+                <span className="w-8 h-8 rounded-full bg-white/25 flex items-center justify-center">
+                  <Play size={16} className="ml-0.5" />
+                </span>
+                观看抖音维修视频
+                <span className="text-xs font-normal opacity-75">点击跳转抖音 ›</span>
+              </a>
+            ) : null
+          })()}
 
           <div className="text-[#444] leading-7 sm:leading-8 whitespace-pre-wrap text-sm sm:text-base font-mono">{thread.content}</div>
 

@@ -6,7 +6,7 @@ import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { TECH_CATEGORY_SLUG, canViewTech, TechLockOverlay } from '@/lib/member'
 import { useAuth } from '@/components/AuthProvider'
-import { ChevronLeft, ChevronRight, MessageCircle, Lock, Clock } from 'lucide-react'
+import { ChevronLeft, ChevronRight, MessageCircle, Lock, Clock, Search, Flame } from 'lucide-react'
 import Breadcrumb from '@/components/Breadcrumb'
 
 // URL key → 数据库 brand 字段值
@@ -30,6 +30,9 @@ export default function TechCasesPage() {
   const [threads, setThreads] = useState([])
   const [totalCount, setTotalCount] = useState(0)
   const [lockOverlay, setLockOverlay] = useState({ show: false, reason: 'upgrade' })
+  const query = searchParams.get('q') || ''
+  const sortBy = searchParams.get('sort') === 'hot' ? 'hot' : 'latest'
+  const [searchInput, setSearchInput] = useState(searchParams.get('q') || '')
   const supabase = createClient()
 
   const isAdmin = profile?.role === 'admin' || profile?.role === 'moderator'
@@ -38,24 +41,28 @@ export default function TechCasesPage() {
   const fetchData = useCallback(async () => {
     const { data: cat } = await supabase.from('categories').select('*').eq('slug', TECH_CATEGORY_SLUG).single()
     if (!cat) return
-    // 总数
-    const { count } = await supabase.from('threads')
+    // 总数（限定品牌+故障，搜索只搜本故障内）
+    let countQ = supabase.from('threads')
       .select('*', { count: 'exact', head: true })
       .eq('category_id', cat.id)
       .eq('brand', brandVal)
       .eq('fault', faultName)
+    if (query.trim()) countQ = countQ.or(`title.ilike.%${query.trim()}%,content.ilike.%${query.trim()}%`)
+    const { count } = await countQ
     setTotalCount(count || 0)
 
     const from_ = (page - 1) * PAGE_SIZE
-    const { data } = await supabase.from('threads')
+    let q = supabase.from('threads')
       .select('*, profiles!inner(username, display_name, role)')
       .eq('category_id', cat.id)
       .eq('brand', brandVal)
       .eq('fault', faultName)
-      .order('created_at', { ascending: false })
+    if (query.trim()) q = q.or(`title.ilike.%${query.trim()}%,content.ilike.%${query.trim()}%`)
+    const { data } = await q
+      .order(sortBy === 'hot' ? 'view_count' : 'created_at', { ascending: false })
       .range(from_, from_ + PAGE_SIZE - 1)
     setThreads(data || [])
-  }, [brandVal, faultName, page, supabase])
+  }, [brandVal, faultName, page, query, sortBy, supabase])
 
   useEffect(() => { fetchData() }, [fetchData])
 
@@ -86,7 +93,41 @@ export default function TechCasesPage() {
             <ChevronLeft size={14} /> 返回故障分类
           </Link>
           <h1 className="text-xl font-bold text-[#1a1a1a] mt-1">{brandVal} · {faultName} 维修案例</h1>
-          <p className="text-[#aaa] text-xs mt-0.5">共 {totalCount} 篇</p>
+          <p className="text-[#aaa] text-xs mt-0.5">共 {totalCount} 篇{query.trim() ? `（搜索「${query.trim()}」结果）` : ''}</p>
+        </div>
+
+        {/* 搜索框 + 最新/热门 */}
+        <div className="mb-4 space-y-2.5">
+          <form onSubmit={(e) => { e.preventDefault(); router.push(`/c/tech/${encodeURIComponent(brandKey)}/${encodeURIComponent(faultName)}?q=${encodeURIComponent(searchInput.trim())}&sort=${sortBy}`) }}
+            className="flex gap-2">
+            <div className="relative flex-1">
+              <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#bbb]" />
+              <input
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
+                placeholder={`搜索${faultName}案例...`}
+                className="w-full bg-white border border-[#ece8e0] rounded-xl pl-9 pr-3 py-2.5 text-sm text-[#1a1a1a] placeholder-[#bbb] focus:outline-none focus:border-[#b45309]/50"
+              />
+            </div>
+            <button type="submit" className="px-4 py-2.5 rounded-xl text-sm font-semibold text-white shrink-0"
+              style={{ background: 'linear-gradient(135deg, #b45309, #d97706)' }}>搜索</button>
+            {query.trim() && (
+              <button type="button" onClick={() => { setSearchInput(''); router.push(`/c/tech/${encodeURIComponent(brandKey)}/${encodeURIComponent(faultName)}?sort=${sortBy}`) }}
+                className="px-3 py-2.5 rounded-xl text-sm text-[#888] bg-[#f5f0e8] shrink-0">清除</button>
+            )}
+          </form>
+          <div className="flex items-center gap-2">
+            <button onClick={() => router.push(`/c/tech/${encodeURIComponent(brandKey)}/${encodeURIComponent(faultName)}?q=${encodeURIComponent(query)}&sort=latest`)}
+              className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-colors ${sortBy === 'latest' ? 'text-white' : 'text-[#888] bg-white border border-[#ece8e0]'}`}
+              style={sortBy === 'latest' ? { background: 'linear-gradient(135deg, #b45309, #d97706)' } : {}}>
+              <Clock size={12} className="inline-block align-text-bottom mr-1" />最新
+            </button>
+            <button onClick={() => router.push(`/c/tech/${encodeURIComponent(brandKey)}/${encodeURIComponent(faultName)}?q=${encodeURIComponent(query)}&sort=hot`)}
+              className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-colors ${sortBy === 'hot' ? 'text-white' : 'text-[#888] bg-white border border-[#ece8e0]'}`}
+              style={sortBy === 'hot' ? { background: 'linear-gradient(135deg, #b45309, #d97706)' } : {}}>
+              <Flame size={12} className="inline-block align-text-bottom mr-1" />热门
+            </button>
+          </div>
         </div>
 
         <div className="card divide-y divide-[#f5f5f3]">
@@ -120,13 +161,13 @@ export default function TechCasesPage() {
         {totalPages > 1 && (
           <div className="flex items-center justify-center gap-1 mt-6 mb-8">
             <button
-              onClick={() => router.push(`/c/tech/${encodeURIComponent(brandKey)}/${encodeURIComponent(faultName)}?page=${page - 1}`)}
+              onClick={() => router.push(`/c/tech/${encodeURIComponent(brandKey)}/${encodeURIComponent(faultName)}?page=${page - 1}&q=${encodeURIComponent(query)}&sort=${sortBy}`)}
               disabled={page <= 1}
               className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium border border-[#eee8dc] bg-white text-[#666] hover:bg-[#f5f5f3] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
             ><ChevronLeft size={14} /> 上一页</button>
             <span className="px-3 text-xs text-[#666]">{page} / {totalPages}</span>
             <button
-              onClick={() => router.push(`/c/tech/${encodeURIComponent(brandKey)}/${encodeURIComponent(faultName)}?page=${page + 1}`)}
+              onClick={() => router.push(`/c/tech/${encodeURIComponent(brandKey)}/${encodeURIComponent(faultName)}?page=${page + 1}&q=${encodeURIComponent(query)}&sort=${sortBy}`)}
               disabled={page >= totalPages}
               className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium border border-[#eee8dc] bg-white text-[#666] hover:bg-[#f5f5f3] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
             >下一页 <ChevronRight size={14} /></button>
