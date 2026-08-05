@@ -82,7 +82,10 @@ export default function ThreadPage() {
 
         // 内容走服务端鉴权 API（维修案例仅钻石会员，其他板块公开）
         try {
-          const res = await fetch(`/api/thread-content/${id}`)
+          const controller = new AbortController()
+          const timer = setTimeout(() => controller.abort(), 10000)  // 10秒超时保护，避免卡loading
+          const res = await fetch(`/api/thread-content/${id}`, { signal: controller.signal })
+          clearTimeout(timer)
           const data = await res.json()
           if (data.content !== undefined) {
             setThread(prev => ({ ...prev, content: data.content }))
