@@ -186,7 +186,7 @@ export default function ThreadPage() {
           <div className="my-6 h-px bg-[#f0f0f0]" />
 
           {thread.content?.includes('douyin.com') && (() => {
-            const m = thread.content.match(/https:\/\/www\.douyin\.com\/video\/\d+/)
+            const m = thread.content.match(/https:\/\/(?:www\.douyin\.com\/video\/\d+|v\.douyin\.com\/[\w\/]+)/)
             const url = m ? m[0] : null
             return url ? (
               <a href={url} target="_blank" rel="noopener noreferrer"
