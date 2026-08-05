@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { useAuth } from '@/components/AuthProvider'
 import { canViewTech, TECH_CATEGORY_SLUG } from '@/lib/member'
-import { Clock, Flame, FileText, MessageCircle, Eye, Megaphone, Monitor, Flower2, Package, BookOpen, ArrowRight, ChevronLeft, ChevronRight, Search } from 'lucide-react'
+import { Clock, Flame, FileText, MessageCircle, Eye, Megaphone, Monitor, Flower2, Package, BookOpen, ArrowRight, ChevronLeft, ChevronRight, Search, Wrench } from 'lucide-react'
 import Breadcrumb from '@/components/Breadcrumb'
 
 const PAGE_SIZE = 10
@@ -86,9 +86,32 @@ export default function BoardPage() {
       <h1 className="text-xl font-bold text-[#1a1a1a] mt-2 mb-1">📋 论坛板块</h1>
       <p className="text-xs text-[#aaa] mb-6">选择一个板块浏览讨论</p>
 
-      {/* 板块列表：双列 */}
+      {/* 维修案例：单独一排（粗体+介绍） */}
+      {(() => { const techCat = categories.find(c => c.slug === 'tech'); if (!techCat) return null
+        const s = stats[techCat.id] || { posts: 0 }
+        return (
+          <Link key={techCat.id} href="/c/tech"
+            className="block bg-gradient-to-r from-[#f7f2ea] to-[#fdfbf7] border border-[#b45309]/25 rounded-2xl px-5 py-4 mb-3 transition-all hover:border-[#b45309]/50 hover:shadow-sm">
+            <div className="flex items-center gap-3">
+              <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-[#b45309] to-[#d97706] text-white flex items-center justify-center text-xl shrink-0"><Wrench size={22} /></div>
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-2">
+                  <span className="font-bold text-base text-[#1a1a1a]">维修案例</span>
+                  <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-[#b45309]/10 text-[#b45309] font-medium">品牌 × 故障</span>
+                </div>
+                <p className="text-xs text-[#888] mt-1 leading-relaxed">
+                  苹果 / 三星 / 华为 / 小米 / 其他安卓 / 电脑主板等品牌维修案例，按故障类型分类：不开机、屏幕显示触摸、主板芯片、电池耗电、充电尾插、信号无服务等，抖音维修视频持续同步更新，点击查看海量真实维修案例。
+                </p>
+                <div className="text-[10px] text-[#b45309] mt-1 font-semibold">{s.posts} 篇案例 →</div>
+              </div>
+            </div>
+          </Link>
+        )
+      })()}
+
+      {/* 其余板块：两排两列 */}
       <div className="grid grid-cols-2 gap-2 mb-8">
-        {categories.map(c => {
+        {categories.filter(c => c.slug !== 'tech' && c.slug !== 'announcements').map(c => {
           const s = stats[c.id] || { posts: 0 }
           return (
             <Link key={c.id} href={`/c/${c.slug}`}
