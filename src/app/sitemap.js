@@ -62,13 +62,21 @@ export default async function sitemap() {
   try {
     const supabase = await createClient()
 
-    // 论坛帖子
-    const { data: threads } = await supabase
-      .from('threads')
-      .select('id, updated_at')
-    if (threads) {
+    // 论坛帖子（分页拉取，突破 PostgREST 默认 1000 上限）
+    let allThreads = []
+    for (let offset = 0; offset < 6000; offset += 1000) {
+      const { data: page } = await supabase
+        .from('threads')
+        .select('id, updated_at')
+        .range(offset, offset + 999)
+      if (page && page.length) {
+        allThreads = allThreads.concat(page)
+        if (page.length < 1000) break
+      } else break
+    }
+    if (allThreads.length) {
       dynamicRoutes.push(
-        ...threads.map(t => ({
+        ...allThreads.map(t => ({
           url: `${BASE}/t/${t.id}`,
           lastModified: new Date(t.updated_at),
           changeFrequency: 'weekly',
