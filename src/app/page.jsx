@@ -124,63 +124,65 @@ export default function Home() {
         `}</style>
       </div>
 
-      {/* ===== 站务公告 ===== */}
-      {announcements.length > 0 && (
-        <section className="anim-up">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="text-xs font-semibold text-[#999] tracking-wide"><Megaphone size={14} className="inline-block align-text-bottom" /> {t('home.announcements')}</span>
-            <span className="tag">{t('home.pinned')}</span>
-          </div>
-          <div className="card divide-y divide-[#f5f5f5]">
-            {announcements.slice(0, 6).map((t, i) => (
-              <Link key={t.id} href={`/t/${t.id}`}
-                className={`flex items-center gap-2 px-3 py-2.5 hover:bg-[#fafafa] transition-colors ${i > 0 ? `anim-delay-${i}` : ''}`}>
-                <Pin size={14} className="text-[#b8860b] shrink-0 inline-block" />
-                <span className="text-sm font-medium text-[#1a1a1a] truncate">{t.title}</span>
-                <span className="ml-auto text-xs text-[#bbb] shrink-0">{new Date(t.created_at).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })}</span>
-              </Link>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* ===== 站长风采（照片在右，文字与虚影延伸到页面左端） ===== */}
+      {/* ===== 站长风采(左半，虚影延伸到左端) + 站务公告(右半) ===== */}
       <section className="anim-up">
-        <div className="card overflow-hidden">
-          <div className="px-1 sm:px-2 pt-1 pb-0.5 text-[8px] sm:text-[9px] font-medium text-[#b8860b] tracking-wider text-center border-b border-[#f5f5f5]">
-            {t('home.master_intro')}
-          </div>
-          <div className="flex flex-row-reverse">
-            {/* 照片 — 右侧不变 */}
-            <img
-              src="/images/hao-tiananmen.jpg?v=2"
-              alt="站长浩哥风采"
-              style={{height:'140px', width:'auto', maxWidth:'100%', display:'block'}}
-            />
-            {/* 文字 + 虚影 — flex-1 向左延伸到页面左端 */}
-            <div className="flex-1 flex items-center justify-center p-2 relative overflow-hidden" style={{minWidth:'80px'}}>
-              <img
-                src="/images/hao-tiananmen.jpg?v=2"
-                alt=""
-                aria-hidden
-                className="absolute inset-0 w-full h-full object-cover object-right opacity-30"
-                style={{ filter: 'blur(10px)', transform: 'scale(1.15)' }}
-              />
-              <div className="absolute inset-0 bg-gradient-to-r from-amber-100/20 via-amber-50/30 to-transparent" />
-              <div className="absolute right-0 top-1/2 -translate-y-1/2 mr-[-6px] w-3 h-3 bg-white/90 rotate-45 z-10" />
-              <div className="relative bg-white/85 backdrop-blur-md rounded-xl px-3 py-2.5 text-center shadow-sm z-10">
-                <div className="text-[11px] sm:text-xs font-medium text-[#333] leading-relaxed">
-                  {t('home.master_wish')}<br />
-                  {t('home.wish_line1')}<br />
-                  {t('home.wish_line2')}<br />
-                  🎉
-                </div>
-                <div className="mt-1 flex justify-center gap-1.5">
-                  <span className="text-[10px]">🎨</span>
-                  <span className="text-[10px]">💪</span>
-                  <span className="text-[10px]">💰</span>
+        <div className="flex flex-row gap-1 sm:gap-3 items-stretch">
+          {/* 站长风采 — 左半：照片靠右，虚影+文字从页面左端延伸到照片 */}
+          <div className="flex-1 min-w-0 shrink-0">
+            <div className="card overflow-hidden h-full">
+              <div className="px-1 sm:px-2 pt-1 pb-0.5 text-[8px] sm:text-[9px] font-medium text-[#b8860b] tracking-wider text-center border-b border-[#f5f5f5]">
+                {t('home.master_intro')}
+              </div>
+              <div className="flex flex-row-reverse h-[140px]">
+                {/* 照片 — 靠右（左半区域右侧） */}
+                <img
+                  src="/images/hao-tiananmen.jpg?v=2"
+                  alt="站长浩哥风采"
+                  style={{height:'140px', width:'auto', maxWidth:'100%', display:'block'}}
+                />
+                {/* 虚影 + 文字 — 从左端延伸到照片 */}
+                <div className="flex-1 flex items-center justify-center p-2 relative overflow-hidden" style={{minWidth:'80px'}}>
+                  <img
+                    src="/images/hao-tiananmen.jpg?v=2"
+                    alt=""
+                    aria-hidden
+                    className="absolute inset-0 w-full h-full object-cover object-right opacity-30"
+                    style={{ filter: 'blur(10px)', transform: 'scale(1.15)' }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-r from-amber-100/25 via-amber-50/30 to-transparent" />
+                  <div className="absolute right-0 top-1/2 -translate-y-1/2 mr-[-6px] w-3 h-3 bg-white/90 rotate-45 z-10" />
+                  <div className="relative bg-white/85 backdrop-blur-md rounded-xl px-3 py-2.5 text-center shadow-sm z-10">
+                    <div className="text-[11px] sm:text-xs font-medium text-[#333] leading-relaxed">
+                      {t('home.master_wish')}<br />
+                      {t('home.wish_line1')}<br />
+                      {t('home.wish_line2')}<br />
+                      🎉
+                    </div>
+                    <div className="mt-1 flex justify-center gap-1.5">
+                      <span className="text-[10px]">🎨</span>
+                      <span className="text-[10px]">💪</span>
+                      <span className="text-[10px]">💰</span>
+                    </div>
+                  </div>
                 </div>
               </div>
+            </div>
+          </div>
+          {/* 站务公告 — 右半 */}
+          <div className="w-1/2 shrink-0">
+            <div className="card divide-y divide-[#f5f5f5] h-full">
+              <div className="px-3 py-2 flex items-center gap-2">
+                <span className="text-xs font-semibold text-[#999] tracking-wide"><Megaphone size={14} className="inline-block align-text-bottom" /> {t('home.announcements')}</span>
+                <span className="tag">{t('home.pinned')}</span>
+              </div>
+              {announcements.slice(0, 6).map((t, i) => (
+                <Link key={t.id} href={`/t/${t.id}`}
+                  className={`flex items-center gap-2 px-3 py-2.5 hover:bg-[#fafafa] transition-colors ${i > 0 ? `anim-delay-${i}` : ''}`}>
+                  <Pin size={14} className="text-[#b8860b] shrink-0 inline-block" />
+                  <span className="text-sm font-medium text-[#1a1a1a] truncate">{t.title}</span>
+                  <span className="ml-auto text-xs text-[#bbb] shrink-0">{new Date(t.created_at).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })}</span>
+                </Link>
+              ))}
             </div>
           </div>
         </div>
