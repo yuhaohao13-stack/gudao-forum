@@ -70,12 +70,7 @@ export default function Header() {
               </svg>
               <span>抖音</span>
             </a>
-            <Link href="/crazy-repair" className="flex items-center gap-1 whitespace-nowrap text-xs sm:text-sm font-medium px-3 py-1.5 rounded-lg bg-[#f5f5f5] text-[#1a1a1a] hover:bg-[#e8e8e8] transition-colors">🔧 crazy 维修</Link>
             <DonateButton className="flex items-center gap-1.5 whitespace-nowrap text-lg sm:text-xl font-bold px-6 py-4 rounded-lg bg-[#f5f5f5] text-[#1a1a1a] hover:bg-[#e8e8e8] transition-colors" />
-            <Link href="/games" className="flex items-center gap-1 whitespace-nowrap text-xs sm:text-sm font-medium px-3 py-1.5 rounded-lg bg-[#f5f5f5] text-[#1a1a1a] hover:bg-[#e8e8e8] transition-colors">
-              <Gamepad2 size={14} />
-              <span>游戏</span>
-            </Link>
             <Link href="/board" className="flex items-center gap-1 whitespace-nowrap text-xs sm:text-sm font-medium px-3 py-1.5 rounded-lg bg-[#f5f5f5] text-[#1a1a1a] hover:bg-[#e8e8e8] transition-colors">
               <Layout size={14} />
               <span>板块</span>
