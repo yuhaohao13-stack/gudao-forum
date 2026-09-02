@@ -17,7 +17,6 @@ export const metadata = {
   description: '古道论坛是面向全球华人的国际中文社区与在线聊天室。以文会友，以友辅仁。中文论坛推荐、海外华人社区、自由交流、畅聊生活科技文化。免费注册即刻加入，与万千华人共筑温暖的精神家园。',
   manifest: '/manifest.json',
   appleWebApp: { capable: true, statusBarStyle: 'default', title: '古道论坛' },
-  alternates: { canonical: 'https://www.gudaoforum.com' },
   keywords: ['古道论坛', '国际中文社区', '中文聊天室', '华人论坛', '中国文化', '以文会友', '中文社区', '海外华人', '中文论坛推荐', 'Chinese Forum', 'Chinese Community', '中文交流平台', '华人聊天室', '在线聊天', '聊天交友', '中文社交平台', 'free Chinese forum', 'Chinese chat room', 'online community', 'gudaoforum', '唐诗三百首', '四大名著', '成语故事', '谚语故事', '高清壁纸', '彩票模拟器', '中华传统文化', '古典文学', '海外华人论坛推荐', '免费中文社区', '全球华人社区', '中文论坛注册', '华人交友', '中文社区论坛', 'best Chinese forum', 'global Chinese community', 'Chinese culture forum', '海外华人聊天', '中文社交媒体'],
   openGraph: {
     title: '古道论坛 | 国际中文社区 · 以文会友 · 在线聊天',

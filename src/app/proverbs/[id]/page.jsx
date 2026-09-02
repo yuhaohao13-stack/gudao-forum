@@ -1,4 +1,5 @@
 import PROVERBS from '@/data/proverbs'
+import { notFound } from 'next/navigation'
 import ProverbDetail from './_detail'
 
 // SEO: 每条谚语静态生成独立页面
@@ -16,6 +17,7 @@ export async function generateMetadata({ params }) {
   return {
     title: `${item.proverb} — 谚语故事`,
     description: desc,
+    alternates: { canonical: `https://www.gudaoforum.com/proverbs/${id}` },
     openGraph: {
       title: `${item.proverb} — 谚语故事`,
       description: desc,
@@ -25,6 +27,9 @@ export async function generateMetadata({ params }) {
   }
 }
 
-export default function Page() {
+export default async function Page({ params }) {
+  const { id } = await params
+  const item = PROVERBS.find((p) => p.id === Number(id))
+  if (!item) notFound()
   return <ProverbDetail />
 }

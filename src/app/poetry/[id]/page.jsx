@@ -1,4 +1,5 @@
 import POEMS from '@/data/poetry'
+import { notFound } from 'next/navigation'
 import PoemDetail from './_detail'
 
 // SEO: 每首诗静态生成独立页面（构建时预渲染，爬虫直接可见完整标题/描述/开头正文）
@@ -17,6 +18,7 @@ export async function generateMetadata({ params }) {
   return {
     title: `${poem.title}（${poem.author}）— 唐诗三百首`,
     description: desc,
+    alternates: { canonical: `https://www.gudaoforum.com/poetry/${id}` },
     openGraph: {
       title: `${poem.title}（${poem.author}）— 唐诗三百首`,
       description: desc,
@@ -29,8 +31,6 @@ export async function generateMetadata({ params }) {
 export default async function Page({ params }) {
   const { id } = await params
   const poem = POEMS.find((p) => p.id === Number(id))
-  if (!poem) {
-    return <PoemDetail />
-  }
+  if (!poem) notFound()
   return <PoemDetail />
 }

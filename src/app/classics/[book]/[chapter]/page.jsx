@@ -33,6 +33,7 @@ export async function generateMetadata({ params }) {
   return {
     title: `${chapter.title} - 《${book.title}》`,
     description: desc,
+    alternates: { canonical: `https://www.gudaoforum.com/classics/${bookId}/${chapterId}` },
     openGraph: {
       title: `${chapter.title} - 《${book.title}》`,
       description: desc,
@@ -46,15 +47,7 @@ export default async function Page({ params }) {
   const { book: bookId, chapter: chapterId } = await params
   const { book, chapter } = getSeo(bookId, chapterId)
 
-  if (!book || !chapter) {
-    return (
-      <div className="text-center py-20 anim-fade-in">
-        <div className="mb-3"><span className="text-3xl">📕</span></div>
-        <p className="text-[#999] text-sm">该章节不存在</p>
-        <Link href="/classics" className="text-[11px] text-[#b45309] hover:underline mt-2 inline-block">返回四大名著</Link>
-      </div>
-    )
-  }
+  if (!book || !chapter) notFound()
 
   const paragraphs = (chapter.preview || '').split('\n').map((s) => s.trim()).filter(Boolean)
 

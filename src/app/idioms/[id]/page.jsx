@@ -1,4 +1,5 @@
 import IDIOMS from '@/data/idioms'
+import { notFound } from 'next/navigation'
 import IdiomDetail from './_detail'
 
 // SEO: 每个成语静态生成独立页面
@@ -16,6 +17,7 @@ export async function generateMetadata({ params }) {
   return {
     title: `${item.idiom} — 成语故事`,
     description: desc,
+    alternates: { canonical: `https://www.gudaoforum.com/idioms/${id}` },
     openGraph: {
       title: `${item.idiom} — 成语故事`,
       description: desc,
@@ -25,6 +27,9 @@ export async function generateMetadata({ params }) {
   }
 }
 
-export default function Page() {
+export default async function Page({ params }) {
+  const { id } = await params
+  const item = IDIOMS.find((p) => p.id === Number(id))
+  if (!item) notFound()
   return <IdiomDetail />
 }
