@@ -10,6 +10,7 @@ export default function AdminPage() {
   const [threads, setThreads] = useState([]); const [users, setUsers] = useState([]); const [tab, setTab] = useState('threads'); const [donations, setDonations] = useState([])
   const [broadcastText, setBroadcastText] = useState(''); const [broadcasting, setBroadcasting] = useState(false); const [broadcastResult, setBroadcastResult] = useState('')
   const [threadSearch, setThreadSearch] = useState(''); const [memberSearch, setMemberSearch] = useState('')
+  const [annList, setAnnList] = useState([]); const [annCatId, setAnnCatId] = useState(null); const [annTitle, setAnnTitle] = useState(''); const [annContent, setAnnContent] = useState(''); const [annMsg, setAnnMsg] = useState('')
   const [memberError, setMemberError] = useState('')
   const supabase = createClient(); const router = useRouter()
   const THREAD_COLS = 'id, title, category_id, author_id, created_at, updated_at, reply_count, view_count, is_pinned, is_locked, pin_order, brand, fault, profiles(username, display_name), categories(name)'
@@ -26,6 +27,7 @@ export default function AdminPage() {
     if (profile?.role !== 'admin') return
     loadThreads()
     supabase.from('profiles').select('*').order('created_at', { ascending: false }).then(({ data }) => setUsers(data || []))
+    supabase.from('categories').select('id, slug').eq('slug', 'announcements').maybeSingle().then(({ data }) => { if (data) { setAnnCatId(data.id); loadAnnList(data.id) } })
     supabase.from('donations').select('*, profiles!inner(username, display_name)').order('created_at', { ascending: false }).limit(100).then(({ data }) => setDonations(data || [])).catch(() => {})
   }, [profile])
 
@@ -44,6 +46,21 @@ export default function AdminPage() {
     } catch (e) { setBroadcastResult(`❌ 网络错误: ${e.message}`) }
     setBroadcasting(false)
   }
+
+  const loadAnnList = async (catId) => {
+    const { data } = await supabase.from('threads').select('id, title, created_at, is_pinned, pin_order, profiles(username, display_name)').eq('category_id', catId).order('pin_order', { ascending: true, nullsFirst: false }).order('created_at', { ascending: false }).limit(200)
+    setAnnList(data || [])
+  }
+  const addAnnounce = async () => {
+    if (!annTitle.trim() || !annContent.trim()) { setAnnMsg('请填写标题和内容'); return }
+    if (annContent.trim().length < 10) { setAnnMsg('内容至少 10 个字'); return }
+    const { data, error } = await supabase.from('threads').insert({ title: annTitle.trim(), content: annContent.trim(), category_id: annCatId, author_id: user.id, is_pinned: true }).select().single()
+    if (error) { setAnnMsg('发布失败: ' + error.message); return }
+    setAnnTitle(''); setAnnContent(''); setAnnMsg('✅ 公告已发布并置顶'); loadAnnList(annCatId)
+    if (data) window.open(`/t/${data.id}`, '_blank')
+  }
+  const delAnnounce = async (id) => { if (!confirm('确定删除该公告？')) return; await supabase.from('threads').delete().eq('id', id); loadAnnList(annCatId) }
+  const toggleAnnPin = async (t) => { await supabase.from('threads').update({ is_pinned: !t.is_pinned }).eq('id', t.id); loadAnnList(annCatId) }
 
   const del = async (id) => { if (!confirm('确定删除？')) return; await supabase.from('threads').delete().eq('id', id); setThreads(threads.filter(t => t.id !== id)) }
 
@@ -72,13 +89,41 @@ export default function AdminPage() {
       <p className="text-xs text-[#aaa] mb-6">古道论坛管理中心</p>
 
       <div className="flex gap-2 mb-6 flex-wrap">
-        {['threads', 'users', 'membership', 'donations', 'broadcast'].map(t => (
+        {['announce', 'threads', 'users', 'membership', 'donations', 'broadcast'].map(t => (
           <button key={t} onClick={() => setTab(t)}
             className={`px-4 py-1.5 rounded-md text-sm font-medium transition-colors ${tab === t ? 'bg-[#b45309] text-white' : 'text-[#999] hover:text-[#1a1a1a] hover:bg-[#f5f5f5]'}`}>
-            {t === 'threads' ? '帖子管理' : t === 'users' ? '用户管理' : t === 'membership' ? <><Crown size={14} className="inline-block align-text-bottom" /> 会员</> : t === 'donations' ? '打赏记录' : <><Megaphone size={14} className="inline-block align-text-bottom" /> 公告</>}
+            {t === 'announce' ? <><Pin size={14} className="inline-block align-text-bottom" /> 站务公告</> : t === 'threads' ? '帖子管理' : t === 'users' ? '用户管理' : t === 'membership' ? <><Crown size={14} className="inline-block align-text-bottom" /> 会员</> : t === 'donations' ? '打赏记录' : <><Megaphone size={14} className="inline-block align-text-bottom" /> 公告</>}
           </button>
         ))}
       </div>
+
+      {tab === 'announce' && <div>
+        <div className="bg-white border border-[#f0f0f0] rounded-xl p-4 mb-4">
+          <p className="text-xs font-semibold text-[#1a1a1a] mb-2">📢 发布新公告（发布后自动置顶，显示在首页公告区）</p>
+          <input value={annTitle} onChange={e => setAnnTitle(e.target.value)} placeholder="公告标题" className="w-full mb-2 bg-white border border-[#f0f0f0] rounded-lg px-3 py-2 text-xs text-[#555] outline-none focus:border-[#b45309]" />
+          <textarea value={annContent} onChange={e => setAnnContent(e.target.value)} rows={4} placeholder="公告内容（10 字以上）..." className="w-full mb-2 bg-white border border-[#f0f0f0] rounded-lg px-3 py-2 text-xs text-[#555] outline-none focus:border-[#b45309] resize-none" />
+          {annMsg && <p className="text-xs text-[#b45309] mb-2">{annMsg}</p>}
+          <button onClick={addAnnounce} className="bg-[#b45309] hover:bg-[#92400e] text-white text-xs font-semibold px-4 py-2 rounded-lg transition-colors">发布公告</button>
+        </div>
+        <div className="border border-[#f0f0f0] rounded-xl divide-y divide-[#f5f5f5]">
+          {annList.length === 0 && <p className="text-center text-xs text-[#aaa] py-8">暂无公告</p>}
+          {annList.map(t => (
+            <div key={t.id} className="px-4 py-3 flex items-start justify-between gap-3 hover:bg-[#fafafa]">
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-2">
+                  {t.is_pinned && <Pin size={12} className="text-[#b8860b] shrink-0" />}
+                  <a href={`/t/${t.id}`} target="_blank" rel="noreferrer" className="font-medium text-sm text-[#1a1a1a] hover:text-[#b45309] truncate">{t.title}</a>
+                </div>
+                <div className="text-xs text-[#aaa] mt-0.5">{t.profiles?.display_name || t.profiles?.username} · {new Date(t.created_at).toLocaleDateString('zh-CN')} {t.is_pinned ? '· 置顶中' : '· 未置顶'}</div>
+              </div>
+              <div className="flex items-center gap-1 shrink-0">
+                <button onClick={() => toggleAnnPin(t)} title={t.is_pinned ? '取消置顶' : '置顶'} className={`text-xs px-2 py-1 rounded transition-colors hover:bg-[#f5f5f5] ${t.is_pinned ? 'text-[#8b6914]' : 'text-[#ddd]'}`}><Pin size={14} className="inline-block" /></button>
+                <button onClick={() => delAnnounce(t.id)} className="text-xs px-2 py-1 rounded text-[#ddd] hover:bg-[#f5f5f5] hover:text-[#c23531] transition-colors"><Trash2 size={14} className="inline-block" /></button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>}
 
       {tab === 'threads' && <div>
           <input value={threadSearch} onChange={e => { setThreadSearch(e.target.value); loadThreads(e.target.value) }}
