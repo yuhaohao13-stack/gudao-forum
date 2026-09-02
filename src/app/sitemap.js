@@ -1,6 +1,33 @@
 import { createClient } from '@/lib/supabase/server'
+import POEMS from '@/data/poetry'
+import IDIOMS from '@/data/idioms'
+import PROVERBS from '@/data/proverbs'
+import CLASSICS from '@/data/classics'
+import CLASSICS_SEO from '@/data/classics-seo'
 
 const BASE = 'https://www.gudaoforum.com'
+
+// 文学内容详情页（SEO 重点，与各 SSG 路由保持一致）
+function literatureRoutes() {
+  const routes = []
+  const now = new Date()
+  for (const p of POEMS) {
+    routes.push({ url: `${BASE}/poetry/${p.id}`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 })
+  }
+  for (const p of IDIOMS) {
+    routes.push({ url: `${BASE}/idioms/${p.id}`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 })
+  }
+  for (const p of PROVERBS) {
+    routes.push({ url: `${BASE}/proverbs/${p.id}`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 })
+  }
+  for (const b of CLASSICS) {
+    const chs = CLASSICS_SEO[b.id] || []
+    for (const c of chs) {
+      routes.push({ url: `${BASE}/classics/${b.id}/${c.id}`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 })
+    }
+  }
+  return routes
+}
 
 // 静态页面路由
 const STATIC_ROUTES = [
@@ -8,7 +35,7 @@ const STATIC_ROUTES = [
   { url: BASE, lastModified: new Date(), changeFrequency: 'hourly', priority: 1.0 },
 
   // 论坛板块
-  { url: `${BASE}/c`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
+  { url: `${BASE}/board`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
 
   // 古典文学
   { url: `${BASE}/classics`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.9 },
@@ -141,5 +168,5 @@ export default async function sitemap() {
     console.error('Failed to fetch dynamic routes for sitemap:', e.message)
   }
 
-  return [...STATIC_ROUTES, ...dynamicRoutes]
+  return [...STATIC_ROUTES, ...literatureRoutes(), ...dynamicRoutes]
 }
