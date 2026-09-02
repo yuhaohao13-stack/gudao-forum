@@ -4,7 +4,7 @@ import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { useAuth } from '@/components/AuthProvider'
-import { Crown, MessageCircle, Eye, Heart, Lock, Diamond, Play } from 'lucide-react'
+import { Crown, MessageCircle, Eye, Heart, Lock, Diamond, Play, Trash2 } from 'lucide-react'
 import Breadcrumb from '@/components/Breadcrumb'
 import Seo from '@/components/Seo'
 
@@ -133,6 +133,21 @@ export default function ThreadPage() {
     supabase.from("thread_likes").select("id", { count: "exact", head: true }).eq("thread_id", id)
       .then(({ count }) => setLikeCount(count || 0))
   }, [user, id])
+
+  // 管理员删除回复（仅 admin，前端隐藏按钮 + 后端鉴权双重保护）
+  const deleteReply = async (rid) => {
+    if (!confirm('确定删除该回复？（仅管理员可操作）')) return
+    const res = await fetch('/api/reply/delete', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ reply_id: rid }),
+    })
+    const data = await res.json()
+    if (data.success) {
+      setReplies(replies.map(x => x.id === rid ? { ...x, is_deleted: true } : x))
+    } else {
+      alert('删除失败: ' + (data.error || '未知错误'))
+    }
+  }
 
   const handleReply = async (e) => {
     e.preventDefault(); setError('')
@@ -278,6 +293,12 @@ export default function ThreadPage() {
                     <Link href={`/profile/${r.author_id}`} className="text-[#888] hover:text-[#c23531] transition-colors">{r.profiles?.display_name || r.profiles?.username}</Link>
                     <span>·</span>
                     <span>{new Date(r.created_at).toLocaleString('zh-CN')}</span>
+                    {profile?.role === 'admin' && (
+                      <button onClick={() => deleteReply(r.id)} title="删除回复（管理员）"
+                        className="ml-auto text-[#ccc] hover:text-[#c23531] transition-colors shrink-0">
+                        <Trash2 size={13} className="inline-block" />
+                      </button>
+                    )}
                   </div>
                   <div className="text-[#444] leading-7 whitespace-pre-wrap text-sm">{renderContent(r.content)}</div>
                 </>
