@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 import POEMS from '@/data/poetry'
 import IDIOMS from '@/data/idioms'
 import PROVERBS from '@/data/proverbs'
@@ -6,6 +6,16 @@ import CLASSICS from '@/data/classics'
 import CLASSICS_SEO from '@/data/classics-seo'
 
 const BASE = 'https://www.gudaoforum.com'
+
+// sitemap 静态化：不用 cookies 版 client（避免强制 dynamic），查询公开数据用纯 anon client
+const supabase = createSupabaseClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+  { auth: { persistSession: false, autoRefreshToken: false } }
+)
+
+// ISR：生成后缓存 24 小时，抓取秒回（谷歌不再超时）
+export const revalidate = 86400
 
 // 文学内容详情页（SEO 重点，与各 SSG 路由保持一致）
 function literatureRoutes() {
@@ -87,8 +97,6 @@ const STATIC_ROUTES = [
 export default async function sitemap() {
   let dynamicRoutes = []
   try {
-    const supabase = await createClient()
-
     // 论坛帖子（分页拉取，突破 PostgREST 默认 1000 上限）
     let allThreads = []
     for (let offset = 0; offset < 6000; offset += 1000) {
