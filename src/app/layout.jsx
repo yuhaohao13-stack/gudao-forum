@@ -104,7 +104,7 @@ export default function RootLayout({ children }) {
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="theme-color" content="#fafaf9" />
         <link rel="sitemap" type="application/xml" title="古道论坛Sitemap" href="/sitemap.xml" />
-        <meta name="baidu-site-verification" content="codeva-ivcpKCSsQj" />
+        <meta name="baidu-site-verification" content="codeva-WBaVRBwJzY" />
         <meta name="build-version" content="v3-refined2" />
         <script
           type="application/ld+json"
