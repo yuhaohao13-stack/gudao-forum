@@ -12,11 +12,19 @@ export default function AdminPage() {
   const [threadSearch, setThreadSearch] = useState(''); const [memberSearch, setMemberSearch] = useState('')
   const [memberError, setMemberError] = useState('')
   const supabase = createClient(); const router = useRouter()
+  const THREAD_COLS = 'id, title, category_id, author_id, created_at, updated_at, reply_count, view_count, is_pinned, is_locked, pin_order, brand, fault, profiles(username, display_name), categories(name)'
+
+  const loadThreads = async (kw = '') => {
+    let q = supabase.from('threads').select(THREAD_COLS)
+    if (kw.trim()) q = q.ilike('title', `%${kw.trim()}%`)
+    const { data } = await q.order('created_at', { ascending: false }).limit(50)
+    setThreads(data || [])
+  }
 
   useEffect(() => { if (!loading && (!user || profile?.role !== 'admin')) router.push('/') }, [user, profile, loading])
   useEffect(() => {
     if (profile?.role !== 'admin') return
-    supabase.from('threads').select('id, title, category_id, author_id, created_at, updated_at, reply_count, view_count, is_pinned, is_locked, pin_order, brand, fault, profiles(username, display_name), categories(name)').order('created_at', { ascending: false }).limit(50).then(({ data }) => setThreads(data || []))
+    loadThreads()
     supabase.from('profiles').select('*').order('created_at', { ascending: false }).then(({ data }) => setUsers(data || []))
     supabase.from('donations').select('*, profiles!inner(username, display_name)').order('created_at', { ascending: false }).limit(100).then(({ data }) => setDonations(data || [])).catch(() => {})
   }, [profile])
@@ -73,11 +81,11 @@ export default function AdminPage() {
       </div>
 
       {tab === 'threads' && <div>
-          <input value={threadSearch} onChange={e => setThreadSearch(e.target.value)}
+          <input value={threadSearch} onChange={e => { setThreadSearch(e.target.value); loadThreads(e.target.value) }}
             className="w-full mb-3 bg-white border border-[#f0f0f0] rounded-lg px-3 py-2 text-xs text-[#555] outline-none focus:border-[#b45309]"
-            placeholder="🔍 搜索帖子标题..." />
+            placeholder="🔍 搜索帖子标题（全库搜索）..." />
           <div className="border border-[#f0f0f0] rounded-xl divide-y divide-[#f5f5f5]">
-          {threads.filter(t => !threadSearch || t.title.toLowerCase().includes(threadSearch.toLowerCase())).map(t => (
+          {threads.map(t => (
             <div key={t.id} className="px-4 py-3 flex items-start justify-between gap-3 hover:bg-[#fafafa]">
               <div className="min-w-0 flex-1">
                 <h3 className="font-medium text-sm truncate">{t.title}</h3>
