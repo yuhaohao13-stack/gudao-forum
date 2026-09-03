@@ -225,6 +225,19 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ===== 在线聊天室（单独一排，置于 AI 工具箱/地图之上，2026-09-03 浩哥要求） ===== */}
+      <Link href="/chat"
+        className="block bg-gradient-to-r from-[#fdf8f4] to-[#f8f0e8] border border-[#eee8dc] rounded-xl px-3 py-2.5 transition-all hover:border-[#c23531] hover:shadow-sm hover:-translate-y-0.5 anim-up">
+        <div className="flex items-center gap-2">
+          <div className="w-7 h-7 rounded-lg bg-[#c23531] bg-opacity-10 flex items-center justify-center text-sm shrink-0">💬</div>
+          <div className="min-w-0 flex-1">
+            <div className="text-xs font-semibold text-[#1a1a1a]">在线聊天室</div>
+            <div className="text-[9px] text-[#999] leading-tight">会员可参与聊天 · 实时在线 · 以文会友</div>
+          </div>
+          <span className="text-[10px] text-[#c23531] font-medium shrink-0">→</span>
+        </div>
+      </Link>
+
       <div className="grid grid-cols-2 gap-2 anim-up">
         <Link href="/ai-tools">
           <div className="bg-gradient-to-r from-[#eef2ff] via-[#f0fdf4] to-[#fefce8] border border-[#d0d5e0] rounded-xl px-3 py-2.5 transition-all hover:shadow-md hover:-translate-y-0.5 h-full">
@@ -254,19 +267,6 @@ export default function Home() {
 
       {/* ===== 功能入口（2×2双排） ===== */}
       <div className="grid grid-cols-2 gap-2 anim-up">
-        <Link href="/chat">
-          <div className="bg-gradient-to-r from-[#fdf8f4] to-[#f8f0e8] border border-[#eee8dc] rounded-xl px-3 py-2.5 transition-all hover:border-[#c23531] hover:shadow-sm hover:-translate-y-0.5 h-full">
-            <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-[#c23531] bg-opacity-10 flex items-center justify-center text-sm shrink-0">💬</div>
-              <div className="min-w-0 flex-1">
-                <div className="text-xs font-semibold text-[#1a1a1a]">在线聊天室</div>
-                <div className="text-[9px] text-[#999] leading-tight">会员可参与聊天</div>
-              </div>
-              <span className="text-[10px] text-[#c23531] font-medium shrink-0">→</span>
-            </div>
-          </div>
-        </Link>
-
         <Link href="/lottery">
           <div className="bg-gradient-to-r from-[#fdf8f4] to-[#fefaf5] border border-[#eee8dc] rounded-xl px-3 py-2.5 transition-all hover:border-[#b45309] hover:shadow-sm hover:-translate-y-0.5 h-full">
             <div className="flex items-center gap-2">
