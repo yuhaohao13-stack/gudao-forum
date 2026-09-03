@@ -69,7 +69,6 @@ export async function POST(request) {
         points: remainingPoints,
         membership_level: target,
         tech_views_used: 0,
-        music_downloads_used: 0,
         thread_pins_used: 0,
       })
       .eq('id', user.id)

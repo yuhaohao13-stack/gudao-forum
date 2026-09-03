@@ -11,20 +11,6 @@ export function canViewTech(user, profile) {
   return { allowed: false, reason: 'diamond_only' }
 }
 
-// 检查音乐下载权限
-export function canDownloadMusic(user, profile) {
-  if (!user) return { allowed: false, reason: 'login' }
-  const level = profile?.membership_level || 'regular'
-  if (level === 'diamond') return { allowed: true, unlimited: true }
-  if (level === 'gold') {
-    const max = profile?.gold_music_downloads ?? 10
-    const used = profile?.music_downloads_used ?? 0
-    if (used < max) return { allowed: true, remaining: max - used }
-    return { allowed: false, reason: 'exhausted' }
-  }
-  return { allowed: false, reason: 'upgrade' }
-}
-
 // 检查帖子置顶权限
 export function canPinThread(user, profile) {
   if (!user) return { allowed: false, reason: 'login' }
