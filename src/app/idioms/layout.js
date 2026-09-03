@@ -3,6 +3,7 @@ export const metadata = {
     absolute: '成语故事大全300篇 - 古道论坛古典文学',
   },
   description: '古道论坛收录成语故事300篇，每个成语包含典故、释义、用法、出处，学习中华传统文化。',
+  keywords: '成语故事,成语大全,成语典故,成语释义,中华成语',
   alternates: {
     canonical: 'https://www.gudaoforum.com/idioms',
   },
