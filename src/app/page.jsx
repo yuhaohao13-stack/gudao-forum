@@ -190,11 +190,12 @@ export default function Home() {
       {/* ===== 版块（缩小紧凑版） ===== */}
       <section className="anim-up">
         <Link href="/board" className="inline-flex items-center gap-1 text-xs font-semibold text-[#bbb] mb-2 hover:text-[#b45309] transition-colors">{t('board.title')} <span className="text-[9px]">→</span></Link>
-        {/* 维修案例：单独一排（粗体+介绍） */}
+        {/* 维修案例 + 在线聊天室：同一排两列（2026-09-03 浩哥要求） */}
+        <div className="grid grid-cols-2 gap-2 mb-2">
         {(() => { const techCat = categories.find(c => c.slug === 'tech'); if (!techCat) return null
           return (
             <Link key={techCat.id} href="/c/tech"
-              className="block bg-gradient-to-r from-[#f7f2ea] to-[#fdfbf7] border border-[#b45309]/25 rounded-xl px-4 py-3 mb-2 transition-all hover:border-[#b45309]/50 hover:shadow-sm">
+              className="block h-full bg-gradient-to-r from-[#f7f2ea] to-[#fdfbf7] border border-[#b45309]/25 rounded-xl px-4 py-3 transition-all hover:border-[#b45309]/50 hover:shadow-sm">
               <div className="flex items-center gap-2.5">
                 <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#b45309] to-[#d97706] text-white flex items-center justify-center text-lg shrink-0"><Wrench size={20} /></div>
                 <div className="min-w-0 flex-1">
@@ -209,6 +210,18 @@ export default function Home() {
             </Link>
           )
         })()}
+        <Link href="/chat"
+          className="block h-full bg-gradient-to-r from-[#fdf8f4] to-[#f8f0e8] border border-[#eee8dc] rounded-xl px-4 py-3 transition-all hover:border-[#c23531] hover:shadow-sm hover:-translate-y-0.5">
+          <div className="flex items-center gap-2.5 h-full">
+            <div className="w-9 h-9 rounded-xl bg-[#c23531] bg-opacity-10 flex items-center justify-center text-lg shrink-0">💬</div>
+            <div className="min-w-0 flex-1">
+              <div className="text-xs font-semibold text-[#1a1a1a]">在线聊天室</div>
+              <div className="text-[9px] text-[#999] leading-tight truncate">会员可参与聊天 · 实时在线 · 以文会友</div>
+            </div>
+            <span className="text-[10px] text-[#c23531] font-medium shrink-0">→</span>
+          </div>
+        </Link>
+        </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
           {categories.filter(c => c.slug !== 'tech' && c.slug !== 'announcements').map((c, i) => (
             <Link key={c.id} href={`/c/${c.slug}`}
@@ -224,19 +237,6 @@ export default function Home() {
           ))}
         </div>
       </section>
-
-      {/* ===== 在线聊天室（单独一排，置于 AI 工具箱/地图之上，2026-09-03 浩哥要求） ===== */}
-      <Link href="/chat"
-        className="block bg-gradient-to-r from-[#fdf8f4] to-[#f8f0e8] border border-[#eee8dc] rounded-xl px-3 py-2.5 transition-all hover:border-[#c23531] hover:shadow-sm hover:-translate-y-0.5 anim-up">
-        <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg bg-[#c23531] bg-opacity-10 flex items-center justify-center text-sm shrink-0">💬</div>
-          <div className="min-w-0 flex-1">
-            <div className="text-xs font-semibold text-[#1a1a1a]">在线聊天室</div>
-            <div className="text-[9px] text-[#999] leading-tight">会员可参与聊天 · 实时在线 · 以文会友</div>
-          </div>
-          <span className="text-[10px] text-[#c23531] font-medium shrink-0">→</span>
-        </div>
-      </Link>
 
       <div className="grid grid-cols-2 gap-2 anim-up">
         <Link href="/ai-tools">
