@@ -20,12 +20,6 @@ const FEATURES = [
     diamond: '♾️ 无限次',
   },
   {
-    name: '🎵 音乐下载',
-    free: <XIcon size={14} className="text-red-400" />,
-    gold: '10首',
-    diamond: '♾️ 无限次',
-  },
-  {
     name: '📜 唐诗三百首',
     free: '只看3行',
     gold: <Check size={14} className="text-green-500" />,
@@ -152,7 +146,6 @@ export default function MemberRulesPage() {
         <ul className="space-y-1.5">
           <li className="flex items-start gap-1.5 text-xs text-[#666]"><Check size={12} className="text-green-500 mt-0.5 shrink-0" />彩票模拟器摇奖 500次</li>
           <li className="flex items-start gap-1.5 text-xs text-[#666]"><Check size={12} className="text-green-500 mt-0.5 shrink-0" />技术板块帖子查看 10次（总次数，非每日）</li>
-          <li className="flex items-start gap-1.5 text-xs text-[#666]"><Check size={12} className="text-green-500 mt-0.5 shrink-0" />音乐下载 10首</li>
           <li className="flex items-start gap-1.5 text-xs text-[#666]"><Check size={12} className="text-green-500 mt-0.5 shrink-0" />高清壁纸下载（10个分类50套）</li>
           <li className="flex items-start gap-1.5 text-xs text-[#666]"><Check size={12} className="text-green-500 mt-0.5 shrink-0" />唐诗三百首 300篇 全文阅读</li>
           <li className="flex items-start gap-1.5 text-xs text-[#666]"><Check size={12} className="text-green-500 mt-0.5 shrink-0" />四大名著 章回阅读</li>
@@ -176,7 +169,6 @@ export default function MemberRulesPage() {
         <ul className="space-y-1.5">
           <li className="flex items-start gap-1.5 text-xs text-[#666]"><Check size={12} className="text-green-500 mt-0.5 shrink-0" />彩票模拟器摇奖 无限次 ♾️</li>
           <li className="flex items-start gap-1.5 text-xs text-[#666]"><Check size={12} className="text-green-500 mt-0.5 shrink-0" />技术板块帖子查看 无限制</li>
-          <li className="flex items-start gap-1.5 text-xs text-[#666]"><Check size={12} className="text-green-500 mt-0.5 shrink-0" />音乐下载 无限制</li>
           <li className="flex items-start gap-1.5 text-xs text-[#666]"><Check size={12} className="text-green-500 mt-0.5 shrink-0" />高清壁纸下载（10个分类50套）无限制</li>
           <li className="flex items-start gap-1.5 text-xs text-[#666]"><Check size={12} className="text-green-500 mt-0.5 shrink-0" />唐诗三百首 300篇 全文阅读</li>
           <li className="flex items-start gap-1.5 text-xs text-[#666]"><Check size={12} className="text-green-500 mt-0.5 shrink-0" />四大名著 章回阅读</li>

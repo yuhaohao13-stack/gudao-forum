@@ -76,9 +76,6 @@ const STATIC_ROUTES = [
   { url: `${BASE}/wallpaper/flowers`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
   { url: `${BASE}/wallpaper/minimal`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
 
-  // 音乐
-  { url: `${BASE}/music`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
-
   // 会员
   { url: `${BASE}/members`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.6 },
 
