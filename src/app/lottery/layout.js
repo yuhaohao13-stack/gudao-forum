@@ -10,6 +10,7 @@ export const metadata = {
     url: 'https://www.gudaoforum.com/lottery',
     type: 'website',
   },
+  alternates: { canonical: 'https://www.gudaoforum.com/lottery' },
 }
 
 export default function LotteryLayout({ children }) {

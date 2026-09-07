@@ -9,6 +9,7 @@ export const metadata = {
     siteName: '古道论坛',
     type: 'website',
   },
+  alternates: { canonical: 'https://www.gudaoforum.com/games' },
 }
 
 export default function GamesLayout({ children }) {
