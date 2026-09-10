@@ -35,7 +35,8 @@ export default function Footer() {
               <Link href="/search" style={{color:'#aaa',textDecoration:'none'}}>搜索</Link>
               <Link href="/register" style={{color:'#aaa',textDecoration:'none'}}>免费注册</Link>
               <Link href="/crazy-repair" style={{color:'#aaa',textDecoration:'none'}}>Crazy维修</Link>
-              <a href="https://www.youtube.com/@haohaoyu-o1d5q" target="_blank" rel="noopener noreferrer" style={{color:'#aaa',textDecoration:'none'}}>▶ YouTube 维修频道</a>
+              <a href="https://v.douyin.com/NvUr5C82ZDM/" target="_blank" rel="noopener noreferrer" style={{color:'#aaa',textDecoration:'none'}}>♪ 抖音维修视频（Crazy维修）</a>
+              <a href="https://www.youtube.com/@crazyrepairsg" target="_blank" rel="noopener noreferrer" style={{color:'#aaa',textDecoration:'none'}}>▶ YouTube 维修频道 @crazyrepairsg</a>
             </div>
           </div>
 
