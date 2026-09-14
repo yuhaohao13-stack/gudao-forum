@@ -104,8 +104,12 @@ export default async function Page({ params }) {
   let view = 'full'
   let lockReason = null
 
-  // 维修案例板块：仅钻石会员可见全文（与 /api/thread-content 鉴权一致）
-  if (isTech) {
+  // 2026-09-14 SEO 修复：维修案例(tech)板块改为**对所有人（含未登录/爬虫）公开全文**。
+  // 原因：此前 tech 帖对非钻石会员只输出 150 字摘录，正文根本不进 HTML
+  // → 1356 篇帖子被引擎视为薄内容，Google/百度/头条几乎不收录。
+  // 如需恢复只读摘录：把下面 TECH_PUBLIC 改为 false。
+  const TECH_PUBLIC = true
+  if (isTech && !TECH_PUBLIC) {
     view = 'locked'
     lockReason = 'login'
     try {
