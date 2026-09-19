@@ -6,6 +6,7 @@ import { useAuth } from '@/components/AuthProvider'
 import { Crown, MessageCircle, Eye, Heart, Play, Trash2 } from 'lucide-react'
 import Breadcrumb from '@/components/Breadcrumb'
 import BookmarkButton from '@/components/BookmarkButton'
+import ShareButton from '@/components/ShareButton'
 import { checkContent } from '@/lib/moderation'
 import { TECH_CATEGORY_SLUG } from '@/lib/member'
 
@@ -207,6 +208,7 @@ export default function ThreadDetail({ initial }) {
           <Link href={`/profile/${thread.author.id}`} className="text-[#888] hover:text-[#c23531] transition-colors">{authorName}</Link>
           <span>·</span>
           <span>{thread.createdAtText}</span>
+          <ShareButton title={thread.title} />
         </div>
 
         <div className="my-6 h-px bg-[#f0f0f0]" />
@@ -279,6 +281,7 @@ export default function ThreadDetail({ initial }) {
                 {liked ? <Heart size={16} className="fill-current inline-block align-text-bottom" /> : <Heart size={16} className="inline-block align-text-bottom" />} <span>{liked ? "已赞" : "点赞"} {likeCount > 0 ? likeCount : ""}</span>
               </button>
               <BookmarkButton threadId={thread.id} />
+              <ShareButton title={thread.title} />
               <span className="stat"><MessageCircle size={14} className="inline-block align-text-bottom" /> {replies.length} 回复</span>
               <span className="stat"><Eye size={14} className="inline-block align-text-bottom" /> {viewCount} 浏览</span>
             </div>
