@@ -81,19 +81,57 @@ export async function generateMetadata({ params }) {
   const description = desc ? `${desc}${desc.length >= 140 ? '…' : ''} | 古道论坛华人社区` : '古道论坛华人社区帖子。以文会友，以友辅仁，免费注册即刻加入。'
   const canonical = `https://www.gudaoforum.com/t/${id}`
 
-  // SEO：每帖自己的关键词（品牌/故障词 + 标题词 + 维修类通用词）
-  const kwWords = cleanTitle
+  // SEO：每帖自己的关键词（中文 + 英文，与维修站同一套规则）
+  const TAG_EN = {
+    'iPhone': 'iPhone', 'iPad': 'iPad', 'MacBook': 'MacBook', '三星': 'Samsung', '华为': 'Huawei',
+    '小米': 'Xiaomi', 'OPPO': 'OPPO', 'vivo': 'vivo', '一加': 'OnePlus', '荣耀': 'Honor',
+    '摩托罗拉': 'Motorola', '华硕': 'ASUS', '联想': 'Lenovo', '戴尔': 'Dell', '惠普': 'HP',
+    '游戏机': 'game console', '相机': 'camera', '手表': 'smartwatch', '耳机': 'headphones',
+    'Kobo电子书': 'Kobo eReader', 'Sharp': 'Sharp', '电脑/笔记本': 'laptop', '手机通用': 'phone', '其他': 'device',
+  }
+  const FAULT_EN = [
+    [/换屏|屏幕更换|换屏幕|屏碎/, 'screen replacement'],
+    [/换电池|电池更换|电池不耐用/, 'battery replacement'],
+    [/不开机|无法开机|开不了机/, "no power won't boot"],
+    [/反复重启|重启循环|自动重启/, 'restart loop fix'],
+    [/进水|进液/, 'water damage repair'],
+    [/主板|芯片级|飞线|短接/, 'motherboard repair board level'],
+    [/触摸|断触|触控/, 'touch not working'],
+    [/不充电|充电口|尾插/, 'charging port repair'],
+    [/摄像头|相机/, 'camera repair'],
+    [/无服务|没信号|无信号/, 'no service fix'],
+    [/清灰|析热|磰脂/, 'cleaning thermal paste'],
+    [/扩容|升级内存|加装/, 'storage upgrade'],
+    [/面容|指纹/, 'face id fingerprint repair'],
+    [/数据恢复|保资料/, 'data recovery'],
+    [/烧毁|烧糊|短路/, 'burnt board short circuit'],
+    [/花屏|黑屏|白屏|线条/, 'display issue fix'],
+  ]
+
+  const body = (thread.content || '').slice(0, 400)
+  const cnWords = cleanTitle
     .replace(/[｜|·【】\[\]（）()，。,.!！?？:：、#\-—_/]/g, ' ')
     .split(/\s+/)
     .map(w => w.trim())
     .filter(w => w.length >= 2)
     .slice(0, 8)
-  const kwList = [
-    ...kwWords,
-    thread.brand, thread.brand && `${thread.brand}维修`, thread.fault,
-    '维修案例', '手机维修', '电脑维修', '维修教程', '古道论坛',
-  ].filter(Boolean)
-  const keywords = [...new Set(kwList)].slice(0, 16).join(',')
+  const cn = [...cnWords]
+  if (thread.brand) cn.push(thread.brand, `${thread.brand}维修`)
+  if (thread.fault) cn.push(thread.fault)
+  cn.push('维修案例', '手机维修', '电脑维修', '维修教程', '古道论坛')
+
+  const tagEn = TAG_EN[thread.brand]
+  const latin = (cleanTitle.match(/[A-Za-z][A-Za-z0-9 .+\-]{1,20}/g) || []).map(s => s.trim()).filter(s => s.length >= 2)
+  const model = latin.slice(0, 2).join(' ').trim()
+  const en = []
+  if (tagEn) en.push(tagEn, `${tagEn} repair`)
+  if (model) en.push(`${model} repair`, `${model} fix`)
+  for (const [re, word] of FAULT_EN) {
+    if (re.test(cleanTitle) || re.test(body)) en.push(word)
+  }
+  en.push('phone repair Singapore', 'board level repair', 'repair case')
+
+  const keywords = [...new Set([...cn, ...en])].slice(0, 26).join(',')
 
   return {
     title: { absolute: title },
