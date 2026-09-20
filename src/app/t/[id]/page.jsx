@@ -81,9 +81,24 @@ export async function generateMetadata({ params }) {
   const description = desc ? `${desc}${desc.length >= 140 ? '…' : ''} | 古道论坛华人社区` : '古道论坛华人社区帖子。以文会友，以友辅仁，免费注册即刻加入。'
   const canonical = `https://www.gudaoforum.com/t/${id}`
 
+  // SEO：每帖自己的关键词（品牌/故障词 + 标题词 + 维修类通用词）
+  const kwWords = cleanTitle
+    .replace(/[｜|·【】\[\]（）()，。,.!！?？:：、#\-—_/]/g, ' ')
+    .split(/\s+/)
+    .map(w => w.trim())
+    .filter(w => w.length >= 2)
+    .slice(0, 8)
+  const kwList = [
+    ...kwWords,
+    thread.brand, thread.brand && `${thread.brand}维修`, thread.fault,
+    '维修案例', '手机维修', '电脑维修', '维修教程', '古道论坛',
+  ].filter(Boolean)
+  const keywords = [...new Set(kwList)].slice(0, 16).join(',')
+
   return {
     title: { absolute: title },
     description,
+    keywords,
     alternates: { canonical },
     openGraph: {
       title,
