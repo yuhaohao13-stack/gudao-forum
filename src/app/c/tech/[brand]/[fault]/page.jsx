@@ -8,13 +8,10 @@ import { TECH_CATEGORY_SLUG, canViewTech, TechLockOverlay } from '@/lib/member'
 import { useAuth } from '@/components/AuthProvider'
 import { ChevronLeft, ChevronRight, MessageCircle, Lock, Clock, Search, Flame } from 'lucide-react'
 import Breadcrumb from '@/components/Breadcrumb'
+import { BRAND_BY_KEY } from '@/lib/techBrands'
 
-// URL key → 数据库 brand 字段值
-const BRAND_MAP = {
-  'Apple': '苹果 Apple', 'Samsung': '三星 Samsung', 'Huawei': '华为 Huawei',
-  'Xiaomi': '小米 Xiaomi', 'Other Android': '其他安卓 Other',
-  'PC': '电脑主板 PC', 'General': '通用 General',
-}
+// URL key → 数据库 brand 字段值（统一维护在 lib/techBrands.js）
+const BRAND_MAP = BRAND_BY_KEY
 
 const PAGE_SIZE = 10
 
