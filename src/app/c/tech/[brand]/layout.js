@@ -1,14 +1,8 @@
 // 技术板块品牌页（/c/tech/Apple 等）服务端 metadata
-// URL key → 展示名（与 page.jsx 的 BRAND_MAP 一致）
-const BRAND_MAP = {
-  'Apple': '苹果 Apple',
-  'Samsung': '三星 Samsung',
-  'Huawei': '华为 Huawei',
-  'Xiaomi': '小米 Xiaomi',
-  'Other Android': '其他安卓 Other',
-  'PC': '电脑主板 PC',
-  'General': '通用 General',
-}
+// URL key → 展示名（统一维护在 lib/techBrands.js）
+import { BRAND_BY_KEY } from '@/lib/techBrands'
+
+const BRAND_MAP = BRAND_BY_KEY
 
 export async function generateMetadata({ params }) {
   const { brand } = await params

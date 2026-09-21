@@ -6,19 +6,27 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { useAuth } from '@/components/AuthProvider'
 import { TECH_CATEGORY_SLUG, canViewTech, TechLockOverlay } from '@/lib/member'
-import { Smartphone, Apple, Cpu, Wrench, Clock, Flame, Pin, Crown, Lock, MessageCircle, Search, ChevronLeft, ChevronRight, Eye } from 'lucide-react'
+import { Smartphone, Apple, Cpu, Wrench, Clock, Flame, Pin, Crown, Lock, MessageCircle, Search, ChevronLeft, ChevronRight, Eye, Gamepad2, Camera, Watch, Headphones, BookOpen } from 'lucide-react'
 import Breadcrumb from '@/components/Breadcrumb'
+import { TECH_BRANDS } from '@/lib/techBrands'
 
-// 品牌定义（紧凑展示）
-const BRANDS = [
-  { key: 'Apple', brand: '苹果 Apple', name: '苹果', icon: <Apple size={20} />, color: '#6e6e73', desc: 'iPhone / iPad / MacBook' },
-  { key: 'Samsung', brand: '三星 Samsung', name: '三星', icon: <Smartphone size={20} />, color: '#1428a0', desc: 'Galaxy 手机 / 平板' },
-  { key: 'Huawei', brand: '华为 Huawei', name: '华为', icon: <Smartphone size={20} />, color: '#c7000b', desc: 'Mate / P 系列手机' },
-  { key: 'Xiaomi', brand: '小米 Xiaomi', name: '小米', icon: <Smartphone size={20} />, color: '#ff6900', desc: '小米 / 红米手机' },
-  { key: 'Other Android', brand: '其他安卓 Other', name: '其他安卓', icon: <Smartphone size={20} />, color: '#3ddc84', desc: '华硕 / 努比亚 / Nothing' },
-  { key: 'PC', brand: '电脑主板 PC', name: '电脑主板', icon: <Cpu size={20} />, color: '#0078d4', desc: '笔记本 / 台式机 / 主板' },
-  { key: 'General', brand: '通用 General', name: '通用', icon: <Wrench size={20} />, color: '#b45309', desc: '通用维修技巧 / 工具' },
-]
+// 品牌定义（与 Crazy维修站品牌对齐，统一维护在 lib/techBrands.js）
+const BRAND_ICONS = {
+  Apple: <Apple size={20} />, Samsung: <Smartphone size={20} />, Huawei: <Smartphone size={20} />,
+  Xiaomi: <Smartphone size={20} />, OPPO: <Smartphone size={20} />, vivo: <Smartphone size={20} />,
+  OnePlus: <Smartphone size={20} />, Honor: <Smartphone size={20} />, Motorola: <Smartphone size={20} />,
+  RedMagic: <Gamepad2 size={20} />, Sharp: <Smartphone size={20} />, ASUS: <Smartphone size={20} />,
+  'Other Android': <Smartphone size={20} />, PC: <Cpu size={20} />, Console: <Gamepad2 size={20} />,
+  Camera: <Camera size={20} />, Watch: <Watch size={20} />, Headphones: <Headphones size={20} />,
+  Kobo: <BookOpen size={20} />, General: <Wrench size={20} />,
+}
+const BRAND_COLORS = {
+  Apple: '#6e6e73', Samsung: '#1428a0', Huawei: '#c7000b', Xiaomi: '#ff6900', OPPO: '#0b8a3f',
+  vivo: '#415fff', OnePlus: '#eb0029', Honor: '#0a59f7', Motorola: '#1a1a1a', RedMagic: '#d0021b',
+  Sharp: '#c8102e', ASUS: '#00539b', 'Other Android': '#3ddc84', PC: '#0078d4', Console: '#e60012',
+  Camera: '#7a5c00', Watch: '#1c1c1e', Headphones: '#8e44ad', Kobo: '#b06a3b', General: '#b45309',
+}
+const BRANDS = TECH_BRANDS.map(b => ({ ...b, icon: BRAND_ICONS[b.key] || <Smartphone size={20} />, color: BRAND_COLORS[b.key] || '#666' }))
 
 const PAGE_SIZE = 10
 
