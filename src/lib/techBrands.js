@@ -61,3 +61,20 @@ export const REPAIR_TAG_TO_BRAND = {
 export function brandForRepairTag(tag) {
   return REPAIR_TAG_TO_BRAND[tag] || '其他安卓 Other'
 }
+
+// 故障类型（数据库 fault 字段值）—— 统一维护
+export const TECH_FAULTS = [
+  { name: '不开机-死机', emoji: '📴' },
+  { name: '屏幕-显示-触摸', emoji: '📱' },
+  { name: '主板-芯片', emoji: '🛠️' },
+  { name: '电池-耗电', emoji: '🔋' },
+  { name: '充电-尾插', emoji: '🔌' },
+  { name: '信号-无服务', emoji: '📡' },
+  { name: '扩容-存储', emoji: '💾' },
+  { name: '功能故障', emoji: '🔘' },
+  { name: '摄像头', emoji: '📷' },
+  { name: '解锁-激活', emoji: '🔓' },
+  { name: '进水', emoji: '💧' },
+  { name: '音频', emoji: '🔊' },
+  { name: '其他', emoji: '📦' },
+]
