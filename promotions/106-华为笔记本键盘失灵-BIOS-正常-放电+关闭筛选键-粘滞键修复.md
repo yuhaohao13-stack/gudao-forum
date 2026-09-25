@@ -12,7 +12,7 @@ post_index: 106
 👉 [点击阅读原文](https://www.gudaoforum.com/t/704d4485-2ca9-4727-9c51-e5d9d4f06b56)
 
 🔧 维修案例（图文）：https://www.crazy-repair.com/cases/704d4485
-📺 视频：https://youtube.com/watch?v=lJWWkvFuGws
+📺 视频：https://youtube.com/watch?v=JxgfEY9ZpSE
 ♪ 抖音：https://v.douyin.com/OD6aI2Yoh90/
 
 ---
