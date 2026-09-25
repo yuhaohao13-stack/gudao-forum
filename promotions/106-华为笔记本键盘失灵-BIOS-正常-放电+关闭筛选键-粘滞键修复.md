@@ -1,18 +1,18 @@
 ---
-title: "华为笔记本键盘失灵｜BIOS 正常·长按电源键15秒修复"
+title: "华为笔记本键盘失灵｜BIOS 正常·放电+关闭筛选键/粘滞键修复"
 source: https://www.gudaoforum.com
 publish_date: 2026-09-25
 post_index: 106
 ---
 
-# 华为笔记本键盘失灵｜BIOS 正常·长按电源键15秒修复
+# 华为笔记本键盘失灵｜BIOS 正常·放电+关闭筛选键/粘滞键修复
 
 > 本文首发于 **[古道论坛](https://www.gudaoforum.com)** — 国际中文社区 · 以文会友 · 在线聊天
 
 👉 [点击阅读原文](https://www.gudaoforum.com/t/704d4485-2ca9-4727-9c51-e5d9d4f06b56)
 
 🔧 维修案例（图文）：https://www.crazy-repair.com/cases/704d4485
-📺 视频：https://youtube.com/watch?v=GTI5BNA8Xo4
+📺 视频：https://youtube.com/watch?v=lJWWkvFuGws
 
 ---
 
