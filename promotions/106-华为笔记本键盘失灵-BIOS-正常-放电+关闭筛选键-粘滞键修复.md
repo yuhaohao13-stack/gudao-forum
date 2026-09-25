@@ -13,7 +13,7 @@ post_index: 106
 
 🔧 维修案例（图文）：https://www.crazy-repair.com/cases/704d4485
 📺 视频：https://youtube.com/watch?v=lJWWkvFuGws
-♪ 抖音：https://v.douyin.com/Y0gkCZyyAgA/
+♪ 抖音：https://v.douyin.com/OD6aI2Yoh90/
 
 ---
 
