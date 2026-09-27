@@ -17,4 +17,16 @@ post_index: 107
 
 ---
 
+## 案例图片
+
+![iPhone 11 Pro Max 重做CPU 01](https://rsndnhdimruisysacujg.supabase.co/storage/v1/object/public/forum-images/case-posts/2026-09-27/1790499438506-01.jpg)
+
+![iPhone 11 Pro Max 重做CPU 02](https://rsndnhdimruisysacujg.supabase.co/storage/v1/object/public/forum-images/case-posts/2026-09-27/1790499439095-02.jpg)
+
+![iPhone 11 Pro Max 重做CPU 03](https://rsndnhdimruisysacujg.supabase.co/storage/v1/object/public/forum-images/case-posts/2026-09-27/1790499439624-03.jpg)
+
+![iPhone 11 Pro Max 重做CPU 04](https://rsndnhdimruisysacujg.supabase.co/storage/v1/object/public/forum-images/case-posts/2026-09-27/1790499440164-04.jpg)
+
+---
+
 *由古道论坛自动推广系统发布 · 2026*
