@@ -3,6 +3,15 @@
 // 技术帖分类 slug
 export const TECH_CATEGORY_SLUG = 'tech'
 
+// ===== 会员数量展示基数 =====
+// 对外展示的会员总数从 13555 起步（设定基数时线上真实注册数为 13），之后每多一个注册用户就 +1
+export const MEMBER_COUNT_BASE = 13555
+export const MEMBER_COUNT_BASE_AT = 13
+export function displayMemberCount(realCount) {
+  const n = Number(realCount) || 0
+  return MEMBER_COUNT_BASE + Math.max(0, n - MEMBER_COUNT_BASE_AT)
+}
+
 // 检查技术帖查看权限（仅钻石会员）
 export function canViewTech(user, profile) {
   if (!user) return { allowed: false, reason: 'login' }

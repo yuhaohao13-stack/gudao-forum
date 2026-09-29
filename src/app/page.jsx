@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { MessageCircle, Megaphone, Pin, FileText, Eye, Clock, Flame, ArrowRight, Monitor, Flower2, Package, BookOpen, Sparkles, Gamepad2, Wrench } from 'lucide-react'
 import { useAuth } from '@/components/AuthProvider'
-import { canViewTech, TECH_CATEGORY_SLUG } from '@/lib/member'
+import { canViewTech, TECH_CATEGORY_SLUG, displayMemberCount } from '@/lib/member'
 import CheckInButton from '@/components/CheckInButton'
 import { createClient } from '@/lib/supabase/client'
 import { useLanguage } from '@/lib/LanguageContext'
@@ -75,7 +75,7 @@ export default function Home() {
       const { data: v } = await supabase.from('threads').select('view_count')
       setTotalViews((v || []).reduce((s, t) => s + (t.view_count || 0), 0))
       const { count: uc } = await supabase.from('profiles').select('id', { count: 'exact', head: true })
-      setTotalUsers(uc || 0)
+      setTotalUsers(displayMemberCount(uc || 0))
     }
     fetchData()
   }, [])
