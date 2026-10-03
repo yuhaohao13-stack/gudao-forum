@@ -1,2200 +1,2608 @@
 {
- "meta": {
-  "name": "笔记本液晶面板通用检索库",
-  "version": "1.1",
-  "updated": "2026-10-03",
-  "rule": "通用判据 = 尺寸 + 分辨率 + 接口(eDP/LVDS) + 针脚数 + 厚度/耳朵位。同规格即可互换,与品牌无关。",
-  "caveat": "参数以厂家 datasheet / 实物丝印为准;换屏前务必核对实机屏线针脚数、针脚朝向、固定耳位。",
-  "changelog": [
-   "2026-10-03 月度巡检：新增 16.0\" 16:10 面板家族 7 个系列（群创/京东方/友达/LG）；新增 3 个规格组与 9 条整机机型映射（戴尔/联想/惠普/华硕/华为/荣耀/小米/WIKO）。"
-  ]
- },
- "series": {
-  "LP140WH1": {
-   "size": "14.0",
-   "res": "1366x768",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.6",
-   "note": "LG Philips 主流 14 寸普分"
-  },
-  "LP140WH2": {
-   "size": "14.0",
-   "res": "1366x768",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.6",
-   "note": "极常见,联想/戴尔/惠普通用"
-  },
-  "LP140WH4": {
-   "size": "14.0",
-   "res": "1366x768",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.6",
-   "note": "LP140WH2 同规格"
-  },
-  "LP140WH8": {
-   "size": "14.0",
-   "res": "1366x768",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.6",
-   "note": "同规格"
-  },
-  "LP140WD2": {
-   "size": "14.0",
-   "res": "1600x900",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.6",
-   "note": "14 寸 900p"
-  },
-  "LP140WF1": {
-   "size": "14.0",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.2",
-   "note": "14 寸 FHD IPS"
-  },
-  "LP140WF3": {
-   "size": "14.0",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.2",
-   "note": "同规格"
-  },
-  "LP140WF6": {
-   "size": "14.0",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.2",
-   "note": "同规格"
-  },
-  "LP140WF7": {
-   "size": "14.0",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.2",
-   "note": "同规格"
-  },
-  "LP140WF9": {
-   "size": "14.0",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.2",
-   "note": "同规格"
-  },
-  "LP125WH2": {
-   "size": "12.5",
-   "res": "1366x768",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "ThinkPad X220/X230 等"
-  },
-  "LP125WF2": {
-   "size": "12.5",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "X240 等 FHD"
-  },
-  "LP133WH2": {
-   "size": "13.3",
-   "res": "1366x768",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "13.3 普分"
-  },
-  "LP133WF2": {
-   "size": "13.3",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "13.3 FHD"
-  },
-  "LP133WF4": {
-   "size": "13.3",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "同规格"
-  },
-  "LP156WH2": {
-   "size": "15.6",
-   "res": "1366x768",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.6",
-   "note": "15.6 普分,极常见"
-  },
-  "LP156WH3": {
-   "size": "15.6",
-   "res": "1366x768",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.6",
-   "note": "同规格"
-  },
-  "LP156WH4": {
-   "size": "15.6",
-   "res": "1366x768",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.6",
-   "note": "同规格"
-  },
-  "LP156WHA": {
-   "size": "15.6",
-   "res": "1366x768",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.6",
-   "note": "同规格"
-  },
-  "LP156WF1": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 40,
-   "touch": false,
-   "thick": "3.6",
-   "note": "15.6 FHD 40pin"
-  },
-  "LP156WF4": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.6",
-   "note": "15.6 FHD 30pin"
-  },
-  "LP156WF6": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.6",
-   "note": "同规格"
-  },
-  "LP156WF9": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.6",
-   "note": "同规格"
-  },
-  "LP156WFG": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.6",
-   "note": "144Hz 电竞"
-  },
-  "LP156WFC": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.6",
-   "note": "同规格"
-  },
-  "LP173WF1": {
-   "size": "17.3",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 40,
-   "touch": false,
-   "thick": "3.8",
-   "note": "17.3 FHD 40pin"
-  },
-  "LP173WF4": {
-   "size": "17.3",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "17.3 FHD 30pin"
-  },
-  "LP173WFG": {
-   "size": "17.3",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "144Hz"
-  },
-  "B133XW01": {
-   "size": "13.3",
-   "res": "1366x768",
-   "iface": "LVDS",
-   "pins": 40,
-   "touch": false,
-   "thick": "3.6",
-   "note": "老款 LVDS"
-  },
-  "B133XTN01": {
-   "size": "13.3",
-   "res": "1366x768",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.6",
-   "note": "AUO 13.3 普分"
-  },
-  "B133HAN02": {
-   "size": "13.3",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "AUO 13.3 FHD"
-  },
-  "B133HAN04": {
-   "size": "13.3",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "同规格"
-  },
-  "B133HAN06": {
-   "size": "13.3",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "同规格"
-  },
-  "B140XW01": {
-   "size": "14.0",
-   "res": "1366x768",
-   "iface": "LVDS",
-   "pins": 40,
-   "touch": false,
-   "thick": "3.6",
-   "note": "老款 LVDS,2010 前"
-  },
-  "B140XW02": {
-   "size": "14.0",
-   "res": "1366x768",
-   "iface": "LVDS",
-   "pins": 40,
-   "touch": false,
-   "thick": "3.6",
-   "note": "同规格"
-  },
-  "B140XTN01": {
-   "size": "14.0",
-   "res": "1366x768",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.6",
-   "note": "AUO 14 普分"
-  },
-  "B140XTN02": {
-   "size": "14.0",
-   "res": "1366x768",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.6",
-   "note": "同规格"
-  },
-  "B140XTN03": {
-   "size": "14.0",
-   "res": "1366x768",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.6",
-   "note": "同规格"
-  },
-  "B140XTN07": {
-   "size": "14.0",
-   "res": "1366x768",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.6",
-   "note": "同规格"
-  },
-  "B140HAN01": {
-   "size": "14.0",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "AUO 14 FHD IPS"
-  },
-  "B140HAN02": {
-   "size": "14.0",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "同规格"
-  },
-  "B140HAN03": {
-   "size": "14.0",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "同规格"
-  },
-  "B140HAN04": {
-   "size": "14.0",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "同规格"
-  },
-  "B140HAN05": {
-   "size": "14.0",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "同规格"
-  },
-  "B140HAK02": {
-   "size": "14.0",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": true,
-   "thick": "3.2",
-   "note": "带触摸一体化"
-  },
-  "B156XW01": {
-   "size": "15.6",
-   "res": "1366x768",
-   "iface": "LVDS",
-   "pins": 40,
-   "touch": false,
-   "thick": "3.8",
-   "note": "老款 LVDS"
-  },
-  "B156XW02": {
-   "size": "15.6",
-   "res": "1366x768",
-   "iface": "LVDS",
-   "pins": 40,
-   "touch": false,
-   "thick": "3.8",
-   "note": "老款 LVDS"
-  },
-  "B156XTN01": {
-   "size": "15.6",
-   "res": "1366x768",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "AUO 15.6 普分"
-  },
-  "B156XTN02": {
-   "size": "15.6",
-   "res": "1366x768",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "B156XTN03": {
-   "size": "15.6",
-   "res": "1366x768",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "B156XTN04": {
-   "size": "15.6",
-   "res": "1366x768",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "B156XTN07": {
-   "size": "15.6",
-   "res": "1366x768",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "B156HTN01": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 40,
-   "touch": false,
-   "thick": "3.8",
-   "note": "AUO 15.6 FHD 40pin"
-  },
-  "B156HTN02": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 40,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "B156HTN03": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 40,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "B156HAN01": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "AUO 15.6 FHD 30pin"
-  },
-  "B156HAN02": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "B156HAN04": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "B156HAN06": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "B156HAN07": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "B156HAN08": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "B156ZAN02": {
-   "size": "15.6",
-   "res": "3840x2160",
-   "iface": "eDP",
-   "pins": 40,
-   "touch": false,
-   "thick": "3.8",
-   "note": "4K"
-  },
-  "B173HW01": {
-   "size": "17.3",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 40,
-   "touch": false,
-   "thick": "3.8",
-   "note": "AUO 17.3 FHD"
-  },
-  "B173HTN01": {
-   "size": "17.3",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 40,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "B173HAN01": {
-   "size": "17.3",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "17.3 FHD 30pin"
-  },
-  "B173HAN03": {
-   "size": "17.3",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "B173HAN04": {
-   "size": "17.3",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "N140BGE-L21": {
-   "size": "14.0",
-   "res": "1366x768",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.6",
-   "note": "群创 14 普分,极常见"
-  },
-  "N140BGE-L41": {
-   "size": "14.0",
-   "res": "1366x768",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.6",
-   "note": "同规格"
-  },
-  "N140BGE-L42": {
-   "size": "14.0",
-   "res": "1366x768",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.6",
-   "note": "同规格"
-  },
-  "N140BGE-EA1": {
-   "size": "14.0",
-   "res": "1366x768",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.6",
-   "note": "同规格"
-  },
-  "N140BGE-EA2": {
-   "size": "14.0",
-   "res": "1366x768",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.6",
-   "note": "同规格"
-  },
-  "N140BGE-EA3": {
-   "size": "14.0",
-   "res": "1366x768",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.6",
-   "note": "同规格"
-  },
-  "N140BGE-EB1": {
-   "size": "14.0",
-   "res": "1366x768",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.6",
-   "note": "同规格"
-  },
-  "N140BGE-EB2": {
-   "size": "14.0",
-   "res": "1366x768",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.6",
-   "note": "同规格"
-  },
-  "N140BGE-EB3": {
-   "size": "14.0",
-   "res": "1366x768",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.6",
-   "note": "同规格"
-  },
-  "N140HCE-EAA": {
-   "size": "14.0",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "群创 14 FHD"
-  },
-  "N140HCE-EAB": {
-   "size": "14.0",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "同规格"
-  },
-  "N140HCE-EN1": {
-   "size": "14.0",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "同规格"
-  },
-  "N140HCE-EN2": {
-   "size": "14.0",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "同规格"
-  },
-  "N140HCA-EAB": {
-   "size": "14.0",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "同规格"
-  },
-  "N140HCA-EAC": {
-   "size": "14.0",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "同规格"
-  },
-  "N156BGE-L21": {
-   "size": "15.6",
-   "res": "1366x768",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "群创 15.6 普分,极常见"
-  },
-  "N156BGE-L31": {
-   "size": "15.6",
-   "res": "1366x768",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "N156BGE-L41": {
-   "size": "15.6",
-   "res": "1366x768",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "N156BGE-EA1": {
-   "size": "15.6",
-   "res": "1366x768",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "N156BGE-EB1": {
-   "size": "15.6",
-   "res": "1366x768",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "N156BGE-E41": {
-   "size": "15.6",
-   "res": "1366x768",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "N156BGE-E42": {
-   "size": "15.6",
-   "res": "1366x768",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "N156BGE-E52": {
-   "size": "15.6",
-   "res": "1366x768",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "N156HGE-EAB": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 40,
-   "touch": false,
-   "thick": "3.8",
-   "note": "群创 15.6 FHD 40pin"
-  },
-  "N156HGE-EB1": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 40,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "N156HCE-EAA": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "群创 15.6 FHD 30pin"
-  },
-  "N156HCE-EAB": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "N156HCE-EN1": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "N156HCE-EN2": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "N156HCA-EAA": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "N156HCA-EAB": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "N173HGE-E11": {
-   "size": "17.3",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 40,
-   "touch": false,
-   "thick": "3.8",
-   "note": "群创 17.3 FHD 40pin"
-  },
-  "N173HGE-EB1": {
-   "size": "17.3",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 40,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "N173HCE-E31": {
-   "size": "17.3",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "17.3 FHD 30pin"
-  },
-  "N173HCE-E41": {
-   "size": "17.3",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "LTN140AT01": {
-   "size": "14.0",
-   "res": "1366x768",
-   "iface": "LVDS",
-   "pins": 40,
-   "touch": false,
-   "thick": "3.6",
-   "note": "三星老款 LVDS"
-  },
-  "LTN140AT02": {
-   "size": "14.0",
-   "res": "1366x768",
-   "iface": "LVDS",
-   "pins": 40,
-   "touch": false,
-   "thick": "3.6",
-   "note": "同规格"
-  },
-  "LTN140AT04": {
-   "size": "14.0",
-   "res": "1366x768",
-   "iface": "LVDS",
-   "pins": 40,
-   "touch": false,
-   "thick": "3.6",
-   "note": "同规格"
-  },
-  "LTN140AT06": {
-   "size": "14.0",
-   "res": "1366x768",
-   "iface": "LVDS",
-   "pins": 40,
-   "touch": false,
-   "thick": "3.6",
-   "note": "同规格"
-  },
-  "LTN140AT07": {
-   "size": "14.0",
-   "res": "1366x768",
-   "iface": "LVDS",
-   "pins": 40,
-   "touch": false,
-   "thick": "3.6",
-   "note": "同规格"
-  },
-  "LTN140AT16": {
-   "size": "14.0",
-   "res": "1366x768",
-   "iface": "LVDS",
-   "pins": 40,
-   "touch": false,
-   "thick": "3.6",
-   "note": "同规格"
-  },
-  "LTN140AT20": {
-   "size": "14.0",
-   "res": "1366x768",
-   "iface": "LVDS",
-   "pins": 40,
-   "touch": false,
-   "thick": "3.6",
-   "note": "同规格"
-  },
-  "LTN140AT21": {
-   "size": "14.0",
-   "res": "1366x768",
-   "iface": "LVDS",
-   "pins": 40,
-   "touch": false,
-   "thick": "3.6",
-   "note": "同规格"
-  },
-  "LTN140AT22": {
-   "size": "14.0",
-   "res": "1366x768",
-   "iface": "LVDS",
-   "pins": 40,
-   "touch": false,
-   "thick": "3.6",
-   "note": "同规格"
-  },
-  "LTN140AT26": {
-   "size": "14.0",
-   "res": "1366x768",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.6",
-   "note": "三星 14 转 eDP"
-  },
-  "LTN140AT27": {
-   "size": "14.0",
-   "res": "1366x768",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.6",
-   "note": "同规格"
-  },
-  "LTN140HL02": {
-   "size": "14.0",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "三星 14 FHD"
-  },
-  "LTN156AT01": {
-   "size": "15.6",
-   "res": "1366x768",
-   "iface": "LVDS",
-   "pins": 40,
-   "touch": false,
-   "thick": "3.8",
-   "note": "三星老款 LVDS"
-  },
-  "LTN156AT02": {
-   "size": "15.6",
-   "res": "1366x768",
-   "iface": "LVDS",
-   "pins": 40,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "LTN156AT05": {
-   "size": "15.6",
-   "res": "1366x768",
-   "iface": "LVDS",
-   "pins": 40,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "LTN156AT09": {
-   "size": "15.6",
-   "res": "1366x768",
-   "iface": "LVDS",
-   "pins": 40,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "LTN156AT16": {
-   "size": "15.6",
-   "res": "1366x768",
-   "iface": "LVDS",
-   "pins": 40,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "LTN156AT17": {
-   "size": "15.6",
-   "res": "1366x768",
-   "iface": "LVDS",
-   "pins": 40,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "LTN156AT18": {
-   "size": "15.6",
-   "res": "1366x768",
-   "iface": "LVDS",
-   "pins": 40,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "LTN156AT19": {
-   "size": "15.6",
-   "res": "1366x768",
-   "iface": "LVDS",
-   "pins": 40,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "LTN156AT20": {
-   "size": "15.6",
-   "res": "1366x768",
-   "iface": "LVDS",
-   "pins": 40,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "LTN156AT24": {
-   "size": "15.6",
-   "res": "1366x768",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "三星 15.6 普分 eDP"
-  },
-  "LTN156AT26": {
-   "size": "15.6",
-   "res": "1366x768",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "LTN156AT27": {
-   "size": "15.6",
-   "res": "1366x768",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "LTN156AT30": {
-   "size": "15.6",
-   "res": "1366x768",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "LTN156AT32": {
-   "size": "15.6",
-   "res": "1366x768",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "LTN156AT35": {
-   "size": "15.6",
-   "res": "1366x768",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "LTN156AT37": {
-   "size": "15.6",
-   "res": "1366x768",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "LTN156HL01": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "三星 15.6 FHD"
-  },
-  "LTN156HL02": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "LTN156HL06": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "LTN156HL09": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "LTN156FL01": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "三星 PLS"
-  },
-  "LTN173KT01": {
-   "size": "17.3",
-   "res": "1600x900",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "17.3 900p"
-  },
-  "LTN173KT02": {
-   "size": "17.3",
-   "res": "1600x900",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "LTN173HL01": {
-   "size": "17.3",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "三星 17.3 FHD"
-  },
-  "LTN173HL02": {
-   "size": "17.3",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "LTN173HT02": {
-   "size": "17.3",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 40,
-   "touch": false,
-   "thick": "3.8",
-   "note": "17.3 FHD 40pin"
-  },
-  "NV125FHM-N41": {
-   "size": "12.5",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "京东方 12.5 FHD"
-  },
-  "NV125FHM-N62": {
-   "size": "12.5",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "同规格"
-  },
-  "NV133FHM-N41": {
-   "size": "13.3",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "京东方 13.3 FHD"
-  },
-  "NV133FHM-N42": {
-   "size": "13.3",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "同规格"
-  },
-  "NV133FHM-N43": {
-   "size": "13.3",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "同规格"
-  },
-  "NV133FHM-N44": {
-   "size": "13.3",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "同规格"
-  },
-  "NV133FHM-N45": {
-   "size": "13.3",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "同规格"
-  },
-  "NV133FHM-N46": {
-   "size": "13.3",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "同规格"
-  },
-  "NV133FHM-N47": {
-   "size": "13.3",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "同规格"
-  },
-  "NV133FHM-N52": {
-   "size": "13.3",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "同规格"
-  },
-  "NV133FHM-N61": {
-   "size": "13.3",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "同规格"
-  },
-  "NV140FHM-N41": {
-   "size": "14.0",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "京东方 14 FHD,极常见"
-  },
-  "NV140FHM-N42": {
-   "size": "14.0",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "同规格"
-  },
-  "NV140FHM-N43": {
-   "size": "14.0",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "同规格"
-  },
-  "NV140FHM-N44": {
-   "size": "14.0",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "同规格"
-  },
-  "NV140FHM-N45": {
-   "size": "14.0",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "同规格"
-  },
-  "NV140FHM-N46": {
-   "size": "14.0",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "同规格"
-  },
-  "NV140FHM-N47": {
-   "size": "14.0",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "同规格"
-  },
-  "NV140FHM-N48": {
-   "size": "14.0",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "同规格"
-  },
-  "NV140FHM-N61": {
-   "size": "14.0",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "同规格"
-  },
-  "NV140FHM-N62": {
-   "size": "14.0",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "同规格"
-  },
-  "NV140FHM-N63": {
-   "size": "14.0",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "同规格"
-  },
-  "NV140FHM-N65": {
-   "size": "14.0",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "同规格"
-  },
-  "NV140FHM-N66": {
-   "size": "14.0",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "同规格"
-  },
-  "NV140FHM-T01": {
-   "size": "14.0",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": true,
-   "thick": "3.2",
-   "note": "带触摸"
-  },
-  "NV156FHM-N41": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "京东方 15.6 FHD,极常见"
-  },
-  "NV156FHM-N42": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "NV156FHM-N43": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "NV156FHM-N44": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "NV156FHM-N45": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "NV156FHM-N46": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "NV156FHM-N47": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "NV156FHM-N48": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "NV156FHM-N61": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "NV156FHM-N62": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "NV156FHM-N63": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "NV156FHM-N65": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "NV156FHM-N66": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "NV156FHM-NY1": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "NV156FHM-T01": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": true,
-   "thick": "3.8",
-   "note": "带触摸"
-  },
-  "NT156FHM-N41": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "京东方 15.6 FHD"
-  },
-  "NT156FHM-N42": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "NT156FHM-N61": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "NT140FHM-N41": {
-   "size": "14.0",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "京东方 14 FHD"
-  },
-  "NT140FHM-N42": {
-   "size": "14.0",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "同规格"
-  },
-  "NT140FHM-N43": {
-   "size": "14.0",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "同规格"
-  },
-  "NT140FHM-N44": {
-   "size": "14.0",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "同规格"
-  },
-  "NV173FHM-N41": {
-   "size": "17.3",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "京东方 17.3 FHD"
-  },
-  "NV173FHM-N42": {
-   "size": "17.3",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "NV173FHM-N44": {
-   "size": "17.3",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "NV173FHM-N46": {
-   "size": "17.3",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "NV173FHM-N47": {
-   "size": "17.3",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "同规格"
-  },
-  "LQ140M1JW46": {
-   "size": "14.0",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.0",
-   "note": "夏普 IGZO"
-  },
-  "LQ156M1JW01": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "夏普 IGZO"
-  },
-  "LQ156D1JW02": {
-   "size": "15.6",
-   "res": "3840x2160",
-   "iface": "eDP",
-   "pins": 40,
-   "touch": false,
-   "thick": "3.8",
-   "note": "夏普 4K"
-  },
-  "LQ173M1JW03": {
-   "size": "17.3",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "夏普 17.3"
-  },
-  "NV156FHM-N4V": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "thick": "3.8",
-   "note": "BOE;Dell 备件 CN-02GMF6"
-  },
-  "N160JCA-ELK": {
-   "size": "16.0",
-   "res": "1920x1200",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "note": "群创 Innolux 16寸WUXGA 30pin IPS（LCD Guarantee 在售）"
-  },
-  "N160JCE-ELL": {
-   "size": "16.0",
-   "res": "1920x1200",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "note": "群创 Innolux 16寸WUXGA 30pin IPS 窄边框"
-  },
-  "N160GME-GTB": {
-   "size": "16.0",
-   "res": "2560x1600",
-   "iface": "eDP",
-   "pins": 40,
-   "touch": false,
-   "note": "群创 Innolux 16寸 QHD+ 240Hz 电竞屏"
-  },
-  "NV160WUM-NX1": {
-   "size": "16.0",
-   "res": "1920x1200",
-   "iface": "eDP",
-   "pins": 40,
-   "touch": false,
-   "note": "京东方 BOE 16寸WUXGA 40pin 144Hz 电竞版"
-  },
-  "NE160QDM-NZ1": {
-   "size": "16.0",
-   "res": "2560x1600",
-   "iface": "eDP",
-   "pins": 40,
-   "touch": false,
-   "note": "京东方 BOE 16寸 QHD+ 165Hz（小新Pro16/ThinkBook16+ 常见）"
-  },
-  "B160UAN01": {
-   "size": "16.0",
-   "res": "1920x1200",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "note": "友达 AUO 16寸WUXGA 16:10"
-  },
-  "LP160WU1": {
-   "size": "16.0",
-   "res": "1920x1200",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "note": "LG Display 16寸WUXGA 16:10"
+  "meta": {
+    "name": "笔记本液晶面板通用检索库",
+    "version": "1.2",
+    "updated": "2026-10-03",
+    "rule": "通用判据 = 尺寸 + 分辨率 + 接口(eDP/LVDS) + 针脚数 + 厚度/耳朵位。同规格即可互换,与品牌无关。",
+    "caveat": "参数以厂家 datasheet / 实物丝印为准;换屏前务必核对实机屏线针脚数、针脚朝向、固定耳位。",
+    "changelog": [
+      "2026-10-03 月度巡检：新增 16.0\" 16:10 面板家族 7 个系列（群创/京东方/友达/LG）；新增 3 个规格组与 9 条整机机型映射（戴尔/联想/惠普/华硕/华为/荣耀/小米/WIKO）。"
+    ]
+  },
+  "series": {
+    "LP140WH1": {
+      "size": "14.0",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.6",
+      "note": "LG Philips 主流 14 寸普分"
+    },
+    "LP140WH2": {
+      "size": "14.0",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.6",
+      "note": "极常见,联想/戴尔/惠普通用"
+    },
+    "LP140WH4": {
+      "size": "14.0",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.6",
+      "note": "LP140WH2 同规格"
+    },
+    "LP140WH8": {
+      "size": "14.0",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.6",
+      "note": "同规格"
+    },
+    "LP140WD2": {
+      "size": "14.0",
+      "res": "1600x900",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.6",
+      "note": "14 寸 900p"
+    },
+    "LP140WF1": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.2",
+      "note": "14 寸 FHD IPS"
+    },
+    "LP140WF3": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.2",
+      "note": "同规格"
+    },
+    "LP140WF6": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.2",
+      "note": "同规格"
+    },
+    "LP140WF7": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.2",
+      "note": "同规格"
+    },
+    "LP140WF9": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.2",
+      "note": "同规格"
+    },
+    "LP125WH2": {
+      "size": "12.5",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "ThinkPad X220/X230 等"
+    },
+    "LP125WF2": {
+      "size": "12.5",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "X240 等 FHD"
+    },
+    "LP133WH2": {
+      "size": "13.3",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "13.3 普分"
+    },
+    "LP133WF2": {
+      "size": "13.3",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "13.3 FHD"
+    },
+    "LP133WF4": {
+      "size": "13.3",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "同规格"
+    },
+    "LP156WH2": {
+      "size": "15.6",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.6",
+      "note": "15.6 普分,极常见"
+    },
+    "LP156WH3": {
+      "size": "15.6",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.6",
+      "note": "同规格"
+    },
+    "LP156WH4": {
+      "size": "15.6",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.6",
+      "note": "同规格"
+    },
+    "LP156WHA": {
+      "size": "15.6",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.6",
+      "note": "同规格"
+    },
+    "LP156WF1": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "thick": "3.6",
+      "note": "15.6 FHD 40pin"
+    },
+    "LP156WF4": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.6",
+      "note": "15.6 FHD 30pin"
+    },
+    "LP156WF6": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.6",
+      "note": "同规格"
+    },
+    "LP156WF9": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.6",
+      "note": "同规格"
+    },
+    "LP156WFG": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.6",
+      "note": "144Hz 电竞"
+    },
+    "LP156WFC": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.6",
+      "note": "同规格"
+    },
+    "LP173WF1": {
+      "size": "17.3",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "thick": "3.8",
+      "note": "17.3 FHD 40pin"
+    },
+    "LP173WF4": {
+      "size": "17.3",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "17.3 FHD 30pin"
+    },
+    "LP173WFG": {
+      "size": "17.3",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "144Hz"
+    },
+    "B133XW01": {
+      "size": "13.3",
+      "res": "1366x768",
+      "iface": "LVDS",
+      "pins": 40,
+      "touch": false,
+      "thick": "3.6",
+      "note": "老款 LVDS"
+    },
+    "B133XTN01": {
+      "size": "13.3",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.6",
+      "note": "AUO 13.3 普分"
+    },
+    "B133HAN02": {
+      "size": "13.3",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "AUO 13.3 FHD"
+    },
+    "B133HAN04": {
+      "size": "13.3",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "同规格"
+    },
+    "B133HAN06": {
+      "size": "13.3",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "同规格"
+    },
+    "B140XW01": {
+      "size": "14.0",
+      "res": "1366x768",
+      "iface": "LVDS",
+      "pins": 40,
+      "touch": false,
+      "thick": "3.6",
+      "note": "老款 LVDS,2010 前"
+    },
+    "B140XW02": {
+      "size": "14.0",
+      "res": "1366x768",
+      "iface": "LVDS",
+      "pins": 40,
+      "touch": false,
+      "thick": "3.6",
+      "note": "同规格"
+    },
+    "B140XTN01": {
+      "size": "14.0",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.6",
+      "note": "AUO 14 普分"
+    },
+    "B140XTN02": {
+      "size": "14.0",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.6",
+      "note": "同规格"
+    },
+    "B140XTN03": {
+      "size": "14.0",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.6",
+      "note": "同规格"
+    },
+    "B140XTN07": {
+      "size": "14.0",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.6",
+      "note": "同规格"
+    },
+    "B140HAN01": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "AUO 14 FHD IPS"
+    },
+    "B140HAN02": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "同规格"
+    },
+    "B140HAN03": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "同规格"
+    },
+    "B140HAN04": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "同规格"
+    },
+    "B140HAN05": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "同规格"
+    },
+    "B140HAK02": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": true,
+      "thick": "3.2",
+      "note": "带触摸一体化"
+    },
+    "B156XW01": {
+      "size": "15.6",
+      "res": "1366x768",
+      "iface": "LVDS",
+      "pins": 40,
+      "touch": false,
+      "thick": "3.8",
+      "note": "老款 LVDS"
+    },
+    "B156XW02": {
+      "size": "15.6",
+      "res": "1366x768",
+      "iface": "LVDS",
+      "pins": 40,
+      "touch": false,
+      "thick": "3.8",
+      "note": "老款 LVDS"
+    },
+    "B156XTN01": {
+      "size": "15.6",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "AUO 15.6 普分"
+    },
+    "B156XTN02": {
+      "size": "15.6",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "B156XTN03": {
+      "size": "15.6",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "B156XTN04": {
+      "size": "15.6",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "B156XTN07": {
+      "size": "15.6",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "B156HTN01": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "thick": "3.8",
+      "note": "AUO 15.6 FHD 40pin"
+    },
+    "B156HTN02": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "B156HTN03": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "B156HAN01": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "AUO 15.6 FHD 30pin"
+    },
+    "B156HAN02": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "B156HAN04": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "B156HAN06": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "B156HAN07": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "B156HAN08": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "B156ZAN02": {
+      "size": "15.6",
+      "res": "3840x2160",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "thick": "3.8",
+      "note": "4K"
+    },
+    "B173HW01": {
+      "size": "17.3",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "thick": "3.8",
+      "note": "AUO 17.3 FHD"
+    },
+    "B173HTN01": {
+      "size": "17.3",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "B173HAN01": {
+      "size": "17.3",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "17.3 FHD 30pin"
+    },
+    "B173HAN03": {
+      "size": "17.3",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "B173HAN04": {
+      "size": "17.3",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "N140BGE-L21": {
+      "size": "14.0",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.6",
+      "note": "群创 14 普分,极常见"
+    },
+    "N140BGE-L41": {
+      "size": "14.0",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.6",
+      "note": "同规格"
+    },
+    "N140BGE-L42": {
+      "size": "14.0",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.6",
+      "note": "同规格"
+    },
+    "N140BGE-EA1": {
+      "size": "14.0",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.6",
+      "note": "同规格"
+    },
+    "N140BGE-EA2": {
+      "size": "14.0",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.6",
+      "note": "同规格"
+    },
+    "N140BGE-EA3": {
+      "size": "14.0",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.6",
+      "note": "同规格"
+    },
+    "N140BGE-EB1": {
+      "size": "14.0",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.6",
+      "note": "同规格"
+    },
+    "N140BGE-EB2": {
+      "size": "14.0",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.6",
+      "note": "同规格"
+    },
+    "N140BGE-EB3": {
+      "size": "14.0",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.6",
+      "note": "同规格"
+    },
+    "N140HCE-EAA": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "群创 14 FHD"
+    },
+    "N140HCE-EAB": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "同规格"
+    },
+    "N140HCE-EN1": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "同规格"
+    },
+    "N140HCE-EN2": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "同规格"
+    },
+    "N140HCA-EAB": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "同规格"
+    },
+    "N140HCA-EAC": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "同规格"
+    },
+    "N156BGE-L21": {
+      "size": "15.6",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "群创 15.6 普分,极常见"
+    },
+    "N156BGE-L31": {
+      "size": "15.6",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "N156BGE-L41": {
+      "size": "15.6",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "N156BGE-EA1": {
+      "size": "15.6",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "N156BGE-EB1": {
+      "size": "15.6",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "N156BGE-E41": {
+      "size": "15.6",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "N156BGE-E42": {
+      "size": "15.6",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "N156BGE-E52": {
+      "size": "15.6",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "N156HGE-EAB": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "thick": "3.8",
+      "note": "群创 15.6 FHD 40pin"
+    },
+    "N156HGE-EB1": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "N156HCE-EAA": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "群创 15.6 FHD 30pin"
+    },
+    "N156HCE-EAB": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "N156HCE-EN1": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "N156HCE-EN2": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "N156HCA-EAA": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "N156HCA-EAB": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "N173HGE-E11": {
+      "size": "17.3",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "thick": "3.8",
+      "note": "群创 17.3 FHD 40pin"
+    },
+    "N173HGE-EB1": {
+      "size": "17.3",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "N173HCE-E31": {
+      "size": "17.3",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "17.3 FHD 30pin"
+    },
+    "N173HCE-E41": {
+      "size": "17.3",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "LTN140AT01": {
+      "size": "14.0",
+      "res": "1366x768",
+      "iface": "LVDS",
+      "pins": 40,
+      "touch": false,
+      "thick": "3.6",
+      "note": "三星老款 LVDS"
+    },
+    "LTN140AT02": {
+      "size": "14.0",
+      "res": "1366x768",
+      "iface": "LVDS",
+      "pins": 40,
+      "touch": false,
+      "thick": "3.6",
+      "note": "同规格"
+    },
+    "LTN140AT04": {
+      "size": "14.0",
+      "res": "1366x768",
+      "iface": "LVDS",
+      "pins": 40,
+      "touch": false,
+      "thick": "3.6",
+      "note": "同规格"
+    },
+    "LTN140AT06": {
+      "size": "14.0",
+      "res": "1366x768",
+      "iface": "LVDS",
+      "pins": 40,
+      "touch": false,
+      "thick": "3.6",
+      "note": "同规格"
+    },
+    "LTN140AT07": {
+      "size": "14.0",
+      "res": "1366x768",
+      "iface": "LVDS",
+      "pins": 40,
+      "touch": false,
+      "thick": "3.6",
+      "note": "同规格"
+    },
+    "LTN140AT16": {
+      "size": "14.0",
+      "res": "1366x768",
+      "iface": "LVDS",
+      "pins": 40,
+      "touch": false,
+      "thick": "3.6",
+      "note": "同规格"
+    },
+    "LTN140AT20": {
+      "size": "14.0",
+      "res": "1366x768",
+      "iface": "LVDS",
+      "pins": 40,
+      "touch": false,
+      "thick": "3.6",
+      "note": "同规格"
+    },
+    "LTN140AT21": {
+      "size": "14.0",
+      "res": "1366x768",
+      "iface": "LVDS",
+      "pins": 40,
+      "touch": false,
+      "thick": "3.6",
+      "note": "同规格"
+    },
+    "LTN140AT22": {
+      "size": "14.0",
+      "res": "1366x768",
+      "iface": "LVDS",
+      "pins": 40,
+      "touch": false,
+      "thick": "3.6",
+      "note": "同规格"
+    },
+    "LTN140AT26": {
+      "size": "14.0",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.6",
+      "note": "三星 14 转 eDP"
+    },
+    "LTN140AT27": {
+      "size": "14.0",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.6",
+      "note": "同规格"
+    },
+    "LTN140HL02": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "三星 14 FHD"
+    },
+    "LTN156AT01": {
+      "size": "15.6",
+      "res": "1366x768",
+      "iface": "LVDS",
+      "pins": 40,
+      "touch": false,
+      "thick": "3.8",
+      "note": "三星老款 LVDS"
+    },
+    "LTN156AT02": {
+      "size": "15.6",
+      "res": "1366x768",
+      "iface": "LVDS",
+      "pins": 40,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "LTN156AT05": {
+      "size": "15.6",
+      "res": "1366x768",
+      "iface": "LVDS",
+      "pins": 40,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "LTN156AT09": {
+      "size": "15.6",
+      "res": "1366x768",
+      "iface": "LVDS",
+      "pins": 40,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "LTN156AT16": {
+      "size": "15.6",
+      "res": "1366x768",
+      "iface": "LVDS",
+      "pins": 40,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "LTN156AT17": {
+      "size": "15.6",
+      "res": "1366x768",
+      "iface": "LVDS",
+      "pins": 40,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "LTN156AT18": {
+      "size": "15.6",
+      "res": "1366x768",
+      "iface": "LVDS",
+      "pins": 40,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "LTN156AT19": {
+      "size": "15.6",
+      "res": "1366x768",
+      "iface": "LVDS",
+      "pins": 40,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "LTN156AT20": {
+      "size": "15.6",
+      "res": "1366x768",
+      "iface": "LVDS",
+      "pins": 40,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "LTN156AT24": {
+      "size": "15.6",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "三星 15.6 普分 eDP"
+    },
+    "LTN156AT26": {
+      "size": "15.6",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "LTN156AT27": {
+      "size": "15.6",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "LTN156AT30": {
+      "size": "15.6",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "LTN156AT32": {
+      "size": "15.6",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "LTN156AT35": {
+      "size": "15.6",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "LTN156AT37": {
+      "size": "15.6",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "LTN156HL01": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "三星 15.6 FHD"
+    },
+    "LTN156HL02": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "LTN156HL06": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "LTN156HL09": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "LTN156FL01": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "三星 PLS"
+    },
+    "LTN173KT01": {
+      "size": "17.3",
+      "res": "1600x900",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "17.3 900p"
+    },
+    "LTN173KT02": {
+      "size": "17.3",
+      "res": "1600x900",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "LTN173HL01": {
+      "size": "17.3",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "三星 17.3 FHD"
+    },
+    "LTN173HL02": {
+      "size": "17.3",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "LTN173HT02": {
+      "size": "17.3",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "thick": "3.8",
+      "note": "17.3 FHD 40pin"
+    },
+    "NV125FHM-N41": {
+      "size": "12.5",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "京东方 12.5 FHD"
+    },
+    "NV125FHM-N62": {
+      "size": "12.5",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "同规格"
+    },
+    "NV133FHM-N41": {
+      "size": "13.3",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "京东方 13.3 FHD"
+    },
+    "NV133FHM-N42": {
+      "size": "13.3",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "同规格"
+    },
+    "NV133FHM-N43": {
+      "size": "13.3",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "同规格"
+    },
+    "NV133FHM-N44": {
+      "size": "13.3",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "同规格"
+    },
+    "NV133FHM-N45": {
+      "size": "13.3",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "同规格"
+    },
+    "NV133FHM-N46": {
+      "size": "13.3",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "同规格"
+    },
+    "NV133FHM-N47": {
+      "size": "13.3",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "同规格"
+    },
+    "NV133FHM-N52": {
+      "size": "13.3",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "同规格"
+    },
+    "NV133FHM-N61": {
+      "size": "13.3",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "同规格"
+    },
+    "NV140FHM-N41": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "京东方 14 FHD,极常见"
+    },
+    "NV140FHM-N42": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "同规格"
+    },
+    "NV140FHM-N43": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "同规格"
+    },
+    "NV140FHM-N44": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "同规格"
+    },
+    "NV140FHM-N45": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "同规格"
+    },
+    "NV140FHM-N46": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "同规格"
+    },
+    "NV140FHM-N47": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "同规格"
+    },
+    "NV140FHM-N48": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "同规格"
+    },
+    "NV140FHM-N61": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "同规格"
+    },
+    "NV140FHM-N62": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "同规格"
+    },
+    "NV140FHM-N63": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "同规格"
+    },
+    "NV140FHM-N65": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "同规格"
+    },
+    "NV140FHM-N66": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "同规格"
+    },
+    "NV140FHM-T01": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": true,
+      "thick": "3.2",
+      "note": "带触摸"
+    },
+    "NV156FHM-N41": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "京东方 15.6 FHD,极常见"
+    },
+    "NV156FHM-N42": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "NV156FHM-N43": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "NV156FHM-N44": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "NV156FHM-N45": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "NV156FHM-N46": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "NV156FHM-N47": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "NV156FHM-N48": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "NV156FHM-N61": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "NV156FHM-N62": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "NV156FHM-N63": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "NV156FHM-N65": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "NV156FHM-N66": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "NV156FHM-NY1": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "NV156FHM-T01": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": true,
+      "thick": "3.8",
+      "note": "带触摸"
+    },
+    "NT156FHM-N41": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "京东方 15.6 FHD"
+    },
+    "NT156FHM-N42": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "NT156FHM-N61": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "NT140FHM-N41": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "京东方 14 FHD"
+    },
+    "NT140FHM-N42": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "同规格"
+    },
+    "NT140FHM-N43": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "同规格"
+    },
+    "NT140FHM-N44": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "同规格"
+    },
+    "NV173FHM-N41": {
+      "size": "17.3",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "京东方 17.3 FHD"
+    },
+    "NV173FHM-N42": {
+      "size": "17.3",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "NV173FHM-N44": {
+      "size": "17.3",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "NV173FHM-N46": {
+      "size": "17.3",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "NV173FHM-N47": {
+      "size": "17.3",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "同规格"
+    },
+    "LQ140M1JW46": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "夏普 IGZO"
+    },
+    "LQ156M1JW01": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "夏普 IGZO"
+    },
+    "LQ156D1JW02": {
+      "size": "15.6",
+      "res": "3840x2160",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "thick": "3.8",
+      "note": "夏普 4K"
+    },
+    "LQ173M1JW03": {
+      "size": "17.3",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "夏普 17.3"
+    },
+    "NV156FHM-N4V": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.8",
+      "note": "BOE;Dell 备件 CN-02GMF6"
+    },
+    "N160JCA-ELK": {
+      "size": "16.0",
+      "res": "1920x1200",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "群创 Innolux 16寸WUXGA 30pin IPS（LCD Guarantee 在售）"
+    },
+    "N160JCE-ELL": {
+      "size": "16.0",
+      "res": "1920x1200",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "群创 Innolux 16寸WUXGA 30pin IPS 窄边框"
+    },
+    "N160GME-GTB": {
+      "size": "16.0",
+      "res": "2560x1600",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "note": "群创 Innolux 16寸 QHD+ 240Hz 电竞屏"
+    },
+    "NV160WUM-NX1": {
+      "size": "16.0",
+      "res": "1920x1200",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "note": "京东方 BOE 16寸WUXGA 40pin 144Hz 电竞版"
+    },
+    "NE160QDM-NZ1": {
+      "size": "16.0",
+      "res": "2560x1600",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "note": "京东方 BOE 16寸 QHD+ 165Hz（小新Pro16/ThinkBook16+ 常见）"
+    },
+    "B160UAN01": {
+      "size": "16.0",
+      "res": "1920x1200",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "友达 AUO 16寸WUXGA 16:10"
+    },
+    "LP160WU1": {
+      "size": "16.0",
+      "res": "1920x1200",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "LG Display 16寸WUXGA 16:10"
+    }
+  },
+  "brands": {
+    "LP": "LG Display (LPL)",
+    "B": "AUO 友达",
+    "N": "Innolux 群创",
+    "LTN": "Samsung 三星",
+    "NV": "BOE 京东方",
+    "NT": "BOE 京东方",
+    "LQ": "Sharp 夏普",
+    "M": "CSOT 华星光电"
+  },
+  "machines": {
+    "Dell Inspiron 15 5510 / 5518 (RegModel P106F, 2021)": {
+      "panel": "NV156FHM-N4V",
+      "dellepart": "CN-02GMF6",
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "note": "ST 1425VG3 官网实测;触摸版需换触摸屏"
+    },
+    "Lenovo IdeaPad 3 / 5 15 (15ALC/15ITL/15IIL)": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考(15.6 FHD 常见版);同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "Lenovo 小新 15 / ThinkBook 15": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考(15.6 FHD 常见版);同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "Lenovo ThinkPad E15 / T15 / V15": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考(15.6 FHD 常见版);同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "Dell Inspiron 15 3501 / 3510 / 3511 / 3515 / 3520": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考(15.6 FHD 常见版);同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "Dell Inspiron 15 5510 / 5515 / 5518": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考(15.6 FHD 常见版);同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "Dell Vostro 15 3510 / 5510": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考(15.6 FHD 常见版);同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "Dell Latitude 3520 / 5520": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考(15.6 FHD 常见版);同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "HP 15s-fq / 15s-eq / 15-da / 15-dw": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考(15.6 FHD 常见版);同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "HP Pavilion 15 / ProBook 450 G7 / G8": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考(15.6 FHD 常见版);同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "ASUS VivoBook 15 X509 / X512 / X515 / M515": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考(15.6 FHD 常见版);同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "ASUS VivoBook S15 / ZenBook 15": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考(15.6 FHD 常见版);同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "Acer Aspire 3 / 5 / 7 (A315/A515/A715)": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考(15.6 FHD 常见版);同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "HUAWEI MateBook D15": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考(15.6 FHD 常见版);同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "Honor MagicBook 15": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考(15.6 FHD 常见版);同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "Xiaomi RedmiBook 15 / Mi Notebook 15": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考(15.6 FHD 常见版);同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "MSI Modern 15 / GF63 Thin": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考(15.6 FHD 常见版);同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "Dell Inspiron 16 5620 / 5630 (2022-2023)": {
+      "size": "16.0",
+      "res": "1920x1200",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "Amazon 换屏件实标 16.0\\\" WUXGA eDP 30pin"
+    },
+    "Lenovo 小新16 / 小新Pro16 / ThinkBook 16+ (2023-2026)": {
+      "size": "16.0",
+      "res": "1920x1200",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "联想官网知识库：小新16 16.0\\\" 1920x1200；Pro16/16+ 高配为 2560x1600 40pin"
+    },
+    "HP Pavilion 16 / Envy 16 (2023-2024)": {
+      "size": "16.0",
+      "res": "1920x1200",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "16:10 系列参考，装机核对针脚/耳位"
+    },
+    "ASUS VivoBook 16 (M1607) / VivoBook 16X": {
+      "size": "16.0",
+      "res": "1920x1200",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "ASUS 官网：16:10 FHD IPS"
+    },
+    "HUAWEI MateBook D16 (2022-2024)": {
+      "size": "16.0",
+      "res": "1920x1200",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "华为官网：16寸 16:10 1920x1200 100% sRGB"
+    },
+    "Honor MagicBook 16 / 16 Pro": {
+      "size": "16.0",
+      "res": "1920x1200",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "16:10 系列参考"
+    },
+    "Xiaomi RedmiBook 16 / RedmiBook Pro 16": {
+      "size": "16.0",
+      "res": "1920x1200",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "16:10 系列参考"
+    },
+    "WIKO Hi MateBook D16 (2026)": {
+      "size": "16.0",
+      "res": "1920x1200",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "快科技：16英寸IPS 16:10 1920x1200 100% sRGB"
+    },
+    "HUAWEI MateBook 16 (2021, 3:2)": {
+      "size": "16.0",
+      "res": "2520x1680",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "3:2 特殊比例，非16:10，勿按 1920x1200 换屏"
+    },
+    "Lenovo ThinkPad T440s / T450 / T460 / T470 / T480": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度；原装常见 LP140WF1 / B140HAN01 / N140HCE"
+    },
+    "Lenovo ThinkPad X1 Carbon (1st-6th)": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度；原装常见 LP140WF1 / B140HAN01"
+    },
+    "Lenovo ThinkPad T430 / T440 / T450": {
+      "size": "14.0",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "Lenovo ThinkPad T420s / T430s": {
+      "size": "14.0",
+      "res": "1600x900",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "Lenovo ThinkPad X240 / X250 / X260 / X270": {
+      "size": "12.5",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "Lenovo ThinkPad X220 / X230": {
+      "size": "12.5",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "Lenovo ThinkPad X390 / T490s / T14": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "Lenovo ThinkPad E14 / ThinkBook 14 / 小新 Air 14": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "Lenovo IdeaPad 100 / 110 / 300 14": {
+      "size": "14.0",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "Lenovo IdeaPad 330 / 330S 14": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "Lenovo 小新 16 / 小新 Pro 16 / ThinkBook 16+": {
+      "size": "16.0",
+      "res": "1920x1200",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度；原装常见 N160JCA / NV160WUM"
+    },
+    "Lenovo IdeaPad 320 / 330 17 / Y7000 / R7000 17": {
+      "size": "17.3",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "Lenovo 拯救者 Y7000 / R7000 (60Hz 版)": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "Lenovo G50 / G505 / G508": {
+      "size": "15.6",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "Dell Latitude 5490 / 7490 / 5400": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "Dell Latitude E5440 / 3450 / 3460 / 3470": {
+      "size": "14.0",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "Dell Latitude E6420 / E6430": {
+      "size": "14.0",
+      "res": "1600x900",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "Dell Latitude E6410 / E5410": {
+      "size": "14.0",
+      "res": "1366x768",
+      "iface": "LVDS",
+      "pins": 40,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度；老款 LVDS"
+    },
+    "Dell Inspiron 14 5410 / 5420 / 5430": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "Dell Vostro 14 3400 / 5410": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "Dell XPS 13 9360 / 9370 / 9380": {
+      "size": "13.3",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "Dell XPS 15 9530 / 9550": {
+      "size": "15.6",
+      "res": "3840x2160",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度；4K 版"
+    },
+    "Dell Inspiron 16 5620 / 5630": {
+      "size": "16.0",
+      "res": "1920x1200",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度；原装常见 N160JCA / NV160WUM"
+    },
+    "Dell Inspiron 17 3737 / 5748": {
+      "size": "17.3",
+      "res": "1600x900",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "HP EliteBook 840 G3 / G4 / G5": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "HP ProBook 440 G1 / G2": {
+      "size": "14.0",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "HP 240 / 245 G6 / G7 14": {
+      "size": "14.0",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "HP EliteBook 830 G5 / G6 / 840 G7": {
+      "size": "13.3",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "HP Pavilion 16 / Envy 16": {
+      "size": "16.0",
+      "res": "1920x1200",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "HP 250 G5 / G6 / G7": {
+      "size": "15.6",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "HP EliteBook 8460p / 8440p": {
+      "size": "14.0",
+      "res": "1600x900",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度；老款"
+    },
+    "HP Envy x360 15 (触摸版)": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": true,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度；触摸屏,不可用非触摸屏替"
+    },
+    "ASUS VivoBook 16 M1607 / M1605": {
+      "size": "16.0",
+      "res": "1920x1200",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "ASUS ZenBook UX430 / UX440 / UX410": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "ASUS X540 / X550 / X555 / X556": {
+      "size": "15.6",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "ASUS ROG G751 / G771": {
+      "size": "17.3",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "ASUS ROG G750 / G750JX": {
+      "size": "17.3",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度；早期 40pin"
+    },
+    "ASUS N56 / N550": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度；早期 40pin"
+    },
+    "ASUS TUF Gaming F15 / A15": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "Acer Aspire 4736 / E1-470 / 4752": {
+      "size": "14.0",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "Acer Aspire E5-571 / E5-575 / A315 / A515": {
+      "size": "15.6",
+      "res": "1366x768",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "Acer Nitro 5 AN515 / Aspire 7 A715": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "Acer Swift 3 SF314": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "Acer 5749 / E1-571 / 5750": {
+      "size": "15.6",
+      "res": "1366x768",
+      "iface": "LVDS",
+      "pins": 40,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度；老款 LVDS"
+    },
+    "HUAWEI MateBook D14 / D14 2022": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "HUAWEI MateBook D16 / D16 2022": {
+      "size": "16.0",
+      "res": "1920x1200",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "Honor MagicBook 16 / MagicBook X16": {
+      "size": "16.0",
+      "res": "1920x1200",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "Xiaomi RedmiBook 16 / Mi Notebook 16": {
+      "size": "16.0",
+      "res": "1920x1200",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "MSI Modern 15 / GF63 Thin 15": {
+      "size": "15.6",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度"
+    },
+    "MSI GE70 / GE72 (早期)": {
+      "size": "17.3",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "note": "系列参考;同系列多版本,装机核对针脚/耳位/厚度；早期 40pin"
+    },
+    "Microsoft Surface Laptop 13.5": {
+      "size": "13.5",
+      "res": "2256x1504",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "note": "Surface 专用屏,与通用笔记本屏不互换"
+    }
+  },
+  "machine_groups": {
+    "12.5\" 1366x768 eDP 30pin": [
+      "联想 ThinkPad X220 / X230",
+      "联想 昭阳 K23",
+      "惠普 EliteBook 2560p"
+    ],
+    "12.5\" 1920x1080 eDP 30pin": [
+      "联想 ThinkPad X240 / X250 / X260 / X270",
+      "联想 X1 Carbon 1st-2nd",
+      "戴尔 Latitude E7250"
+    ],
+    "13.3\" 1366x768 eDP 30pin": [
+      "联想 ThinkPad Edge 13",
+      "华硕 U31 / U36",
+      "宏碁 3830TG"
+    ],
+    "13.3\" 1366x768 LVDS 40pin": [
+      "联想 IdeaPad Z370",
+      "戴尔 Vostro 1310",
+      "老款 13.3 机型(2011 前)"
+    ],
+    "13.3\" 1920x1080 eDP 30pin": [
+      "联想 X1 Carbon 3rd-6th",
+      "联想 ThinkPad X390 / T490s",
+      "戴尔 XPS 13 9360 / 9370",
+      "惠普 EliteBook 830 G5 / G6",
+      "华硕 ZenBook UX330 / UX430"
+    ],
+    "14.0\" 1600x900 eDP 30pin": [
+      "联想 ThinkPad T420s / T430s",
+      "戴尔 Latitude E6420",
+      "惠普 EliteBook 8460p"
+    ],
+    "14.0\" 1366x768 LVDS 40pin": [
+      "联想 ThinkPad T410",
+      "戴尔 Latitude E6410",
+      "惠普 EliteBook 8440p",
+      "老款 14 寸(2011 前)"
+    ],
+    "14.0\" 1366x768 eDP 30pin": [
+      "联想 ThinkPad T430 / T440",
+      "联想 IdeaPad 100 / 110 14",
+      "戴尔 Latitude E5440 / 3450 / 3460",
+      "惠普 ProBook 440 G1 / G2",
+      "宏碁 4752 / E1-470",
+      "华硕 A45 / X450"
+    ],
+    "14.0\" 1920x1080 eDP 30pin": [
+      "联想 ThinkPad T440s / T450 / T460 / T470 / T480",
+      "联想 X1 Carbon",
+      "联想 小新 Air 14",
+      "戴尔 Latitude 5490 / 7490",
+      "惠普 EliteBook 840 G3 / G4 / G5",
+      "华硕 ZenBook UX430 / UX440",
+      "宏碁 Swift 3",
+      "华为 MateBook D14"
+    ],
+    "14.0\" 1920x1080 eDP 30pin 触摸": [
+      "联想 Y40-70 触摸版",
+      "戴尔 Inspiron 7437 触摸版",
+      "惠普 Envy 14 触摸版"
+    ],
+    "15.6\" 1366x768 LVDS 40pin": [
+      "联想 G500 / G505",
+      "宏碁 5749 / E1-571",
+      "华硕 X54 / K55",
+      "老款 15.6 寸(2012 前)"
+    ],
+    "15.6\" 1366x768 eDP 30pin": [
+      "联想 IdeaPad 100 / 110 / 300 15",
+      "联想 G50 / V15",
+      "戴尔 Inspiron 3540 / 3550 / 3560",
+      "惠普 250 G5 / G6 / 15-da",
+      "华硕 X540 / X550 / X555",
+      "宏碁 E5-571 / E5-575"
+    ],
+    "15.6\" 1920x1080 eDP 30pin": [
+      "联想 IdeaPad 3 / 5 15、小新 15、ThinkBook 15、ThinkPad E15 / T15 / V15",
+      "戴尔 Inspiron 15 3501 / 3510 / 3511 / 3515 / 5510 / 5515 / 5518 / 3520",
+      "戴尔 Vostro 15 3510 / 5510、Latitude 3520 / 5520",
+      "惠普 15s-fq / 15s-eq / Pavilion 15 / ProBook 450 G7 / G8",
+      "华硕 VivoBook 15 X509 / X512 / X515 / M515",
+      "宏碁 Aspire 3 / 5 (A315 / A515) / Nitro 5",
+      "华为 MateBook D15、荣耀 MagicBook 15",
+      "小米 RedmiBook 15、微星 Modern 15"
+    ],
+    "15.6\" 1920x1080 eDP 30pin 触摸": [
+      "联想 Flex 3 15 触摸",
+      "惠普 Envy x360 15 触摸",
+      "戴尔 Inspiron 7537 触摸"
+    ],
+    "15.6\" 1920x1080 eDP 40pin": [
+      "联想 Y580 / Y500",
+      "华硕 N56 / N550",
+      "戴尔 XPS 15 L502x",
+      "早期 15.6 FHD 40pin 机型"
+    ],
+    "15.6\" 3840x2160 eDP 40pin": [
+      "戴尔 XPS 15 9530 / 9550",
+      "联想 Y50-70 4K",
+      "华硕 ZenBook Pro UX501"
+    ],
+    "17.3\" 1600x900 eDP 30pin": [
+      "戴尔 Inspiron 17 3737 / 5748",
+      "惠普 ProBook 470 G1 / G2"
+    ],
+    "17.3\" 1920x1080 eDP 30pin": [
+      "华硕 ROG G751 / G771",
+      "联想 IdeaPad 320 / 330 17",
+      "戴尔 Inspiron 17 5000",
+      "惠普 Envy 17 / 470 G3"
+    ],
+    "17.3\" 1920x1080 eDP 40pin": [
+      "华硕 ROG G750",
+      "微星 GE70 / GE72 (早期)"
+    ],
+    "16.0\" 1920x1200 eDP 30pin": [
+      "联想 小新16 / 小新Pro16(1080p档) / ThinkBook 16+ (1080p档)",
+      "戴尔 Dell Inspiron 16 5620 / 5630 / 16 Plus(1080p档)",
+      "惠普 HP Pavilion 16 / Envy 16(1080p档)",
+      "华硕 ASUS VivoBook 16 (M1607) / VivoBook 16X",
+      "华为 HUAWEI MateBook D16 2022-2024",
+      "荣耀 Honor MagicBook 16 / 16 Pro",
+      "小米 Xiaomi RedmiBook 16 / RedmiBook Pro 16",
+      "WIKO Hi MateBook D16 (2026)"
+    ],
+    "16.0\" 2560x1600 eDP 40pin": [
+      "联想 小新Pro16 2.5K / ThinkBook 16+ 2.5K",
+      "联想 Yoga Pro 16 / Legion 16(2.5K档)",
+      "戴尔 Dell Inspiron 16 Plus (2.5K档)",
+      "华硕 ASUS VivoBook Pro 16 / Vivobook 16 (2.5K档)"
+    ],
+    "16.0\" 2520x1680 eDP 30pin": [
+      "华为 HUAWEI MateBook 16 (2021, 3:2)"
+    ]
   }
- },
- "brands": {
-  "LP": "LG Display (LPL)",
-  "B": "AUO 友达",
-  "N": "Innolux 群创",
-  "LTN": "Samsung 三星",
-  "NV": "BOE 京东方",
-  "NT": "BOE 京东方",
-  "LQ": "Sharp 夏普",
-  "M": "CSOT 华星光电"
- },
- "machines": {
-  "Dell Inspiron 15 5510 / 5518 (RegModel P106F, 2021)": {
-   "panel": "NV156FHM-N4V",
-   "dellepart": "CN-02GMF6",
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "note": "ST 1425VG3 官网实测;触摸版需换触摸屏"
-  },
-  "Lenovo IdeaPad 3 / 5 15 (15ALC/15ITL/15IIL)": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "note": "系列参考(15.6 FHD 常见版);同系列多版本,装机核对针脚/耳位/厚度"
-  },
-  "Lenovo 小新 15 / ThinkBook 15": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "note": "系列参考(15.6 FHD 常见版);同系列多版本,装机核对针脚/耳位/厚度"
-  },
-  "Lenovo ThinkPad E15 / T15 / V15": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "note": "系列参考(15.6 FHD 常见版);同系列多版本,装机核对针脚/耳位/厚度"
-  },
-  "Dell Inspiron 15 3501 / 3510 / 3511 / 3515 / 3520": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "note": "系列参考(15.6 FHD 常见版);同系列多版本,装机核对针脚/耳位/厚度"
-  },
-  "Dell Inspiron 15 5510 / 5515 / 5518": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "note": "系列参考(15.6 FHD 常见版);同系列多版本,装机核对针脚/耳位/厚度"
-  },
-  "Dell Vostro 15 3510 / 5510": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "note": "系列参考(15.6 FHD 常见版);同系列多版本,装机核对针脚/耳位/厚度"
-  },
-  "Dell Latitude 3520 / 5520": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "note": "系列参考(15.6 FHD 常见版);同系列多版本,装机核对针脚/耳位/厚度"
-  },
-  "HP 15s-fq / 15s-eq / 15-da / 15-dw": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "note": "系列参考(15.6 FHD 常见版);同系列多版本,装机核对针脚/耳位/厚度"
-  },
-  "HP Pavilion 15 / ProBook 450 G7 / G8": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "note": "系列参考(15.6 FHD 常见版);同系列多版本,装机核对针脚/耳位/厚度"
-  },
-  "ASUS VivoBook 15 X509 / X512 / X515 / M515": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "note": "系列参考(15.6 FHD 常见版);同系列多版本,装机核对针脚/耳位/厚度"
-  },
-  "ASUS VivoBook S15 / ZenBook 15": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "note": "系列参考(15.6 FHD 常见版);同系列多版本,装机核对针脚/耳位/厚度"
-  },
-  "Acer Aspire 3 / 5 / 7 (A315/A515/A715)": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "note": "系列参考(15.6 FHD 常见版);同系列多版本,装机核对针脚/耳位/厚度"
-  },
-  "HUAWEI MateBook D15": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "note": "系列参考(15.6 FHD 常见版);同系列多版本,装机核对针脚/耳位/厚度"
-  },
-  "Honor MagicBook 15": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "note": "系列参考(15.6 FHD 常见版);同系列多版本,装机核对针脚/耳位/厚度"
-  },
-  "Xiaomi RedmiBook 15 / Mi Notebook 15": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "note": "系列参考(15.6 FHD 常见版);同系列多版本,装机核对针脚/耳位/厚度"
-  },
-  "MSI Modern 15 / GF63 Thin": {
-   "size": "15.6",
-   "res": "1920x1080",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "note": "系列参考(15.6 FHD 常见版);同系列多版本,装机核对针脚/耳位/厚度"
-  },
-  "Dell Inspiron 16 5620 / 5630 (2022-2023)": {
-   "size": "16.0",
-   "res": "1920x1200",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "note": "Amazon 换屏件实标 16.0\\\" WUXGA eDP 30pin"
-  },
-  "Lenovo 小新16 / 小新Pro16 / ThinkBook 16+ (2023-2026)": {
-   "size": "16.0",
-   "res": "1920x1200",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "note": "联想官网知识库：小新16 16.0\\\" 1920x1200；Pro16/16+ 高配为 2560x1600 40pin"
-  },
-  "HP Pavilion 16 / Envy 16 (2023-2024)": {
-   "size": "16.0",
-   "res": "1920x1200",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "note": "16:10 系列参考，装机核对针脚/耳位"
-  },
-  "ASUS VivoBook 16 (M1607) / VivoBook 16X": {
-   "size": "16.0",
-   "res": "1920x1200",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "note": "ASUS 官网：16:10 FHD IPS"
-  },
-  "HUAWEI MateBook D16 (2022-2024)": {
-   "size": "16.0",
-   "res": "1920x1200",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "note": "华为官网：16寸 16:10 1920x1200 100% sRGB"
-  },
-  "Honor MagicBook 16 / 16 Pro": {
-   "size": "16.0",
-   "res": "1920x1200",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "note": "16:10 系列参考"
-  },
-  "Xiaomi RedmiBook 16 / RedmiBook Pro 16": {
-   "size": "16.0",
-   "res": "1920x1200",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "note": "16:10 系列参考"
-  },
-  "WIKO Hi MateBook D16 (2026)": {
-   "size": "16.0",
-   "res": "1920x1200",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "note": "快科技：16英寸IPS 16:10 1920x1200 100% sRGB"
-  },
-  "HUAWEI MateBook 16 (2021, 3:2)": {
-   "size": "16.0",
-   "res": "2520x1680",
-   "iface": "eDP",
-   "pins": 30,
-   "touch": false,
-   "note": "3:2 特殊比例，非16:10，勿按 1920x1200 换屏"
-  }
- },
- "machine_groups": {
-  "12.5\" 1366x768 eDP 30pin": [
-   "联想 ThinkPad X220 / X230",
-   "联想 昭阳 K23",
-   "惠普 EliteBook 2560p"
-  ],
-  "12.5\" 1920x1080 eDP 30pin": [
-   "联想 ThinkPad X240 / X250 / X260 / X270",
-   "联想 X1 Carbon 1st-2nd",
-   "戴尔 Latitude E7250"
-  ],
-  "13.3\" 1366x768 eDP 30pin": [
-   "联想 ThinkPad Edge 13",
-   "华硕 U31 / U36",
-   "宏碁 3830TG"
-  ],
-  "13.3\" 1366x768 LVDS 40pin": [
-   "联想 IdeaPad Z370",
-   "戴尔 Vostro 1310",
-   "老款 13.3 机型(2011 前)"
-  ],
-  "13.3\" 1920x1080 eDP 30pin": [
-   "联想 X1 Carbon 3rd-6th",
-   "联想 ThinkPad X390 / T490s",
-   "戴尔 XPS 13 9360 / 9370",
-   "惠普 EliteBook 830 G5 / G6",
-   "华硕 ZenBook UX330 / UX430"
-  ],
-  "14.0\" 1600x900 eDP 30pin": [
-   "联想 ThinkPad T420s / T430s",
-   "戴尔 Latitude E6420",
-   "惠普 EliteBook 8460p"
-  ],
-  "14.0\" 1366x768 LVDS 40pin": [
-   "联想 ThinkPad T410",
-   "戴尔 Latitude E6410",
-   "惠普 EliteBook 8440p",
-   "老款 14 寸(2011 前)"
-  ],
-  "14.0\" 1366x768 eDP 30pin": [
-   "联想 ThinkPad T430 / T440",
-   "联想 IdeaPad 100 / 110 14",
-   "戴尔 Latitude E5440 / 3450 / 3460",
-   "惠普 ProBook 440 G1 / G2",
-   "宏碁 4752 / E1-470",
-   "华硕 A45 / X450"
-  ],
-  "14.0\" 1920x1080 eDP 30pin": [
-   "联想 ThinkPad T440s / T450 / T460 / T470 / T480",
-   "联想 X1 Carbon",
-   "联想 小新 Air 14",
-   "戴尔 Latitude 5490 / 7490",
-   "惠普 EliteBook 840 G3 / G4 / G5",
-   "华硕 ZenBook UX430 / UX440",
-   "宏碁 Swift 3",
-   "华为 MateBook D14"
-  ],
-  "14.0\" 1920x1080 eDP 30pin 触摸": [
-   "联想 Y40-70 触摸版",
-   "戴尔 Inspiron 7437 触摸版",
-   "惠普 Envy 14 触摸版"
-  ],
-  "15.6\" 1366x768 LVDS 40pin": [
-   "联想 G500 / G505",
-   "宏碁 5749 / E1-571",
-   "华硕 X54 / K55",
-   "老款 15.6 寸(2012 前)"
-  ],
-  "15.6\" 1366x768 eDP 30pin": [
-   "联想 IdeaPad 100 / 110 / 300 15",
-   "联想 G50 / V15",
-   "戴尔 Inspiron 3540 / 3550 / 3560",
-   "惠普 250 G5 / G6 / 15-da",
-   "华硕 X540 / X550 / X555",
-   "宏碁 E5-571 / E5-575"
-  ],
-  "15.6\" 1920x1080 eDP 30pin": [
-   "联想 IdeaPad 3 / 5 15、小新 15、ThinkBook 15、ThinkPad E15 / T15 / V15",
-   "戴尔 Inspiron 15 3501 / 3510 / 3511 / 3515 / 5510 / 5515 / 5518 / 3520",
-   "戴尔 Vostro 15 3510 / 5510、Latitude 3520 / 5520",
-   "惠普 15s-fq / 15s-eq / Pavilion 15 / ProBook 450 G7 / G8",
-   "华硕 VivoBook 15 X509 / X512 / X515 / M515",
-   "宏碁 Aspire 3 / 5 (A315 / A515) / Nitro 5",
-   "华为 MateBook D15、荣耀 MagicBook 15",
-   "小米 RedmiBook 15、微星 Modern 15"
-  ],
-  "15.6\" 1920x1080 eDP 30pin 触摸": [
-   "联想 Flex 3 15 触摸",
-   "惠普 Envy x360 15 触摸",
-   "戴尔 Inspiron 7537 触摸"
-  ],
-  "15.6\" 1920x1080 eDP 40pin": [
-   "联想 Y580 / Y500",
-   "华硕 N56 / N550",
-   "戴尔 XPS 15 L502x",
-   "早期 15.6 FHD 40pin 机型"
-  ],
-  "15.6\" 3840x2160 eDP 40pin": [
-   "戴尔 XPS 15 9530 / 9550",
-   "联想 Y50-70 4K",
-   "华硕 ZenBook Pro UX501"
-  ],
-  "17.3\" 1600x900 eDP 30pin": [
-   "戴尔 Inspiron 17 3737 / 5748",
-   "惠普 ProBook 470 G1 / G2"
-  ],
-  "17.3\" 1920x1080 eDP 30pin": [
-   "华硕 ROG G751 / G771",
-   "联想 IdeaPad 320 / 330 17",
-   "戴尔 Inspiron 17 5000",
-   "惠普 Envy 17 / 470 G3"
-  ],
-  "17.3\" 1920x1080 eDP 40pin": [
-   "华硕 ROG G750",
-   "微星 GE70 / GE72 (早期)"
-  ],
-  "16.0\" 1920x1200 eDP 30pin": [
-   "联想 小新16 / 小新Pro16(1080p档) / ThinkBook 16+ (1080p档)",
-   "戴尔 Dell Inspiron 16 5620 / 5630 / 16 Plus(1080p档)",
-   "惠普 HP Pavilion 16 / Envy 16(1080p档)",
-   "华硕 ASUS VivoBook 16 (M1607) / VivoBook 16X",
-   "华为 HUAWEI MateBook D16 2022-2024",
-   "荣耀 Honor MagicBook 16 / 16 Pro",
-   "小米 Xiaomi RedmiBook 16 / RedmiBook Pro 16",
-   "WIKO Hi MateBook D16 (2026)"
-  ],
-  "16.0\" 2560x1600 eDP 40pin": [
-   "联想 小新Pro16 2.5K / ThinkBook 16+ 2.5K",
-   "联想 Yoga Pro 16 / Legion 16(2.5K档)",
-   "戴尔 Dell Inspiron 16 Plus (2.5K档)",
-   "华硕 ASUS VivoBook Pro 16 / Vivobook 16 (2.5K档)"
-  ],
-  "16.0\" 2520x1680 eDP 30pin": [
-   "华为 HUAWEI MateBook 16 (2021, 3:2)"
-  ]
- }
 }
