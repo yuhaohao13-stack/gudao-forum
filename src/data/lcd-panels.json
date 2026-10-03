@@ -1929,5 +1929,122 @@
       "touch": false,
       "note": "系列参考(15.6 FHD 常见版);同系列多版本,装机核对针脚/耳位/厚度"
     }
+  },
+  "machine_groups": {
+    "12.5\" 1366x768 eDP 30pin": [
+      "联想 ThinkPad X220 / X230",
+      "联想 昭阳 K23",
+      "惠普 EliteBook 2560p"
+    ],
+    "12.5\" 1920x1080 eDP 30pin": [
+      "联想 ThinkPad X240 / X250 / X260 / X270",
+      "联想 X1 Carbon 1st-2nd",
+      "戴尔 Latitude E7250"
+    ],
+    "13.3\" 1366x768 eDP 30pin": [
+      "联想 ThinkPad Edge 13",
+      "华硕 U31 / U36",
+      "宏碁 3830TG"
+    ],
+    "13.3\" 1366x768 LVDS 40pin": [
+      "联想 IdeaPad Z370",
+      "戴尔 Vostro 1310",
+      "老款 13.3 机型(2011 前)"
+    ],
+    "13.3\" 1920x1080 eDP 30pin": [
+      "联想 X1 Carbon 3rd-6th",
+      "联想 ThinkPad X390 / T490s",
+      "戴尔 XPS 13 9360 / 9370",
+      "惠普 EliteBook 830 G5 / G6",
+      "华硕 ZenBook UX330 / UX430"
+    ],
+    "14.0\" 1600x900 eDP 30pin": [
+      "联想 ThinkPad T420s / T430s",
+      "戴尔 Latitude E6420",
+      "惠普 EliteBook 8460p"
+    ],
+    "14.0\" 1366x768 LVDS 40pin": [
+      "联想 ThinkPad T410",
+      "戴尔 Latitude E6410",
+      "惠普 EliteBook 8440p",
+      "老款 14 寸(2011 前)"
+    ],
+    "14.0\" 1366x768 eDP 30pin": [
+      "联想 ThinkPad T430 / T440",
+      "联想 IdeaPad 100 / 110 14",
+      "戴尔 Latitude E5440 / 3450 / 3460",
+      "惠普 ProBook 440 G1 / G2",
+      "宏碁 4752 / E1-470",
+      "华硕 A45 / X450"
+    ],
+    "14.0\" 1920x1080 eDP 30pin": [
+      "联想 ThinkPad T440s / T450 / T460 / T470 / T480",
+      "联想 X1 Carbon",
+      "联想 小新 Air 14",
+      "戴尔 Latitude 5490 / 7490",
+      "惠普 EliteBook 840 G3 / G4 / G5",
+      "华硕 ZenBook UX430 / UX440",
+      "宏碁 Swift 3",
+      "华为 MateBook D14"
+    ],
+    "14.0\" 1920x1080 eDP 30pin 触摸": [
+      "联想 Y40-70 触摸版",
+      "戴尔 Inspiron 7437 触摸版",
+      "惠普 Envy 14 触摸版"
+    ],
+    "15.6\" 1366x768 LVDS 40pin": [
+      "联想 G500 / G505",
+      "宏碁 5749 / E1-571",
+      "华硕 X54 / K55",
+      "老款 15.6 寸(2012 前)"
+    ],
+    "15.6\" 1366x768 eDP 30pin": [
+      "联想 IdeaPad 100 / 110 / 300 15",
+      "联想 G50 / V15",
+      "戴尔 Inspiron 3540 / 3550 / 3560",
+      "惠普 250 G5 / G6 / 15-da",
+      "华硕 X540 / X550 / X555",
+      "宏碁 E5-571 / E5-575"
+    ],
+    "15.6\" 1920x1080 eDP 30pin": [
+      "联想 IdeaPad 3 / 5 15、小新 15、ThinkBook 15、ThinkPad E15 / T15 / V15",
+      "戴尔 Inspiron 15 3501 / 3510 / 3511 / 3515 / 5510 / 5515 / 5518 / 3520",
+      "戴尔 Vostro 15 3510 / 5510、Latitude 3520 / 5520",
+      "惠普 15s-fq / 15s-eq / Pavilion 15 / ProBook 450 G7 / G8",
+      "华硕 VivoBook 15 X509 / X512 / X515 / M515",
+      "宏碁 Aspire 3 / 5 (A315 / A515) / Nitro 5",
+      "华为 MateBook D15、荣耀 MagicBook 15",
+      "小米 RedmiBook 15、微星 Modern 15"
+    ],
+    "15.6\" 1920x1080 eDP 30pin 触摸": [
+      "联想 Flex 3 15 触摸",
+      "惠普 Envy x360 15 触摸",
+      "戴尔 Inspiron 7537 触摸"
+    ],
+    "15.6\" 1920x1080 eDP 40pin": [
+      "联想 Y580 / Y500",
+      "华硕 N56 / N550",
+      "戴尔 XPS 15 L502x",
+      "早期 15.6 FHD 40pin 机型"
+    ],
+    "15.6\" 3840x2160 eDP 40pin": [
+      "戴尔 XPS 15 9530 / 9550",
+      "联想 Y50-70 4K",
+      "华硕 ZenBook Pro UX501"
+    ],
+    "17.3\" 1600x900 eDP 30pin": [
+      "戴尔 Inspiron 17 3737 / 5748",
+      "惠普 ProBook 470 G1 / G2"
+    ],
+    "17.3\" 1920x1080 eDP 30pin": [
+      "华硕 ROG G751 / G771",
+      "联想 IdeaPad 320 / 330 17",
+      "戴尔 Inspiron 17 5000",
+      "惠普 Envy 17 / 470 G3"
+    ],
+    "17.3\" 1920x1080 eDP 40pin": [
+      "华硕 ROG G750",
+      "微星 GE70 / GE72 (早期)"
+    ]
   }
 }

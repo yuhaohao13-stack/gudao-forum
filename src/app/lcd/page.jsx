@@ -4,7 +4,7 @@ import Link from 'next/link'
 import Seo from '@/components/Seo'
 import { Search, Monitor, Lock, Loader2, Cpu, CheckCircle2, Wrench } from 'lucide-react'
 import { useAuth } from '@/components/AuthProvider'
-import { search, brandOf, groupKey } from '@/lib/lcd'
+import { search, brandOf, groupKey, groupMachines } from '@/lib/lcd'
 import db from '@/data/lcd-panels.json'
 
 const SERIES = db.series || {}
@@ -132,6 +132,17 @@ function Result({ res }) {
               </div>
             ))}
           </div>
+        </div>
+
+        <div className="bg-white border border-[#eee8dc] rounded-2xl p-5 shadow-sm">
+          <div className="font-bold text-[#1a1a1a] text-sm mb-1">适用电脑品牌 / 机型</div>
+          <div className="text-[11px] text-[#bbb] mb-3">同规格机型均可使用（系列级参考，装机前核对实物）</div>
+          <ul className="space-y-1.5">
+            {groupMachines(p.group).map((m, i) => (
+              <li key={i} className="flex gap-2 text-sm text-[#555]"><span className="text-[#b45309]">▪</span><span>{m}</span></li>
+            ))}
+          </ul>
+          {groupMachines(p.group).length === 0 && <div className="text-sm text-[#bbb]">机型数据补充中，可回帖发电脑型号反查。</div>}
         </div>
       </div>
     )

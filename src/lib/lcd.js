@@ -11,6 +11,12 @@ for (const k of Object.keys(SERIES)) NORM[norm(k)] = k
 const KEYS = Object.keys(NORM).sort((a, b) => b.length - a.length)
 
 export const BRANDS = db.brands || {}
+const MACHINE_GROUPS = db.machine_groups || {}
+
+/** 该规格组常见的整机品牌/机型（系列级参考） */
+export function groupMachines(group) {
+  return MACHINE_GROUPS[group] || []
+}
 
 export function brandOf(key) {
   const p = Object.keys(BRANDS).sort((a, b) => b.length - a.length).find((x) => key.startsWith(x))
