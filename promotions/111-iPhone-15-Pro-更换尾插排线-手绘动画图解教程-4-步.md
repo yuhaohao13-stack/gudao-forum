@@ -15,6 +15,16 @@ post_index: 111
 📺 视频：https://youtube.com/watch?v=17qkyw55Sic
 ♪ 抖音：https://v.douyin.com/AuzLKn6driM/
 
+## 案例图片
+
+![步骤 1：拆下屏幕，露出主板和电池](https://rsndnhdimruisysacujg.supabase.co/storage/v1/object/public/forum-images/case-posts/2026-10-03/1791028940457-scene-01.png)
+
+![步骤 2：用镊子取下旧尾插排线](https://rsndnhdimruisysacujg.supabase.co/storage/v1/object/public/forum-images/case-posts/2026-10-03/1791028941495-scene-02.png)
+
+![步骤 3：装入新的尾插排线](https://rsndnhdimruisysacujg.supabase.co/storage/v1/object/public/forum-images/case-posts/2026-10-03/1791028942181-scene-03.png)
+
+![步骤 4：装回屏幕，插线测试充电](https://rsndnhdimruisysacujg.supabase.co/storage/v1/object/public/forum-images/case-posts/2026-10-03/1791028942702-scene-04.png)
+
 ---
 
 *由古道论坛自动推广系统发布 · 2026*
