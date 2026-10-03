@@ -190,6 +190,22 @@ export default function Home() {
       {/* ===== 版块（缩小紧凑版） ===== */}
       <section className="anim-up">
         <Link href="/board" className="inline-flex items-center gap-1 text-xs font-semibold text-[#bbb] mb-2 hover:text-[#b45309] transition-colors">{t('board.title')} <span className="text-[9px]">→</span></Link>
+        {/* 电脑液晶通用查询（2026-10-03 浩哥要求：放在维修案例/在线聊天室上面） */}
+        <Link href="/lcd"
+          className="block mb-2 bg-gradient-to-r from-[#eef4fb] to-[#f8fbff] border border-[#1d4ed8]/25 rounded-xl px-4 py-3 transition-all hover:border-[#1d4ed8]/50 hover:shadow-sm">
+          <div className="flex items-center gap-2.5">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#1d4ed8] to-[#3b82f6] text-white flex items-center justify-center shrink-0"><Monitor size={20} /></div>
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-1.5">
+                <span className="font-bold text-sm text-[#1a1a1a]">电脑液晶通用查询</span>
+                <span className="text-[8px] px-1.5 py-0.5 rounded-full bg-[#1d4ed8]/10 text-[#1d4ed8] font-medium">会员专享</span>
+              </div>
+              <div className="text-[10px] text-[#888] mt-0.5 leading-tight truncate">输入液晶编号或电脑型号 · 查通用液晶型号 + 对应电脑机型 · 换屏必备</div>
+            </div>
+            <span className="text-[#1d4ed8] text-[10px] font-semibold shrink-0">→</span>
+          </div>
+        </Link>
+
         {/* 维修案例 + 在线聊天室：同一排两列（2026-09-03 浩哥要求） */}
         <div className="grid grid-cols-2 gap-2 mb-2">
         {(() => { const techCat = categories.find(c => c.slug === 'tech'); if (!techCat) return null
