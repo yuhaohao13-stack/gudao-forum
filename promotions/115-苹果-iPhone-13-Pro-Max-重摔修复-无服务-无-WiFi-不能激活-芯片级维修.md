@@ -12,7 +12,7 @@ post_index: 115
 👉 [点击阅读原文](https://www.gudaoforum.com/t/efa784a4-df35-458d-9936-13d5d40e3de3)
 
 🔧 维修案例（图文）：https://www.crazy-repair.com/cases/efa784a4
-📺 视频：https://youtube.com/watch?v=osPTT3vCKnU
+📺 视频：https://youtube.com/watch?v=UrxIlNhz82k
 ♪ 抖音：https://v.douyin.com/2wls9w582-s/
 
 ## 案例图片
