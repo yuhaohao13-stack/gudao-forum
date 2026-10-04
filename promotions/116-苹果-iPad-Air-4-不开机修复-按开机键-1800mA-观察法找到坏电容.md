@@ -15,6 +15,14 @@ post_index: 116
 📺 视频：https://youtube.com/watch?v=YZkantU5PWU
 ♪ 抖音：https://v.douyin.com/jbG9qZfL0qk/
 
+## 案例图片
+
+![拆开 iPad，露出双电芯与主板](https://rsndnhdimruisysacujg.supabase.co/storage/v1/object/public/forum-images/case-posts/2026-10-04/1791115903675-01.jpg)
+
+![观察法定位坏电容（绿圈：左为拆下的坏件，右为原位置）](https://rsndnhdimruisysacujg.supabase.co/storage/v1/object/public/forum-images/case-posts/2026-10-04/1791115905132-02.jpg)
+
+![修复后 iPad 正常开机充电（低电量图标→开机）](https://rsndnhdimruisysacujg.supabase.co/storage/v1/object/public/forum-images/case-posts/2026-10-04/1791115905820-03.jpg)
+
 ---
 
 *由古道论坛自动推广系统发布 · 2026*
