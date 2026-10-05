@@ -15,6 +15,14 @@ post_index: 119
 📺 视频：https://youtube.com/watch?v=nKnHXxyhoY0
 ♪ 抖音：https://v.douyin.com/pUHjCtKXUK8/
 
+## 案例图片
+
+![HP EliteBook 830 G8 底盖铭牌（SN 5CG2376JN7 / ProdID 6A3M8AV）](https://rsndnhdimruisysacujg.supabase.co/storage/v1/object/public/forum-images/case-posts/2026-10-05/1791195798480-01.jpg)
+
+![拆开后盖，内部电池与主板](https://rsndnhdimruisysacujg.supabase.co/storage/v1/object/public/forum-images/case-posts/2026-10-05/1791195800316-02.jpg)
+
+![维修电源显示 4.2V 0mA（断开电池后）](https://rsndnhdimruisysacujg.supabase.co/storage/v1/object/public/forum-images/case-posts/2026-10-05/1791195801536-03.jpg)
+
 ---
 
 *由古道论坛自动推广系统发布 · 2026*
