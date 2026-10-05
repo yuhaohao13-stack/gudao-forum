@@ -48,6 +48,7 @@ export const REPAIR_TAG_TO_BRAND = {
   '联想': '电脑主板 PC',
   '戴尔': '电脑主板 PC',
   '惠普': '电脑主板 PC',
+  'HP': '电脑主板 PC',
   '电脑/笔记本': '电脑主板 PC',
   '游戏机': '游戏机 Console',
   '相机': '相机 Camera',
