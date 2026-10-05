@@ -47,6 +47,12 @@ const STATIC_ROUTES = [
   // 论坛板块
   { url: `${BASE}/board`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
 
+  // AI 智能工具箱
+  { url: `${BASE}/ai-tools`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
+
+  // 聊天室
+  { url: `${BASE}/chat`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.8 },
+
   // 古典文学
   { url: `${BASE}/classics`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.9 },
   { url: `${BASE}/classics/shuihu`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },

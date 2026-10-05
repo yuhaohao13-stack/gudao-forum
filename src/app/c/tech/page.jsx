@@ -58,7 +58,7 @@ export async function generateMetadata({ searchParams }) {
   const sp = await searchParams
   const q = (sp?.q || '').trim()
   return {
-    title: q ? `搜索「${q}」- 维修案例 | 古道论坛` : '维修案例_手机电脑芯片级维修实战记录 | 古道论坛',
+    title: { absolute: q ? `搜索「${q}」- 维修案例 | 古道论坛` : '维修案例_手机电脑芯片级维修实战记录 | 古道论坛' },
     description: '古道论坛维修案例板块：iPhone、三星、华为、小米、红魔、摩托罗拉等全品牌维修案例，按品牌与故障分类，含真实维修过程与解决方案。',
     keywords: '维修案例,手机维修案例,电脑维修案例,iPhone维修,三星维修,华为维修,红魔维修,换屏,换电池,主板维修,芯片级维修,古道论坛',
     alternates: { canonical: 'https://www.gudaoforum.com/c/tech' },
