@@ -21,6 +21,7 @@ post_index: 120
 
 ![iPhone 13 Pro Max 搬板修复 - 主板套件实拍](https://rsndnhdimruisysacujg.supabase.co/storage/v1/object/public/forum-images/case-posts/2026-10-06/1791257294697-01.jpg)
 ![iPhone 13 Pro Max 搬板修复 - 芯片实拍](https://rsndnhdimruisysacujg.supabase.co/storage/v1/object/public/forum-images/case-posts/2026-10-06/1791257296033-02.jpg)
+![iPhone 13 Pro Max 搬板修复 - 主板实拍](https://rsndnhdimruisysacujg.supabase.co/storage/v1/object/public/forum-images/case-posts/2026-10-06/1791257398664-03.jpg)
 
 ---
 
