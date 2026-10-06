@@ -2,7 +2,7 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Landmark, Search, MessageCircle, Pencil, X, Globe, LogOut, Gamepad2, Layout, Wrench } from 'lucide-react'
+import { Landmark, Search, MessageCircle, Pencil, X, Globe, LogOut, Gamepad2, Wrench } from 'lucide-react'
 import { useLanguage } from '@/lib/LanguageContext'
 import { useAuth } from './AuthProvider'
 import { createClient } from '@/lib/supabase/client'
@@ -71,10 +71,6 @@ export default function Header() {
               <span>抖音</span>
             </a>
             <DonateButton className="flex items-center gap-1.5 whitespace-nowrap text-lg sm:text-xl font-bold px-6 py-4 rounded-lg bg-[#f5f5f5] text-[#1a1a1a] hover:bg-[#e8e8e8] transition-colors" />
-            <Link href="/board" className="flex items-center gap-1 whitespace-nowrap text-xs sm:text-sm font-medium px-3 py-1.5 rounded-lg bg-[#f5f5f5] text-[#1a1a1a] hover:bg-[#e8e8e8] transition-colors">
-              <Layout size={14} />
-              <span>板块</span>
-            </Link>
             <Link href="/crazy-repair" className="flex items-center gap-1 whitespace-nowrap text-xs sm:text-sm font-medium px-3 py-1.5 rounded-lg bg-[#f5f5f5] text-[#1a1a1a] hover:bg-[#e8e8e8] transition-colors">
               <Wrench size={14} />
               <span>Crazy维修</span>
