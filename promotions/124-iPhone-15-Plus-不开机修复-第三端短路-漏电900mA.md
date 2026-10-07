@@ -24,3 +24,4 @@ post_index: 124
 ![iPhone 15 Plus 不开机修复 维修电源读数 4.2V / 857mA](https://rsndnhdimruisysacujg.supabase.co/storage/v1/object/public/forum-images/case-posts/2026-10-07/1791361193424-01.jpg)
 ![iPhone 15 Plus 不开机修复 热成像短路热点 107.7°C](https://rsndnhdimruisysacujg.supabase.co/storage/v1/object/public/forum-images/case-posts/2026-10-07/1791361195196-02.jpg)
 ![iPhone 15 Plus 不开机修复 iPhone 15 Plus 主板特写](https://rsndnhdimruisysacujg.supabase.co/storage/v1/object/public/forum-images/case-posts/2026-10-07/1791361196599-03.jpg)
+![iPhone 15 Plus 不开机修复 修复后粉色 iPhone 亮屏 电量2%充电中](https://rsndnhdimruisysacujg.supabase.co/storage/v1/object/public/forum-images/case-posts/2026-10-07/1791361283172-04.jpg)
