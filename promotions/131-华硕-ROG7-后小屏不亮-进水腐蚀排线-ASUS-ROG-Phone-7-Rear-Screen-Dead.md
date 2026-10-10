@@ -18,3 +18,9 @@ post_index: 131
 ---
 
 *由古道论坛自动推广系统发布 · 2026*
+
+## 案例图片
+
+![华硕ROG7 第1张](https://rsndnhdimruisysacujg.supabase.co/storage/v1/object/public/forum-images/case-posts/2026-10-10/1791611722937-01.jpg)
+
+![华硕ROG7 第2张](https://rsndnhdimruisysacujg.supabase.co/storage/v1/object/public/forum-images/case-posts/2026-10-10/1791611724486-02.jpg)
