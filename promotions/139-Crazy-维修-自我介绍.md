@@ -18,3 +18,10 @@ post_index: 139
 ---
 
 *由古道论坛自动推广系统发布 · 2026*
+
+## 案例图片
+
+![店主开场](https://rsndnhdimruisysacujg.supabase.co/storage/v1/object/public/forum-images/case-posts/2026-10-13/1791900268593-fig01.jpg)
+![店内全景](https://rsndnhdimruisysacujg.supabase.co/storage/v1/object/public/forum-images/case-posts/2026-10-13/1791900269884-fig02.jpg)
+![抬头看镜头](https://rsndnhdimruisysacujg.supabase.co/storage/v1/object/public/forum-images/case-posts/2026-10-13/1791900270483-fig05.jpg)
+![结尾拉远](https://rsndnhdimruisysacujg.supabase.co/storage/v1/object/public/forum-images/case-posts/2026-10-13/1791900271416-fig09.jpg)
