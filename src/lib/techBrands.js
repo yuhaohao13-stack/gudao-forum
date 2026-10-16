@@ -35,6 +35,7 @@ export const REPAIR_TAG_TO_BRAND = {
   'iPad': '苹果 Apple',
   'MacBook': '苹果 Apple',
   '三星': '三星 Samsung',
+  'Samsung': '三星 Samsung',
   '华为': '华为 Huawei',
   '小米': '小米 Xiaomi',
   'OPPO': 'OPPO',
