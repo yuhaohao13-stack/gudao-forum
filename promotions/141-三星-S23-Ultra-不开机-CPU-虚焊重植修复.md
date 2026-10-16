@@ -21,12 +21,12 @@ post_index: 141
 
 ## 案例图片
 
-![S23 Ultra 主板 - CPU 拆焊](https://rsndnhdimruisysacujg.supabase.co/storage/v1/object/public/forum-images/case-posts/2026-10-16/1792127734713-01.jpg)
+![S23 Ultra 主板 - CPU 拆焊](https://rsndnhdimruisysacujg.supabase.co/storage/v1/object/public/forum-images/case-posts/2026-10-16/1792148314440-01.jpg)
 
-![CPU 与拆下的 BGA 芯片](https://rsndnhdimruisysacujg.supabase.co/storage/v1/object/public/forum-images/case-posts/2026-10-16/1792127736223-02.jpg)
+![CPU 与拆下的 BGA 芯片](https://rsndnhdimruisysacujg.supabase.co/storage/v1/object/public/forum-images/case-posts/2026-10-16/1792148314440-02.jpg)
 
-![主板特写 - SEC 310 芯片](https://rsndnhdimruisysacujg.supabase.co/storage/v1/object/public/forum-images/case-posts/2026-10-16/1792127736728-03.jpg)
+![主板特写 - SEC 310 芯片](https://rsndnhdimruisysacujg.supabase.co/storage/v1/object/public/forum-images/case-posts/2026-10-16/1792148314440-03.jpg)
 
-![重植完成 - 开机测试](https://rsndnhdimruisysacujg.supabase.co/storage/v1/object/public/forum-images/case-posts/2026-10-16/1792127737306-04.jpg)
+![重植完成 - 开机测试](https://rsndnhdimruisysacujg.supabase.co/storage/v1/object/public/forum-images/case-posts/2026-10-16/1792148314440-04.jpg)
 
-![修复成功 - 黄皮筋固定固化中](https://rsndnhdimruisysacujg.supabase.co/storage/v1/object/public/forum-images/case-posts/2026-10-16/1792127737912-05.jpg)
+![修复成功 - 黄皮筋固定固化中](https://rsndnhdimruisysacujg.supabase.co/storage/v1/object/public/forum-images/case-posts/2026-10-16/1792148314440-05.jpg)
