@@ -2,6 +2,10 @@
 // key = URL 用；brand = 数据库 brand 字段的值；name/desc = 展示
 export const TECH_BRANDS = [
   { key: 'Apple', brand: '苹果 Apple', name: '苹果', desc: 'iPhone / iPad / MacBook' },
+  { key: 'Nothing', brand: 'Nothing', name: 'Nothing', desc: 'Phone (1)/(2)/(2a)' },
+  { key: 'Realme', brand: 'Realme', name: 'Realme', desc: '真我 / GT / Narzo' },
+  { key: 'GooglePixel', brand: 'Google Pixel', name: 'Pixel', desc: '谷歌 Pixel 手机/平板' },
+  { key: 'ZTE', brand: '中兴 ZTE', name: '中兴', desc: '中兴 / ZTE' },
   { key: 'Samsung', brand: '三星 Samsung', name: '三星', desc: 'Galaxy 手机 / 平板' },
   { key: 'Huawei', brand: '华为 Huawei', name: '华为', desc: 'Mate / P / nova 系列' },
   { key: 'Xiaomi', brand: '小米 Xiaomi', name: '小米', desc: '小米 / 红米 / Poco' },
@@ -36,6 +40,12 @@ export const REPAIR_TAG_TO_BRAND = {
   'MacBook': '苹果 Apple',
   '三星': '三星 Samsung',
   'Samsung': '三星 Samsung',
+  'Nothing': 'Nothing',
+  'Realme': 'Realme',
+  'Google Pixel': 'Google Pixel',
+  'Pixel': 'Google Pixel',
+  '中兴': '中兴 ZTE',
+  'ZTE': '中兴 ZTE',
   '华为': '华为 Huawei',
   '小米': '小米 Xiaomi',
   'OPPO': 'OPPO',
