@@ -1,11 +1,12 @@
 {
   "meta": {
     "name": "笔记本液晶面板通用检索库",
-    "version": "1.3",
+    "version": "1.4",
     "updated": "2026-10-20",
     "rule": "通用判据 = 尺寸 + 分辨率 + 接口(eDP/LVDS) + 针脚数 + 厚度/耳朵位。同规格即可互换,与品牌无关。",
     "caveat": "参数以厂家 datasheet / 实物丝印为准;换屏前务必核对实机屏线针脚数、针脚朝向、固定耳位。",
     "changelog": [
+      "2026-10-20 月度巡检（补充）：新增液晶品牌 天马 Tianma（TL）与 龙腾光电 IVO（M14/M15）；新增 4 个系列（TL140BDXP01 14\" 2560x1440 120Hz 40pin、TL140BDXP02 2K165Hz、M140NWF5 14\" FHD 30pin、M140NWHE 14\" 2240x1400 40pin）；修正前缀归属 MNE→CSOT 华星、M→IVO 龙腾（原先 M 误指 CSOT，会把 M140/M156 判成华星）；新增 2 个规格组 + 1 条机型；来源 Panelook / NTCSupply / lpscreen / screens-people。",
       "2026-10-20 月度巡检：新增 14.0\" 16:10 (1920x1200) 面板家族 8 个系列（BOE NE140WUM-N62、友达 B140UAN02.1/NV140WUM-N45/N49、LG LP140WU1-SPB1/SPB2/SPF1、MNE007JA1-1，含 30pin/40pin 区分）；新增 5 条机型映射（ThinkPad T14/T14s Gen5、T14 Gen6、T16 Gen3、EliteBook 840 G9-G11、Dynabook X45W）；新增 2 个规格组；品牌前缀 M(/MNE)=华星光电 CSOT，已在库内，未新增品牌；修正品牌前缀映射 NE→BOE 京东方（原本误落到 N→群创）。",
       "2026-10-03 月度巡检：新增 16.0\" 16:10 面板家族 7 个系列（群创/京东方/友达/LG）；新增 3 个规格组与 9 条整机机型映射（戴尔/联想/惠普/华硕/华为/荣耀/小米/WIKO）。"
     ]
@@ -1910,7 +1911,43 @@
       "pins": 30,
       "touch": false,
       "thick": "",
-      "note": "14寸16:10 30pin；与 NE140WUM-N62 同规格可互换；M 前缀=华星光电 CSOT"
+      "note": "14寸16:10 30pin；与 NE140WUM-N62 同规格可互换；MNE 前缀=华星光电 CSOT；M14/M15 前缀=龙腾 IVO"
+    },
+    "TL140BDXP01": {
+      "size": "14.0",
+      "res": "2560x1440",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "thick": "",
+      "note": "天马 LTPS 2K 120Hz 300nit 100%DCI-P3；eDP 1.3 4lane 40pin；常见作 ROG Zephyrus G14(GA401)/X1C7 的 2K 升级屏；40pin 不能用于 30pin 机型"
+    },
+    "TL140BDXP02": {
+      "size": "14.0",
+      "res": "2560x1440",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "thick": "",
+      "note": "天马 2K 165Hz（TL140BDXP02-03）；40pin eDP（同族，装机前数针脚）；高刷需主板+屏线支持"
+    },
+    "M140NWF5": {
+      "size": "14.0",
+      "res": "1920x1080",
+      "iface": "eDP",
+      "pins": 30,
+      "touch": false,
+      "thick": "3.0",
+      "note": "IVO 龙腾光电 14寸 FHD IPS 60Hz 250nit 45%NTSC；R0/R2/R3/R9/RF 同规格；入门/商用14寸常见"
+    },
+    "M140NWHE": {
+      "size": "14.0",
+      "res": "2240x1400",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "thick": "",
+      "note": "IVO 龙腾 14寸 16:10 2.2K；40pin eDP；厚度/耳位待核"
     }
   },
   "brands": {
@@ -1921,8 +1958,10 @@
     "NV": "BOE 京东方",
     "NT": "BOE 京东方",
     "LQ": "Sharp 夏普",
-    "M": "CSOT 华星光电",
-    "NE": "BOE 京东方"
+    "M": "IVO 龙腾光电",
+    "NE": "BOE 京东方",
+    "TL": "Tianma 天马",
+    "MNE": "CSOT 华星光电"
   },
   "machines": {
     "Dell Inspiron 15 5510 / 5518 (RegModel P106F, 2021)": {
@@ -2584,6 +2623,15 @@
       "pins": 30,
       "touch": true,
       "note": "2026 新品：14.0\" WUXGA 触摸+笔(MPP 2.0)；触摸版需换触摸总成，不可只换裸屏"
+    },
+    "ASUS ROG Zephyrus G14 (GA401, 2K 120Hz)": {
+      "panel": "TL140BDXP01",
+      "size": "14.0",
+      "res": "2560x1440",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "note": "NTCSupply/cross-ref：TL140BDXP01-00 为常见 2K 升级屏（非唯一原装）；装机核对针脚/耳位/厚度"
     }
   },
   "machine_groups": {
@@ -2728,6 +2776,15 @@
     ],
     "14.0\" 1920x1200 eDP 40pin": [
       "14寸16:10 高分/窄边框机型（部分批次用 40pin，装机前必须数针脚）"
+    ],
+    "14.0\" 2560x1440 eDP 40pin": [
+      "华硕 ROG Zephyrus G14 (GA401) 2K 120Hz 升级",
+      "联想 ThinkPad X1 Carbon Gen7 2K 升级",
+      "14寸 2K/2.5K 高刷机型（主板需支持 4lane eDP）"
+    ],
+    "14.0\" 2240x1400 eDP 40pin": [
+      "14寸 16:10 2.2K 机型（部分联想/惠普/华硕批次）",
+      "换屏前核对 40pin 与分辨率支持"
     ]
   }
 }
