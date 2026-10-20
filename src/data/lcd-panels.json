@@ -6,7 +6,7 @@
     "rule": "通用判据 = 尺寸 + 分辨率 + 接口(eDP/LVDS) + 针脚数 + 厚度/耳朵位。同规格即可互换,与品牌无关。",
     "caveat": "参数以厂家 datasheet / 实物丝印为准;换屏前务必核对实机屏线针脚数、针脚朝向、固定耳位。",
     "changelog": [
-      "2026-10-20 月度巡检：新增 14.0\" 16:10 (1920x1200) 面板家族 8 个系列（BOE NE140WUM-N62、友达 B140UAN02.1/NV140WUM-N45/N49、LG LP140WU1-SPB1/SPB2/SPF1、MNE007JA1-1，含 30pin/40pin 区分）；新增 5 条机型映射（ThinkPad T14/T14s Gen5、T14 Gen6、T16 Gen3、EliteBook 840 G9-G11、Dynabook X45W）；新增 2 个规格组；品牌前缀 M(/MNE)=华星光电 CSOT，已在库内，未新增品牌。",
+      "2026-10-20 月度巡检：新增 14.0\" 16:10 (1920x1200) 面板家族 8 个系列（BOE NE140WUM-N62、友达 B140UAN02.1/NV140WUM-N45/N49、LG LP140WU1-SPB1/SPB2/SPF1、MNE007JA1-1，含 30pin/40pin 区分）；新增 5 条机型映射（ThinkPad T14/T14s Gen5、T14 Gen6、T16 Gen3、EliteBook 840 G9-G11、Dynabook X45W）；新增 2 个规格组；品牌前缀 M(/MNE)=华星光电 CSOT，已在库内，未新增品牌；修正品牌前缀映射 NE→BOE 京东方（原本误落到 N→群创）。",
       "2026-10-03 月度巡检：新增 16.0\" 16:10 面板家族 7 个系列（群创/京东方/友达/LG）；新增 3 个规格组与 9 条整机机型映射（戴尔/联想/惠普/华硕/华为/荣耀/小米/WIKO）。"
     ]
   },
@@ -1921,7 +1921,8 @@
     "NV": "BOE 京东方",
     "NT": "BOE 京东方",
     "LQ": "Sharp 夏普",
-    "M": "CSOT 华星光电"
+    "M": "CSOT 华星光电",
+    "NE": "BOE 京东方"
   },
   "machines": {
     "Dell Inspiron 15 5510 / 5518 (RegModel P106F, 2021)": {
