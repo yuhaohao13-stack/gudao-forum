@@ -1,13 +1,13 @@
 ---
 
 > 机型：Ulefone 三防手机｜故障：摔落导致屏幕碎裂｜处理：换屏 + 橡皮筋固定等胶固化
-title: "Ulefone 三防机拆机换屏｜螺丝多到怀疑人生"
+title: "Ulefone 三防机摔机换屏｜螺丝多到怀疑人生"
 source: https://www.gudaoforum.com
 publish_date: 2026-10-24
 post_index: 143
 ---
 
-# Ulefone 三防机拆机换屏｜螺丝多到怀疑人生
+# Ulefone 三防机摔机换屏｜螺丝多到怀疑人生
 
 > 本文首发于 **[古道论坛](https://www.gudaoforum.com)** — 国际中文社区 · 以文会友 · 在线聊天
 
