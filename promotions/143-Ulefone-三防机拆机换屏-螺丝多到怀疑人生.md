@@ -18,3 +18,10 @@ post_index: 143
 ---
 
 *由古道论坛自动推广系统发布 · 2026*
+
+## 案例图片
+
+![图1](https://rsndnhdimruisysacujg.supabase.co/storage/v1/object/public/forum-images/case-posts/2026-10-24/1792822531101-01.jpg)
+![图2](https://rsndnhdimruisysacujg.supabase.co/storage/v1/object/public/forum-images/case-posts/2026-10-24/1792822534005-02.jpg)
+![图3](https://rsndnhdimruisysacujg.supabase.co/storage/v1/object/public/forum-images/case-posts/2026-10-24/1792822535978-03.jpg)
+![图4](https://rsndnhdimruisysacujg.supabase.co/storage/v1/object/public/forum-images/case-posts/2026-10-24/1792822536954-04.jpg)
