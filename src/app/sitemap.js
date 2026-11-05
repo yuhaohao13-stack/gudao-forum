@@ -85,6 +85,16 @@ const STATIC_ROUTES = [
   // 会员
   { url: `${BASE}/members`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.6 },
 
+  // 工具页
+  { url: `${BASE}/lcd`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
+
+  // 品牌介绍
+  { url: `${BASE}/crazy-repair`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
+
+  // 在线书籍
+  { url: `${BASE}/books/doctor`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
+  { url: `${BASE}/books/militia`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
+
   // 游戏
   { url: `${BASE}/games`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
 
