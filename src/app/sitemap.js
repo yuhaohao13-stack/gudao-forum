@@ -189,5 +189,9 @@ export default async function sitemap() {
     console.error('Failed to fetch dynamic routes for sitemap:', e.message)
   }
 
-  return [...STATIC_ROUTES, ...literatureRoutes(), ...dynamicRoutes]
+  // 2026-11-09 SEO 调整：诗词/成语/谚语/古籍的**详情页**（约 1,051 条）移出 sitemap。
+  // 原因：与维修主题无关的批量数据页，Google 判为低质，拖累整站信任度。
+  // 栏目页（/poetry /idioms /proverbs /classics）仍在 STATIC_ROUTES 里，站点结构不变；
+  // 详情页保持可访问、可被内链发现，只是不再主动提交。若要彻底不收录，再给详情页加 noindex。
+  return [...STATIC_ROUTES, ...dynamicRoutes]
 }
