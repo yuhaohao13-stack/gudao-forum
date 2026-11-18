@@ -46,6 +46,7 @@ export default function Footer() {
             <div style={{display:'flex',flexDirection:'column',gap:'5px',fontSize:'11px',color:'#aaa'}}>
               <div>994730969@qq.com</div>
               <div>微信：crazy-repair</div>
+              <div><a href="https://wa.me/6586208789" target="_blank" rel="noopener noreferrer" style={{color:'#b45309',textDecoration:'none'}}>WhatsApp：+65 8620 8789</a></div>
               <div>yuhaohao13@gmail.com</div>
               <div style={{color:'#ccc',marginTop:'6px',paddingTop:'6px',borderTop:'1px solid #f0f0f0'}}>客服时间：周一至周日 8:00-22:00</div>
             </div>

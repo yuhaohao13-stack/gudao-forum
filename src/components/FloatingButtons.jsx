@@ -111,6 +111,16 @@ export default function FloatingButtons() {
                 <span style={{ color: '#07c160', fontSize: '0.8rem' }}>→</span>
               </button>
 
+              {/* WhatsApp / 电话（2026-11-18 新增） */}
+              <a href="https://wa.me/6586208789" target="_blank" rel="noopener noreferrer" style={{...btnBase, textDecoration:'none'}}>
+                <div style={iconCircle('#25D366')}><span style={{fontSize:'0.9rem'}}>📞</span></div>
+                <div style={{ textAlign: 'left', flex: 1 }}>
+                  <div style={{ fontWeight: 600, fontSize: '0.8rem' }}>📞 WhatsApp / 电话 <span style={{ fontSize: '0.5rem', color: '#999', fontWeight: 400 }}>· 点击直接对话</span></div>
+                  <div style={{ fontSize: '0.65rem', color: '#666' }}>+65 8620 8789</div>
+                </div>
+                <span style={{ color: '#25D366', fontSize: '0.8rem' }}>→</span>
+              </a>
+
               {/* QQ邮箱 */}
               <button onClick={() => {
                 navigator.clipboard.writeText(EMAIL_QQ).then(() => { setCopied('qq'); setTimeout(() => setCopied(''), 2500) }).catch(() => {})
