@@ -1,11 +1,12 @@
 {
   "meta": {
     "name": "笔记本液晶面板通用检索库",
-    "version": "1.4",
-    "updated": "2026-10-20",
+    "version": "1.5",
+    "updated": "2026-11-20",
     "rule": "通用判据 = 尺寸 + 分辨率 + 接口(eDP/LVDS) + 针脚数 + 厚度/耳朵位。同规格即可互换,与品牌无关。",
     "caveat": "参数以厂家 datasheet / 实物丝印为准;换屏前务必核对实机屏线针脚数、针脚朝向、固定耳位。",
     "changelog": [
+      "2026-11-20 月度巡检：新增 25 个系列——16寸 2.5K 多刷新率族（NE160QDM-NY1 165Hz/NY2 120Hz/NY6/NYB 165Hz/NYH 240Hz/NZA/NZB/NZ4 240Hz/NX1 144Hz/NM6 165Hz/NM8 MiniLED 240Hz/N41 120Hz/N62）、14寸 2.5K 族（NE140QDM-NX1 120Hz/NX4 144Hz/NX5/NZ2/NZA/N81 46pin/N82、NV140QDM-NF1）、新尺寸 **14.5寸 2.5K**（B145QAN01.H 90Hz / B145QAN01.J 120Hz / N145GCG-GT1 60Hz / LP145WQ1-SPB1）、新尺寸 **15.3寸**（NE153WU0-M60 触摸）；修正 NE160QDM-NZ1 刷新率 165Hz→240Hz；新增 14 条机型映射（Legion 5 Pro/7、Zephyrus M16、Predator PT516、Pavilion Plus 16、Dell G16/16 Plus、Slim 5 16ABR、Swift 14 14.5、2026 新机）；新增 6 个规格组。来源 blisscomputers / twscreen / eBay / 厂商官网 + 评测页。",
       "2026-10-20 月度巡检（补充）：新增液晶品牌 天马 Tianma（TL）与 龙腾光电 IVO（M14/M15）；新增 4 个系列（TL140BDXP01 14\" 2560x1440 120Hz 40pin、TL140BDXP02 2K165Hz、M140NWF5 14\" FHD 30pin、M140NWHE 14\" 2240x1400 40pin）；修正前缀归属 MNE→CSOT 华星、M→IVO 龙腾（原先 M 误指 CSOT，会把 M140/M156 判成华星）；新增 2 个规格组 + 1 条机型；来源 Panelook / NTCSupply / lpscreen / screens-people。",
       "2026-10-20 月度巡检：新增 14.0\" 16:10 (1920x1200) 面板家族 8 个系列（BOE NE140WUM-N62、友达 B140UAN02.1/NV140WUM-N45/N49、LG LP140WU1-SPB1/SPB2/SPF1、MNE007JA1-1，含 30pin/40pin 区分）；新增 5 条机型映射（ThinkPad T14/T14s Gen5、T14 Gen6、T16 Gen3、EliteBook 840 G9-G11、Dynabook X45W）；新增 2 个规格组；品牌前缀 M(/MNE)=华星光电 CSOT，已在库内，未新增品牌；修正品牌前缀映射 NE→BOE 京东方（原本误落到 N→群创）。",
       "2026-10-03 月度巡检：新增 16.0\" 16:10 面板家族 7 个系列（群创/京东方/友达/LG）；新增 3 个规格组与 9 条整机机型映射（戴尔/联想/惠普/华硕/华为/荣耀/小米/WIKO）。"
@@ -1823,7 +1824,7 @@
       "iface": "eDP",
       "pins": 40,
       "touch": false,
-      "note": "京东方 BOE 16寸 QHD+ 165Hz（小新Pro16/ThinkBook16+ 常见）"
+      "note": "京东方 BOE 16寸 2.5K **240Hz** 电竞（blisscomputers 实物件与 XMG Neo 16 2023 均标 240Hz；2026-11-20 修正，原库误记 165Hz）；小新Pro16/ThinkBook16+ 的 165Hz 版本为 NE160QDM-NY1/NZ1 不同批次，按实物标签核对"
     },
     "B160UAN01": {
       "size": "16.0",
@@ -1948,6 +1949,240 @@
       "touch": false,
       "thick": "",
       "note": "IVO 龙腾 14寸 16:10 2.2K；40pin eDP；厚度/耳位待核"
+    },
+    "NE160QDM-NY1": {
+      "size": "16.0",
+      "res": "2560x1600",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "thick": "3.0",
+      "note": "BOE 16寸 2.5K 165Hz eDP1.4/40pin(0.5mm)；HP Pavilion Plus 16-ab / ProBook 460 G11、Legion 5 Pro/7 16、ROG Zephyrus M16 GU603、Predator PT516-51S、Dell G16 7620 原厂常见；同级 B160QAN02.Q / NV160WUM-NX1"
+    },
+    "NE160QDM-NY2": {
+      "size": "16.0",
+      "res": "2560x1600",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "thick": "",
+      "note": "BOE 16寸 2.5K 120Hz；与 NY1/NY6 同规格，刷新率不同；厚度待核"
+    },
+    "NE160QDM-NY6": {
+      "size": "16.0",
+      "res": "2560x1600",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "thick": "",
+      "note": "BOE 16寸 2.5K 120Hz（市面另有标 165Hz 批次，按实物标签为准）；同级 B160QAN02.R；厚度待核"
+    },
+    "NE160QDM-NYB": {
+      "size": "16.0",
+      "res": "2560x1600",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "thick": "",
+      "note": "BOE 16寸 2.5K 165Hz；与 NY1 同规格；厚度待核"
+    },
+    "NE160QDM-NYH": {
+      "size": "16.0",
+      "res": "2560x1600",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "thick": "",
+      "note": "BOE 16寸 2.5K 240Hz 电竞；厚度待核"
+    },
+    "NE160QDM-NZA": {
+      "size": "16.0",
+      "res": "2560x1600",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "thick": "",
+      "note": "BOE 16寸 2.5K 240Hz 电竞（NZ1/NZB/NZ4 同族）；厚度待核"
+    },
+    "NE160QDM-NZB": {
+      "size": "16.0",
+      "res": "2560x1600",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "thick": "",
+      "note": "BOE 16寸 2.5K 240Hz 电竞；厚度待核"
+    },
+    "NE160QDM-NZ4": {
+      "size": "16.0",
+      "res": "2560x1600",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "thick": "",
+      "note": "BOE 16寸 2.5K 240Hz 电竞；XMG Neo 16 2023 同族；厚度待核"
+    },
+    "NE160QDM-NX1": {
+      "size": "16.0",
+      "res": "2560x1600",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "thick": "",
+      "note": "BOE 16寸 2.5K 144Hz；厚度待核"
+    },
+    "NE160QDM-NM6": {
+      "size": "16.0",
+      "res": "2560x1600",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "thick": "",
+      "note": "BOE 16寸 2.5K 165Hz；厚度待核"
+    },
+    "NE160QDM-NM8": {
+      "size": "16.0",
+      "res": "2560x1600",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "thick": "",
+      "note": "BOE 16寸 2.5K 240Hz **MiniLED** 背光；更换需整屏，普通 LED 屏不可代用；厚度待核"
+    },
+    "NE160QDM-N41": {
+      "size": "16.0",
+      "res": "2560x1600",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "thick": "",
+      "note": "BOE 16寸 2.5K 120Hz IPS 40pin；Dell Inspiron 5630 / Inspiron 16 Plus 7630(P125F) / 7640(P132F) 原厂常见；同级 LP160WQ2(SP)(D1)"
+    },
+    "NE160QDM-N62": {
+      "size": "16.0",
+      "res": "2560x1600",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "thick": "",
+      "note": "BOE 16寸 2.5K 40pin；市面 60Hz / 120Hz(V8.1) 批次并存，装机看实物 V8.x 标签；Lenovo IdeaPad Slim 5 16ABR 常见；同级 MNG007DA1-3"
+    },
+    "NE140QDM-NX1": {
+      "size": "14.0",
+      "res": "2560x1600",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "thick": "",
+      "note": "BOE 14寸 2.5K 120Hz DCI-P3 IPS 40pin 窄边框；14 寸 2.5K 主流屏；厚度待核"
+    },
+    "NE140QDM-NX4": {
+      "size": "14.0",
+      "res": "2560x1600",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "thick": "",
+      "note": "BOE 14寸 2.5K 144Hz；厚度待核"
+    },
+    "NE140QDM-NX5": {
+      "size": "14.0",
+      "res": "2560x1600",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "thick": "",
+      "note": "BOE 14寸 2.5K 120Hz；厚度待核"
+    },
+    "NE140QDM-NZ2": {
+      "size": "14.0",
+      "res": "2560x1600",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "thick": "",
+      "note": "BOE 14寸 2.5K IPS；刷新率待核"
+    },
+    "NE140QDM-NZA": {
+      "size": "14.0",
+      "res": "2560x1600",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "thick": "",
+      "note": "BOE 14寸 2.5K（V18.0）；刷新率待核"
+    },
+    "NE140QDM-N81": {
+      "size": "14.0",
+      "res": "2560x1600",
+      "iface": "eDP",
+      "pins": 46,
+      "touch": false,
+      "thick": "",
+      "note": "BOE 14寸 2.5K **46pin**（与 40pin 版本针脚不同，切勿混用）；厚度待核"
+    },
+    "NE140QDM-N82": {
+      "size": "14.0",
+      "res": "2560x1600",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "thick": "",
+      "note": "BOE 14寸 2.5K；刷新率待核"
+    },
+    "NV140QDM-NF1": {
+      "size": "14.0",
+      "res": "2560x1600",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "thick": "",
+      "note": "BOE 14寸 2.5K；机械师 Machcreator X14 Gen12 / 雷神 T-Book 14 原厂常见；刷新率待核"
+    },
+    "B145QAN01.H": {
+      "size": "14.5",
+      "res": "2560x1600",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "thick": "",
+      "note": "友达 14.5寸 2.5K 90Hz IPS 40pin；Lenovo FRU 5D11P79766；与 B145QAN01.J / N145GCG-GT1 / LP145WQ1-SPB1 同规格"
+    },
+    "B145QAN01.J": {
+      "size": "14.5",
+      "res": "2560x1600",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "thick": "",
+      "note": "友达 14.5寸 2.5K 120Hz IPS 40pin；Acer Swift 14(SF14-11) 等 14.5 寸机型通用规格"
+    },
+    "N145GCG-GT1": {
+      "size": "14.5",
+      "res": "2560x1600",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "thick": "",
+      "note": "群创 14.5寸 2.5K 60Hz 100%sRGB IPS 40pin；与 B145QAN01.H 同规格可互换"
+    },
+    "LP145WQ1-SPB1": {
+      "size": "14.5",
+      "res": "2560x1600",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "thick": "",
+      "note": "LG 14.5寸 2.5K IPS 40pin；与 N145GCG-GT1 / B145QAN01.H 同族；刷新率待核"
+    },
+    "NE153WU0-M60": {
+      "size": "15.3",
+      "res": "1920x1200",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": true,
+      "thick": "",
+      "note": "BOE 15.3寸 16:10 WUXGA **触摸** 40pin 120Hz；联想 15.3 寸机型（Slim 5 15.3 等）原厂常见；具体机型待核"
     }
   },
   "brands": {
@@ -2632,6 +2867,117 @@
       "pins": 40,
       "touch": false,
       "note": "NTCSupply/cross-ref：TL140BDXP01-00 为常见 2K 升级屏（非唯一原装）；装机核对针脚/耳位/厚度"
+    },
+    "Lenovo Legion 5 Pro 16 / Legion 7 16 (2021-2023, 82JQ/82JS/82RF/82N6/82K6)": {
+      "panel": "NE160QDM-NY1",
+      "size": "16.0",
+      "res": "2560x1600",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "note": "2.5K 165Hz 40pin；同级 MNG007DA1；另有 N160GME 240Hz 版"
+    },
+    "ASUS ROG Zephyrus M16 GU603 (2021-2023)": {
+      "panel": "NE160QDM-NY1",
+      "size": "16.0",
+      "res": "2560x1600",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "note": "16寸 2.5K 165Hz 40pin；GU603HE/HR/HM/ZE/ZM 同族；同级 B160QAN02.Q"
+    },
+    "Acer Predator Triton 500 SE PT516-51S": {
+      "panel": "NE160QDM-NY1",
+      "size": "16.0",
+      "res": "2560x1600",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "note": "16寸 2.5K 165Hz 40pin；Acer P/N KL.1600W.001"
+    },
+    "HP Pavilion Plus 16-ab / ProBook 460 G11": {
+      "panel": "NE160QDM-NY1",
+      "size": "16.0",
+      "res": "2560x1600",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "note": "16寸 2.5K 165Hz eDP1.4 40pin；blisscomputers 件标明 HP 16-ab/460 G11"
+    },
+    "Dell G16 7620 (2022)": {
+      "panel": "NE160QDM-NY1",
+      "size": "16.0",
+      "res": "2560x1600",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "note": "16寸 2.5K 165Hz 40pin；同族 Dell 8Y8KX/3PV8T 等 P/N"
+    },
+    "Dell Inspiron 5630 / Inspiron 16 Plus 7630 (P125F) / 7640 (P132F)": {
+      "panel": "NE160QDM-N41",
+      "size": "16.0",
+      "res": "2560x1600",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "note": "16寸 2.5K 120Hz 40pin；Dell P/N 0RXYCW/RXYCW/6CGFR/0V2M52/H58M0；同级 LP160WQ2(SP)(D1)"
+    },
+    "Lenovo IdeaPad Slim 5 16ABR (2024-2026)": {
+      "panel": "NE160QDM-N62",
+      "size": "16.0",
+      "res": "2560x1600",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "note": "2.5K 40pin；Lenovo 5D11J61822/5D11B60606；同型号 60/120Hz 批次，按实物标签核对"
+    },
+    "Acer Swift 14 SF14-11 / SF14-11T (2024-2026)": {
+      "size": "14.5",
+      "res": "2560x1600",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": null,
+      "note": "14.5寸 2.5K 40pin；触屏版为整屏总成(SF14-11T)；面板同级 B145QAN01.H/J、N145GCG-GT1"
+    },
+    "Lenovo 小新 Pro16 2026 (酷睿 Ultra / 2.8K OLED 120Hz)": {
+      "size": "16.0",
+      "res": "2880x1800",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "note": "2.8K 120Hz OLED；**OLED 屏不可与 LCD 互换**，换屏须 OLED 专用总成；pconline 参数页"
+    },
+    "Lenovo ThinkBook 16p 2026 (3.2K 专业屏)": {
+      "size": "16.0",
+      "res": "3200x2000",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "note": "3.2K 高色域屏（2026 款）；面板型号待核，换屏按原机 BOM 订 OLED/高分总成"
+    },
+    "Honor MagicBook 16 2026 (2.5K 180Hz)": {
+      "size": "16.0",
+      "res": "2560x1600",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "note": "16寸 2.5K 180Hz 电竞护眼屏；荣耀官网规格页；面板型号待核"
+    },
+    "Honor 笔记本 X16 2026 (2.5K 高刷)": {
+      "size": "16.0",
+      "res": "2560x1600",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "note": "16寸 2.5K 高刷；荣耀官网规格页；面板型号待核"
+    },
+    "ASUS 无畏 Pro16 2026 (2.5K 165Hz OLED)": {
+      "size": "16.0",
+      "res": "2560x1600",
+      "iface": "eDP",
+      "pins": 40,
+      "touch": false,
+      "note": "2.5K 165Hz OLED 0.2ms；**OLED 不可与 LCD 互换**；IT之家评测"
     }
   },
   "machine_groups": {
@@ -2785,6 +3131,40 @@
     "14.0\" 2240x1400 eDP 40pin": [
       "14寸 16:10 2.2K 机型（部分联想/惠普/华硕批次）",
       "换屏前核对 40pin 与分辨率支持"
+    ],
+    "16.0\" 2560x1600 eDP 40pin 165Hz": [
+      "联想 Legion 5 Pro 16 / Legion 7 16 (2021-2023)",
+      "华硕 ROG Zephyrus M16 GU603 (2021-2023)",
+      "宏碁 Predator Triton 500 SE PT516-51S",
+      "惠普 Pavilion Plus 16-ab / ProBook 460 G11",
+      "戴尔 Dell G16 7620"
+    ],
+    "16.0\" 2560x1600 eDP 40pin 240Hz（电竞）": [
+      "XMG Neo 16 2023",
+      "联想 Legion 7 16 / Legion Pro 5 16 (240Hz 档)",
+      "机械革命/雷神 16 寸 240Hz 机型"
+    ],
+    "14.0\" 2560x1600 eDP 40pin（2.5K）": [
+      "联想 Yoga Slim 7 14 / 小新 Pro14 (2.5K 档)",
+      "华硕 Zenbook 14 (2.5K 档)",
+      "惠普 Envy 14 (2.5K 档)",
+      "机械师 Machcreator X14 Gen12",
+      "雷神 T-Book 14"
+    ],
+    "14.5\" 2560x1600 eDP 40pin（2.5K）": [
+      "宏碁 Acer Swift 14 SF14-11 / SF14-11T (2024-2026)",
+      "联想 14.5 寸 2.5K 机型(Slim 5x/ Yoga 待核)",
+      "华硕 14.5 寸机型(OLED 版不可用 LCD 代)"
+    ],
+    "15.3\" 1920x1200 eDP 40pin（触摸）": [
+      "联想 15.3 寸机型（NE153WU0-M60 原厂件，具体机型待核）"
+    ],
+    "16.0\" 2880x1800 OLED（不可与 LCD 互换）": [
+      "联想 小新 Pro16 2026",
+      "联想 ThinkBook 16p 2026 (3.2K 档)",
+      "华硕 无畏 Pro16 2026",
+      "荣耀 MagicBook 16 2026",
+      "小米 RedmiBook Pro 16 (OLED 档)"
     ]
   }
 }
