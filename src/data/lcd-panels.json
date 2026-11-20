@@ -1956,8 +1956,8 @@
       "iface": "eDP",
       "pins": 40,
       "touch": false,
-      "thick": "3.0",
-      "note": "BOE 16寸 2.5K 165Hz eDP1.4/40pin(0.5mm)；HP Pavilion Plus 16-ab / ProBook 460 G11、Legion 5 Pro/7 16、ROG Zephyrus M16 GU603、Predator PT516-51S、Dell G16 7620 原厂常见；同级 B160QAN02.Q / NV160WUM-NX1"
+      "thick": "",
+      "note": "BOE 16寸 2.5K 165Hz eDP1.4/40pin(0.5mm)；HP Pavilion Plus 16-ab / ProBook 460 G11、Legion 5 Pro/7 16、ROG Zephyrus M16 GU603、Predator PT516-51S、Dell G16 7620 原厂常见；厚度待核；同级 B160QAN02.Q / NV160WUM-NX1"
     },
     "NE160QDM-NY2": {
       "size": "16.0",
